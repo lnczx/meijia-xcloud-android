@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg_color"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/layout_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="195dp"
+                android:layout_height="213dp"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/share" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="朋友圈"
+                android:textColor="@color/common_input_hint_text_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="分享好友获得10个积分"
+                android:textColor="@color/common_input_hint_text_color" />
+
+            <Button
+                android:id="@+id/share_btn_share"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_long_orange_height"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="48dp"
+                android:background="@drawable/btn_common_background"
+                android:text="分 享"
+                android:textColor="@color/simi_color_white" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

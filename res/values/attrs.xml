@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 自定义圆形ImageView的外层边缘 -->
+    <declare-styleable name="roundedimageview">
+        <attr name="border_thickness_in" format="dimension" /> <!-- 内边框线宽 -->
+        <attr name="border_thickness_out" format="dimension" /> <!-- 外边框线宽 -->
+        <attr name="border_inside_color" format="color" /> <!-- 内边框颜色 -->
+        <attr name="border_outside_color" format="color"></attr> <!-- 外边框颜色 -->
+    </declare-styleable>
+    
+    
+     
+ <declare-styleable name="day">
+        <attr name="state_current" format="boolean" />
+    </declare-styleable>
+
+    <attr name="calendarViewStyle" format="reference" />
+
+</resources>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="46.7dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="173.3dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textColor="@color/red_text_color"
+                    android:textSize="20sp" />
+
+                <!-- 隐藏上一月按钮 by garry 2015-12-23 -->
+                <ImageButton
+                    android:id="@+id/prev"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toLeftOf="@id/title"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:contentDescription="@string/time_prev"
+                    android:src="@drawable/ic_arrow_left" />
+
+                <!-- 隐藏下一月按钮 by garry 2015-12-23 -->
+                <ImageButton
+                    android:id="@+id/next"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@id/title"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:contentDescription="@string/time_next"
+                    android:src="@drawable/ic_arrow_right" />
+				<!-- 显示侧边栏按钮 -->
+                <ImageButton
+                    android:id="@+id/ibtn_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@android:color/transparent"
+                    android:padding="15dp"
+                    android:src="@drawable/iconfont31wode1" />
+                <ImageButton
+                    android:id="@+id/btn_chakan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/iconfont_chakan" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/selection_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red_dark"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/days"
+        android:layout_width="match_parent"
+        android:layout_height="33.3dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/daysTextview"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            style="@style/daysTextview"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            style="@style/daysTextview"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            style="@style/daysTextview"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            style="@style/daysTextview"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            style="@style/daysTextview"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            style="@style/daysTextview"
+            tools:ignore="SmallSp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/weeks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- Cashes them at first start -->
+
+        <include layout="@layout/week_layout" />
+
+        <include layout="@layout/week_layout" />
+
+        <include layout="@layout/week_layout" />
+
+        <include layout="@layout/week_layout" />
+
+        <include layout="@layout/week_layout" />
+
+        <include layout="@layout/week_layout" />
+    </LinearLayout>
+
+</merge>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/activity_bg_color"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:background="@color/simi_color_white" >
+
+        <ImageView
+            android:id="@+id/address_item_iv_del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@drawable/addr_del_bg" />
+
+        <TextView
+            android:id="@+id/address_item_tv_def"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:text="默认"
+            android:textColor="@color/simi_color_red"/>
+
+        <TextView
+            android:id="@+id/address_item_tv_addr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toLeftOf="@id/address_item_tv_def"
+            android:layout_toRightOf="@id/address_item_iv_del"
+            android:text="小区名称+门牌号"
+            android:textColor="@color/simi_color_gray" />
+    </RelativeLayout>
+
+</LinearLayout>
