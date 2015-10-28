@@ -16,10 +16,10 @@
 
         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon_1"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_contact_plus"
+            android:src="@drawable/iconfont_tongxunbu"
             imagecontrol:border_inside_color="@color/simi_color_white"
             imagecontrol:border_outside_color="@color/simi_color_white"
             imagecontrol:border_thickness_in="1dp"
@@ -57,10 +57,10 @@
 
         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon_2"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_contact_mishu"
+            android:src="@drawable/iconfont_xunzhaomishu"
             imagecontrol:border_inside_color="@color/simi_color_white"
             imagecontrol:border_outside_color="@color/simi_color_white"
             imagecontrol:border_thickness_in="1dp"

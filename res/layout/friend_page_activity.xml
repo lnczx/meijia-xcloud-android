@@ -33,7 +33,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="30dp"
-                    android:background="@drawable/ic_defult_touxiang" />
+                    android:src="@drawable/ic_defult_touxiang" />
 
                 <RelativeLayout
                     android:id="@+id/fyzb_personal_page_content"
