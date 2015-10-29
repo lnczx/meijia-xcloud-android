@@ -27,17 +27,20 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.CityData;
 import com.meijialife.simi.bean.User;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.CalendarUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMDemoHelper;
 
 public class SplashActivity extends Activity {
@@ -61,6 +64,14 @@ public class SplashActivity extends Activity {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     SplashActivity.this.finish();
                 } else {
+                    
+                    try {
+                        updateUserInfo();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
+                    
                     initEasemob();
                     updateCalendarMark();
                 }
@@ -107,11 +118,81 @@ public class SplashActivity extends Activity {
                     } catch (InterruptedException e) {
                     }
                     //去登陆
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    startActivity(new Intent(SplashActivity.this, SplashActivity.class));
                     finish();
                 }
             }
         }).start();
+    }
+    /**
+     * 获取用户详情接口
+     */
+    private void updateUserInfo() {
+
+        if (!NetworkUtils.isNetworkConnected(SplashActivity.this)) {
+            Toast.makeText(SplashActivity.this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        
+        User user = DBHelper.getUser(this);
+        if(null==user){
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user.getId());
+        AjaxParams param = new AjaxParams(map);
+
+        new FinalHttp().get(Constants.URL_GET_USER_INFO, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(SplashActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                LogOut.i("========", "用户详情启动时候更新 onSuccess：" + t);
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                UserInfo  userInfo = gson.fromJson(data, UserInfo.class);
+                                DBHelper.updateUserInfo(SplashActivity.this, userInfo);
+
+                            } else {
+                                // UIUtils.showToast(SplashActivity.this, "数据错误");
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息|
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(SplashActivity.this, errorMsg);
+                }
+            }
+        });
+
     }
 
     /**

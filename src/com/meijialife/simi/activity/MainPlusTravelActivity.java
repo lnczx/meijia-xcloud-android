@@ -175,7 +175,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
             end_city_id=card.getTicket_to_city_id();
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat format2 = new SimpleDateFormat("H:m:s");
+            SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
             long Service_time = Long.valueOf(card.getService_time()) * 1000;
 
             String uYear = format.format(Service_time);
@@ -724,6 +724,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) {
                             Toast.makeText(MainPlusTravelActivity.this, "创建成功了", Toast.LENGTH_SHORT).show();
+                            Constants.CARD_ADD_TREAVEL_CONTENT="";
                             MainPlusTravelActivity.this.finish();
 
                             // 初始化本地提醒闹钟

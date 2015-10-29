@@ -399,5 +399,27 @@ public class DBHelper {
         }
         return false;
     }
+    
+    /**
+     * 清除某一月的日历标签数据
+     * 
+     * @param year  年份
+     * @param month 月份
+     * @return
+     */
+    public static void clearCalendarMark(Context context, String year, String month){
+        List<CalendarMark> marks = getInstance(context).searchAll(CalendarMark.class);
+        
+        if(marks == null || marks.size() < 1){
+            return;
+        }
+        
+        for(int i = 0; i < marks.size(); i++){
+            String[] strs = marks.get(i).getService_date().split("-");
+            if(strs[0].equals(year) && strs[1].equals(month)){
+                getInstance(context).deleteById(marks.get(i), marks.get(i).getService_date());
+            }
+        }
+    }
 
 }

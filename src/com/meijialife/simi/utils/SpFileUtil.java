@@ -15,6 +15,7 @@ public class SpFileUtil {
     public static final String FILE_UI_PARAMETER = "ui_parameter";
      
     public static final String KEY_SHORTCUT_ADDED = "shortcut_added";
+    public static final String KEY_FIRST_INTO = "first_into";
 
     /**
      * @WARNING Be careful, this maybe overwrite a exist value.<br>

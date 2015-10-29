@@ -173,7 +173,7 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
             isUpdate = true;
 
             Constants.CARD_ADD_MEETING_CONTENT = card.getService_content();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             long Service_time = Long.valueOf(card.getService_time()) * 1000;
 
             tv_meeting_time.setText(format.format(Service_time));
@@ -654,6 +654,7 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) {
                             Toast.makeText(MainPlusMeettingActivity.this, "创建成功了", Toast.LENGTH_SHORT).show();
+                            Constants.CARD_ADD_MEETING_CONTENT="";
                             MainPlusMeettingActivity.this.finish();
 
                             // 初始化本地提醒闹钟

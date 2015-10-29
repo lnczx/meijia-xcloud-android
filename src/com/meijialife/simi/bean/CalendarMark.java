@@ -14,7 +14,7 @@ public class CalendarMark implements Serializable {
 
     @Id(column="service_date")
     
-    /** 日期，格式为 YYY-MM-DD **/
+    /** 日期，格式为 YYY-MM-DD (此字段作为唯一ID) **/
     public String service_date;
     
 	/** 个数 **/

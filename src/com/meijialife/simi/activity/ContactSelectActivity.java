@@ -177,7 +177,7 @@ public class ContactSelectActivity extends ListActivity {
             String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
             cursor = managedQuery(uri, projection, selection, selectionArgs, sortOrder);
 
-            while (cursor.moveToNext()) {
+            while (cursor != null && !cursor.isClosed() && cursor.moveToNext()) {
 
                 // 取得联系人名字
                 int nameFieldColumnIndex = cursor.getColumnIndex(android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME);
@@ -198,7 +198,8 @@ public class ContactSelectActivity extends ListActivity {
             }
             if (phonecur != null)
                 phonecur.close();
-            cursor.close();
+            if(cursor != null)
+                cursor.close();
 
             Message msg1 = new Message();
             msg1.what = UPDATE_LIST;

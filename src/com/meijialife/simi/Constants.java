@@ -62,6 +62,8 @@ public class Constants {
     public static final String URL_POST_FRIEND = ROOT_URL + "user/post_friend.json";
     /** 用户信息修改接口 **/
     public static final String URL_POST_USERINFO = ROOT_URL + "user/post_userinfo.json";
+    /** 用户头像上传接口 **/
+    public static final String URL_POST_USERIMG = ROOT_URL + "user/post_user_head_img.json";
     /** 获取用户地址接口 **/
     public static final String URL_GET_ADDRS = ROOT_URL + "user/get_addrs.json";
     /** 地址提交接口 **/
@@ -72,6 +74,8 @@ public class Constants {
     public static final String URL_GET_TOTAL_BY_MONTH = ROOT_URL + "card/total_by_month.json";
     /** 获取提醒闹钟的卡片列表 **/
     public static final String URL_GET_REMINDS = ROOT_URL + "card/get_reminds.json";
+    /** 秘书处理卡片接口 **/
+    public static final String URL_POST_SEC_DO = ROOT_URL + "card/sec_do.json";
 
     // 用户协议
     public final static String URL_WEB_AGREE = HOST + "/html/simi-inapp/agreement.htm";

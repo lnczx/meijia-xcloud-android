@@ -42,4 +42,13 @@
         android:background="#a2000000"
         android:visibility="gone" />
 
+    <View
+        android:id="@+id/layout_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@drawable/guide" 
+        android:visibility="gone"
+        />
+
 </RelativeLayout>

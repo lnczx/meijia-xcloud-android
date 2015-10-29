@@ -172,7 +172,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
             isUpdate = true;
 
             Constants.CARD_ADD_NOTIFICATION_CONTENT = card.getService_content();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             long Service_time = Long.valueOf(card.getService_time()) * 1000;
 
             tv_meeting_time.setText(format.format(Service_time));
@@ -644,6 +644,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) {
                             Toast.makeText(MainPlusNotificationActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
+                            Constants.CARD_ADD_NOTIFICATION_CONTENT="";
                             MainPlusNotificationActivity.this.finish();
 
                             // 初始化本地提醒闹钟

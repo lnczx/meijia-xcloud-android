@@ -523,7 +523,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
             files.put("head_img", file);
             String request = "";
             try {
-                request = HTTPUtils.uploadPost(Constants.URL_POST_USERINFO, params, files);
+                request = HTTPUtils.uploadPost(Constants.URL_POST_USERIMG, params, files);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -566,7 +566,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         try {
             json = new JSONObject(request.toString());
 //            int status = Integer.parseInt(json.getString("code"));
-
+            Toast.makeText(getApplicationContext(), "数据返回成功", Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

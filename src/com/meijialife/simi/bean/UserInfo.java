@@ -84,7 +84,7 @@ public class UserInfo implements Serializable {
     
     /** 即时通讯密码（环信） **/
     private String im_password;
-
+    
     public String getId() {
         return id;
     }

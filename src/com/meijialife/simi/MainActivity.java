@@ -52,7 +52,6 @@ import com.meijialife.simi.activity.NullWaitActivity;
 import com.meijialife.simi.activity.PointsActivity;
 import com.meijialife.simi.activity.ShareActivity;
 import com.meijialife.simi.alerm.AlermUtils;
-import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.Remind;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
@@ -66,8 +65,8 @@ import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.ui.ConversationListFragment;
@@ -133,6 +132,45 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         ShareConfig.getInstance().init(this);
 
         getReminds();
+
+        layout_mask = findViewById(R.id.layout_mask);
+        layout_guide = findViewById(R.id.layout_guide);
+
+        boolean fristFlag = getFristFlag();
+        if (fristFlag) {
+            layout_mask.setVisibility(View.VISIBLE);
+            layout_guide.setVisibility(View.VISIBLE);
+        }
+        layout_guide.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                layout_mask.setVisibility(View.GONE);
+                layout_guide.setVisibility(View.GONE);
+                updateFristFlag();
+            }
+        });
+
+    }
+
+    /**
+     * 检查是否第一次打开应用
+     * 
+     * @return
+     */
+    private boolean getFristFlag() {
+
+        boolean FristFlag = SpFileUtil.getBoolean(this, SpFileUtil.FILE_UI_PARAMETER, SpFileUtil.KEY_FIRST_INTO, true);
+
+        return FristFlag;
+    }
+
+    /**
+     * 更新第一次打开应用的标识
+     */
+    private void updateFristFlag() {
+        SpFileUtil.saveBoolean(this, SpFileUtil.FILE_UI_PARAMETER, SpFileUtil.KEY_FIRST_INTO, false);
+
     }
 
     /**
@@ -396,6 +434,10 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private static Boolean isQuit = false;
     private Timer timer = new Timer();
     private RelativeLayout view_title_bar;
+
+    private View layout_mask;
+
+    private View layout_guide;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

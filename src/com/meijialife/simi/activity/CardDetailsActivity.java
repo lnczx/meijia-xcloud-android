@@ -41,6 +41,7 @@ import com.meijialife.simi.adapter.CardZanAdapter;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.CardComment;
 import com.meijialife.simi.bean.Cards;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.utils.LogOut;
@@ -83,6 +84,16 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     private RelativeLayout btn_cancel_layout;
     private TextView tv_edit;
     private TextView tv_cancel;
+    
+    /** 秘书身份UI **/
+    private RelativeLayout sec_layout;//秘书接单最外层layout
+    private ImageView sec_icon;
+    private TextView sec_title;
+    private TextView sec_text;
+    private Button sec_btn_accept;//接单
+    private Button sec_btn_complete;//完成
+    
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,13 +103,13 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         init();
         initView();
 
-        getCardData();
         getCommentList();
 
     }
 
     private void init() {
         card = (Cards) getIntent().getSerializableExtra("Cards");
+        user = DBHelper.getUser(this);
     }
 
     private void initView() {
@@ -156,6 +167,38 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             btn_cancel_layout.setClickable(false);
             tv_cancel.setClickable(false);
             tv_cancel.setTextColor(getResources().getColor(R.color.simi_color_gray));
+        }
+        
+        sec_layout = (RelativeLayout)findViewById(R.id.sec_layout);
+        int userType = Integer.parseInt(user.getUser_type());//用户类型 0 = 普通用户 1= 秘书 2 = 服务商
+        if(userType == 1){
+            //如果是秘书
+            int secDo = Integer.parseInt(card.getSet_sec_do());//秘书处理 0 = 否 1 = 是
+            if(secDo == 1){
+                //如果需要秘书处理
+                sec_icon = (ImageView)findViewById(R.id.sec_icon);
+                sec_title = (TextView)findViewById(R.id.sec_title);
+                sec_text = (TextView)findViewById(R.id.sec_text);
+
+                sec_btn_accept = (Button)findViewById(R.id.sec_btn_accept);
+                sec_btn_complete = (Button)findViewById(R.id.sec_btn_complete);
+                sec_btn_accept.setVisibility(View.INVISIBLE);
+                sec_btn_complete.setVisibility(View.INVISIBLE);
+                // 状态 0 = 已取消 1 = 处理中 2 = 秘书处理中 3 = 已完成.
+                int status = Integer.parseInt(card.getStatus());
+                if (status == 1) {//处理中
+                    sec_btn_accept.setVisibility(View.VISIBLE);
+                } else if (status == 2) {//秘书处理中
+                    sec_btn_complete.setVisibility(View.VISIBLE);
+                }
+                
+                sec_btn_accept.setOnClickListener(this);
+                sec_btn_complete.setOnClickListener(this);
+            }else{
+                sec_layout.setVisibility(View.GONE);
+            }
+        }else{
+            sec_layout.setVisibility(View.GONE);
         }
 
     }
@@ -278,6 +321,12 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                 return;
             }
             postComment(comment);
+            break;
+        case R.id.sec_btn_accept:  //秘书接单
+            postSecDo(2);
+            break;
+        case R.id.sec_btn_complete:  //秘书完成
+            postSecDo(3);
             break;
         case R.id.tv_zan: // 赞
             postZan(card);
@@ -695,6 +744,81 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                         String msg = obj.getString("msg");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             getCardData();
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            Toast.makeText(CardDetailsActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            Toast.makeText(CardDetailsActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            Toast.makeText(CardDetailsActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            Toast.makeText(CardDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CardDetailsActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    // UIUtils.showToast(context, "网络错误,请稍后重试");
+                }
+
+            }
+        });
+    }
+    
+    /**
+     * 秘书处理卡片接口
+     * 
+     * @param cardStatus 状态 0 = 已取消 1 = 处理中 2 = 秘书处理中 3 = 已完成.
+     */
+    private void postSecDo(final int cardStatus) {
+
+        String user_id = DBHelper.getUser(this).getId();
+
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("card_id", card.getCard_id());
+        map.put("sec_id", user_id);
+        map.put("status", cardStatus+"");   //状态 0 = 已取消 1 = 处理中 2 = 秘书处理中 3 = 已完成.
+        map.put("sec_remarks", "");     //处理内容
+        AjaxParams param = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().post(Constants.URL_POST_SEC_DO, param, new AjaxCallBack<Object>() {
+
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                LogOut.debug("错误码：" + errorNo);
+                dismissDialog();
+                Toast.makeText(CardDetailsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                dismissDialog();
+                LogOut.debug("成功:" + t.toString());
+
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            
+                            if(cardStatus == 2){//秘书处理中
+                                sec_btn_accept.setVisibility(View.INVISIBLE);
+                                sec_btn_complete.setVisibility(View.VISIBLE);
+                            } else if(cardStatus == 3){//已完成
+                                sec_btn_accept.setVisibility(View.INVISIBLE);
+                                sec_btn_complete.setVisibility(View.INVISIBLE);
+                            } 
+                            getCardData();
+                            
+//                            Toast.makeText(CardDetailsActivity.this, "请求成功", Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(CardDetailsActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

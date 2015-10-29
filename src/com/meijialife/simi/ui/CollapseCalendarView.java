@@ -397,6 +397,29 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
         }
 
     }
+    
+    /**
+     * 刷新日历VIEW add by garry
+     */
+    public void updateUI() {
+        
+        if (mManager != null) {
+            
+            populateDays();
+            
+            mPrev.setEnabled(mManager.hasPrev());
+            mNext.setEnabled(mManager.hasNext());
+            
+            mTitleView.setText(mManager.getHeaderText());
+            
+            if (mManager.getState() == CalendarManager.State.MONTH) {
+                populateMonthLayout((Month) mManager.getUnits());
+            } else {
+                populateWeekLayout((Week) mManager.getUnits());
+            }
+        }
+        
+    }
 
     private void populateMonthLayout(Month month) {
 

@@ -154,7 +154,7 @@ public class MyPushReceiver extends BroadcastReceiver {
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            UIUtils.showToast(mContext, "推送绑定成功");
+//                            UIUtils.showToast(mContext, "推送绑定成功");
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = mContext.getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
