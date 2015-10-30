@@ -96,15 +96,16 @@
                         </LinearLayout>
                     </RelativeLayout>
                 </RelativeLayout>
-
             </RelativeLayout>
 
+            <!-- 查看其它人主页时，隐藏这行数据显示 by garry 2015-10-29 -->
             <LinearLayout
                 android:id="@+id/ll_card"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#cccccc"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:visibility="gone" >
 
                 <LinearLayout
                     android:layout_width="0dp"

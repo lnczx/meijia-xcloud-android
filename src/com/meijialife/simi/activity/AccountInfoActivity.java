@@ -40,6 +40,7 @@ import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.bean.UserInfo;
@@ -334,6 +335,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
     private void logOut() {
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(User.class);
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(UserInfo.class);
+        DBHelper.getInstance(AccountInfoActivity.this).deleteAll(CalendarMark.class);
         
         showDialog();
         EMDemoHelper.getInstance().logout(false,new EMCallBack() {
@@ -520,7 +522,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
 
             final Map<String, File> files = new HashMap<String, File>();
             File file = new File(Constants.PATH_ROOT + HEADER_IMAGE_NAME);
-            files.put("head_img", file);
+            files.put("file", file);
             String request = "";
             try {
                 request = HTTPUtils.uploadPost(Constants.URL_POST_USERIMG, params, files);
@@ -565,8 +567,17 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         JSONObject json;
         try {
             json = new JSONObject(request.toString());
-//            int status = Integer.parseInt(json.getString("code"));
-            Toast.makeText(getApplicationContext(), "数据返回成功", Toast.LENGTH_SHORT).show();
+            int status = Integer.parseInt(json.getString("status"));
+            String data = json.getString("data");
+            if (StringUtils.isNotEmpty(data)) {
+                JSONObject obj = new JSONObject(data);
+                String headImg = obj.getString("head_img");
+                UserInfo userInfo = DBHelper.getUserInfo(AccountInfoActivity.this);
+                userInfo.setHead_img(headImg);
+                DBHelper.updateUserInfo(AccountInfoActivity.this, userInfo);
+            }
+            
+            Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

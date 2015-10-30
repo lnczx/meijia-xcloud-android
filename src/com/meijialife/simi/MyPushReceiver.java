@@ -20,6 +20,7 @@ import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
 import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -80,9 +81,9 @@ public class MyPushReceiver extends BroadcastReceiver {
             // GetuiSdkDemoActivity.tView.setText(cid);
             // }
             LoginActivity.clientid = cid;
-            LogOut.debug("cid:" + cid);
-            bind_user(cid);
-
+            SplashActivity.clientid = cid;
+            LogOut.debug("百度推送cid:" + cid);
+            
             break;
 
         case PushConsts.THIRDPART_FEEDBACK:
@@ -100,84 +101,5 @@ public class MyPushReceiver extends BroadcastReceiver {
         }
     }
 
-    /**
-     * 绑定接口
-     * 
-     * @param date
-     */
-    private void bind_user(String client_id) {
-        String user_id = null;
-         String clientid=null;
-        try {
-            clientid = DBHelper.getUser(mContext).getClient_id();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-            clientid=null;
-        }
-        
-        if(StringUtils.isNotEmpty(clientid)){
-            return;
-        }
-        
-        try {
-            user_id = DBHelper.getUserInfo(mContext).getUser_id();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-            user_id=null;
-        }
-        if (StringUtils.isEmpty(user_id)) {
-            return;
-        }
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
-        map.put("device_type", "android");
-        map.put("client_id", client_id);
-        AjaxParams param = new AjaxParams(map);
-
-        new FinalHttp().post(Constants.URL_POST_PUSH_BIND, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                Toast.makeText(mContext, mContext.getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                LogOut.i("========", "onSuccess：" + t);
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-//                            UIUtils.showToast(mContext, "推送绑定成功");
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = mContext.getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = mContext.getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = mContext.getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = mContext.getString(R.string.servers_error);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    errorMsg = mContext.getString(R.string.servers_error);
-
-                }
-                // 操作失败，显示错误信息|
-                if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(mContext, errorMsg);
-                }
-            }
-        });
-
-    }
+   
 }

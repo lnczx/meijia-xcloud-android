@@ -14,6 +14,8 @@ import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
 import org.apache.commons.logging.Log;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -357,15 +359,26 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
                 int mhour = hour.getCurrentItem();
                 int mMinu = minute.getCurrentItem();
                 String date = mYear + "-" + mMonth + "-" + mDay;
+                String time = mhour + ":" + mMinu + ":" + "00";
 
-                Calendar cal = Calendar.getInstance();
-                int day = cal.get(Calendar.DATE); // 日
-                int month = cal.get(Calendar.MONTH) + 1;// 月
-                int year = cal.get(Calendar.YEAR); // 年
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                int minute = cal.get(Calendar.MINUTE);
+//                Calendar cal = Calendar.getInstance();
+//                int day = cal.get(Calendar.DATE); // 日
+//                int month = cal.get(Calendar.MONTH) + 1;// 月
+//                int year = cal.get(Calendar.YEAR); // 年
+//                int hour = cal.get(Calendar.HOUR_OF_DAY);
+//                int minute = cal.get(Calendar.MINUTE);
+                
+                Date chooseDate = null;
+                Date currentDate = new Date();;
+                try {
+                    chooseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date + " " + time);
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
-                if (mYear < year || mMonth < month || mDay < day || mhour < hour || mMinu < minute) {
+//                if (mYear < year || mMonth < month || mDay < day || mhour < hour || mMinu < minute) {
+                if(chooseDate.getTime() < currentDate.getTime()){
                     UIUtils.showToast(MainPlusMeettingActivity.this, "您只能选择未来时间进行提醒哦！");
                 } else {
                     String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu) + ":00";
@@ -654,7 +667,7 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) {
                             Toast.makeText(MainPlusMeettingActivity.this, "创建成功了", Toast.LENGTH_SHORT).show();
-                            Constants.CARD_ADD_MEETING_CONTENT="";
+                          
                             MainPlusMeettingActivity.this.finish();
 
                             // 初始化本地提醒闹钟
@@ -690,5 +703,10 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
         super.onResume();
 
     }
-
+@Override
+protected void onDestroy() {
+    // TODO Auto-generated method stub
+    super.onDestroy();
+    Constants.CARD_ADD_MEETING_CONTENT="";
+}
 }

@@ -12,15 +12,20 @@
         android:padding="@dimen/activity_horizontal_margin" >
 
         <RelativeLayout
+            android:id="@+id/rl_bg"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+            android:background="@drawable/youhuiquan_bg_1" >
 
             <TextView
                 android:id="@+id/item_tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="汽車保养" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="汽車保养"
+                android:textColor="@color/simi_color_white" />
 
             <TextView
                 android:id="@+id/item_tv_money"
@@ -28,9 +33,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/item_tv_name"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
                 android:text="￥120.00"
+                android:textColor="@color/simi_color_white"
                 android:textSize="24sp" />
         </RelativeLayout>
 

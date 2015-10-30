@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
@@ -20,8 +21,10 @@ import com.meijialife.simi.bean.DiscountCardData;
 public class DiscountCardAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private ArrayList<DiscountCardData> list;
+	private Context context;
 
 	public DiscountCardAdapter(Context context) {
+	    this.context = context;
 		inflater = LayoutInflater.from(context);
 		list = new ArrayList<DiscountCardData>();
 	}
@@ -53,6 +56,7 @@ public class DiscountCardAdapter extends BaseAdapter {
 			holder = new Holder();
 			convertView = inflater.inflate(R.layout.discount_card_list_item, null);
 			holder.tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
+			holder.rl_bg = (RelativeLayout) convertView.findViewById(R.id.rl_bg);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -60,11 +64,18 @@ public class DiscountCardAdapter extends BaseAdapter {
 		
 		holder.tv_name.setText(list.get(position).getType());
 		
+		if(position%2 == 0){
+		    holder.rl_bg.setBackgroundResource(R.drawable.youhuiquan_bg_4);
+		}else{
+		    holder.rl_bg.setBackgroundResource(R.drawable.youhuiquan_bg_3);
+		}
+		
 		return convertView;
 	}
 	
 	class Holder {
 		TextView tv_name;
+		RelativeLayout rl_bg;
 	}
 
 }

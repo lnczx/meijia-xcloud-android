@@ -10,6 +10,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.utils.StringUtils;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.ui.ChatActivity;
 
@@ -41,7 +42,14 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.tv_call_mishu:
-            toChit();
+            UserInfo userInfo = DBHelper.getUserInfo(this);
+            String is_senior = userInfo.getIs_senior();
+            if(StringUtils.isEquals(is_senior, "1")){
+                toChit(userInfo);
+            }else if(StringUtils.isEquals(is_senior, "0")){
+                startActivity(new Intent(MainPlusActivity.this,FindSecretaryActivity.class));
+            }
+            
             break;
         case R.id.tv_plus_travel:
             startActivity(new Intent(MainPlusActivity.this, MainPlusTravelActivity.class));
@@ -83,25 +91,26 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     
     /**
      * 进入秘书or机器人助理聊天页面
+     * @param userInfo 
      */
-    private void toChit(){
-        String im_sec_username;
-        String im_sec_nickname;
-        UserInfo userInfo = DBHelper.getUserInfo(MainPlusActivity.this);
-        
-        //是否有真人管家服务 1=是   0=否（用机器人管家）
-        int senior = Integer.parseInt(userInfo.getIs_senior());
-        if(senior == 1){
-            im_sec_username = userInfo.getIm_sec_username();
-            im_sec_nickname = userInfo.getIm_sec_nickname();
-        }else{
-            im_sec_username = userInfo.getIm_robot_username();
-            im_sec_nickname = userInfo.getIm_robot_nickname();
-        }
+    private void toChit(UserInfo userInfo){
+//        String im_sec_username;
+//        String im_sec_nickname;
+//        UserInfo userInfo = DBHelper.getUserInfo(MainPlusActivity.this);
+//        
+//        //是否有真人管家服务 1=是   0=否（用机器人管家）
+//        int senior = Integer.parseInt(userInfo.getIs_senior());
+//        if(senior == 1){
+//            im_sec_username = userInfo.getIm_sec_username();
+//            im_sec_nickname = userInfo.getIm_sec_nickname();
+//        }else{
+//            im_sec_username = userInfo.getIm_robot_username();
+//            im_sec_nickname = userInfo.getIm_robot_nickname();
+//        }
         
         Intent  intent = new Intent(MainPlusActivity.this, ChatActivity.class);
-        intent.putExtra(EMConstant.EXTRA_USER_ID, im_sec_username);
-        intent.putExtra(EMConstant.EXTRA_USER_NAME, im_sec_nickname);
+        intent.putExtra(EMConstant.EXTRA_USER_ID, userInfo.getIm_sec_username());
+        intent.putExtra(EMConstant.EXTRA_USER_NAME, userInfo.getIm_sec_nickname());
         startActivity(intent);
     }
 }

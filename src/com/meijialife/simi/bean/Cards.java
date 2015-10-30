@@ -18,6 +18,8 @@ public class Cards implements Serializable{
     private String ticket_to_city_id;
     private String name;
     private String user_id;
+    private String user_name;//新增
+    private String user_head_img;//新增
     private String ticket_from_city_name;
     private String ticket_type;
     private String add_time_str;
@@ -115,6 +117,18 @@ public class Cards implements Serializable{
     }
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+    public String getUser_name() {
+        return user_name;
+    }
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+    public String getUser_head_img() {
+        return user_head_img;
+    }
+    public void setUser_head_img(String user_head_img) {
+        this.user_head_img = user_head_img;
     }
     public String getTicket_from_city_name() {
         return ticket_from_city_name;

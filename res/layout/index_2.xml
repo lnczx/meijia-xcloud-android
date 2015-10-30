@@ -29,7 +29,7 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:gravity="center"
-                android:text="工商代办"
+                android:text="工商财税"
                 android:textColor="@color/index2_radiobutton_color" />
 
             <RadioButton
@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:gravity="center"
-                android:text="会计财务"
+                android:text="办公用品"
                 android:textColor="@color/index2_radiobutton_color" />
 
             <RadioButton
@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:gravity="center"
-                android:text="员工管理"
+                android:text="培训讲座"
                 android:textColor="@color/index2_radiobutton_color" />
 
             <RadioButton

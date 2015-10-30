@@ -64,7 +64,6 @@ import com.meijialife.simi.utils.Utils;
 /**
  * 添加新地址
  * 
- * @author baojiarui
  *
  */
 public class AddAddress extends FragmentActivity implements OnGetPoiSearchResultListener, OnItemClickListener, OnClickListener {

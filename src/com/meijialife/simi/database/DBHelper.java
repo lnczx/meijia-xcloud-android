@@ -416,7 +416,7 @@ public class DBHelper {
         
         for(int i = 0; i < marks.size(); i++){
             String[] strs = marks.get(i).getService_date().split("-");
-            if(strs[0].equals(year) && strs[1].equals(month)){
+            if(strs[0].trim().equals(year.trim()) && strs[1].trim().equals(month.trim())){
                 getInstance(context).deleteById(marks.get(i), marks.get(i).getService_date());
             }
         }

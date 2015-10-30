@@ -8,6 +8,8 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 
 /**
  * Activity基类
@@ -118,6 +120,19 @@ public class BaseActivity extends Activity{
 			m_pDialog.hide();
 		}
 	}
+	
+	@Override
+	protected void onResume() {
+	    // TODO Auto-generated method stub
+	    super.onResume();
+	    MobclickAgent.onResume(this);
+	}
     
+	@Override
+	protected void onPause() {
+	    // TODO Auto-generated method stub
+	    super.onPause();
+	    MobclickAgent.onPause(this);
+	}
  
 }

@@ -56,21 +56,22 @@
     <!-- 提醒弹框用到的权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" >
     </uses-permission>
-    
+
     <!-- ibeancon 需要蓝牙权限 -->
-<uses-permission android:name="android.permission.BLUETOOTH"/>  
-<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-<!-- 支持个推3.0 电子围栏功能 -->
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<!-- 浮动通知权限 -->
-<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-<!-- 自定义权限 -->  
-<uses-permission android:name="getui.permission.GetuiService.com.meijialife.simi" />
-<permission
-    android:name="getui.permission.GetuiService.com.meijialife.simi"
-    android:protectionLevel="normal" >
-</permission>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- 支持个推3.0 电子围栏功能 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 浮动通知权限 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- 自定义权限 -->
+    <uses-permission android:name="getui.permission.GetuiService.com.meijialife.simi" />
+
+    <permission
+        android:name="getui.permission.GetuiService.com.meijialife.simi"
+        android:protectionLevel="normal" >
+    </permission>
 
     <application
         android:name=".MyApplication"
@@ -95,26 +96,25 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!-- 友盟用户反馈 -->
-        <activity android:name="com.umeng.fb.ConversationActivity"
+        <activity
+            android:name="com.umeng.fb.ConversationActivity"
             android:screenOrientation="portrait" />
-
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:screenOrientation="portrait"
-            android:value="youmeng" />
 
         <!-- 友盟AppKey， 需要替换成你自己的 -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="55e3d43167e58e4c05000099" >
         </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="mumayi" />
 
         <!-- 腾讯SSO授权的Activity注册 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -129,7 +129,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-            <!-- 微信支付 -->
+        <!-- 微信支付 -->
         <activity
             android:name=".activity.PayOrderActivity"
             android:screenOrientation="portrait"
@@ -176,8 +176,8 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.MainPlusActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.MainPlusTravelActivity"
@@ -290,8 +290,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
-  
-
         <!-- 手机通讯录加好友 -->
         <activity
             android:name=".activity.ContactAddFriendsActivity"
@@ -323,9 +321,9 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!-- =============================以下全部是环信相关内容================================= -->
 
@@ -625,8 +623,8 @@
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask"
             android:noHistory="true"
-            android:theme="@style/Theme.UMDialog"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.UMDialog"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -642,109 +640,115 @@
         <!--
              <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
-            android:process=":remote" />        -->
-        
-        
-<!--个推SDK配置开始-->
-    <!-- 配置的第三方参数属性 -->
-    <meta-data
-        android:name="PUSH_APPID"
-        android:value="6t18dZQ2Vn9nv7ozqdl4EA" /><!--替换为应用的APPID-->
-    <meta-data
-        android:name="PUSH_APPKEY"
-        android:value="QjVBVFMC7U8kmpjwnKCtc7" /><!--替换为应用的APPKEY-->
-    <meta-data
-        android:name="PUSH_APPSECRET"
-        android:value="tt7n6qd2Gi8sQqWMz0rN45" /><!--替换为应用的APPSECRET-->
-    <!-- 配置第三方Receiver 用来接收ClientId和透传消息 -->
-    <receiver
-        android:name="com.meijialife.simi.MyPushReceiver"
-        android:exported="false" >
-        <intent-filter>
-            <action android:name="com.igexin.sdk.action.6t18dZQ2Vn9nv7ozqdl4EA" />
-        </intent-filter>
-    </receiver>
-    <!-- 配置SDK核心服务 -->
-    <service
-        android:name="com.igexin.sdk.PushService"
-        android:exported="true"
-        android:label="NotificationCenter"
-        android:process=":pushservice" >
-    </service>
-    <!-- SDK　2.6.1.0版本新增配置项 -->
-    <service
-        android:name="com.igexin.sdk.PushServiceUser"
-        android:exported="true"
-        android:label="NotificationCenterUser" >
-    </service>
-    <receiver android:name="com.igexin.sdk.PushReceiver" >
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            <action android:name="android.intent.action.USER_PRESENT" />
-            <action android:name="com.igexin.sdk.action.refreshls" />
-            <!-- 以下三项为可选的action声明，可大大提高service存活率和消息到达速度 -->
-            <action android:name="android.intent.action.MEDIA_MOUNTED" />
-            <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-            <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-        </intent-filter>
-    </receiver>
-     
-    <receiver
-        android:name="com.igexin.sdk.PushManagerReceiver"
-        android:exported="false" >
-        <intent-filter>
-            <action android:name="com.igexin.sdk.action.pushmanager" />
-        </intent-filter>
-    </receiver>
-    <activity
-        android:name="com.igexin.sdk.PushActivity"
-        android:excludeFromRecents="true"
-        android:exported="false"
-        android:process=":pushservice"
-        android:taskAffinity="com.igexin.sdk.PushActivityTask"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-    </activity>
- 
-    <service
-        android:name="com.igexin.download.DownloadService"
-        android:process=":pushservice" />
- 
-    <receiver android:name="com.igexin.download.DownloadReceiver" >
-        <intent-filter>
-            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-        </intent-filter>
-    </receiver>
- 
-    <provider
-        android:name="com.igexin.download.DownloadProvider"
-        android:exported="true"
-        android:authorities="downloads.com.meijialife.simi"
-        android:process=":pushservice" />
- 
-    <activity   
-        android:name="com.igexin.getuiext.activity.GetuiExtActivity"   
-        android:configChanges="orientation|keyboard|keyboardHidden"  
-        android:excludeFromRecents="true"  
-        android:exported="false"  
-        android:process=":pushservice"   
-        android:taskAffinity="android.task.myServicetask"   
-        android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-     
-    <receiver
-        android:name="com.igexin.getuiext.service.PayloadReceiver"
-        android:exported="false" >
-        <intent-filter>
-            <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
-            <action android:name="com.igexin.sdk.action.6t18dZQ2Vn9nv7ozqdl4EA" />
-        </intent-filter>
-    </receiver>
-    <service
-        android:name="com.igexin.getuiext.service.GetuiExtService"
-        android:process=":pushservice" />
- 
-<!-- 个推SDK配置结束 -->
-        
+            android:process=":remote" />
+        -->
+
+
+        <!-- 个推SDK配置开始 -->
+        <!-- 配置的第三方参数属性 -->
+        <meta-data
+            android:name="PUSH_APPID"
+            android:value="6t18dZQ2Vn9nv7ozqdl4EA" />
+ <!-- 替换为应用的APPID -->
+        <meta-data
+            android:name="PUSH_APPKEY"
+            android:value="QjVBVFMC7U8kmpjwnKCtc7" />
+ <!-- 替换为应用的APPKEY -->
+        <meta-data
+            android:name="PUSH_APPSECRET"
+            android:value="tt7n6qd2Gi8sQqWMz0rN45" />
+ <!-- 替换为应用的APPSECRET -->
+        <!-- 配置第三方Receiver 用来接收ClientId和透传消息 -->
+        <receiver
+            android:name="com.meijialife.simi.MyPushReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.6t18dZQ2Vn9nv7ozqdl4EA" />
+            </intent-filter>
+        </receiver>
+        <!-- 配置SDK核心服务 -->
+        <service
+            android:name="com.igexin.sdk.PushService"
+            android:exported="true"
+            android:label="NotificationCenter"
+            android:process=":pushservice" >
+        </service>
+        <!-- SDK　2.6.1.0版本新增配置项 -->
+        <service
+            android:name="com.igexin.sdk.PushServiceUser"
+            android:exported="true"
+            android:label="NotificationCenterUser" >
+        </service>
+
+        <receiver android:name="com.igexin.sdk.PushReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="com.igexin.sdk.action.refreshls" />
+                <!-- 以下三项为可选的action声明，可大大提高service存活率和消息到达速度 -->
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.igexin.sdk.PushManagerReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.pushmanager" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.igexin.sdk.PushActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:process=":pushservice"
+            android:taskAffinity="com.igexin.sdk.PushActivityTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+        <service
+            android:name="com.igexin.download.DownloadService"
+            android:process=":pushservice" />
+
+        <receiver android:name="com.igexin.download.DownloadReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="com.igexin.download.DownloadProvider"
+            android:authorities="downloads.com.meijialife.simi"
+            android:exported="true"
+            android:process=":pushservice" />
+
+        <activity
+            android:name="com.igexin.getuiext.activity.GetuiExtActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:process=":pushservice"
+            android:taskAffinity="android.task.myServicetask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <receiver
+            android:name="com.igexin.getuiext.service.PayloadReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
+                <action android:name="com.igexin.sdk.action.6t18dZQ2Vn9nv7ozqdl4EA" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.igexin.getuiext.service.GetuiExtService"
+            android:process=":pushservice" />
+
+        <!-- 个推SDK配置结束 -->
+
     </application>
 
 </manifest>

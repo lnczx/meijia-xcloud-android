@@ -66,7 +66,7 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		init();
-		getDetaislList();
+//		getDetaislList();
 
 		testTab1();
 		testTab2();
@@ -99,7 +99,7 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 
 	private void testTab1() {
 		tab1_datas = new ArrayList<PointsGiftData>();
-		PointsGiftData data1 = new PointsGiftData("有个管家通用优惠券（20元）", "100");
+		PointsGiftData data1 = new PointsGiftData("云行政通用优惠券（20元）", "100");
 		tab1_datas.add(data1);
 
 		tab1_adapter = new PointsGiftListAdapter(this, account, tab1_datas);

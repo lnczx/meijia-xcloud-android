@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.meijialife.simi.BaseActivity;
+import com.meijialife.simi.MyApplication;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.MyWalletAdapter;
 import com.meijialife.simi.bean.MyWalletData;
+import com.meijialife.simi.bean.UserInfo;
+import com.meijialife.simi.database.DBHelper;
 
 /**
  * 我的钱包
@@ -44,8 +47,15 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
         btn_recharge.setOnClickListener(this);
 
         listview = (ListView) findViewById(R.id.listview);
+         TextView  tv_money = (TextView) findViewById(R.id.tv_money);
         adapter = new MyWalletAdapter(this);
         listview.setAdapter(adapter);
+        
+        UserInfo userInfo = DBHelper.getUserInfo(MyWalletActivity.this);
+        if(null!=userInfo){
+            tv_money.setText(userInfo.getRest_money());
+        }
+        
     }
 
     /**

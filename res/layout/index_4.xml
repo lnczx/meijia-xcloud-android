@@ -113,6 +113,7 @@
                 android:orientation="horizontal" >
 
                 <LinearLayout
+                    android:id="@+id/item_qianbao"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -123,14 +124,14 @@
                         android:id="@+id/tv_card_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="16"
+                        android:text="￥0"
                         android:textColor="@android:color/white"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="卡片"
+                        android:text="钱包"
                         android:textColor="@android:color/white"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -143,6 +144,7 @@
                     android:background="@android:color/white" />
 
                 <LinearLayout
+                    android:id="@+id/item_youhui"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -155,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@android:color/white"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -173,6 +175,7 @@
                     android:background="@android:color/white" />
 
                 <LinearLayout
+                    android:id="@+id/item_jifen"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -183,14 +186,14 @@
                         android:id="@+id/tv_friend_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3"
+                        android:text="0"
                         android:textColor="@android:color/white"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="好友"
+                        android:text="积分"
                         android:textColor="@android:color/white"
                         android:textSize="12sp" />
                 </LinearLayout>

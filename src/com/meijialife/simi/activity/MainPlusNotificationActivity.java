@@ -354,15 +354,26 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
                 int mhour = hour.getCurrentItem();
                 int mMinu = minute.getCurrentItem();
                 String date = mYear + "-" + mMonth + "-" + mDay;
-                
-                Calendar cal = Calendar.getInstance();
-                int day = cal.get(Calendar.DATE);       //日
-                int month = cal.get(Calendar.MONTH) + 1;//月
-                int year = cal.get(Calendar.YEAR);      //年
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                int minute = cal.get(Calendar.MINUTE);
-                
-                if(mYear<year ||mMonth<month||mDay<day||mhour<hour||mMinu<minute ){
+                String time = mhour + ":" + mMinu + ":" + "00";
+
+//              Calendar cal = Calendar.getInstance();
+//              int day = cal.get(Calendar.DATE); // 日
+//              int month = cal.get(Calendar.MONTH) + 1;// 月
+//              int year = cal.get(Calendar.YEAR); // 年
+//              int hour = cal.get(Calendar.HOUR_OF_DAY);
+//              int minute = cal.get(Calendar.MINUTE);
+              
+              Date chooseDate = null;
+              Date currentDate = new Date();;
+              try {
+                  chooseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date + " " + time);
+              } catch (ParseException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+              }
+
+//              if (mYear < year || mMonth < month || mDay < day || mhour < hour || mMinu < minute) {
+              if(chooseDate.getTime() < currentDate.getTime()){
                     UIUtils.showToast(MainPlusNotificationActivity.this, "您只能选择未来时间进行提醒哦！");
                 }else{
                     String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu) + ":00";
@@ -679,6 +690,13 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
             }
         });
         super.onResume();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        Constants.CARD_ADD_NOTIFICATION_CONTENT="";
     }
 
 }

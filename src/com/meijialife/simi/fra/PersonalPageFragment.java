@@ -1,9 +1,6 @@
 package com.meijialife.simi.fra;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +14,6 @@ import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,21 +37,21 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.CardDetailsActivity;
+import com.meijialife.simi.activity.DiscountCardActivity;
+import com.meijialife.simi.activity.MyWalletActivity;
+import com.meijialife.simi.activity.PointsActivity;
 import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
-import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.UserIndexData;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.NoScrollViewPager;
 import com.meijialife.simi.ui.RoundImageView;
-import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
-import com.simi.easemob.ui.EMMainActivity;
-import com.simi.easemob.ui.EMMainActivityForTest;
 
 /**
  * 我的
@@ -96,9 +91,9 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
     private TextView tv_top_nickname;//昵称
     private TextView tv_city;       //城市
     private TextView tv_distance;   //距离
-    private TextView tv_card_num;   //卡片数量
+    private TextView tv_money_num;   //钱包余额
     private TextView tv_coupon_num;   //优惠券数量
-    private TextView tv_friend_num; //好友数量
+    private TextView tv_score_num; //积分数量
     
     public static UserIndexData user;
     
@@ -129,9 +124,12 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
         tv_top_nickname = (TextView)view.findViewById(R.id.tv_top_nickname);
         tv_city = (TextView)view.findViewById(R.id.tv_city);
         tv_distance = (TextView)view.findViewById(R.id.tv_distance);
-        tv_card_num = (TextView)view.findViewById(R.id.tv_card_num);
+        tv_money_num = (TextView)view.findViewById(R.id.tv_card_num);
         tv_coupon_num = (TextView)view.findViewById(R.id.tv_coupon_num);
-        tv_friend_num = (TextView)view.findViewById(R.id.tv_friend_num);
+        tv_score_num = (TextView)view.findViewById(R.id.tv_friend_num);
+        view.findViewById(R.id.item_qianbao).setOnClickListener(this);
+        view.findViewById(R.id.item_youhui).setOnClickListener(this);
+        view.findViewById(R.id.item_jifen).setOnClickListener(this);
         
         iv_top_head.setOnClickListener(this);
         ImageButton ibtn_message = (ImageButton) view.findViewById(R.id.ibtn_message);
@@ -226,12 +224,17 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
             intent.putExtra("user", user);
             startActivity(intent);
             break;
-        case R.id.ibtn_message:
-            UIUtils.showToast(getActivity(), "点击消息");
-//            startActivity(new Intent(getActivity(), EMMainActivity.class));
-            break;
         case R.id.ibtn_person:
             MainActivity.slideMenu();
+            break;
+        case R.id.item_qianbao://钱包
+            startActivity(new Intent(getActivity(),MyWalletActivity.class));
+            break;
+        case R.id.item_youhui://优惠券
+            startActivity(new Intent(getActivity(),DiscountCardActivity.class));
+            break;
+        case R.id.item_jifen://积分
+            startActivity(new Intent(getActivity(),PointsActivity.class));
             break;
 
         default:
@@ -357,14 +360,19 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
             nickName = user.getMobile();
         }
         
+        UserInfo userInfo = DBHelper.getUserInfo(getActivity());
+        
         tv_top_nickname.setText(nickName);
         tv_city.setText(user.getProvince_name());
-        tv_distance.setText("距离你" + user.getPoi_distance() + "米");
-        tv_card_num.setText(user.getTotal_card()+"");
+        if(StringUtils.isNotEmpty(user.getPoi_distance())){
+            tv_distance.setText("距离你" + user.getPoi_distance() + "米");
+        }
+        tv_money_num.setText("￥" + userInfo.getRest_money()+"");
         tv_coupon_num.setText(user.getTotal_coupon()+"");
-        tv_friend_num.setText(user.getTotal_friends()+"");
+        tv_score_num.setText(userInfo.getScore()+"");
         
         finalBitmap.display(iv_top_head, user.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
+        
     }
     
     /**

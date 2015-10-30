@@ -46,7 +46,13 @@ import com.easemob.chat.EMMessage;
 import com.easemob.easeui.domain.EaseUser;
 import com.easemob.easeui.utils.EaseCommonUtils;
 import com.easemob.util.EMLog;
+import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.bean.CalendarMark;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.bean.UserInfo;
+import com.meijialife.simi.database.DBHelper;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.db.InviteMessgeDao;
@@ -539,6 +545,9 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
 	private void showConflictDialog() {
 		isConflictDialogShow = true;
 		EMDemoHelper.getInstance().logout(false,null);
+		//add by garry
+		logOut();
+		
 		String st = getResources().getString(R.string.Logoff_notification);
 		if (!EMMainActivity.this.isFinishing()) {
 			// clear up global variables
@@ -553,8 +562,14 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						conflictBuilder = null;
+						
+						//add by garry
+						if(MainActivity.activity != null){
+                            MainActivity.activity.finish();
+                        }
 						finish();
-						startActivity(new Intent(EMMainActivity.this, EMLoginActivity.class));
+						//add by garry
+						startActivity(new Intent(EMMainActivity.this, LoginActivity.class));
 					}
 				});
 				conflictBuilder.setCancelable(false);
@@ -567,6 +582,17 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
 		}
 
 	}
+	
+	/**
+     * 退出登陆
+     * 
+     * add by garry
+     */
+    private void logOut() {
+        DBHelper.getInstance(EMMainActivity.this).deleteAll(User.class);
+        DBHelper.getInstance(EMMainActivity.this).deleteAll(UserInfo.class);
+        DBHelper.getInstance(EMMainActivity.this).deleteAll(CalendarMark.class);
+    }
 
 	/**
 	 * 帐号被移除的dialog

@@ -170,9 +170,9 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
             tv_start_location.setText(card.getTicket_from_city_name());
             tv_mudi_location.setText(card.getTicket_to_city_name());
-            
-            start_city_id=card.getTicket_from_city_id();
-            end_city_id=card.getTicket_to_city_id();
+
+            start_city_id = card.getTicket_from_city_id();
+            end_city_id = card.getTicket_to_city_id();
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
@@ -225,17 +225,17 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         case R.id.iv_switch_city:// 切换城市
             String startcity = tv_start_location.getText().toString().trim();
             String endcity = tv_mudi_location.getText().toString().trim();
-            String start_temp=null;
-            String end_temp=null;
+            String start_temp = null;
+            String end_temp = null;
             if (StringUtils.isNotEmpty(startcity) && StringUtils.isNotEmpty(endcity)) {
                 tv_start_location.setText(endcity);
                 tv_mudi_location.setText(startcity);
-                start_city_id=end_city_id;
-               
-                start_temp=start_city_id;
-                end_temp=end_city_id;
-                end_city_id=start_temp;
-                start_city_id=end_temp;
+                start_city_id = end_city_id;
+
+                start_temp = start_city_id;
+                end_temp = end_city_id;
+                end_city_id = start_temp;
+                start_city_id = end_temp;
             }
             break;
         case R.id.layout_start_city:// 出发城市
@@ -724,7 +724,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) {
                             Toast.makeText(MainPlusTravelActivity.this, "创建成功了", Toast.LENGTH_SHORT).show();
-                            Constants.CARD_ADD_TREAVEL_CONTENT="";
+                            Constants.CARD_ADD_TREAVEL_CONTENT = "";
                             MainPlusTravelActivity.this.finish();
 
                             // 初始化本地提醒闹钟
@@ -749,4 +749,10 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         });
     };
 
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        Constants.CARD_ADD_TREAVEL_CONTENT = "";
+    }
 }

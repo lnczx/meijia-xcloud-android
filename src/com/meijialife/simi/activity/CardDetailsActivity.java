@@ -1,10 +1,13 @@
 package com.meijialife.simi.activity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
@@ -16,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -87,11 +91,14 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     
     /** 秘书身份UI **/
     private RelativeLayout sec_layout;//秘书接单最外层layout
-    private ImageView sec_icon;
-    private TextView sec_title;
+    private ImageView sec_icon; //头像
+    private TextView sec_title; //昵称
     private TextView sec_text;
     private Button sec_btn_accept;//接单
     private Button sec_btn_complete;//完成
+    
+    private FinalBitmap finalBitmap;
+    private BitmapDrawable defDrawable;
     
     private User user;
 
@@ -110,6 +117,9 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     private void init() {
         card = (Cards) getIntent().getSerializableExtra("Cards");
         user = DBHelper.getUser(this);
+        
+        finalBitmap = FinalBitmap.create(this);
+        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
     }
 
     private void initView() {
@@ -184,6 +194,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                 sec_btn_complete = (Button)findViewById(R.id.sec_btn_complete);
                 sec_btn_accept.setVisibility(View.INVISIBLE);
                 sec_btn_complete.setVisibility(View.INVISIBLE);
+                
                 // 状态 0 = 已取消 1 = 处理中 2 = 秘书处理中 3 = 已完成.
                 int status = Integer.parseInt(card.getStatus());
                 if (status == 1) {//处理中
@@ -220,6 +231,13 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         String remark = card.getService_content();
         String total_zan = String.valueOf(card.getTotal_zan());
         String timeStr = card.getAdd_time_str();
+        
+        if(sec_icon != null){
+            finalBitmap.display(sec_icon, card.getUser_head_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
+        }
+        if(sec_title != null){
+            sec_title.setText(card.getUser_name());
+        }
 
         tv_title.setText(time);
         tv_remark.setText(remark);
@@ -315,12 +333,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.btn_send: // 评论
-            String comment = et_comment.getText().toString();
-            if (StringUtils.isEmpty(comment.trim())) {
-                Toast.makeText(this, "还没有输入评论内容哦~", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            postComment(comment);
+            postComment();
             break;
         case R.id.sec_btn_accept:  //秘书接单
             postSecDo(2);
@@ -335,74 +348,109 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             postShare();
             break;
         case R.id.btn_cancel_layout: // 取消
-
-            
-            AlertDialog.Builder dialog;
-            dialog = new AlertDialog.Builder(this);
-            dialog.setTitle("提示");
-            // dialog.setIcon(R.drawable.ic_launcher_logo);
-            dialog.setMessage("取消本卡片后，会通知相关人员，请确定是否取消");
-            dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    CancelCardData();
-                }
-            });
-            dialog.show();
+            showCancelDlg();
             break;
         case R.id.btn_edit_layout: // 编辑
-            AlertDialog.Builder dialog2;
-            dialog2 = new AlertDialog.Builder(this);
-            dialog2.setTitle("提示");
-            // dialog.setIcon(R.drawable.ic_launcher_logo);
-            dialog2.setMessage("修改更新本卡片后，会再次通知相关人员，请确定是否继续修改更新");
-            dialog2.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // 卡片类型 0 = 通用(保留) 1 = 会议安排 2 = 秘书叫早 3 = 事务提醒 4 = 邀约通知 5 = 差旅规划
-                    int type = Integer.parseInt(card.getCard_type());
-                    switch (type) {
-                    case 0:// 通用(保留)
-
-                        break;
-                    case 1:// 会议安排
-                        Intent intent = new Intent(CardDetailsActivity.this, MainPlusMeettingActivity.class);
-                        intent.putExtra("cards", card);
-                        startActivity(intent);
-
-                        break;
-                    case 2:// 秘书叫早
-                        Intent intent2 = new Intent(CardDetailsActivity.this, MainPlusMorningActivity.class);
-                        intent2.putExtra("cards", card);
-                        startActivity(intent2);
-                        break;
-                    case 3:// 事务提醒
-                        Intent intent3 = new Intent(CardDetailsActivity.this, MainPlusAffairActivity.class);
-                        intent3.putExtra("cards", card);
-                        startActivity(intent3);
-                        break;
-                    case 4:// 邀约通知
-                        Intent intent4 = new Intent(CardDetailsActivity.this, MainPlusNotificationActivity.class);
-                        intent4.putExtra("cards", card);
-                        startActivity(intent4);
-                        break;
-                    case 5:// 差旅规划
-                        Intent intent5 = new Intent(CardDetailsActivity.this, MainPlusTravelActivity.class);
-                        intent5.putExtra("cards", card);
-                        startActivity(intent5);
-                        break;
-                    }
-                }
-            });
-            dialog2.show();
-
+            showEditDlg();
             break;
+            
         default:
             break;
         }
+    }
+    
+    /**
+     * 取消对话框
+     */
+    private void showCancelDlg(){
+        if(isExpired()){
+            Toast.makeText(CardDetailsActivity.this, "卡片已完成，您操作得太晚喽！", Toast.LENGTH_LONG).show();
+            return;
+        }
+        AlertDialog.Builder dialog;
+        dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("提示");
+        // dialog.setIcon(R.drawable.ic_launcher_logo);
+        dialog.setMessage("取消本卡片后，会通知相关人员，请确定是否取消");
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                CancelCardData();
+            }
+        });
+        dialog.show();
+    }
+    
+    /**
+     * 编辑对话框
+     */
+    private void showEditDlg(){
+        if(isExpired()){
+            Toast.makeText(CardDetailsActivity.this, "卡片已完成，您操作得太晚喽！", Toast.LENGTH_LONG).show();
+            return;
+        }
+        AlertDialog.Builder dialog2;
+        dialog2 = new AlertDialog.Builder(this);
+        dialog2.setTitle("提示");
+        // dialog.setIcon(R.drawable.ic_launcher_logo);
+        dialog2.setMessage("修改更新本卡片后，会再次通知相关人员，请确定是否继续修改更新");
+        dialog2.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 卡片类型 0 = 通用(保留) 1 = 会议安排 2 = 秘书叫早 3 = 事务提醒 4 = 邀约通知 5 = 差旅规划
+                int type = Integer.parseInt(card.getCard_type());
+                switch (type) {
+                case 0:// 通用(保留)
+
+                    break;
+                case 1:// 会议安排
+                    Intent intent = new Intent(CardDetailsActivity.this, MainPlusMeettingActivity.class);
+                    intent.putExtra("cards", card);
+                    startActivity(intent);
+
+                    break;
+                case 2:// 秘书叫早
+                    Intent intent2 = new Intent(CardDetailsActivity.this, MainPlusMorningActivity.class);
+                    intent2.putExtra("cards", card);
+                    startActivity(intent2);
+                    break;
+                case 3:// 事务提醒
+                    Intent intent3 = new Intent(CardDetailsActivity.this, MainPlusAffairActivity.class);
+                    intent3.putExtra("cards", card);
+                    startActivity(intent3);
+                    break;
+                case 4:// 邀约通知
+                    Intent intent4 = new Intent(CardDetailsActivity.this, MainPlusNotificationActivity.class);
+                    intent4.putExtra("cards", card);
+                    startActivity(intent4);
+                    break;
+                case 5:// 差旅规划
+                    Intent intent5 = new Intent(CardDetailsActivity.this, MainPlusTravelActivity.class);
+                    intent5.putExtra("cards", card);
+                    startActivity(intent5);
+                    break;
+                }
+            }
+        });
+        dialog2.show();
+    }
+    
+    /**
+     * 卡片是否过期
+     */
+    private boolean isExpired(){
+        Date currentTime = new Date();
+        Date serviceTime = new Date(Long.parseLong(card.getService_time()) * 1000);
+
+        if(serviceTime.getTime() < currentTime.getTime()){
+          //已经过期
+            return true;
+        }
+        
+        return false;
     }
 
     private void postShare() {
@@ -643,7 +691,12 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     /**
      * 发送评论接口
      */
-    private void postComment(String comment) {
+    private void postComment() {
+        String comment = et_comment.getText().toString();
+        if (StringUtils.isEmpty(comment.trim())) {
+            Toast.makeText(this, "还没有输入评论内容哦~", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String user_id = DBHelper.getUser(this).getId();
 

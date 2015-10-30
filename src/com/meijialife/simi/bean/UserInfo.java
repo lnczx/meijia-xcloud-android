@@ -84,6 +84,8 @@ public class UserInfo implements Serializable {
     
     /** 即时通讯密码（环信） **/
     private String im_password;
+    /** 百度云 **/
+    private String client_id;
     
     public String getId() {
         return id;
@@ -283,6 +285,14 @@ public class UserInfo implements Serializable {
 
     public void setIm_password(String im_password) {
         this.im_password = im_password;
+    }
+
+    public String getClient_id() {
+        return client_id;
+    }
+
+    public void setClient_id(String client_id) {
+        this.client_id = client_id;
     }
 
 

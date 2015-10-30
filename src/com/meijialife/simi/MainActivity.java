@@ -52,6 +52,7 @@ import com.meijialife.simi.activity.NullWaitActivity;
 import com.meijialife.simi.activity.PointsActivity;
 import com.meijialife.simi.activity.ShareActivity;
 import com.meijialife.simi.alerm.AlermUtils;
+import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Remind;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
@@ -90,6 +91,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private int currentTabIndex; // 1=首页 2=发现 3=秘友 4=我的
 
     private static SlideMenu slideMenu;// 侧边栏
+    private RoundImageView left_menu_header_im;//侧边栏用户头像
+    private TextView tv_user_name;//侧边栏用户昵称
     private RelativeLayout item_0, item_1, item_2, item_3, item_4, item_5, item_6, item_7, item_8;// 侧边栏内控件
 
     public static Activity activity;
@@ -233,15 +236,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
 
         slideMenu = (SlideMenu) findViewById(R.id.slide_menu);
-        RoundImageView left_menu_header_im = (RoundImageView) findViewById(R.id.left_menu_header_im);
-        TextView tv_user_name = (TextView) findViewById(R.id.tv_user_name);
-        UserInfo userInfo = DBHelper.getInstance(this).getUserInfo(this);
-        if (null != userInfo) {
-            String head_img = userInfo.getHead_img();
-            String name = userInfo.getName();
-            tv_user_name.setText(name);
-            finalBitmap.display(left_menu_header_im, head_img, defDrawable.getBitmap(), defDrawable.getBitmap());
-        }
+        left_menu_header_im = (RoundImageView) findViewById(R.id.left_menu_header_im);
+        tv_user_name = (TextView) findViewById(R.id.tv_user_name);
 
         item_0 = (RelativeLayout) findViewById(R.id.item_0);
         item_1 = (RelativeLayout) findViewById(R.id.item_1);
@@ -520,6 +516,14 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 this,
                 new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage, EMNotifierEvent.Event.EventOfflineMessage,
                         EMNotifierEvent.Event.EventConversationListChanged });
+        
+        UserInfo userInfo = DBHelper.getInstance(this).getUserInfo(this);
+        if (null != userInfo) {
+            String head_img = userInfo.getHead_img();
+            String name = userInfo.getName();
+            tv_user_name.setText(name);
+            finalBitmap.display(left_menu_header_im, head_img, defDrawable.getBitmap(), defDrawable.getBitmap());
+        }
     }
 
     @Override
@@ -613,6 +617,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private void showConflictDialog() {
         isConflictDialogShow = true;
         EMDemoHelper.getInstance().logout(false, null);
+        logOut();
+        
         String st = getResources().getString(R.string.Logoff_notification);
         if (!MainActivity.this.isFinishing()) {
             // clear up global variables
@@ -628,7 +634,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                         dialog.dismiss();
                         conflictBuilder = null;
 
-                        logOut();
                     }
                 });
                 conflictBuilder.setCancelable(false);
@@ -683,6 +688,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private void logOut() {
         DBHelper.getInstance(MainActivity.this).deleteAll(User.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(UserInfo.class);
+        DBHelper.getInstance(MainActivity.this).deleteAll(CalendarMark.class);
 
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         this.finish();

@@ -29,7 +29,11 @@ import com.meijialife.simi.utils.StringUtils;
 public class Home2Fra extends Fragment implements OnClickListener {
 
 	private WebView webview;
-	private String url;
+	
+	private static final String URL_1 = "http://51xingzheng.cn/shop/shop-cat-fuwu.html";
+	private static final String URL_2 = "http://51xingzheng.cn/shop/shop-cat-shiwu.html";
+	private static final String URL_3 = "http://51xingzheng.cn/shop/shop-cat-peixun.html";
+	private static final String URL_4 = "http://51xingzheng.cn/shop/shop-cat-qita.html";
 	
 	private RadioGroup radiogroup;
 	private View line_1, line_2, line_3, line_4;
@@ -40,21 +44,24 @@ public class Home2Fra extends Fragment implements OnClickListener {
 //		 if(this.getResources().getConfiguration().orientation ==Configuration.ORIENTATION_LANDSCAPE){
 //	            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //	         }
+		
+		init(v);
 		initTab(v);
-		initWebView(v);
+		initWebView(URL_1);
 		return v;
 	}
 	
+	private void init(View v){
+	    webview = (WebView) v.findViewById(R.id.webview);
+	}
+	
 	@SuppressLint({ "JavascriptInterface", "NewApi" })
-	private void initWebView(View v) {
-		url =Constants.URL_MORE_INFO;
+	private void initWebView(String url) {
 		if(StringUtils.isEmpty(url)){
 			Toast.makeText(getActivity(), "数据错误", 0).show();
 			return;
 		}
 		
-		webview = (WebView) v.findViewById(R.id.webview);
-
 		webview.loadUrl(url);
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -97,15 +104,19 @@ public class Home2Fra extends Fragment implements OnClickListener {
                 
                 if(checkedId == grop.getChildAt(0).getId()){
                     line_1.setVisibility(View.VISIBLE);
+                    initWebView(URL_1);
                 }
                 if(checkedId == grop.getChildAt(1).getId()){
                     line_2.setVisibility(View.VISIBLE);
+                    initWebView(URL_2);
                 }
                 if(checkedId == grop.getChildAt(2).getId()){
                     line_3.setVisibility(View.VISIBLE);
+                    initWebView(URL_3);
                 }
                 if(checkedId == grop.getChildAt(3).getId()){
                     line_4.setVisibility(View.VISIBLE);
+                    initWebView(URL_4);
                 }
                 
             }
