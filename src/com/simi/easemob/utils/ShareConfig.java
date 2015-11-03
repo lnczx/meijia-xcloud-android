@@ -50,9 +50,9 @@ public class ShareConfig {
 
         QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
         qZoneSsoHandler.addToSocialSDK();
-        mController.setShareContent("友盟社会化组件（SDK）让移动应用快速整合社交分享功能。http://www.umeng.com/social");
+        mController.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
 
-        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher);
+        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
 //        UMImage urlImage = new UMImage(mContext, "http://www.umeng.com/images/pic/social/integrated_3.png");
         // UMImage resImage = new UMImage(mContext, R.drawable.icon);
 
@@ -62,43 +62,44 @@ public class ShareConfig {
         // "/storage/sdcard0/emoji.gif");
 
         WeiXinShareContent weixinContent = new WeiXinShareContent();
-        weixinContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-微信。http://www.umeng.com/social");
-        weixinContent.setTitle("友盟社会化分享组件-微信");
-        weixinContent.setTargetUrl("http://www.umeng.com/social");
+        weixinContent.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
+        weixinContent.setTitle("云行政，企业行政服务第一平台");
+        weixinContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         weixinContent.setShareMedia(localImage);
         mController.setShareMedia(weixinContent);
 
         // 设置朋友圈分享的内容
         CircleShareContent circleMedia = new CircleShareContent();
-        circleMedia.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-朋友圈。http://www.umeng.com/social");
-        circleMedia.setTitle("友盟社会化分享组件-朋友圈");
+        circleMedia.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
+        circleMedia.setTitle("云行政，企业行政服务第一平台");
         circleMedia.setShareMedia(localImage);
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
-        circleMedia.setTargetUrl("http://www.umeng.com/social");
+        circleMedia.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         mController.setShareMedia(circleMedia);
 
-        UMImage qzoneImage = new UMImage(mContext, "http://www.umeng.com/images/pic/social/integrated_3.png");
-        qzoneImage.setTargetUrl("http://www.umeng.com/images/pic/social/integrated_3.png");
 
         // 设置QQ空间分享内容
         QZoneShareContent qzone = new QZoneShareContent();
-        qzone.setShareContent("share test");
-        qzone.setTargetUrl("http://www.umeng.com");
-        qzone.setTitle("QZone title");
+        qzone.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
+        qzone.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        qzone.setTitle("云行政，企业行政服务第一平台");
         qzone.setShareMedia(localImage);
         // qzone.setShareMedia(uMusic);
         mController.setShareMedia(qzone);
 
         QQShareContent qqShareContent = new QQShareContent();
-        qqShareContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能 -- QQ");
-        qqShareContent.setTitle("hello, title");
-        // qqShareContent.setShareMedia(image);
-        qqShareContent.setTargetUrl("http://www.umeng.com/social");
+        qqShareContent.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
+        qqShareContent.setTitle("云行政，企业行政服务第一平台");
+        qqShareContent.setShareMedia(localImage);
+        qqShareContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         mController.setShareMedia(qqShareContent);
 
         SinaShareContent sinaContent = new SinaShareContent();
-        sinaContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-新浪微博。http://www.umeng.com/social");
+        sinaContent.setTitle("云行政，企业行政服务第一平台");
+        sinaContent.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
+        sinaContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        sinaContent.setShareMedia(localImage);
         mController.setShareMedia(sinaContent);
 
     }
@@ -146,7 +147,7 @@ public class ShareConfig {
         String appKey = "LcMjbx1agQRGMzAs";
         // 添加QQ支持, 并且设置QQ分享内容的target url
         UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(mContext, appId, appKey);
-        qqSsoHandler.setTargetUrl("http://www.umeng.com/social");
+        qqSsoHandler.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         qqSsoHandler.addToSocialSDK();
 
         // 添加QZone平台

@@ -33,7 +33,6 @@ import com.meijialife.simi.utils.UIUtils;
 /**
  * 秘书详情页
  * 
- * @author baojiarui
  *
  */
 public class SecretaryActivity extends BaseActivity{

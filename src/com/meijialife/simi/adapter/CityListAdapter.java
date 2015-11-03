@@ -22,8 +22,6 @@ import com.meijialife.simi.bean.CityData;
 /**
  * 城市列表适配器
  *
- * @author RUI
- *
  */
 public final class CityListAdapter extends BaseAdapter {
 

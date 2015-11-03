@@ -16,8 +16,6 @@ import com.meijialife.simi.R;
 /**
  * 添加地址时，地图页AutoCompleteTextView联想词的适配器
  * 
- * @author baojiarui
- *
  */
 public class AutoCompleteTextViewAdapter extends BaseAdapter implements Filterable {
 	private ArrayFilter mFilter;

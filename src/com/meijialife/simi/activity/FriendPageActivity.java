@@ -52,7 +52,6 @@ import com.simi.easemob.ui.ChatActivity;
 /**
  * 好友的个人中心页
  * 
- * @author RUI
  * 
  */
 public class FriendPageActivity extends BaseActivity implements OnClickListener, onCardUpdateListener  {

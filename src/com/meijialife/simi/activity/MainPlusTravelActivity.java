@@ -46,6 +46,7 @@ import com.meijialife.simi.ui.ToggleButton.OnToggleChanged;
 import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
 import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -66,6 +67,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     private TextView tv_start_location;
     private TextView tv_mudi_location;
     private ImageView iv_switch_city;
+    public static final int GET_USER = 1003;
     private View view_mask;
     private RelativeLayout view_title_bar;
 
@@ -84,6 +86,10 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     private boolean isUpdate = false;
 
     private int remindAlerm = 1;// 提醒设置 0 = 不提醒 1 = 按时提醒 2 = 5分钟 3 = 15分钟 4 = 提前30分钟 5 = 提前一个小时 6 = 提前2小时 7 = 提前6小时 8 = 提前一天 9 = 提前两天
+    private TextView tv_select_who_name;
+    private String for_userid = "";
+    private UserInfo userInfo;
+    private RelativeLayout layout_select_who;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +118,8 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         findViewById(R.id.layout_set_time).setOnClickListener(this);
         findViewById(R.id.layout_beizhu_messsage).setOnClickListener(this);
         findViewById(R.id.layout_remind).setOnClickListener(this);
+        layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
+        layout_select_who.setOnClickListener(this);
 
         tv_start_location = (TextView) findViewById(R.id.tv_start_location);
         tv_mudi_location = (TextView) findViewById(R.id.tv_mudi_location);
@@ -119,7 +127,9 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         tv_chufa_time = (TextView) findViewById(R.id.tv_chufa_time);// 设置时间
         tv_xiaoxi_content = (TextView) findViewById(R.id.tv_xiaoxi_content);
         tv_beizu_content = (TextView) findViewById(R.id.tv_beizu_content);
+        tv_senser_tip = (TextView) findViewById(R.id.tv_senser_tip);
 
+        tv_select_who_name = (TextView) findViewById(R.id.tv_select_who_name);
         view_mask = (View) findViewById(R.id.view_mask);
 
         slipBtn_dingjipiao = (ToggleButton) findViewById(R.id.slipBtn_dingjipiao);
@@ -127,20 +137,65 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
         UserInfo userInfo = DBHelper.getUserInfo(this);
         is_senior = userInfo.getIs_senior();
+        if (StringUtils.isEquals(is_senior, "1")) {
+            layout_select_who.setVisibility(View.VISIBLE);
+        } else {
+            layout_select_who.setVisibility(View.GONE);
+        }
 
         slipBtn_mishuchuli.setOnToggleChanged(new OnToggleChanged() {
             @Override
             public void onToggle(boolean on) {
                 if (on) {
                     if (StringUtils.isEquals(is_senior, "1")) {// 有秘书
-                        slipBtn_mishuchuli.setToggleOn();
-                        SET_SEC_DO = NEED_SEC_DO;
+
+                        String date = tv_date.getText().toString();
+                        String time = tv_chufa_time.getText().toString();
+                        if (!date.contains("-") || !time.contains(":")) {
+                            slipBtn_mishuchuli.setToggleOff();
+                            SET_SEC_DO = NO_SEC_DO;
+                            UIUtils.showToast(MainPlusTravelActivity.this, "请选择时间");
+                            return;
+                        }
+
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        Date chooseDate = null;
+                        try {
+                            chooseDate = format.parse(date + " " + time);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (chooseDate == null) {
+                            slipBtn_mishuchuli.setToggleOff();
+                            SET_SEC_DO = NO_SEC_DO;
+                            UIUtils.showToast(MainPlusTravelActivity.this, "请选择时间");
+                            return;
+                        }
+
+                        // 提前2天可设置
+                        if (DateUtils.is2Days(chooseDate)) {
+                            slipBtn_mishuchuli.setToggleOn();
+                            SET_SEC_DO = NEED_SEC_DO;
+                            tv_senser_tip.setVisibility(View.GONE);
+                        }
+                        // 选择时间不对的情况走else
+                        else {
+                            slipBtn_mishuchuli.setToggleOff();
+                            SET_SEC_DO = NO_SEC_DO;
+                            tv_senser_tip.setVisibility(View.VISIBLE);
+                            UIUtils.showActionDialog(MainPlusTravelActivity.this, "提醒", "请提前2天设置", "确定", null, null, null);
+                        }
+
                     } else {
                         slipBtn_mishuchuli.setToggleOff();
                         SET_SEC_DO = NO_SEC_DO;
+                        tv_senser_tip.setVisibility(View.GONE);
                         startActivity(new Intent(MainPlusTravelActivity.this, FindSecretaryActivity.class));
                         Toast.makeText(MainPlusTravelActivity.this, "你没有购买秘书卡", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    tv_senser_tip.setVisibility(View.GONE);
                 }
             }
         });
@@ -175,7 +230,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
             end_city_id = card.getTicket_to_city_id();
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
             long Service_time = Long.valueOf(card.getService_time()) * 1000;
 
             String uYear = format.format(Service_time);
@@ -267,6 +322,11 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
             createTrevel();
 
             break;
+        case R.id.layout_select_who:
+            Intent mintent = new Intent(MainPlusTravelActivity.this, CreateForWhoActivity.class);
+            startActivityForResult(mintent, GET_USER);
+            break;
+
         default:
             break;
         }
@@ -303,6 +363,12 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                 String end_cityname = bundle.getString("city_name");
                 end_city_id = bundle.getString("city_id");
                 tv_mudi_location.setText(end_cityname);
+                break;
+            case GET_USER:
+                for_userid = data.getExtras().getString("for_userid");
+                String for_name = data.getExtras().getString("for_name");
+
+                tv_select_who_name.setText(for_name);
                 break;
 
             default:
@@ -470,12 +536,30 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                 int mhour = hour.getCurrentItem();
                 int mMinu = minute.getCurrentItem();
 
-                Calendar cal = Calendar.getInstance();
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                int minute = cal.get(Calendar.MINUTE);
-                String time = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu) + ":00";
+                String time = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu);
+                // Calendar cal = Calendar.getInstance();
+                // int hour = cal.get(Calendar.HOUR_OF_DAY);
+                // int minute = cal.get(Calendar.MINUTE);
 
-                if (mhour < hour || mMinu < minute) {
+                Date chooseDate = null;
+                Date curDate = null;
+                Date currentTime = new Date();
+
+                String timeString = new SimpleDateFormat("HH:mm").format(currentTime.getTime());
+
+                try {
+                    chooseDate = new SimpleDateFormat("HH:mm").parse(time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    curDate = new SimpleDateFormat("HH:mm").parse(timeString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if (chooseDate.getTime() < curDate.getTime()) {
                     UIUtils.showToast(MainPlusTravelActivity.this, "您只能选择未来时间进行提醒哦！");
                 } else {
                     tv_chufa_time.setText(time);
@@ -544,12 +628,30 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                 int mDay = day.getCurrentItem() + 1;
                 String date = mYear + "-" + mMonth + "-" + mDay;
 
-                Calendar cal = Calendar.getInstance();
-                int day = cal.get(Calendar.DATE); // 日
-                int month = cal.get(Calendar.MONTH) + 1;// 月
-                int year = cal.get(Calendar.YEAR); // 年
+                // Calendar cal = Calendar.getInstance();
+                // int day = cal.get(Calendar.DATE); // 日
+                // int month = cal.get(Calendar.MONTH) + 1;// 月
+                // int year = cal.get(Calendar.YEAR); // 年
 
-                if (mYear < year || mMonth < month || mDay < day) {
+                Date chooseDate = null;
+                Date curDate = null;
+                Date currentDate = new Date();
+
+                String curdateString = new SimpleDateFormat("yyyy-MM-dd").format(currentDate.getTime());
+
+                try {
+                    chooseDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    curDate = new SimpleDateFormat("yyyy-MM-dd").parse(curdateString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (chooseDate.getTime() < curDate.getTime()) {
                     UIUtils.showToast(MainPlusTravelActivity.this, "您只能选择未来时间进行提醒哦！");
                 } else {
                     tv_date.setText(date);
@@ -606,6 +708,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     private TextView tv_beizu_content;
     private Cards card;
     private Button bt_create_travel;
+    private TextView tv_senser_tip;
 
     /**
      * 
@@ -666,7 +769,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         String mtime = " " + date + " " + time + "";
         Date mdate = null;
         try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             mdate = format.parse(mtime);
             cultime = mdate.getTime() / 1000 + "";
             LogOut.debug("cultime:" + cultime);
@@ -675,6 +778,10 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         }
 
         final Date fdate = mdate;
+
+        if (StringUtils.isEquals(userInfo.getIs_senior(), "1") && StringUtils.isEmpty(for_userid)) {
+            UIUtils.showToast(MainPlusTravelActivity.this, "请选择为谁创建");
+        }
 
         if (StringUtils.isEmpty(start_city_id) || StringUtils.isEmpty(end_city_id)) {
             UIUtils.showToast(MainPlusTravelActivity.this, "请选择差旅城市");
@@ -691,7 +798,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         map.put("card_id", "0");
         map.put("card_type", "5");
         map.put("create_user_id", c_id + "");
-        map.put("user_id", c_id + "");
+        map.put("user_id", for_userid);
         map.put("service_time", cultime);
         map.put("service_content", Constants.CARD_ADD_TREAVEL_CONTENT);
         map.put("set_remind", remindAlerm + "");

@@ -76,13 +76,17 @@ public class Constants {
     public static final String URL_GET_REMINDS = ROOT_URL + "card/get_reminds.json";
     /** 秘书处理卡片接口 **/
     public static final String URL_POST_SEC_DO = ROOT_URL + "card/sec_do.json";
+    /** 获取用户接口 **/
+    public static final String URL_GET_SEC_USER = ROOT_URL + "sec/get_users.json";
 
     // 用户协议
     public final static String URL_WEB_AGREE = HOST + "/html/simi-inapp/agreement.htm";
     public final static String URL_USER_HELP = HOST + "/html/simi-inapp/help.htm";
     public final static String URL_ABOUT_US = HOST + "/html/simi-inapp/about-us.htm";
     public final static String URL_MORE_INFO = HOST + "/html/simi-inapp/app-faxian-list.htm";
-  
+   //行政人学院
+    public final static String URL_XUEYUAN = "http://mishuzhuli.com";
+     
  
     
     
@@ -149,7 +153,7 @@ public class Constants {
     
      /** 会员充值在线支付成功同步接口 **/
      public static final String URL_POST_PUSH_BIND = ROOT_URL + "user/post_push_bind.json";
-     
+     public static final String URL_POST_SCORE_SHOP = ROOT_URL + "user/score_shop";
      
      //微信支付部分   
      //微信预支付接口   

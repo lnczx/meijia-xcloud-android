@@ -21,8 +21,6 @@ import com.meijialife.simi.utils.StringUtils;
 /**
  * 网页专用Activity
  * 
- * @author baojiarui
- * 
  */
 public class WebViewActivity extends BaseActivity implements OnClickListener {
 

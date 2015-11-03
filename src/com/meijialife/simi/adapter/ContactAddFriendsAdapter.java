@@ -100,12 +100,16 @@ public class ContactAddFriendsAdapter extends BaseAdapter {
 		
 		if(isFriend){
 		    holder.tv_add.setBackgroundResource(R.drawable.btn_gray_background);
+		    holder.tv_add.setEnabled(false);
 		}else{
+		    holder.tv_add.setBackgroundResource(R.drawable.login_btn_bg_selector);
+		    holder.tv_add.setEnabled(true);
+		    
 		    holder.tv_add.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String name = contactList.get(position).getName();
-                    String mobile = contactList.get(position).getPhoneNumList().get(0);
+                    String mobile = contactList.get(position).getPhoneNum();
                     postFriend(name, mobile);
                 }
             });

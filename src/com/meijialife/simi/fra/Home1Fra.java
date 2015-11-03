@@ -98,7 +98,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private void initCalendar(View v) {
         today_date = LocalDate.now().toString();
 
-        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now().plusYears(
+        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now().plusYears(
                 1));
 
         calendarView = (CollapseCalendarView) v.findViewById(R.id.layout_calendar);

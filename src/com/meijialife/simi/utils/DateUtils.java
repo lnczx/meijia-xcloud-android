@@ -103,4 +103,85 @@ public class DateUtils {
         return date_2d;
     }
     
+    /**
+     * 判断当前时间是否在15:00之前 ，并且用户所传时间在当前5个小时后
+     * @param userDate
+     * @return
+     */
+    public static boolean isTime15Before(Date userDate){
+        Date now = new Date();
+        String time = new SimpleDateFormat("HH:mm:ss").format(now);
+        String[] times = time.split(":");
+        int hour = Integer.parseInt(times[0]);
+        if(hour < 15){//当前时间在15点之前
+            if((userDate.getTime() - now.getTime()) > (1000*60*60*5)){//用户时间在5小时后
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * 判断当前时间是否在15:01以后，并且用户所传时间在当前时间的次日7点后
+     * @param userDate
+     * @return
+     */
+    public static boolean isTime15Later(Date userDate){
+        Date now = new Date();
+        String time = new SimpleDateFormat("HH:mm:ss").format(now);
+        String[] times = time.split(":");
+        int hour = Integer.parseInt(times[0]);
+        if(hour >= 15){//当前时间在15点之后
+            if((userDate.getTime() - now.getTime()) > (1000*60*60*5)){//用户时间在5小时后
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * 判断当前时间是否在用户所传时间前两天或更长
+     * @param userDate
+     * @return
+     */
+    public static boolean is2Days(Date userDate){
+        Date now = new Date();
+        if((userDate.getTime() - now.getTime()) >= (1000*60*60*24*2)){//大于等于两天
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * 判断时间是否是7点到19点之间
+     * @param userDate
+     * @return
+     */
+    public static boolean isOperatingTimeIn(Date userDate){
+        String time = new SimpleDateFormat("HH:mm:ss").format(userDate);
+        String[] times = time.split(":");
+        int hour = Integer.parseInt(times[0]);
+        int min = Integer.parseInt(times[1]);
+        if(hour >= 7 && hour <= 19){
+            if(hour == 19){
+                if(min == 0){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
+    
 }

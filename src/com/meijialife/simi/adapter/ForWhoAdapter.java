@@ -7,28 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.DiscountCardData;
+import com.meijialife.simi.bean.Secretary;
+import com.meijialife.simi.bean.UserInfo;
 
 /**
- * 优惠卡券适配器
+ * 秘书适配器
  *
  */
-public class DiscountCardAdapter extends BaseAdapter {
+public class ForWhoAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
-	private ArrayList<DiscountCardData> list;
-	private Context context;
+	private ArrayList<UserInfo> list;
 
-	public DiscountCardAdapter(Context context) {
-	    this.context = context;
+	public ForWhoAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
-		list = new ArrayList<DiscountCardData>();
+		list = new ArrayList<UserInfo>();
 	}
 
-	public void setData(ArrayList<DiscountCardData> list) {
+	public void setData(ArrayList<UserInfo> list) {
 		this.list = list;
 		notifyDataSetChanged();
 	}
@@ -53,28 +51,23 @@ public class DiscountCardAdapter extends BaseAdapter {
 		Holder holder = null;
 		if (convertView == null) {
 			holder = new Holder();
-			convertView = inflater.inflate(R.layout.discount_card_list_item, null);
+			convertView = inflater.inflate(R.layout.secretary_list_item, null);
 			holder.tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
-			holder.rl_bg = (RelativeLayout) convertView.findViewById(R.id.rl_bg);
+			holder.tv_text = (TextView) convertView.findViewById(R.id.item_tv_text);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
 		
-		holder.tv_name.setText(list.get(position).getType());
-		
-		if(position%2 == 0){
-		    holder.rl_bg.setBackgroundResource(R.drawable.youhuiquan_bg_4);
-		}else{
-		    holder.rl_bg.setBackgroundResource(R.drawable.youhuiquan_bg_3);
-		}
+		holder.tv_name.setText(list.get(position).getName());
+		holder.tv_text.setText(list.get(position).getMobile());
 		
 		return convertView;
 	}
 	
 	class Holder {
 		TextView tv_name;
-		RelativeLayout rl_bg;
+		TextView tv_text;
 	}
 
 }

@@ -10,18 +10,19 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.meijialife.simi.BaseActivity;
+import com.meijialife.simi.BaseListActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.adapter.AccountRechangeAdapter;
-import com.meijialife.simi.bean.RechangeList;
+import com.meijialife.simi.adapter.ForWhoAdapter;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
@@ -30,60 +31,78 @@ import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
- * 账户充值
+ * 为谁个创建
  * 
  */
-public class AccountRechangeActivity extends BaseActivity {
+public class CreateForWhoActivity extends BaseListActivity implements OnClickListener {
 
-    private AccountRechangeAdapter adapter;
-    private ListView listview;
-    private TextView tv_money;
+    private ArrayList<UserInfo> secList;
+    private ForWhoAdapter adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.layout_account_rechange_activity);
+    public void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.layout_create_forwho);
         super.onCreate(savedInstanceState);
 
-        initView();
-
+        init();
+        getUserList();
     }
 
-    private void initView() {
-        setTitleName("充值");
+    private void init() {
+        setTitleName("用户列表");
         requestBackBtn();
 
-        tv_money = (TextView) findViewById(R.id.tv_money);
-        listview = (ListView) findViewById(R.id.listview);
-        adapter = new AccountRechangeAdapter(this);
+        adapter = new ForWhoAdapter(this);
+        setListAdapter(adapter);
+    }
 
-        getRechangeList();
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        UserInfo user = secList.get(position);
+        
+        Intent intent = new Intent();
+        intent.putExtra("for_userid", user.getUser_id());
+        intent.putExtra("for_name", user.getName());
+        setResult(RESULT_OK, intent);
+        this.finish();
+        
+        super.onListItemClick(l, v, position, id);
+    }
 
-        UserInfo userInfo = DBHelper.getUserInfo(this);
-        if (null != userInfo) {
-            tv_money.setText(userInfo.getRest_money());
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.title_btn_left:
+            CreateForWhoActivity.this.finish();
+            break;
+
+        default:
+            break;
         }
-
     }
 
     /**
      * 获取秘书列表
      */
-    public void getRechangeList() {
+    public void getUserList() {
 
-        if (!NetworkUtils.isNetworkConnected(AccountRechangeActivity.this)) {
-            Toast.makeText(AccountRechangeActivity.this, getString(R.string.net_not_open), 0).show();
+        String user_id = DBHelper.getUser(CreateForWhoActivity.this).getId();
+
+        if (!NetworkUtils.isNetworkConnected(CreateForWhoActivity.this)) {
+            Toast.makeText(CreateForWhoActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
+
         Map<String, String> map = new HashMap<String, String>();
+        map.put("sec_id", user_id + "");
         AjaxParams param = new AjaxParams(map);
 
         showDialog();
-        new FinalHttp().get(Constants.URL_GET_CARDS, param, new AjaxCallBack<Object>() {
+        new FinalHttp().get(Constants.URL_GET_SEC_USER, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
-                Toast.makeText(AccountRechangeActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateForWhoActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -101,13 +120,13 @@ public class AccountRechangeActivity extends BaseActivity {
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                ArrayList<RechangeList> secData = gson.fromJson(data, new TypeToken<ArrayList<RechangeList>>() {
+                                secList = gson.fromJson(data, new TypeToken<ArrayList<UserInfo>>() {
                                 }.getType());
-                                adapter.setData(secData);
-                                listview.setAdapter(adapter);
+                                adapter.setData(secList);
+                                // tv_tips.setVisibility(View.GONE);
                             } else {
-                                adapter.setData(new ArrayList<RechangeList>());
-                                listview.setAdapter(adapter);
+                                adapter.setData(new ArrayList<UserInfo>());
+                                // tv_tips.setVisibility(View.VISIBLE);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -128,7 +147,7 @@ public class AccountRechangeActivity extends BaseActivity {
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(AccountRechangeActivity.this, errorMsg);
+                    UIUtils.showToast(CreateForWhoActivity.this, errorMsg);
                 }
             }
         });

@@ -6,8 +6,6 @@ import android.content.Context;
 /**
  * 支付回调
  *
- * @author baojiarui
- *
  */
 public interface OnAlipayCallback {
 

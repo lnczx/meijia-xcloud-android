@@ -265,6 +265,10 @@
             android:name=".activity.FeedbackActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".activity.CreateForWhoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <!-- 意见反馈 -->
         <activity
             android:name=".activity.SettingFeedBackActivity"
@@ -313,6 +317,11 @@
         <!-- 敬请期待页 -->
         <activity
             android:name=".activity.NullWaitActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+       
+        <activity
+            android:name=".activity.PointsShopActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity

@@ -27,6 +27,7 @@
                     android:textSize="20sp" />
 
                 <!-- 隐藏上一月按钮 by garry 2015-12-23 -->
+
                 <ImageButton
                     android:id="@+id/prev"
                     android:layout_width="30dp"
@@ -35,11 +36,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_toLeftOf="@id/title"
                     android:background="@null"
-                    android:visibility="gone"
                     android:contentDescription="@string/time_prev"
-                    android:src="@drawable/ic_arrow_left" />
+                    android:src="@drawable/ic_arrow_left"
+                    android:visibility="gone" />
 
                 <!-- 隐藏下一月按钮 by garry 2015-12-23 -->
+
                 <ImageButton
                     android:id="@+id/next"
                     android:layout_width="30dp"
@@ -48,10 +50,11 @@
                     android:layout_gravity="center_vertical"
                     android:layout_toRightOf="@id/title"
                     android:background="@null"
-                    android:visibility="gone"
                     android:contentDescription="@string/time_next"
-                    android:src="@drawable/ic_arrow_right" />
-				<!-- 显示侧边栏按钮 -->
+                    android:src="@drawable/ic_arrow_right"
+                    android:visibility="gone" />
+                <!-- 显示侧边栏按钮 -->
+
                 <ImageButton
                     android:id="@+id/ibtn_person"
                     android:layout_width="wrap_content"
@@ -60,14 +63,15 @@
                     android:layout_alignParentTop="true"
                     android:background="@android:color/transparent"
                     android:padding="15dp"
-                    android:src="@drawable/iconfont31wode1" />
+                    android:src="@drawable/main_menu" />
+
                 <ImageButton
                     android:id="@+id/btn_chakan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_alignParentRight="true"
                     android:background="@drawable/iconfont_chakan" />
             </RelativeLayout>
         </LinearLayout>

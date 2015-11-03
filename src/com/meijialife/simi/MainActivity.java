@@ -48,9 +48,9 @@ import com.meijialife.simi.activity.MainPlusActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
-import com.meijialife.simi.activity.NullWaitActivity;
-import com.meijialife.simi.activity.PointsActivity;
+import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
+import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Remind;
@@ -64,6 +64,7 @@ import com.meijialife.simi.fra.PersonalPageFragment;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
+import com.meijialife.simi.utils.GetContactsRunnable;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
@@ -91,8 +92,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private int currentTabIndex; // 1=首页 2=发现 3=秘友 4=我的
 
     private static SlideMenu slideMenu;// 侧边栏
-    private RoundImageView left_menu_header_im;//侧边栏用户头像
-    private TextView tv_user_name;//侧边栏用户昵称
+    private RoundImageView left_menu_header_im;// 侧边栏用户头像
+    private TextView tv_user_name;// 侧边栏用户昵称
     private RelativeLayout item_0, item_1, item_2, item_3, item_4, item_5, item_6, item_7, item_8;// 侧边栏内控件
 
     public static Activity activity;
@@ -124,6 +125,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main);
         super.onCreate(savedInstanceState);
+         
 
         init();
         initLeft();
@@ -153,7 +155,9 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 updateFristFlag();
             }
         });
-
+        
+      //更新手机联系人数据库
+        new Thread(new GetContactsRunnable(this, null)).start();
     }
 
     /**
@@ -328,10 +332,28 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             break;
         case R.id.item_5: // 卡牌集市
             // Toast.makeText(this, "敬请期待", 0).show();
-            startActivity(new Intent(this, NullWaitActivity.class));
+            // startActivity(new Intent(this, NullWaitActivity.class));
+            Intent intent5 = new Intent(this, WebViewActivity.class);
+            intent5.putExtra("url", Constants.URL_XUEYUAN);
+            intent5.putExtra("title", "行政人学院");
+            startActivity(intent5);
             break;
         case R.id.item_6: // 积分商城
-            startActivity(new Intent(this, PointsActivity.class));
+//            startActivity(new Intent(this, PointsActivity.class));
+
+//            Intent intent6 = new Intent(this, WebViewActivity.class);
+//            intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP+"?user_id="+DBHelper.getUserInfo(MainActivity.this).getUser_id());
+//            intent6.putExtra("title", "积分兑换");
+//            startActivity(intent6);
+            
+            
+            Intent intent6 = new Intent();
+            intent6.setClass(MainActivity.this, PointsShopActivity.class);
+            intent6.putExtra("navColor", "#E8374A");    //配置导航条的背景颜色，请用#ffffff长格式。
+            intent6.putExtra("titleColor", "#ffffff");    //配置导航条标题的颜色，请用#ffffff长格式。
+            intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP+"?user_id="+DBHelper.getUserInfo(MainActivity.this).getUser_id());    //配置自动登陆地址，每次需服务端动态生成。
+            startActivity(intent6);
+            
             break;
         case R.id.item_7: // 推荐有奖
             startActivity(new Intent(this, ShareActivity.class));
@@ -516,7 +538,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 this,
                 new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage, EMNotifierEvent.Event.EventOfflineMessage,
                         EMNotifierEvent.Event.EventConversationListChanged });
-        
+
         UserInfo userInfo = DBHelper.getInstance(this).getUserInfo(this);
         if (null != userInfo) {
             String head_img = userInfo.getHead_img();
@@ -618,7 +640,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         isConflictDialogShow = true;
         EMDemoHelper.getInstance().logout(false, null);
         logOut();
-        
+
         String st = getResources().getString(R.string.Logoff_notification);
         if (!MainActivity.this.isFinishing()) {
             // clear up global variables
@@ -773,7 +795,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
      * 重新注册提醒闹钟，避免被硬件重启杀掉
      */
     private void resetAlerm(Remind remind) {
-        long remindTime = Long.parseLong(remind.getRemind_time()) * 1000;
+        long remindTime = Long.parseLong(remind.getRemind_time());
         Date mdate = new Date(remindTime);
 
         // if(isExpired(mdate, remindAlerm)){

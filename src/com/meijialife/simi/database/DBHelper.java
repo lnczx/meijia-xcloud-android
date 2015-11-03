@@ -13,6 +13,7 @@ import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.CityData;
+import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 
@@ -420,6 +421,15 @@ public class DBHelper {
                 getInstance(context).deleteById(marks.get(i), marks.get(i).getService_date());
             }
         }
+    }
+    
+    /**
+     * 获取手机联系人列表
+     * @return
+     */
+    public static List<Contact> getContacts(Context context){
+        List<Contact> contacts = getInstance(context).searchAll(Contact.class);
+        return contacts;
     }
 
 }

@@ -30,7 +30,6 @@ import com.meijialife.simi.utils.StringUtils;
 
 /**
  * 反馈
- * @author RUI
  *
  */
 public class FeedbackActivity extends BaseActivity implements OnClickListener{

@@ -256,7 +256,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         try {
             JSONObject obj = json.getJSONObject("data");
             mobile = obj.getString("mobile");
-            order_pay = obj.getString("order_pay");
+            order_pay = obj.getString("card_pay");
             senior_order_no = obj.getString("senior_order_no");
 
         } catch (JSONException e) {
@@ -267,9 +267,9 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
 
         if (payType == PAY_TYPE_ALIPAY) {
             new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, guanjiaCallback, mobile,
-                    ConsAli.PAY_TO_MS_CARD, "0.01" /*order_pay*/, senior_order_no).pay();
+                    ConsAli.PAY_TO_MS_CARD, order_pay, senior_order_no).pay();
         } else if (payType == PAY_TYPE_WXPAY) {
-            new WxPay(PayOrderActivity.this, PayOrderActivity.this,ConsAli.PAY_TO_MS_CARD, senior_order_no, "私密服务购买", "0.01" /*order_pay*/);
+            new WxPay(PayOrderActivity.this, PayOrderActivity.this,ConsAli.PAY_TO_MS_CARD, senior_order_no, "秘书服务购买", order_pay);
         }
         
     }
@@ -428,9 +428,9 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         }
         if (payType == PAY_TYPE_ALIPAY) {
             new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, memberCallback, mobile2,
-                    ConsAli.PAY_TO_MEMBER, "0.01" /*card_pay*/, card_order_no).pay();
+                    ConsAli.PAY_TO_MEMBER, "0.01", card_order_no).pay();
         } else if (payType == PAY_TYPE_WXPAY) {
-            new WxPay(PayOrderActivity.this, PayOrderActivity.this,ConsAli.PAY_TO_MEMBER, card_order_no, "云行政会员卡充值","0.01" /*card_pay*/);
+            new WxPay(PayOrderActivity.this, PayOrderActivity.this,ConsAli.PAY_TO_MEMBER, card_order_no, "云行政会员卡充值",card_pay);
         }
     }
 

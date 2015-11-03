@@ -25,7 +25,6 @@ import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListene
 /**
  * 分享
  * 
- * @author RUI
  * 
  */
 public class ShareActivity extends BaseActivity implements OnClickListener {
@@ -95,37 +94,5 @@ public class ShareActivity extends BaseActivity implements OnClickListener {
         api.registerApp(Constants.WX_APP_ID);
     }
 
-    /**
-     * 分享到微信
-     */
-    private void shareWx() {
-        /*
-         * WXWebpageObject webpage = new WXWebpageObject(); webpage.webpageUrl = "http://www.baidu.com/"; WXMediaMessage msg = new
-         * WXMediaMessage(webpage); msg.title = "测试标题"; // msg.description = "网页详细描述位置,网页详细描述位置,网页详细描述位置"; Bitmap thumb =
-         * BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_logo); msg.thumbData = WXUtil.bmpToByteArray(thumb, true);
-         * 
-         * final SendMessageToWX.Req req = new SendMessageToWX.Req(); req.transaction = WXUtil.buildTransaction("webpage"); req.message = msg;
-         * 
-         * //======执行操作========== api.registerApp(Constant.WX_APP_ID); req.scene = SendMessageToWX.Req.WXSceneTimeline; // 分享到朋友圈 |
-         * WXSceneSession:分享到好友 api.sendReq(req);
-         */
 
-        // 分享到朋友圈
-
-        // 初始化一个WXTextObject对象
-        String text = "【有个管家】真正的懒人神器，家务全能王啊！下载就有28元新人礼1gj.cc/d/推荐给亲们^ω^";
-        WXTextObject textObj = new WXTextObject();
-        textObj.text = text;
-
-        WXMediaMessage msg = new WXMediaMessage(textObj);
-        msg.mediaObject = textObj;
-        msg.description = text;
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = String.valueOf(System.currentTimeMillis());
-        req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneTimeline;
-
-        api.sendReq(req);
-    }
 }

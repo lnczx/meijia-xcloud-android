@@ -50,7 +50,7 @@
                 android:id="@+id/item_tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="有效期至2015-05-31"
+                android:text="有效期至2015-10-31"
                 android:textColor="#DA792C" />
 
             <TextView

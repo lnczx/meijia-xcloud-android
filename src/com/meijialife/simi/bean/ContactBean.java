@@ -6,9 +6,7 @@ public class ContactBean {
 
     private String name;
     
-    
-    
-
+       
     public ContactBean(String mobile, String name) {
         super();
         this.mobile = mobile;

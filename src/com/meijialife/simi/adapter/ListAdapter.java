@@ -189,6 +189,7 @@ public class ListAdapter extends BaseAdapter {
             vh.tv_1.setVisibility(View.VISIBLE);
             vh.tv_2.setText("提醒人：" + attend);
             vh.tv_2.setVisibility(View.VISIBLE);
+            vh.tv_3.setVisibility(View.INVISIBLE);
             typeStr = "秘书叫早";
             break;
         case 3://事务提醒
@@ -198,6 +199,7 @@ public class ListAdapter extends BaseAdapter {
             vh.tv_1.setVisibility(View.VISIBLE);
             vh.tv_2.setText("提醒人：" + attend);
             vh.tv_2.setVisibility(View.VISIBLE);
+            vh.tv_3.setVisibility(View.INVISIBLE);
             typeStr = "事务提醒";
             break;
         case 4://邀约通知
@@ -207,6 +209,7 @@ public class ListAdapter extends BaseAdapter {
             vh.tv_1.setVisibility(View.VISIBLE);
             vh.tv_2.setText("邀约人：" + attend);
             vh.tv_2.setVisibility(View.VISIBLE);
+            vh.tv_3.setVisibility(View.INVISIBLE);
             typeStr = "邀约通知";
             break;
         case 5://差旅规划

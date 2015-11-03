@@ -252,12 +252,13 @@
                     android:src="@drawable/icon_left_kapai" />
 
                 <TextView
+                    android:id="@+id/tv_xingzhengren"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@id/iv_jishi"
-                    android:text="卡牌集市"
+                    android:text="行政人学院"
                     android:textColor="@color/left_text_black"
                     android:textSize="17.6sp" />
 

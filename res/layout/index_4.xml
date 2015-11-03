@@ -102,7 +102,7 @@
                     android:layout_alignParentTop="true"
                     android:background="@android:color/transparent"
                     android:padding="15dp"
-                    android:src="@drawable/iconfont31wode1" />
+                    android:src="@drawable/main_menu" />
             </RelativeLayout>
 
             <LinearLayout

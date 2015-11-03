@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,6 +20,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.Contact;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.utils.GetContactsRunnable;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
@@ -36,8 +37,9 @@ public class ContactSelectActivity extends ListActivity {
     ArrayList<String> getcontactsList; // 选择得到联系人
     private Button okbtn;
     private Button cancelbtn;
+    
+    User user;
 
-    Thread getcontacts;
     Handler updateListHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -54,6 +56,7 @@ public class ContactSelectActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_contactslist);
+        user = DBHelper.getUser(this);
 
         ImageView title_btn_left = (ImageView) findViewById(R.id.title_btn_left);
         TextView header_tv_name = (TextView) findViewById(R.id.header_tv_name);
@@ -83,9 +86,7 @@ public class ContactSelectActivity extends ListActivity {
         listView.setItemsCanFocus(false);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        showDialog();
-        getcontacts = new Thread(new GetContacts());
-        getcontacts.start();
+        getContacts();
 
         title_btn_ok.setOnClickListener(new OnClickListener() {
 
@@ -95,6 +96,17 @@ public class ContactSelectActivity extends ListActivity {
             }
         });
 
+    }
+    
+    private void getContacts(){
+        ArrayList<Contact> contacts = (ArrayList<Contact>) DBHelper.getContacts(this);
+        if(contacts == null || contacts.size() == 0){
+            Thread getContactsThread = new Thread(new GetContactsRunnable(this, updateListHandler));
+            getContactsThread.start();
+            showDialog();
+        }else{
+            updateList();
+        }
     }
 
     public void postContactData() {
@@ -135,6 +147,13 @@ public class ContactSelectActivity extends ListActivity {
     }
 
     void updateList() {
+        ArrayList<Contact> contacts = (ArrayList<Contact>) DBHelper.getContacts(this);
+        contactsList = new ArrayList<String>();
+        contactsList.add(user.getName() + "\n" + user.getMobile());//增加本人到列表中
+        for(int i = 0; i < contacts.size(); i++){
+            contactsList.add(contacts.get(i).getName() + "\n" + contacts.get(i).getPhoneNum());
+        }
+        
         if (contactsList != null)
             setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item_multiple_choice, contactsList));
 
@@ -162,66 +181,9 @@ public class ContactSelectActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
     }
 
-    Cursor cursor = null;
-    Cursor phonecur = null;
-
-    class GetContacts implements Runnable {
-        @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            Uri uri = ContactsContract.Contacts.CONTENT_URI;
-            String[] projection = new String[] { ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME,
-                    ContactsContract.Contacts.PHOTO_ID };
-            String selection = ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '1'";
-            String[] selectionArgs = null;
-            String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-            cursor = managedQuery(uri, projection, selection, selectionArgs, sortOrder);
-
-            while (cursor != null && !cursor.isClosed() && cursor.moveToNext()) {
-
-                // 取得联系人名字
-                int nameFieldColumnIndex = cursor.getColumnIndex(android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME);
-                String name = cursor.getString(nameFieldColumnIndex);
-                // 取得联系人ID
-                String contactId = cursor.getString(cursor.getColumnIndex(android.provider.ContactsContract.Contacts._ID));
-                phonecur = managedQuery(android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                        android.provider.ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
-                // 取得电话号码(可能存在多个号码)
-                while (phonecur.moveToNext()) {
-                    String strPhoneNumber = phonecur.getString(phonecur
-                            .getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    if (strPhoneNumber.length() > 4)
-                        // contactsList.add("18610011001" + "\n测试");
-                        contactsList.add(name + "\n" + strPhoneNumber + "");
-
-                }
-            }
-            if (phonecur != null)
-                phonecur.close();
-            if(cursor != null)
-                cursor.close();
-
-            Message msg1 = new Message();
-            msg1.what = UPDATE_LIST;
-            updateListHandler.sendMessage(msg1);
-        }
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
-        try {
-            if (phonecur != null)
-                phonecur.close();
-                phonecur=null;
-            if (cursor != null) {
-                cursor.close();
-                cursor=null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
 
     }
 
@@ -230,18 +192,6 @@ public class ContactSelectActivity extends ListActivity {
         contactsList.clear();
         getcontactsList.clear();
         
-        try {
-            if (phonecur != null)
-                phonecur.close();
-                phonecur=null;
-            if (cursor != null) {
-                cursor.close();
-                cursor=null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         super.onDestroy();
     }
 

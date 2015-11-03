@@ -3,6 +3,7 @@ package com.meijialife.simi.bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import net.tsz.afinal.annotation.sqlite.Id;
 import net.tsz.afinal.annotation.sqlite.Table;
 
 /**
@@ -11,20 +12,25 @@ import net.tsz.afinal.annotation.sqlite.Table;
 @Table(name = "Contact")
 public class Contact implements Serializable {
 
-    public String id;
-
+    @Id(column = "contactId")
+    
     /**  **/
-    private String contactId;
+    public String contactId;
     /** 姓名 **/
     private String name;
     /** 手机号 **/
-    private ArrayList<String> phoneNumList;
+    private String phoneNum;
+//    /** 手机号（多个） **/
+//    private ArrayList<String> phoneNumList;
     
-    public Contact(String contactId, String name, ArrayList<String> phoneNumList) {
+    public Contact(){
+    }
+    
+    public Contact(String contactId, String name, String phoneNum) {
         super();
         this.contactId = contactId;
         this.name = name;
-        this.phoneNumList = phoneNumList;
+        this.phoneNum = phoneNum;
     }
     public String getContactId() {
         return contactId;
@@ -38,11 +44,13 @@ public class Contact implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public ArrayList<String> getPhoneNumList() {
-        return phoneNumList;
+
+    public String getPhoneNum() {
+        return phoneNum;
     }
-    public void setPhoneNumList(ArrayList<String> phoneNumList) {
-        this.phoneNumList = phoneNumList;
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
     

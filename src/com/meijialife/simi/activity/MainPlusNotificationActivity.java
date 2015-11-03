@@ -46,6 +46,7 @@ import com.meijialife.simi.ui.ToggleButton.OnToggleChanged;
 import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
 import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -75,6 +76,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private TextView tv_select_name;
     private TextView tv_select_number, tv_xiaoxi_content, tv_meeting_time;
     public static final int GET_CONTACT = 1001;
+    public static final int GET_USER = 1002;
     private ArrayList<String> contactList;
     private View view_mask;
 
@@ -90,6 +92,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private int mHour = 0;
     private int mMinute = 0;
 
+    private Date chooseDate;//用户选择的时间
     private String finalTime;
     private String uploadtime;
     private ContactBean contactBean;
@@ -104,11 +107,17 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private boolean isUpdate = false;
     private Cards card;
     private Date fdate;
+    private TextView tv_senser_tip;
+  private TextView tv_select_who_name;
+    private String for_userid = "";
+    private UserInfo userInfo;
+    private RelativeLayout layout_select_who;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_notification);
         super.onCreate(savedInstanceState);
-
+        userInfo = DBHelper.getUserInfo(this);
+        
         card = (Cards) getIntent().getSerializableExtra("cards");
         initView(card);
 
@@ -123,6 +132,8 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);
         findViewById(R.id.layout_meeting_content).setOnClickListener(this);
         findViewById(R.id.layout_message_tongzhi).setOnClickListener(this);
+   layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
+        layout_select_who.setOnClickListener(this);
 
         bt_create_travel = (Button) findViewById(R.id.bt_create_travel);
         bt_create_travel.setOnClickListener(this);
@@ -132,29 +143,61 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         tv_xiaoxi_content = (TextView) findViewById(R.id.tv_xiaoxi_content);
         tv_meeting_time = (TextView) findViewById(R.id.tv_meeting_time);
         tv_beizu_content = (TextView) findViewById(R.id.tv_beizu_content);
-
+        tv_senser_tip = (TextView) findViewById(R.id.tv_senser_tip);
+ tv_select_who_name = (TextView) findViewById(R.id.tv_select_who_name);
         view_mask = (View) findViewById(R.id.view_mask);
 
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
 
-        UserInfo userInfo = DBHelper.getUserInfo(this);
         is_senior = userInfo.getIs_senior();
+        if (StringUtils.isEquals(is_senior, "1")) {
+            layout_select_who.setVisibility(View.VISIBLE);
+        }else{
+            layout_select_who.setVisibility(View.GONE);
+        }
 
-      
         slipBtn_mishuchuli.setOnToggleChanged(new OnToggleChanged() {
             @Override
             public void onToggle(boolean on) {
                 if (on) {
                     if (StringUtils.isEquals(is_senior, "1")) {// 有秘书
-                        slipBtn_mishuchuli.setToggleOn();
-                        SET_SEC_DO = NEED_SEC_DO;
+                        if (chooseDate == null) {
+                            slipBtn_mishuchuli.setToggleOff();
+                            SET_SEC_DO = NO_SEC_DO;
+                            UIUtils.showToast(MainPlusNotificationActivity.this, "请选择时间");
+                            return;
+                        }
+                        
+                        //0:00-15:00
+                        if(DateUtils.isTime15Before(chooseDate) && DateUtils.isOperatingTimeIn(chooseDate)){
+                            slipBtn_mishuchuli.setToggleOn();
+                            SET_SEC_DO = NEED_SEC_DO;
+                            tv_senser_tip.setVisibility(View.GONE);
+                        } 
+                        //15:01-0:00
+                        else if(DateUtils.isTime15Later(chooseDate) && DateUtils.isOperatingTimeIn(chooseDate)){
+                            slipBtn_mishuchuli.setToggleOn();
+                            SET_SEC_DO = NEED_SEC_DO;
+                            tv_senser_tip.setVisibility(View.GONE);
+                        } 
+                        //选择时间不对的情况走else
+                        else{
+                            slipBtn_mishuchuli.setToggleOff();
+                            SET_SEC_DO = NO_SEC_DO;
+                            tv_senser_tip.setVisibility(View.VISIBLE);
+                            UIUtils.showActionDialog(MainPlusNotificationActivity.this, "提醒", "秘书工作时间为7:00～19:00，请在此时间内设置秘书提醒时间，0:01—15:00可以设置当天11:00之后的提醒；15:01至0:00可以设置次日7:00之后的提醒。","确定", null, null, null);
+                        }
+                        
                     } else {
                         slipBtn_mishuchuli.setToggleOff();
                         SET_SEC_DO = NO_SEC_DO;
+                        tv_senser_tip.setVisibility(View.GONE);
                         startActivity(new Intent(MainPlusNotificationActivity.this, FindSecretaryActivity.class));
                         Toast.makeText(MainPlusNotificationActivity.this, "你没有购买秘书卡", Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    tv_senser_tip.setVisibility(View.GONE);
                 }
             }
         });
@@ -172,7 +215,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
             isUpdate = true;
 
             Constants.CARD_ADD_NOTIFICATION_CONTENT = card.getService_content();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             long Service_time = Long.valueOf(card.getService_time()) * 1000;
 
             tv_meeting_time.setText(format.format(Service_time));
@@ -262,6 +305,10 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
             break;
         case R.id.bt_create_travel:
             createMeetingCard(isUpdate);
+            break;
+        case R.id.layout_select_who:
+            Intent mintent = new Intent(MainPlusNotificationActivity.this, CreateForWhoActivity.class);
+            startActivityForResult(mintent, GET_USER);
             break;
 
         default:
@@ -354,7 +401,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
                 int mhour = hour.getCurrentItem();
                 int mMinu = minute.getCurrentItem();
                 String date = mYear + "-" + mMonth + "-" + mDay;
-                String time = mhour + ":" + mMinu + ":" + "00";
+                String time = mhour + ":" + mMinu ;
 
 //              Calendar cal = Calendar.getInstance();
 //              int day = cal.get(Calendar.DATE); // 日
@@ -363,10 +410,9 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
 //              int hour = cal.get(Calendar.HOUR_OF_DAY);
 //              int minute = cal.get(Calendar.MINUTE);
               
-              Date chooseDate = null;
               Date currentDate = new Date();;
               try {
-                  chooseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date + " " + time);
+                  chooseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date + " " + time);
               } catch (ParseException e) {
                   // TODO Auto-generated catch block
                   e.printStackTrace();
@@ -376,7 +422,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
               if(chooseDate.getTime() < currentDate.getTime()){
                     UIUtils.showToast(MainPlusNotificationActivity.this, "您只能选择未来时间进行提醒哦！");
                 }else{
-                    String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu) + ":00";
+                    String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu);
                     finalTime = date + " " + cultime;
 
                     tv_meeting_time.setText(finalTime);
@@ -543,6 +589,12 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
 
                 }
                 break;
+            case GET_USER:
+                for_userid = data.getExtras().getString("for_userid");
+                String for_name = data.getExtras().getString("for_name");
+
+                tv_select_who_name.setText(for_name);
+                break;
             default:
                 break;
             }
@@ -581,7 +633,9 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
 
         }
 
-        String c_id = DBHelper.getUser(MainPlusNotificationActivity.this).getId();
+       
+
+        String c_id = userInfo.getId();
 
         String mtime = " " + finalTime + "";
 
@@ -600,7 +654,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         } else {
             Date mdate = null;
             try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 mdate = format.parse(mtime);
                 uploadtime = mdate.getTime() / 1000 + "";
                 LogOut.debug("cultime:" + uploadtime);
@@ -610,6 +664,10 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
 
             fdate = mdate;
 
+        }
+
+        if (StringUtils.isEquals(userInfo.getIs_senior(), "1") && StringUtils.isEmpty(for_userid)) {
+            UIUtils.showToast(MainPlusNotificationActivity.this, "请选择为谁创建");
         }
         if (StringUtils.isEmpty(mtime)) {
             UIUtils.showToast(MainPlusNotificationActivity.this, "请选择邀约时间");
@@ -622,7 +680,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         map.put("card_id", update ? card.getCard_id() : "0");
         map.put("card_type", "4");
         map.put("create_user_id", c_id + "");
-        map.put("user_id", c_id + "");
+        map.put("user_id",  for_userid);
         map.put("attends", mJson);
         map.put("service_time", uploadtime);
         map.put("service_content", Constants.CARD_ADD_NOTIFICATION_CONTENT);

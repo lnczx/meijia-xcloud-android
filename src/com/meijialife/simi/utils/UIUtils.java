@@ -165,7 +165,7 @@ public class UIUtils {
 //        } else {
             builder = new AlertDialog.Builder(context);
 //        }
-        builder.setIcon(R.drawable.ic_launcher);
+//        builder.setIcon(R.drawable.ic_launcher_logo);
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setCancelable(false);

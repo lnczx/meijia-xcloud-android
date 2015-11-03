@@ -227,7 +227,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
         long timeL = Long.parseLong(card.getService_time());
         String time = new SimpleDateFormat("HH:mm").format(timeL * 1000);
-        String date = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(timeL * 1000);
+        String date = new SimpleDateFormat("yyyy年MM月dd日 HH:mm").format(timeL * 1000);
         String remark = card.getService_content();
         String total_zan = String.valueOf(card.getTotal_zan());
         String timeStr = card.getAdd_time_str();

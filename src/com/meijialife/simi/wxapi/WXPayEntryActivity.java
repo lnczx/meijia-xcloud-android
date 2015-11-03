@@ -24,7 +24,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.pay_result);
         super.onCreate(savedInstanceState);
 
         api = WXAPIFactory.createWXAPI(this, WxConstants.APP_ID);
@@ -52,7 +51,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 //             resp.errStr + ";code=" + String.valueOf(resp.errCode)));
 //             builder.show();
             if (resp.errCode == BaseResp.ErrCode.ERR_OK) {
-                PayOrderActivity.postCardOnlinePay(this, this, WxPay.outTradeNo, "2", "SUCCESS");
+//                PayOrderActivity.postCardOnlinePay(this, this, WxPay.outTradeNo, "2", "SUCCESS");
                 WxPay.activity.finish();
             }
         }
