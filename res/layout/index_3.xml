@@ -9,9 +9,10 @@
 
     <!-- 顶部Tab -->
     <include layout="@layout/layout_friend_top_tab" />
+    <!-- 好友 -->
+    <include layout="@layout/layout_friend" />
     <!-- 消息 -->
     <include layout="@layout/layout_friend_msg" />
-    <!-- 秘友 -->
-    <include layout="@layout/layout_friend" />
+    
 
 </LinearLayout>

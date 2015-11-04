@@ -58,7 +58,7 @@
                             android:text="Ketch"
                             android:textColor="#ffffff"
                             android:textSize="18sp" />
-
+							
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -207,7 +207,7 @@
                     android:gravity="center"
                     android:text="我发布的"
                     android:textColor="@drawable/personpage_tab_selector"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/my_publish_text_size" />
 
                 <View
                     android:layout_width="1dp"
@@ -224,7 +224,7 @@
                     android:gravity="center"
                     android:text="我参与的"
                     android:textColor="@drawable/personpage_tab_selector"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/my_publish_text_size" />
             </LinearLayout>
 
             <View

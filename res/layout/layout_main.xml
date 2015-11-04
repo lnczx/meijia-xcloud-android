@@ -42,7 +42,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="首页"
-                    android:textColor="@color/tab_text_color_selector" />
+                    android:textColor="@color/tab_text_color_selector" 
+                    android:textSize="@dimen/bottom_bar_text_size"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -64,7 +66,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="发现"
-                    android:textColor="@color/tab_text_color_selector" />
+                    android:textColor="@color/tab_text_color_selector" 
+                    android:textSize="@dimen/bottom_bar_text_size"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -108,8 +112,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="秘友"
-                        android:textColor="@color/tab_text_color_selector" />
+                        android:text="好友"
+                        android:textColor="@color/tab_text_color_selector"
+                        android:textSize="@dimen/bottom_bar_text_size"
+                         />
                 </LinearLayout>
 
                 <TextView
@@ -146,7 +152,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的"
-                    android:textColor="@color/tab_text_color_selector" />
+                    android:textColor="@color/tab_text_color_selector"
+                    android:textSize="@dimen/bottom_bar_text_size"
+                     />
             </LinearLayout>
         </LinearLayout>
 

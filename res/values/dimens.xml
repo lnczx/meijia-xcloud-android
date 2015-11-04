@@ -31,5 +31,16 @@
     
     <!-- 卡片icon宽高 -->
     <dimen name="card_icon_size">35dp</dimen>
+    <!--卡片icon与边距-->
+	<dimen name="card_icon_margin_left">10dp</dimen>
+	<!--卡片时间（几小时前）字体大小-->
+	<dimen name="card_time_tip">11sp</dimen>
+    
+    
+    <!--首页下边栏字体大小-->
+    <dimen name="bottom_bar_text_size">10sp</dimen>
+    
+    <!--我的（我的发布+我参与）字体大小 -->
+    <dimen name="my_publish_text_size">13sp</dimen>
 	
 </resources>

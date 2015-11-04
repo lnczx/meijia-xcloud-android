@@ -89,7 +89,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private TextView tv_header;
     private LinearLayout mBt1, mBt2, mBt3, mBt4, mBt5;
     private FragmentManager mFM = null;
-    private int currentTabIndex; // 1=首页 2=发现 3=秘友 4=我的
+    private int currentTabIndex; // 1=首页 2=发现 3=好友 4=我的
 
     private static SlideMenu slideMenu;// 侧边栏
     private RoundImageView left_menu_header_im;// 侧边栏用户头像
@@ -296,9 +296,10 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             slideMenu.isUse = false;
             view_title_bar.setVisibility(View.VISIBLE);
             break;
-        case R.id.tab_bt_3: // 秘友
+        case R.id.tab_bt_3: // 好友
             currentTabIndex = 3;
-            change2IM();
+            //change2IM();
+            change2Contacts();
             break;
         case R.id.tab_bt_4: // 我的
             currentTabIndex = 4;
@@ -382,7 +383,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     }
 
     /**
-     * 切换到秘友Fragment
+     * 切换到好友Fragment
      */
     public void change2Contacts() {
         if (!slideMenu.isMainScreenShowing()) {
@@ -427,7 +428,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             tv_header.setText("发现");
             break;
         case 3:
-            tv_header.setText("秘友");
+            tv_header.setText("好友");
             break;
         case 4:
             tv_header.setText("我的");

@@ -55,7 +55,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
     private View line_1, line_2;
     
     private LinearLayout layout_msg;    //消息View
-    private LinearLayout layout_friend; //秘友View
+    private LinearLayout layout_friend; //好友View
     
     /** 秘友Tab下所有控件 **/
     private ListView listview;
@@ -64,7 +64,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
     private RelativeLayout rl_add;  //添加通讯录好友
     private RelativeLayout rl_find; //寻找秘书和助理
     
-    private int checkedIndex = 1;   //当前选中的Tab位置, 0=消息   1=秘友
+    private int checkedIndex = 1;   //当前选中的Tab位置, 0=消息   1=好友
     private MainActivity activity;
     
     public Home3Fra(){}
