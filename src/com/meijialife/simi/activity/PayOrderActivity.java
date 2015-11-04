@@ -255,8 +255,9 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         String senior_order_no = "";// 管家卡订单号
         try {
             JSONObject obj = json.getJSONObject("data");
+  
             mobile = obj.getString("mobile");
-            order_pay = obj.getString("card_pay");
+            order_pay = obj.getString("order_pay");
             senior_order_no = obj.getString("senior_order_no");
 
         } catch (JSONException e) {
@@ -593,6 +594,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private String order_pay;
     private String mobile;
     private String mobile2;
+   
 
     public static void showDialog(Context context) {
         if (m_pDialog == null) {

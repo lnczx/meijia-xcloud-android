@@ -65,12 +65,12 @@ public class PayWithAlipay {
         switch (payType) {
         case ConsAli.PAY_TO_MEMBER: // 会员充值
             notifyUrl = ConsAli.NOTIFY_URL_MEMBER;
-            sProduct.subject = "私密会员充值";
+            sProduct.subject = "充值";
             sProduct.body = "" + mobile;
             break;
         case ConsAli.PAY_TO_MS_CARD:// 管家卡支付
             notifyUrl = ConsAli.NOTIFY_URL_GJ_CARD;
-            sProduct.subject = "秘书服务支付";
+            sProduct.subject = "服务费支付";//秘书服务支付
             sProduct.body = "" + mobile;
             break;
         case ConsAli.PAY_TO_ORDER: // 订单在线支付
