@@ -46,6 +46,7 @@ import com.meijialife.simi.ui.ToggleButton.OnToggleChanged;
 import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
 import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
+import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
@@ -57,7 +58,7 @@ import com.meijialife.simi.utils.UIUtils;
  * @author yejiu
  * 
  */
-public class MainPlusNotificationActivity extends BaseActivity implements OnClickListener {
+public class MainPlusNotificationActivity extends BaseActivity implements OnClickListener, ItemScroListener {
     
     private PopupWindow mTimePopup;
     private TextView tv_date, tv_chufa_time;
@@ -755,6 +756,21 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         // TODO Auto-generated method stub
         super.onDestroy();
         Constants.CARD_ADD_NOTIFICATION_CONTENT="";
+    }
+
+    @Override
+    public void onFinished() {
+        int mYear = year.getCurrentItem() + 2015;
+        int mMonth = month.getCurrentItem() + 1;
+        
+        int maxIndex = getDay(mYear, mMonth);
+        int index = day.getCurrentItem();
+        if(index > maxIndex-1){
+            index = maxIndex;
+            day.setCurrentItem(index-1);
+        }
+        
+        initDay(mYear, mMonth);
     }
 
 }

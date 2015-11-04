@@ -52,6 +52,7 @@ import com.meijialife.simi.ui.ToggleButton.OnToggleChanged;
 import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
 import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
+import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
@@ -61,7 +62,7 @@ import com.meijialife.simi.utils.UIUtils;
  * 会议安排
  * 
  */
-public class MainPlusMeettingActivity extends BaseActivity implements OnClickListener {
+public class MainPlusMeettingActivity extends BaseActivity implements OnClickListener, ItemScroListener {
     private PopupWindow mTimePopup;
     private TextView tv_date, tv_chufa_time;
     private String start_city_id;
@@ -363,12 +364,14 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
         numericWheelAdapter1.setLabel("年");
         year.setViewAdapter(numericWheelAdapter1);
         year.setCyclic(false);// 是否可循环滑动
+        year.setItemScrolistener(this);
 
         month = (WheelView) view.findViewById(R.id.month);
         NumericWheelAdapter numericWheelAdapter2 = new NumericWheelAdapter(this, 1, 12, "%02d");
         numericWheelAdapter2.setLabel("月");
         month.setViewAdapter(numericWheelAdapter2);
         month.setCyclic(false);
+        month.setItemScrolistener(this);
 
         day = (WheelView) view.findViewById(R.id.day);
         initDay(norYear, curMonth);
@@ -770,5 +773,20 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
         // TODO Auto-generated method stub
         super.onDestroy();
         Constants.CARD_ADD_MEETING_CONTENT = "";
+    }
+
+    @Override
+    public void onFinished() {
+        int mYear = year.getCurrentItem() + 2015;
+        int mMonth = month.getCurrentItem() + 1;
+        
+        int maxIndex = getDay(mYear, mMonth);
+        int index = day.getCurrentItem();
+        if(index > maxIndex-1){
+            index = maxIndex;
+            day.setCurrentItem(index-1);
+        }
+        
+        initDay(mYear, mMonth);
     }
 }

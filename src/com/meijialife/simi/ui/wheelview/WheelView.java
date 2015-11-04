@@ -143,6 +143,15 @@ public class WheelView extends View {
 	private void initData(Context context) {
 		scroller = new WheelScroller(getContext(), scrollingListener);
 	}
+	
+	ItemScroListener itemScroListener;
+	/**
+	 * 设置滑动监听
+	 * @param itemScroListener
+	 */
+	public void setItemScrolistener(ItemScroListener itemScroListener){
+	    this.itemScroListener = itemScroListener;
+	}
 
 	// Scrolling listener
 	WheelScroller.ScrollingListener scrollingListener = new WheelScroller.ScrollingListener() {
@@ -168,6 +177,9 @@ public class WheelView extends View {
 
 		@Override
 		public void onFinished() {
+		    if(itemScroListener != null){
+		        itemScroListener.onFinished();
+		    }
 			if (isScrollingPerformed) {
 				notifyScrollingListenersAboutEnd();
 				isScrollingPerformed = false;
@@ -955,4 +967,17 @@ public class WheelView extends View {
 	public void stopScrolling() {
 		scroller.stopScrolling();
 	}
+	
+	/**
+     * 滑动监听
+     * 
+     * add by garry
+     */
+    public interface ItemScroListener {
+        
+        /**
+         * 滑动结束
+         */
+        void onFinished();
+    }
 }

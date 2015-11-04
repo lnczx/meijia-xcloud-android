@@ -46,6 +46,7 @@ import com.meijialife.simi.ui.ToggleButton.OnToggleChanged;
 import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
 import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
+import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
@@ -57,7 +58,7 @@ import com.meijialife.simi.utils.UIUtils;
  * @author windows7
  * 
  */
-public class MainPlusTravelActivity extends BaseActivity implements OnClickListener {
+public class MainPlusTravelActivity extends BaseActivity implements OnClickListener, ItemScroListener  {
 
     public static final int START_CITY_FLAG = 1001;
     public static final int END_CITY_FLAG = 1002;
@@ -598,6 +599,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         year.setViewAdapter(numericWheelAdapter1);
         year.setCyclic(false);// 是否可循环滑动
         // year.addScrollingListener(scrollListener);
+        year.setItemScrolistener(this);
 
         month = (WheelView) view.findViewById(R.id.month);
         NumericWheelAdapter numericWheelAdapter2 = new NumericWheelAdapter(this, 1, 12, "%02d");
@@ -605,6 +607,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         month.setViewAdapter(numericWheelAdapter2);
         month.setCyclic(false);
         // month.addScrollingListener(scrollListener);
+        month.setItemScrolistener(this);
 
         day = (WheelView) view.findViewById(R.id.day);
         initDay(norYear, curMonth);
@@ -861,5 +864,20 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         // TODO Auto-generated method stub
         super.onDestroy();
         Constants.CARD_ADD_TREAVEL_CONTENT = "";
+    }
+
+    @Override
+    public void onFinished() {
+        int mYear = year.getCurrentItem() + 2015;
+        int mMonth = month.getCurrentItem() + 1;
+        
+        int maxIndex = getDay(mYear, mMonth);
+        int index = day.getCurrentItem();
+        if(index > maxIndex-1){
+            index = maxIndex;
+            day.setCurrentItem(index-1);
+        }
+        
+        initDay(mYear, mMonth);
     }
 }
