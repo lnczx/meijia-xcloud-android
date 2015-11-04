@@ -93,9 +93,9 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
 	    // TODO Auto-generated method stub
 	    super.onResume();
 	    if(checkedIndex == 0){
-	        
-	    }else if(checkedIndex == 1){
 	        getFriendList(false);
+	    }else if(checkedIndex == 1){
+	        
 	    }
 	}
 
@@ -127,28 +127,29 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
                 line_2.setVisibility(View.INVISIBLE);
                 
                 if(checkedId == grop.getChildAt(0).getId()){
-                    /*checkedIndex = 0;
+                    checkedIndex = 0;
                     line_1.setVisibility(View.VISIBLE);
-                    layout_msg.setVisibility(View.VISIBLE);
-                    layout_friend.setVisibility(View.GONE);*/
+                    layout_msg.setVisibility(View.GONE);
+                    layout_friend.setVisibility(View.VISIBLE);
                     
-                    //跳转到消息View
-                    if(activity != null){
-                        ((MainActivity)activity).change2IM();
-                    }
                 }
                 if(checkedId == grop.getChildAt(1).getId()){
-                    checkedIndex = 1;
+                    /*checkedIndex = 1;
                     line_2.setVisibility(View.VISIBLE);
                     layout_msg.setVisibility(View.GONE);
                     layout_friend.setVisibility(View.VISIBLE);
-                    getFriendList(true);
+                    getFriendList(true);*/
+                    
+                  //跳转到消息View
+                    if(activity != null){
+                        ((MainActivity)activity).change2IM();
+                    }
                 }
                 
             }
         });
         
-        radiogroup.getChildAt(1).performClick();
+        radiogroup.getChildAt(0).performClick();
     }
 	
 	/**
