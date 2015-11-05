@@ -122,11 +122,14 @@ public class CreateForWhoActivity extends BaseListActivity implements OnClickLis
                                 Gson gson = new Gson();
                                 secList = gson.fromJson(data, new TypeToken<ArrayList<UserInfo>>() {
                                 }.getType());
+                                //在列表中增加自己
+                                secList.add(DBHelper.getUserInfo(CreateForWhoActivity.this));
                                 adapter.setData(secList);
-                                // tv_tips.setVisibility(View.GONE);
                             } else {
-                                adapter.setData(new ArrayList<UserInfo>());
-                                // tv_tips.setVisibility(View.VISIBLE);
+                                secList = new ArrayList<UserInfo>();
+                                //在列表中增加自己
+                                secList.add(DBHelper.getUserInfo(CreateForWhoActivity.this));
+                                adapter.setData(secList);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
