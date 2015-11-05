@@ -62,7 +62,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_centerVertical="true"
                     android:background="@drawable/main_menu" />
-
+                <!-- 查看自己发布的按钮 -->
                 <ImageButton
                     android:id="@+id/btn_chakan"
                     android:layout_width="35dp"
@@ -71,7 +71,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:background="@drawable/iconfont_chakan" />
-
+                <!-- 收缩日历按钮 -->
                 <ImageButton
                     android:id="@+id/btn_rili"
                     android:layout_width="35dp"
