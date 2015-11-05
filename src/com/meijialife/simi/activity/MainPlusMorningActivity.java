@@ -153,7 +153,8 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
 
         is_senior = userInfo.getIs_senior();
-        if (StringUtils.isEquals(is_senior, "1")) {
+        String user_type = userInfo.getUser_type();
+        if (StringUtils.isEquals(user_type, "1")) {
             layout_select_who.setVisibility(View.VISIBLE);
         }else{
             layout_select_who.setVisibility(View.GONE);
