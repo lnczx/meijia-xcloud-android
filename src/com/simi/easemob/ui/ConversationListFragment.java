@@ -65,19 +65,19 @@ public class ConversationListFragment extends EaseConversationListFragment{
             public void onCheckedChanged(RadioGroup grop, int checkedId) {
                 
                 if(checkedId == grop.getChildAt(0).getId()){
-                    
-                }
-                if(checkedId == grop.getChildAt(1).getId()){
-                    //跳转到通讯录View
+                  //跳转到通讯录View
                     if(activity != null){
                         ((MainActivity)activity).change2Contacts();
                     }
+                }
+                if(checkedId == grop.getChildAt(1).getId()){
+                    
                 }
                 
             }
         });
         
-        radiogroup.getChildAt(0).performClick();
+//        radiogroup.getChildAt(0).performClick();
     }
     
     @Override

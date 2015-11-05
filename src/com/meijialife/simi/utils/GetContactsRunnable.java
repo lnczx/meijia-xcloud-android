@@ -63,14 +63,16 @@ public class GetContactsRunnable implements Runnable {
                     android.provider.ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
             // 取得电话号码(可能存在多个号码)
             ArrayList<String> phones = new ArrayList<String>();
-            while (phonecur.moveToNext()) {
+            while (phonecur != null && phonecur.moveToNext()) {
                 String strPhoneNumber = phonecur.getString(phonecur.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER));
                 if (strPhoneNumber.length() > 4) {
                     phones.add(strPhoneNumber);
                 }
 
             }
-            contactsList.add(new Contact(contactId, name, phones.get(0)));
+            if(phones.size() > 0){
+                contactsList.add(new Contact(contactId, name, phones.get(0)));
+            }
 
         }
         
