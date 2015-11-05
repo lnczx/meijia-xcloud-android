@@ -186,12 +186,14 @@
 
                 <ImageView
                     android:id="@+id/iv_order_select_alipay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/bg_order_selector" />
+                    android:background="@drawable/bg_order_selector" 
+                  	android:scaleType="fitXY"  
+                    />
             </RelativeLayout>
 
             <View
@@ -239,12 +241,14 @@
 
                 <ImageView
                     android:id="@+id/iv_order_select_weixin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/bg_order_selector" />
+                    android:background="@drawable/bg_order_selector"
+                    android:scaleType="fitXY"
+                     />
             </RelativeLayout>
 
             <TextView
