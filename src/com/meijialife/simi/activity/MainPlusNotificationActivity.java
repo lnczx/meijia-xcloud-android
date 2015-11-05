@@ -113,6 +113,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private String for_userid = "";
     private UserInfo userInfo;
     private RelativeLayout layout_select_who;
+    private boolean isUsersenior;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_notification);
@@ -153,7 +154,8 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
 
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
-        if (StringUtils.isEquals(user_type, "1")) {
+       isUsersenior = StringUtils.isEquals(user_type, "1");
+        if (isUsersenior) {
             layout_select_who.setVisibility(View.VISIBLE);
         }else{
             layout_select_who.setVisibility(View.GONE);
@@ -682,7 +684,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         map.put("card_id", update ? card.getCard_id() : "0");
         map.put("card_type", "4");
         map.put("create_user_id", c_id + "");
-        map.put("user_id",  for_userid);
+        map.put("user_id",  isUsersenior?for_userid:c_id);
         map.put("attends", mJson);
         map.put("service_time", uploadtime);
         map.put("service_content", Constants.CARD_ADD_NOTIFICATION_CONTENT);

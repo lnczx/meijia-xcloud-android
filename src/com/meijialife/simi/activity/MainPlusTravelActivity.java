@@ -139,7 +139,8 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         UserInfo userInfo = DBHelper.getUserInfo(this);
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
-        if (StringUtils.isEquals(user_type, "1")) {
+      isUsersenior = StringUtils.isEquals(user_type, "1");
+        if (isUsersenior) {
             layout_select_who.setVisibility(View.VISIBLE);
         } else {
             layout_select_who.setVisibility(View.GONE);
@@ -713,6 +714,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     private Cards card;
     private Button bt_create_travel;
     private TextView tv_senser_tip;
+    private boolean isUsersenior;
 
     /**
      * 
@@ -802,7 +804,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         map.put("card_id", "0");
         map.put("card_type", "5");
         map.put("create_user_id", c_id + "");
-        map.put("user_id", for_userid);
+        map.put("user_id", isUsersenior?for_userid:c_id);
         map.put("service_time", cultime);
         map.put("service_content", Constants.CARD_ADD_TREAVEL_CONTENT);
         map.put("set_remind", remindAlerm + "");
