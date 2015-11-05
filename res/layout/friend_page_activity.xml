@@ -48,7 +48,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
                         android:visibility="visible" >
-					  
                        <LinearLayout
                             android:id="@+id/tv_name_and_sex"
                             android:layout_width="wrap_content"
@@ -67,8 +66,8 @@
                             android:textSize="18sp" />
 						 <ImageView
 				            android:id="@+id/iv_icon_sex"
-				            android:layout_width="10dp"
-				            android:layout_height="10dp"
+				            android:layout_width="11dp"
+				            android:layout_height="12dp"
 				            android:background="@drawable/friend_sex_female" 
 				            android:layout_marginTop="7dp"
 				            android:layout_marginLeft="10dp"
@@ -97,19 +96,22 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="5dp"
                             android:orientation="horizontal" >
-
-                            <TextView
+<!-- 						  android:background="@drawable/login_btn_bg_selector"
+ -->                            
+ 							<TextView
                                 android:id="@+id/tv_add"
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/login_btn_bg_selector"
+                                android:background="@drawable/btn_is_friend"
                                 android:gravity="center"
                                 android:paddingBottom="3dp"
                                 android:paddingTop="3dp"
                                 android:singleLine="true"
-                                android:text="添加好友"
+                                android:text="已是好友"
                                 android:textColor="#ffffff"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:clickable="false"
+                                 />
 
                             <TextView
                                 android:id="@+id/tv_msg"

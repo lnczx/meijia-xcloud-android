@@ -127,7 +127,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
         tv_friend_num = (TextView)findViewById(R.id.tv_friend_num);
         
         iv_top_head.setOnClickListener(this);
-        btn_add.setOnClickListener(this);
+        //btn_add.setOnClickListener(this);
         btn_msg.setOnClickListener(this);
 
         vp_main = (NoScrollViewPager) findViewById(R.id.vp_main);
