@@ -26,7 +26,7 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:gravity="center"
-                android:text="秘友"
+                android:text="好友"
                 android:textColor="@color/index2_radiobutton_color" />
 
             <RadioButton

@@ -427,7 +427,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             tv_header.setText("发现");
             break;
         case 3:
-            tv_header.setText("秘友");
+            tv_header.setText("好友");
             break;
         case 4:
             tv_header.setText("我的");
