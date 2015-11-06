@@ -116,6 +116,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_affair);
         super.onCreate(savedInstanceState);
+        
         userInfo = DBHelper.getUserInfo(this);
         
         card = (Cards) getIntent().getSerializableExtra("cards");
@@ -666,6 +667,11 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             fdate = mdate;
 
         }
+        
+        if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
+            UIUtils.showToast(MainPlusAffairActivity.this, "请选择为谁创建");
+        }
+
         if (StringUtils.isEmpty(mtime)) {
             UIUtils.showToast(MainPlusAffairActivity.this, "请选择提醒时间");
             dismissDialog();
