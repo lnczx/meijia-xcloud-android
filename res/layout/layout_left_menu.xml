@@ -258,7 +258,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@id/iv_jishi"
-                    android:text="行政人学院"
+                    android:text="行政人智库"
                     android:textColor="@color/left_text_black"
                     android:textSize="17.6sp" />
 
