@@ -86,6 +86,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private void init(View v) {
         v.findViewById(R.id.btn_chakan).setOnClickListener(this);
         v.findViewById(R.id.ibtn_person).setOnClickListener(this);
+        v.findViewById(R.id.btn_rili).setOnClickListener(this);
         
         layout_mask = v.findViewById(R.id.layout_mask);
     }
@@ -361,6 +362,16 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             break;
         case R.id.ibtn_person: // 侧边栏
             MainActivity.slideMenu();
+            break;
+        case R.id.btn_rili: // 日历展开/收起
+            LocalDate selectedDay = calendarManager.getSelectedDay();
+            if(calendarManager.getState() == CalendarManager.State.MONTH){
+                calendarManager = new CalendarManager(selectedDay, CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now().plusYears(1));
+            }else{
+                calendarManager = new CalendarManager(selectedDay, CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now().plusYears(1));
+            }
+            calendarView.init(calendarManager, getActivity(), this);
+            
             break;
 
         default:

@@ -96,6 +96,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_trevel);
         super.onCreate(savedInstanceState);
+        userInfo = DBHelper.getUserInfo(this);
 
         card = (Cards) getIntent().getSerializableExtra("cards");
         initView(card);
@@ -136,7 +137,6 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         slipBtn_dingjipiao = (ToggleButton) findViewById(R.id.slipBtn_dingjipiao);
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
 
-        UserInfo userInfo = DBHelper.getUserInfo(this);
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
       isUsersenior = StringUtils.isEquals(user_type, "1");
@@ -785,7 +785,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
         final Date fdate = mdate;
 
-        if (StringUtils.isEquals(userInfo.getIs_senior(), "1") && StringUtils.isEmpty(for_userid)) {
+        if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
             UIUtils.showToast(MainPlusTravelActivity.this, "请选择为谁创建");
         }
 

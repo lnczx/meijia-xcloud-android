@@ -332,7 +332,9 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" 
+             />
 
         <!-- =============================以下全部是环信相关内容================================= -->
 
