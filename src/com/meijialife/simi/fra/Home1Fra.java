@@ -364,6 +364,13 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             MainActivity.slideMenu();
             break;
         case R.id.btn_rili: // 日历展开/收起
+            LocalDate selectedDay = calendarManager.getSelectedDay();
+            if(calendarManager.getState() == CalendarManager.State.MONTH){
+                calendarManager = new CalendarManager(selectedDay, CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now().plusYears(1));
+            }else{
+                calendarManager = new CalendarManager(selectedDay, CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now().plusYears(1));
+            }
+            calendarView.init(calendarManager, getActivity(), this);
             
             break;
 
