@@ -329,8 +329,8 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
         // return true;
 
         super.onTouchEvent(ev);
-//        return mResizeManager.onTouchEvent(ev);
-        return false;//屏蔽首页上下滑动事件
+        return mResizeManager.onTouchEvent(ev);
+//        return false;//屏蔽首页上下滑动 
     }
 
     @Override
