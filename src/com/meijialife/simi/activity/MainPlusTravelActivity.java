@@ -96,6 +96,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_trevel);
         super.onCreate(savedInstanceState);
+        userInfo = DBHelper.getUserInfo(this);
 
         card = (Cards) getIntent().getSerializableExtra("cards");
         initView(card);
