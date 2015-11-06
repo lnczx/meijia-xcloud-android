@@ -43,7 +43,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     public void onResp(BaseResp resp) {
         Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
-
+    
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
 //             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 //             builder.setTitle(R.string.app_tip);
@@ -53,7 +53,10 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             if (resp.errCode == BaseResp.ErrCode.ERR_OK) {
 //                PayOrderActivity.postCardOnlinePay(this, this, WxPay.outTradeNo, "2", "SUCCESS");
                 WxPay.activity.finish();
+              
             }
+            WXPayEntryActivity.this.finish();
         }
+        
     }
 }
