@@ -92,7 +92,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
     private int mHour = 0;
     private int mMinute = 0;
 
-    private Date chooseDate;//用户选择的时间
+    private Date chooseDate; 
     private String finalTime;
     private String uploadtime;
     private ContactBean contactBean;
