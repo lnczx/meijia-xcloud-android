@@ -666,7 +666,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
 
             fdate = mdate;
 
-       if (StringUtils.isEquals(userInfo.getIs_senior(), "1") && StringUtils.isEmpty(for_userid)) {
+       if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
             UIUtils.showToast(MainPlusMorningActivity.this, "请选择为谁创建");
         }
             if (StringUtils.isEmpty(mtime)) {

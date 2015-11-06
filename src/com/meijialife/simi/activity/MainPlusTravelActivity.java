@@ -137,7 +137,6 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         slipBtn_dingjipiao = (ToggleButton) findViewById(R.id.slipBtn_dingjipiao);
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
 
-        UserInfo userInfo = DBHelper.getUserInfo(this);
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
       isUsersenior = StringUtils.isEquals(user_type, "1");
