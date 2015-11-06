@@ -116,6 +116,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_affair);
         super.onCreate(savedInstanceState);
+        
         userInfo = DBHelper.getUserInfo(this);
         
         card = (Cards) getIntent().getSerializableExtra("cards");

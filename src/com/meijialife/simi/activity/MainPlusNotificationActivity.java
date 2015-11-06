@@ -93,7 +93,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private int mHour = 0;
     private int mMinute = 0;
 
-    private Date chooseDate;//用户选择的时间
+    private Date chooseDate; 
     private String finalTime;
     private String uploadtime;
     private ContactBean contactBean;
@@ -109,7 +109,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private Cards card;
     private Date fdate;
     private TextView tv_senser_tip;
-  private TextView tv_select_who_name;
+    private TextView tv_select_who_name;
     private String for_userid = "";
     private UserInfo userInfo;
     private RelativeLayout layout_select_who;
