@@ -681,7 +681,7 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
 
         }
       
-        if (StringUtils.isEquals(userInfo.getIs_senior(), "1") && StringUtils.isEmpty(for_userid)) {
+        if (  StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
             UIUtils.showToast(MainPlusMeettingActivity.this, "请选择为谁创建");
         }
 

@@ -785,7 +785,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
         final Date fdate = mdate;
 
-        if (StringUtils.isEquals(userInfo.getIs_senior(), "1") && StringUtils.isEmpty(for_userid)) {
+        if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
             UIUtils.showToast(MainPlusTravelActivity.this, "请选择为谁创建");
         }
 
