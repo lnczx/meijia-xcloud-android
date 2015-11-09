@@ -42,4 +42,5 @@
 	<color name="holo_green_light">#ff99cc00</color>
 	<color name="holo_orange_light">#ffffbb33</color>
 	<color name="holo_red_light">#ffff4444</color>
+	<color name="lab_sec_dark_yellow">#f8cd66 </color><!--秘书标签颜色 -->
 </resources>
