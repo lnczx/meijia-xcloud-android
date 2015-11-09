@@ -1,7 +1,9 @@
 package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
@@ -13,6 +15,7 @@ import org.json.JSONObject;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,8 +25,10 @@ import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.adapter.HorizontalScrollViewAdapter;
 import com.meijialife.simi.adapter.SecretaryServiceAdapter;
 import com.meijialife.simi.bean.SecretarySenior;
+import com.meijialife.simi.ui.MyHorizontalScrollView;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -35,12 +40,22 @@ import com.meijialife.simi.utils.UIUtils;
  * 
  *
  */
-public class SecretaryActivity extends BaseActivity{
-    
+public class SecretaryActivity extends BaseActivity {
+
     private ListView listview;
     private SecretaryServiceAdapter adapter;
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
+
+ 
+    /**
+     * HorizontalScrollView实现图片左右滑动
+     */
+    private MyHorizontalScrollView mHorizontalScrollView;
+    private HorizontalScrollViewAdapter mAdapter;
+    private ImageView mImg;
+    private List<Integer> mDatas =  new ArrayList<Integer>(Arrays.asList(R.drawable.mishutupian01, R.drawable.mishutupian02, R.drawable.mishutupian03,
+            R.drawable.mishutupian04));;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,39 +63,50 @@ public class SecretaryActivity extends BaseActivity{
         setContentView(R.layout.secretary_activity);
         super.onCreate(savedInstanceState);
         
+        initSecPhoto();
         initView();
-//        test();
         
+    }
+    private void initSecPhoto(){
+        
+        //获得HorizontalScrollView对象
+        mHorizontalScrollView = (MyHorizontalScrollView) findViewById(R.id.id_horizontalScrollView);
+        //适配器初始化数据
+        mAdapter = new HorizontalScrollViewAdapter(this, mDatas);
+        //ScrollView添加适配器
+        mHorizontalScrollView.initDatas(mAdapter);
         
     }
     
-    private void initView(){
+    
+    
+
+    private void initView() {
         setTitleName("服务订单");
         requestBackBtn();
-        
+
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
-        
+
         String sec_id = getIntent().getExtras().getString("sec_id");
         String sec_name = getIntent().getExtras().getString("sec_name");
         String sec_description = getIntent().getExtras().getString("sec_description");
         String sec_img = getIntent().getExtras().getString("sec_img");
-        
-        TextView  item_tv_name = (TextView)findViewById(R.id.item_tv_name);
-        TextView  item_tv_text = (TextView)findViewById(R.id.item_tv_text);
-        RoundImageView  item_iv_icon = (RoundImageView)findViewById(R.id.item_iv_icon);
-        
+
+        TextView item_tv_name = (TextView) findViewById(R.id.item_tv_name);
+        TextView item_tv_text = (TextView) findViewById(R.id.item_tv_text);
+        RoundImageView item_iv_icon = (RoundImageView) findViewById(R.id.item_iv_icon);
+
         item_tv_name.setText(sec_name);
         item_tv_text.setText(sec_description);
         finalBitmap.display(item_iv_icon, sec_img, defDrawable.getBitmap(), defDrawable.getBitmap());
-        
-        
-        listview = (ListView)findViewById(R.id.listview);
-        adapter = new SecretaryServiceAdapter(this,sec_id);
+
+        listview = (ListView) findViewById(R.id.listview);
+        adapter = new SecretaryServiceAdapter(this, sec_id);
        
+
         getSecretarySenior();
     }
-    
     /**
      * 获取秘书列表
      */
@@ -115,17 +141,17 @@ public class SecretaryActivity extends BaseActivity{
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if(StringUtils.isNotEmpty(data)){
+                            if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 ArrayList<SecretarySenior> secData = gson.fromJson(data, new TypeToken<ArrayList<SecretarySenior>>() {
                                 }.getType());
                                 adapter.setData(secData);
                                 listview.setAdapter(adapter);
-//                                tv_tips.setVisibility(View.GONE);
-                            }else{
+                                // tv_tips.setVisibility(View.GONE);
+                            } else {
                                 adapter.setData(new ArrayList<SecretarySenior>());
                                 listview.setAdapter(adapter);
-//                                tv_tips.setVisibility(View.VISIBLE);
+                                // tv_tips.setVisibility(View.VISIBLE);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -145,7 +171,7 @@ public class SecretaryActivity extends BaseActivity{
 
                 }
                 // 操作失败，显示错误信息
-                if(!StringUtils.isEmpty(errorMsg.trim())){
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
                     UIUtils.showToast(SecretaryActivity.this, errorMsg);
                 }
             }
