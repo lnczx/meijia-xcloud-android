@@ -59,7 +59,6 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.Utils;
 
 /**
  * 添加新地址
@@ -240,7 +239,6 @@ public class AddAddress extends FragmentActivity implements OnGetPoiSearchResult
 			return;
 		}
 		if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {/*
-
 			// 当输入关键字在本市没有找到，但在其他城市找到时，返回包含该关键字信息的城市列表
 			String strInfo = "在";
 			for (CityInfo cityInfo : result.getSuggestCityList()) {
