@@ -261,7 +261,7 @@ public class MyHorizontalScrollView extends HorizontalScrollView implements
 		}
 
 	}
-
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent ev)
 	{

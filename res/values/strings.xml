@@ -42,6 +42,16 @@
     
     <string name="login_no_code_tip">请检查手机号是否正确，如无误超过60秒仍未收到短信，可能是短信被拦截或网络异常，请拨打客服电话获取验证码。</string>
     
+    <!-- 图片浏览 -->
+    <string name="only_choose_num">最多可同时上传12张</string>
+    <string name="finish">完成</string>
+    <string name="invalidSD">sdcard无效或没有插入！</string>
+    <string name="photo">选择相册</string>
+    <string name="album">相册</string>
+    <string name="preview">预览</string>
+    <string name="unfinished">完成</string> 
+    <string name="camera_cancel">取消</string>
+    <string name="no_photo">相册没有图片</string>
     
 
 </resources>
