@@ -114,7 +114,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         et_name = (EditText) findViewById(R.id.et_name);
         et_mobile = (EditText) findViewById(R.id.et_mobile);
         et_gender = (TextView) findViewById(R.id.et_gender);
-        et_card = (EditText) findViewById(R.id.et_card);
+        //et_card = (EditText) findViewById(R.id.et_card);
 
         title_btn_edit_layout.setVisibility(View.VISIBLE);
         title_btn_edit_layout.setOnClickListener(this);
@@ -138,11 +138,11 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         et_gender.setText(user.getSex());
 
         String is_senior = DBHelper.getUserInfo(this).getIs_senior();
-        if (StringUtils.isEquals(is_senior, "1")) {
+       /* if (StringUtils.isEquals(is_senior, "1")) {
             et_card.setText("您已购买秘书服务");
         } else {
             et_card.setText("您还没购买秘书服务");
-        }
+        }*/
 
         finalBitmap.display(iv_header, user.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
     }
@@ -159,8 +159,11 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         case R.id.rl_item_3: // 性别
             showGenderDlg();
             break;
-        case R.id.rl_item_4: // 私秘卡
-            Toast.makeText(this, "私秘卡", Toast.LENGTH_SHORT).show();
+        case R.id.rl_item_4: // 封面相册
+            Intent intent = new Intent(AccountInfoActivity.this,com.meijialife.simi.photo.activity.MainActivity.class);
+            startActivity(intent);
+            
+           // showCoverAlbum();
             break;
         case R.id.tv_account_logout: // 退出登陆
             logOut();
@@ -260,6 +263,51 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
             }
         });
     }
+    /**
+     * 封面相册显示上传头像对话框
+     */
+    private void showCoverAlbum() {
+        if (!isEdit) {
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(AccountInfoActivity.this);
+        builder.setCancelable(true);
+        final String[] sex = { "拍照", "手机相册" };
+        builder.setSingleChoiceItems(sex, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    Intent intentFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // 判断存储卡是否可以用，可用进行存储
+                    if (Utils.isExistSD()) {
+
+                        intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT,
+                                Uri.fromFile(new File(Environment.getExternalStorageDirectory(), IMAGE_FILE_NAME)));
+                    }
+
+                    startActivityForResult(intentFromCapture, CAMERA_REQUEST_CODE);
+                }
+                if (which == 1) {
+                    Intent intentFromGallery = new Intent();
+                    intentFromGallery.setType("image/*"); // 设置文件类型
+                    intentFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intentFromGallery, IMAGE_REQUEST_CODE);
+                }
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
 
     /**
      * 修改头像对话框

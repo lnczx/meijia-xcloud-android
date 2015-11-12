@@ -10,5 +10,6 @@
         android:layout_height="119dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop" 
+        />
 </RelativeLayout>

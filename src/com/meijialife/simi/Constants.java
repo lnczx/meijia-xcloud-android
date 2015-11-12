@@ -57,7 +57,11 @@ public class Constants {
     public static final String URL_GET_SEC = ROOT_URL + "sec/get_list.json";
     /** 秘书服务接口 **/
     public static final String URL_GET_SENIOR = ROOT_URL + "dict/get_seniors.json";
-    
+    /**用户获取用户图片接口**/
+    public static final String URL_GET_USER_IMAGES = ROOT_URL + "user/get_user_imgs.json";
+    /**封面相册上传多张图片接口**/
+    public static final String URL_POST_COVER_ALBUM = ROOT_URL + "user/post_user_img.json";
+
     /** 添加通讯录好友接口 **/
     public static final String URL_POST_FRIEND = ROOT_URL + "user/post_friend.json";
     /** 用户信息修改接口 **/
@@ -116,7 +120,10 @@ public class Constants {
     public static  String CARD_ADD_AFFAIR_CONTENT = "";
     public static  String CARD_ADD_NOTIFICATION_CONTENT = "";
 
-     /** 本地临时文件根目录 **/
+   
+    /**封面相册常量**/
+    public static String COVER_ALBUM_INTRODUCE_CONTENT ="";
+    /** 本地临时文件根目录 **/
      public static final String PATH_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Simi";
     //
     //
