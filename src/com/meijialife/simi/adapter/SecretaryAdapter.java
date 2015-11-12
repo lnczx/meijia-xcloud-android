@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.bean.Secretary;
 import com.meijialife.simi.ui.RoundImageView;
 
@@ -21,14 +22,15 @@ import com.meijialife.simi.ui.RoundImageView;
  */
 public class SecretaryAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
-	private ArrayList<Secretary> list;
+	
+	private ArrayList<Partner> partnerList;
 	
 	private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
 
 	public SecretaryAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
-		list = new ArrayList<Secretary>();
+		partnerList = new ArrayList<Partner>();
 		
 		finalBitmap = FinalBitmap.create(context);
 		//获取默认头像
@@ -36,14 +38,14 @@ public class SecretaryAdapter extends BaseAdapter {
     
 	}
 
-	public void setData(ArrayList<Secretary> list) {
-		this.list = list;
+	public void setData(ArrayList<Partner> partnerList) {
+		this.partnerList = partnerList;
 		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
-		return list.size();
+		return partnerList.size();
 	}
 
 	@Override
@@ -65,15 +67,21 @@ public class SecretaryAdapter extends BaseAdapter {
 			holder.tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
 			holder.tv_text = (TextView) convertView.findViewById(R.id.item_tv_text);
 			holder.iv_head = (RoundImageView)convertView.findViewById(R.id.item_iv_icon);
+			holder.item_tv_fav = (TextView)convertView.findViewById(R.id.item_tv_fav);
+			holder.item_tv_addr_name = (TextView)convertView.findViewById(R.id.item_tv_addr_name);
+			holder.item_tv_des_name = (TextView)convertView.findViewById(R.id.item_tv_des_name);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
 		
-		holder.tv_name.setText(list.get(position).getName());
-		holder.tv_text.setText(list.get(position).getDescription());
+		holder.tv_name.setText(partnerList.get(position).getName());
+		holder.tv_text.setText(partnerList.get(position).getIntroduction());
+		holder.item_tv_fav.setText(partnerList.get(position).getService_type_name());
+		holder.item_tv_addr_name.setText(partnerList.get(position).getCity_and_region());
+		holder.item_tv_des_name.setText(partnerList.get(position).getResponse_time_name());
 		//获得头像的url
-        String url = list.get(position).getHead_img();
+        String url = partnerList.get(position).getHead_img();
         //将默认头像摄者为秘书头像
         finalBitmap.display(holder.iv_head, url, defDrawable.getBitmap(), defDrawable.getBitmap());
         
@@ -81,9 +89,13 @@ public class SecretaryAdapter extends BaseAdapter {
 	}
 	
 	class Holder {
-		TextView tv_name;
-		TextView tv_text;
-		RoundImageView iv_head;
+		TextView tv_name;//昵称
+		TextView tv_text;//简介
+		RoundImageView iv_head;//头像
+		TextView item_tv_fav;//服务范围大类
+		TextView item_tv_addr_name;//所在城市
+		TextView item_tv_des_name;//服务响应时间
+		
 	}
 
 }

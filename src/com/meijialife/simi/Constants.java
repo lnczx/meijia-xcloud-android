@@ -61,7 +61,10 @@ public class Constants {
     public static final String URL_GET_USER_IMAGES = ROOT_URL + "user/get_user_imgs.json";
     /**封面相册上传多张图片接口**/
     public static final String URL_POST_COVER_ALBUM = ROOT_URL + "user/post_user_img.json";
-
+    /**服务商列表接口**/
+    public static final String URL_GET_USER_LIST = ROOT_URL+"partner/get_user_list.json";
+    
+    
     /** 添加通讯录好友接口 **/
     public static final String URL_POST_FRIEND = ROOT_URL + "user/post_friend.json";
     /** 用户信息修改接口 **/
