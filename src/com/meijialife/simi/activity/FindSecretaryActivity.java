@@ -23,6 +23,7 @@ import com.meijialife.simi.BaseListActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.SecretaryAdapter;
+import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.bean.Secretary;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
@@ -36,7 +37,7 @@ import com.meijialife.simi.utils.UIUtils;
  */
 public class FindSecretaryActivity extends BaseListActivity implements OnClickListener {
 
-    private ArrayList<Secretary> secList; // 所有秘书或助理数据
+    private ArrayList<Partner> partnerList; // 所有服务商--秘书列表
     private SecretaryAdapter adapter;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -58,15 +59,15 @@ public class FindSecretaryActivity extends BaseListActivity implements OnClickLi
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         // TODO Auto-generated method stub
-        Secretary secretary = secList.get(position);
-//        Toast.makeText(this, ""+secretary.getName(), Toast.LENGTH_SHORT).show();
+        Partner partner = partnerList.get(position);
+/*//        Toast.makeText(this, ""+secretary.getName(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(FindSecretaryActivity.this, SecretaryActivity.class);
         intent.putExtra("sec_id", secretary.getSec_id());
         intent.putExtra("sec_name", secretary.getName());
         intent.putExtra("sec_description", secretary.getDescription());
         intent.putExtra("sec_img", secretary.getHead_img());
         startActivity(intent);
-        super.onListItemClick(l, v, position, id);
+        super.onListItemClick(l, v, position, id);*/
     }
 
     @Override
@@ -95,11 +96,11 @@ public class FindSecretaryActivity extends BaseListActivity implements OnClickLi
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id+"");
-        map.put("page", "1");
+        map.put("service_type_id", "75");
         AjaxParams param = new AjaxParams(map);
 
         showDialog();
-        new FinalHttp().get(Constants.URL_GET_SEC, param, new AjaxCallBack<Object>() {
+        new FinalHttp().get(Constants.URL_GET_USER_LIST, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
@@ -122,12 +123,12 @@ public class FindSecretaryActivity extends BaseListActivity implements OnClickLi
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if(StringUtils.isNotEmpty(data)){
                                 Gson gson = new Gson();
-                                secList = gson.fromJson(data, new TypeToken<ArrayList<Secretary>>() {
+                                partnerList = gson.fromJson(data, new TypeToken<ArrayList<Partner>>() {
                                 }.getType());
-                                adapter.setData(secList);
+                                adapter.setData(partnerList);
 //                                tv_tips.setVisibility(View.GONE);
                             }else{
-                                adapter.setData(new ArrayList<Secretary>());
+                                adapter.setData(new ArrayList<Partner>());
 //                                tv_tips.setVisibility(View.VISIBLE);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
