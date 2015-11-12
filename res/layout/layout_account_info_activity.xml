@@ -196,11 +196,19 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="私秘卡:"
+                        android:text="封面相册:"
                         android:textColor="@color/simi_color_gray"
                         android:textSize="17.6sp" />
+                    
+                    <ImageView
+	                   android:layout_width="13dp"
+	                   android:layout_height="13dp"
+	                   android:layout_alignParentRight="true"
+	                   android:layout_centerVertical="true"
+	                   android:layout_marginRight="10dp"
+	                   android:src="@drawable/arrow_right" />
 
-                    <EditText
+                   <!--  <EditText
                         android:id="@+id/et_card"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -211,7 +219,7 @@
                         android:enabled="false"
                         android:gravity="right|center_vertical"
                         android:textColor="@color/simi_color_red"
-                        android:textSize="@dimen/font_size_16" />
+                        android:textSize="@dimen/font_size_16" /> -->
                 </RelativeLayout>
 
                 <View

@@ -335,7 +335,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             // startActivity(new Intent(this, NullWaitActivity.class));
             Intent intent5 = new Intent(this, WebViewActivity.class);
             intent5.putExtra("url", Constants.URL_XUEYUAN);
-            intent5.putExtra("title", "行政人学院");
+            intent5.putExtra("title", "行政人智库");
             startActivity(intent5);
             break;
         case R.id.item_6: // 积分商城

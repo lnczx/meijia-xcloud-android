@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg_color"
+    android:orientation="vertical"
+     >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/title_background_color"
+         >
+		 <ImageView
+	       android:id="@+id/title_btn_left"
+	       android:layout_width="50dp"
+	       android:layout_height="match_parent"
+	       android:layout_gravity="center_vertical"
+	       android:focusable="true"
+	       android:scaleType="centerInside"
+	       android:src="@drawable/title_left_back"
+	       android:visibility="visible" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="封面相册"
+            android:textColor="@color/text_normal"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/activity_selectimg_send"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="保存"
+            android:textColor="@color/text_normal"
+            android:textSize="20sp" 
+            />
+    </RelativeLayout>
+	<View
+          android:layout_width="match_parent"
+          android:layout_height="5dp"
+          android:background="@color/activity_bg_color" />
+    <EditText
+        android:id="@+id/et_introduce"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_margin="8dp"
+        android:gravity="left|top"
+        android:hint="请输入您的自我介绍吧..."       
+        android:background="@color/title_background_color"
+         >
+    </EditText>
+	<View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/activity_bg_color" />
+    <GridView 
+        android:id="@+id/noScrollgridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="5dp"
+        android:horizontalSpacing="3dp"        
+        android:numColumns="4"
+        android:scrollbars="none"
+        android:verticalSpacing="5dp" 
+        android:background="@color/title_background_color"
+        >
+    </GridView>
+
+</LinearLayout>
