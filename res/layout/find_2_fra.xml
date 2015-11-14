@@ -102,13 +102,27 @@
         android:layout_height="0.1dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent" />
-
-    <WebView
-        android:id="@+id/webview"
+	  <ListView
+        android:id="@+id/partner_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/button"
-        android:layout_below="@id/tab"
-        android:background="@android:color/transparent" />
+        android:layout_marginTop="42dp"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_weight="1.0"
+        android:divider="@color/cut_off_rule"
+        android:dividerHeight="0.5dp" >
+    </ListView>
+    <WebView
+       android:id="@+id/partner_web_view"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_marginTop="42dp"
+       android:layout_above="@id/button"
+       android:layout_below="@id/tab"
+       android:background="@android:color/transparent" 
+       android:visibility="gone"
+       />
+  
 
 </RelativeLayout>

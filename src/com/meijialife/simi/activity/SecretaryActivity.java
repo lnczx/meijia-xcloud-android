@@ -113,7 +113,7 @@ public class SecretaryActivity extends BaseActivity implements OnItemClickListen
         finalBitmap.display(item_iv_icon, sec_img, defDrawable.getBitmap(), defDrawable.getBitmap());
 
         listview = (ListView) findViewById(R.id.listview);
-        adapter = new SecretaryServiceAdapter(this, sec_id);
+        //adapter = new SecretaryServiceAdapter(this, sec_id);
         
         
         //获得HorizontalScrollView对象
@@ -233,11 +233,11 @@ public class SecretaryActivity extends BaseActivity implements OnItemClickListen
                                 Gson gson = new Gson();
                                 ArrayList<SecretarySenior> secData = gson.fromJson(data, new TypeToken<ArrayList<SecretarySenior>>() {
                                 }.getType());
-                                adapter.setData(secData);
+                               // adapter.setData(secData);
                                 listview.setAdapter(adapter);
                                 // tv_tips.setVisibility(View.GONE);
                             } else {
-                                adapter.setData(new ArrayList<SecretarySenior>());
+                                //adapter.setData(new ArrayList<SecretarySenior>());
                                 listview.setAdapter(adapter);
                                 // tv_tips.setVisibility(View.VISIBLE);
                             }

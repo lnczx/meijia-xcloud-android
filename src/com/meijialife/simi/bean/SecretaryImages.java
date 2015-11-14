@@ -12,7 +12,7 @@ public class SecretaryImages implements Serializable {
     private String user_id;//用户Id
     private int img_id;//图片Id
     private String img_trumb;//大小为weith=400 heigth=400的图片链接,用于列表展现
-    private String img;//原图链接
+    private String img_url;//原图链接
     private Long add_time;//添加时间戳
     private int default_img;
     
@@ -42,11 +42,11 @@ public class SecretaryImages implements Serializable {
     public void setImg_trumb(String img_trumb) {
         this.img_trumb = img_trumb;
     }
-    public String getImg() {
-        return img;
+    public String getImg_url() {
+        return img_url;
     }
-    public void setImg(String img) {
-        this.img = img;
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
     }
     public Long getAdd_time() {
         return add_time;
