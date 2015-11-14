@@ -1,4 +1,4 @@
-package com.meijialife.simi.activity;
+package com.meijialife.simi.bean;
 
 import com.meijialife.simi.bean.MyOrder;
 
