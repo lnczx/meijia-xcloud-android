@@ -1,19 +1,25 @@
 package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import net.tsz.afinal.FinalBitmap;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.location.LLSInterface;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.bean.Secretary;
+import com.meijialife.simi.bean.UserTag;
 import com.meijialife.simi.ui.RoundImageView;
 
 /**
@@ -27,11 +33,12 @@ public class SecretaryAdapter extends BaseAdapter {
 	
 	private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
+    private Context contexts;
 
 	public SecretaryAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
 		partnerList = new ArrayList<Partner>();
-		
+		contexts = context;
 		finalBitmap = FinalBitmap.create(context);
 		//获取默认头像
         defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_defult_touxiang);
@@ -58,6 +65,7 @@ public class SecretaryAdapter extends BaseAdapter {
 		return 0;
 	}
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder = null;
@@ -70,6 +78,7 @@ public class SecretaryAdapter extends BaseAdapter {
 			holder.item_tv_fav = (TextView)convertView.findViewById(R.id.item_tv_fav);
 			holder.item_tv_addr_name = (TextView)convertView.findViewById(R.id.item_tv_addr_name);
 			holder.item_tv_des_name = (TextView)convertView.findViewById(R.id.item_tv_des_name);
+			holder.ll =(LinearLayout)convertView.findViewById(R.id.ll_user_tags1);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -84,7 +93,15 @@ public class SecretaryAdapter extends BaseAdapter {
         String url = partnerList.get(position).getHead_img();
         //将默认头像摄者为秘书头像
         finalBitmap.display(holder.iv_head, url, defDrawable.getBitmap(), defDrawable.getBitmap());
-        
+        List<UserTag> userTagList = partnerList.get(position).getUser_tags();
+        for (Iterator iterator = userTagList.iterator(); iterator.hasNext();) {
+            UserTag userTag = (UserTag) iterator.next();
+            TextView tv = new TextView(contexts);
+            tv.setText(userTag.getTag_name());
+            tv.setBackgroundResource(R.drawable.lab_for_sec);
+            tv.setTextColor(R.color.simi_color_white);
+            holder.ll.addView(tv);
+        }
 		return convertView;
 	}
 	
@@ -95,6 +112,7 @@ public class SecretaryAdapter extends BaseAdapter {
 		TextView item_tv_fav;//服务范围大类
 		TextView item_tv_addr_name;//所在城市
 		TextView item_tv_des_name;//服务响应时间
+		LinearLayout ll;
 		
 	}
 

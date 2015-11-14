@@ -63,6 +63,8 @@ public class Constants {
     public static final String URL_POST_COVER_ALBUM = ROOT_URL + "user/post_user_img.json";
     /**服务商列表接口**/
     public static final String URL_GET_USER_LIST = ROOT_URL+"partner/get_user_list.json";
+    /**服务人员详情接口**/
+    public static final String URL_GET_USER_DETAIL = ROOT_URL+"partner/get_user_detail.json";
     
     
     /** 添加通讯录好友接口 **/

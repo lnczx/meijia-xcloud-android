@@ -38,7 +38,7 @@ public class GalleryUrlActivity extends Activity {
         secImageData = (List<SecretaryImages>) intent.getSerializableExtra("list_img");
         for (Iterator iterator = secImageData.iterator(); iterator.hasNext();) {
             SecretaryImages secretaryImages = (SecretaryImages) iterator.next();
-            list_imgs.add(secretaryImages.getImg());
+            list_imgs.add(secretaryImages.getImg_url());
         }
         my_position=intent.getIntExtra("tag", my_position);
         UrlPagerAdapter pagerAdapter = new UrlPagerAdapter(GalleryUrlActivity.this, list_imgs);

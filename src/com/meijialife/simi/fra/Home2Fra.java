@@ -33,7 +33,9 @@ public class Home2Fra extends Fragment implements OnClickListener {
 	private static final String URL_1 = "http://51xingzheng.cn/shop/shop-cat-fuwu.html";
 	private static final String URL_2 = "http://51xingzheng.cn/shop/shop-cat-shiwu.html";
 	private static final String URL_3 = "http://51xingzheng.cn/shop/shop-cat-peixun.html";
-	private static final String URL_4 = "http://51xingzheng.cn/shop/shop-cat-qita.html";
+	private static final String URL_4 = "http://s.click.taobao.com/t?e=m%3D2%26s%3DcirY%2FJeVTuUcQipKwQzePDAVflQIoZepK7Vc7tFgwiFRAdhuF14FMUOY7BkY%2Fmh1lovu%2FCElQOv5VWKsCTst%2Bl%2Fh3Bzd%2B3corM0I4mel6fJLYcTC6xWsK7Mio2xy9pekxgxdTc00KD8%3D";
+//	private static final String URL_4 = "http://s.click.taobao.com/x0Kmfjx";
+//	private static final String URL_4 = "http://51xingzheng.cn/shop/shop-cat-qita.html";
 	
 	private RadioGroup radiogroup;
 	private View line_1, line_2, line_3, line_4;

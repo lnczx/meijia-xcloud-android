@@ -1,6 +1,7 @@
 package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.bean.SecretarySenior;
+import com.meijialife.simi.bean.ServicePrices;
 
 /**
  * 秘书服务订单适配器
@@ -22,15 +24,16 @@ import com.meijialife.simi.bean.SecretarySenior;
  */
 public class SecretaryServiceAdapter extends BaseAdapter {
     private LayoutInflater inflater;
-    private ArrayList<SecretarySenior> mList;
+   // private ArrayList<SecretarySenior> mList;
+    private List<ServicePrices> mList;
     private Context context;
     private String sec_id;
 
-    public SecretaryServiceAdapter(Context context, String sec_id) {
+    public SecretaryServiceAdapter(Context context) {
         this.context = context;
-        this.sec_id = sec_id;
+        //this.sec_id = sec_id;
         inflater = LayoutInflater.from(context);
-        mList = new ArrayList<SecretarySenior>();
+        mList = new ArrayList<ServicePrices>();
     }
 
     /**
@@ -40,7 +43,7 @@ public class SecretaryServiceAdapter extends BaseAdapter {
      * @param friendList
      *            现有好友数据
      */
-    public void setData(ArrayList<SecretarySenior> secData) {
+    public void setData(List<ServicePrices> secData) {
         this.mList = secData;
         notifyDataSetChanged();
     }
@@ -75,7 +78,7 @@ public class SecretaryServiceAdapter extends BaseAdapter {
         }
 
         holder.tv_title.setText(mList.get(position).getName() + "：");
-        holder.tv_price.setText(mList.get(position).getSenior_pay() + "元");
+        holder.tv_price.setText(mList.get(position).getPrice() + "元");
 
         holder.tv_buy.setOnClickListener(new OnClickListener() {
             @Override
@@ -84,9 +87,9 @@ public class SecretaryServiceAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, PayOrderActivity.class);
                 intent.putExtra("from", PayOrderActivity.FROM_MISHU);
                 intent.putExtra("name", mList.get(position).getName());
-                intent.putExtra("senior_pay", mList.get(position).getSenior_pay());
+                intent.putExtra("senior_pay", mList.get(position).getPrice());
                 intent.putExtra("senior_type_id", mList.get(position).getId());
-                intent.putExtra("sec_id",sec_id);
+                intent.putExtra("id",mList.get(position).getId());
                 context.startActivity(intent);
             }
         });
