@@ -30,6 +30,9 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.alipay.ConsAli;
 import com.meijialife.simi.alipay.OnAlipayCallback;
 import com.meijialife.simi.alipay.PayWithAlipay;
+import com.meijialife.simi.bean.PartnerDetail;
+import com.meijialife.simi.bean.ServiceOrder;
+import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -55,6 +58,10 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private static final int PAY_TYPE_WXPAY = 2; // 微信支付
 
     private String reMoney; // 充值金额
+    
+    private PartnerDetail partnerDetail;//服务详情对象
+    private ServicePrices servicePrices;//服务报价
+    private ServiceOrder serviceOrder;//服务订单
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +84,8 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             card_value = getIntent().getStringExtra("card_value");
             card_id = getIntent().getStringExtra("card_id");
         } else if (from == FROM_MISHU) {
-            name = getIntent().getStringExtra("name");
-            senior_pay = getIntent().getStringExtra("senior_pay");
-          senior_type_id = getIntent().getStringExtra("senior_type_id");
-          sec_id = getIntent().getStringExtra("sec_id");
+            partnerDetail = (PartnerDetail) getIntent().getSerializableExtra("PartnerDetail");
+            servicePrices = (ServicePrices)getIntent().getSerializableExtra("servicePrices");
         }
 
         findViewById(R.id.recharge_ll_wxpay).setOnClickListener(this);
@@ -96,8 +101,8 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             tv_pay_name.setText(name);
             tv_pay_money.setText(card_pay + "元");
         } else if (from == FROM_MISHU) {
-            tv_pay_name.setText(name);
-            tv_pay_money.setText(senior_pay + "元");
+            tv_pay_name.setText(servicePrices.getName());
+            tv_pay_money.setText(servicePrices.getPrice() + "元");
         }
 
         RelativeLayout layout_quan = (RelativeLayout) findViewById(R.id.layout_quan);
@@ -155,8 +160,10 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 // 支付成功
                 // LogOut.i("======", "onAlipayCallback \n msg：" + msg);
                 String tradeNo = msg;
-                // Toast.makeText(getApplication(), "支付成功！", 1).show();
-                postSeniorOnlinePay(activity, context, tradeNo);
+                 Toast.makeText(getApplication(), "支付成功！", 1).show();
+                 finish();
+                 //管家卡在线支付同步接口
+//                postSeniorOnlinePay(activity, context, tradeNo);
             } else {
                 Toast.makeText(getApplication(), msg, 1).show();
             }
@@ -183,7 +190,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private String card_value;
 
     /**
-     * 私密卡购买接口
+     * 服务订单下单接口
      * 
      * @param payType
      *            //支付类型 0 = 微信支付 1 = 支付宝
@@ -194,15 +201,19 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-
+        UserInfo userInfo = DBHelper.getUserInfo(this);
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", DBHelper.getUserInfo(this).getUser_id());  
-        map.put("sec_id", sec_id); // 秘书id
-        map.put("senior_type_id", senior_type_id); // 秘书卡服务id
+        map.put("partner_user_id",partnerDetail.getUser_id()+"");
+        map.put("service_type_id",partnerDetail.getService_type_id()+"");//服务大类Id
+        map.put("service_price_id", servicePrices.getService_price_id()+"");
+        map.put("user_id", userInfo.getUser_id());
+        map.put("mobile",userInfo.getMobile());
         map.put("pay_type", "" + payType); 
+
+        
         AjaxParams param = new AjaxParams(map);
 
-        new FinalHttp().post(Constants.URL_POST_SENIOR_BUY, param, new AjaxCallBack<Object>() {
+        new FinalHttp().post(Constants.URL_POST_PARTNER_SERVICE_BUY, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
@@ -252,13 +263,16 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      *            //支付类型 0 = 余额支付 1 = 支付宝
      */
     private void parseSeniorBuyJson(JSONObject json, int payType) {
-        String senior_order_no = "";// 管家卡订单号
+        String order_no = "";// 管家卡订单号
         try {
             JSONObject obj = json.getJSONObject("data");
-  
+            String data = json.getString("data");
             mobile = obj.getString("mobile");
             order_pay = obj.getString("order_pay");
-            senior_order_no = obj.getString("senior_order_no");
+            order_no = obj.getString("order_no");
+            
+            Gson gson = new Gson();
+            serviceOrder = gson.fromJson(data, ServiceOrder.class);
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -268,9 +282,9 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
 
         if (payType == PAY_TYPE_ALIPAY) {
             new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, guanjiaCallback, mobile,
-                    ConsAli.PAY_TO_MS_CARD, order_pay, senior_order_no).pay();
+                    ConsAli.PAY_TO_MS_CARD,order_pay, order_no).pay();
         } else if (payType == PAY_TYPE_WXPAY) {
-            new WxPay(PayOrderActivity.this, PayOrderActivity.this,ConsAli.PAY_TO_MS_CARD, senior_order_no, "秘书服务购买", order_pay);
+            new WxPay(PayOrderActivity.this, PayOrderActivity.this,ConsAli.PAY_TO_MS_CARD, order_no, "秘书服务购买", order_pay);
         }
         
     }

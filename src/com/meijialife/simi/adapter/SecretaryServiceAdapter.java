@@ -14,7 +14,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.PartnerActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
+import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.SecretarySenior;
 import com.meijialife.simi.bean.ServicePrices;
 
@@ -28,6 +30,8 @@ public class SecretaryServiceAdapter extends BaseAdapter {
     private List<ServicePrices> mList;
     private Context context;
     private String sec_id;
+    private PartnerDetail partnerDetail;
+    private ServicePrices servicePrices;//服务报价
 
     public SecretaryServiceAdapter(Context context) {
         this.context = context;
@@ -43,8 +47,9 @@ public class SecretaryServiceAdapter extends BaseAdapter {
      * @param friendList
      *            现有好友数据
      */
-    public void setData(List<ServicePrices> secData) {
+    public void setData(List<ServicePrices> secData,PartnerDetail partnerDetail) {
         this.mList = secData;
+        this.partnerDetail = partnerDetail;
         notifyDataSetChanged();
     }
 
@@ -85,11 +90,9 @@ public class SecretaryServiceAdapter extends BaseAdapter {
             public void onClick(View v) {
                 // Toast.makeText(context, mList.get(position).getPrice()+"元", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, PayOrderActivity.class);
+                intent.putExtra("PartnerDetail",partnerDetail);
                 intent.putExtra("from", PayOrderActivity.FROM_MISHU);
-                intent.putExtra("name", mList.get(position).getName());
-                intent.putExtra("senior_pay", mList.get(position).getPrice());
-                intent.putExtra("senior_type_id", mList.get(position).getId());
-                intent.putExtra("id",mList.get(position).getId());
+                intent.putExtra("servicePrices",mList.get(position));
                 context.startActivity(intent);
             }
         });
