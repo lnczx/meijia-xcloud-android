@@ -69,7 +69,8 @@ public class PayWithAlipay {
             sProduct.body = "" + mobile;
             break;
         case ConsAli.PAY_TO_MS_CARD:// 管家卡支付
-            notifyUrl = ConsAli.NOTIFY_URL_GJ_CARD;
+            notifyUrl = ConsAli.NOTIFY_URL_ORDER;
+//            notifyUrl = ConsAli.NOTIFY_URL_GJ_CARD;
             sProduct.subject = "服务费支付";//秘书服务支付
             sProduct.body = "" + mobile;
             break;

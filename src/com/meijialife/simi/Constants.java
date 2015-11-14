@@ -65,7 +65,11 @@ public class Constants {
     public static final String URL_GET_USER_LIST = ROOT_URL+"partner/get_user_list.json";
     /**服务人员详情接口**/
     public static final String URL_GET_USER_DETAIL = ROOT_URL+"partner/get_user_detail.json";
-    
+    /**订单列表接口**/
+    public static final String URL_GET_ORDER_GET_LIST = ROOT_URL +"order/get_list.json";
+    /**订单详情**/
+    public static final String URL_GET_ORDER_DETAIL = ROOT_URL +"order/get_detail.json";
+
     
     /** 添加通讯录好友接口 **/
     public static final String URL_POST_FRIEND = ROOT_URL + "user/post_friend.json";
@@ -163,6 +167,10 @@ public class Constants {
      /** 会员充值在线支付成功同步接口 **/
      public static final String URL_POST_CARD_ONLINE = ROOT_URL + "user/card_online_pay.json";
     
+     /**服务订单下单接口**/
+     public static final String URL_POST_PARTNER_SERVICE_BUY=ROOT_URL + "order/post_add.json";
+  
+     
      /** 会员充值在线支付成功同步接口 **/
      public static final String URL_POST_PUSH_BIND = ROOT_URL + "user/post_push_bind.json";
      public static final String URL_POST_SCORE_SHOP = ROOT_URL + "user/score_shop";

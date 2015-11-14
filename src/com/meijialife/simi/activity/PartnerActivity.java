@@ -124,7 +124,7 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
                                
                                 showPartnerInfo(partnerDetail);
                                 showPartnerImag(secretaryImagesList);
-                                showPartnerService(servicePricesList);
+                                showPartnerService(servicePricesList,partnerDetail);
                             } 
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -206,11 +206,11 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
      * 服务商服务报价展示
      * @param list
      */
-    private void showPartnerService(List<ServicePrices> list){
+    private void showPartnerService(List<ServicePrices> list,PartnerDetail partnerDetail){
         listview = (ListView) findViewById(R.id.listview);
         adapter = new SecretaryServiceAdapter(this);
         if(list!=null && list.size()>0){
-            adapter.setData(list);
+            adapter.setData(list,partnerDetail);
             listview.setAdapter(adapter);
         }
         
