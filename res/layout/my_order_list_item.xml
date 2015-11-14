@@ -50,7 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="已支付" />
+            android:text="已支付" 
+            android:clickable="false"
+            />
     </RelativeLayout>
 
 </LinearLayout>

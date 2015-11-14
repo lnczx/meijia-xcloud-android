@@ -282,7 +282,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
 
         if (payType == PAY_TYPE_ALIPAY) {
             new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, guanjiaCallback, mobile,
-                    ConsAli.PAY_TO_MS_CARD,order_pay, order_no).pay();
+                    ConsAli.PAY_TO_MS_CARD,"0.01"/*order_pay*/, order_no).pay();
         } else if (payType == PAY_TYPE_WXPAY) {
             new WxPay(PayOrderActivity.this, PayOrderActivity.this,ConsAli.PAY_TO_MS_CARD, order_no, "秘书服务购买", order_pay);
         }

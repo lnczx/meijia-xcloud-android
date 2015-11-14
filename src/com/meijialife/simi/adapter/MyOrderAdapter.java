@@ -14,24 +14,24 @@ import android.widget.TextView;
 
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.MyOrder;
-import com.meijialife.simi.bean.MyOrderData;
-
 /**
- * 我的订单适配器
- *
+ * @description：我的订单--列表--适配器
+ * @author： kerryg
+ * @date:2015年11月14日 
  */
 public class MyOrderAdapter extends BaseAdapter {
+    
+    //定义全局变量
 	private LayoutInflater inflater;
-	//private ArrayList<MyOrderData> list;
     private ArrayList<MyOrder> orderList;
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
-
 
 	public MyOrderAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
 		orderList = new ArrayList<MyOrder>();
 		finalBitmap = FinalBitmap.create(context);
+		//默认图标赋值
         defDrawable = (BitmapDrawable)context.getResources().getDrawable(R.drawable.order_icon);
 	}
 
@@ -70,12 +70,10 @@ public class MyOrderAdapter extends BaseAdapter {
 			holder = (Holder) convertView.getTag();
 		}
 		
-		holder.tv_name.setText(orderList.get(position).getPartner_user_name());
+		holder.tv_name.setText(orderList.get(position).getService_type_name());
 	    holder.tv_date.setText(orderList.get(position).getAdd_time_str());
 	    holder.tv_status.setText(orderList.get(position).getOrder_status_name());
         finalBitmap.display(holder.iv_head_img, orderList.get(position).getPartner_user_head_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
-
-
 		return convertView;
 	}
 	

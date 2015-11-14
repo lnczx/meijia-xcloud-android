@@ -2,7 +2,6 @@ package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalHttp;
@@ -27,65 +26,49 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.MyOrderAdapter;
 import com.meijialife.simi.bean.MyOrder;
-import com.meijialife.simi.bean.MyOrderData;
-import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
+
 /**
- * 我的订单
- *
+ * @description：侧边栏--我的订单--列表
+ * @author： kerryg
+ * @date:2015年11月14日 
  */
 public class MyOrderActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
-	
-	private ListView listview;
+
+    //定义全局变量
     private MyOrderAdapter adapter;
-    
     private User user;
     private ArrayList<MyOrder> myOrderList;
+    
+    //布局控件定义
+    private ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.my_order_activity);
         super.onCreate(savedInstanceState);
-        
         initView();
-       
-
     }
 
     private void initView() {
     	setTitleName("订 单");
     	requestBackBtn();
-    	user = DBHelper.getUser(this);
+    	
+    	//布局控件赋值+点击事件
     	listview = (ListView)findViewById(R.id.order_list_view);
     	listview.setOnItemClickListener(this);
     	adapter = new MyOrderAdapter(this);
     	listview.setAdapter(adapter);
-    	 getOrderList();
+    	 
+    	user = DBHelper.getUser(this);
+    	//访问订单列表接口
+    	getOrderList();
     }
-    
-    /**
-     * 测试数据
-     */
-   /* private void test(){
-    	ArrayList<MyOrderData> list = new ArrayList<MyOrderData>();
-    	MyOrderData data1 = new MyOrderData("机票");
-    	MyOrderData data2 = new MyOrderData("通用");
-    	MyOrderData data3 = new MyOrderData("酒店");
-    	MyOrderData data4 = new MyOrderData("机票");
-    	MyOrderData data5 = new MyOrderData("机票");
-    	list.add(data1);
-    	list.add(data2);
-    	list.add(data3);
-    	list.add(data4);
-    	list.add(data5);
-    	
-    	adapter.setData(list);
-    }*/
     /**
      * 订单列表接口
      */
@@ -99,7 +82,6 @@ public class MyOrderActivity extends BaseActivity implements OnClickListener, On
          map.put("user_id",user.getId());
          map.put("page","0");
          AjaxParams params = new AjaxParams(map);
-
          showDialog();
          new FinalHttp().get(Constants.URL_GET_ORDER_GET_LIST, params, new AjaxCallBack<Object>() {
              @Override
@@ -122,8 +104,10 @@ public class MyOrderActivity extends BaseActivity implements OnClickListener, On
                          if (status == Constants.STATUS_SUCCESS) { // 正确
                              if (StringUtils.isNotEmpty(data)) {
                                  Gson gson = new Gson();
+                                 //json字符串转为集合对象
                                  myOrderList = gson.fromJson(data, new TypeToken<ArrayList<MyOrder>>() {
                                  }.getType());
+                                 //给适配器赋值
                                  adapter.setData(myOrderList);
                              } 
                          } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -150,8 +134,6 @@ public class MyOrderActivity extends BaseActivity implements OnClickListener, On
              }
          });
      }
-    
-    
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -163,7 +145,6 @@ public class MyOrderActivity extends BaseActivity implements OnClickListener, On
             break;
         }
     }
-
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	    MyOrder myOrder = myOrderList.get(position);
