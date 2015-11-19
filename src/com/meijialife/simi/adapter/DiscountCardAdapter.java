@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.DiscountCardData;
+import com.meijialife.simi.bean.MyDiscountCard;
 
 /**
  * 优惠卡券适配器
@@ -19,16 +19,17 @@ import com.meijialife.simi.bean.DiscountCardData;
  */
 public class DiscountCardAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
-	private ArrayList<DiscountCardData> list;
+//	private ArrayList<DiscountCardData> list;
+	private ArrayList<MyDiscountCard> list;
 	private Context context;
 
 	public DiscountCardAdapter(Context context) {
 	    this.context = context;
 		inflater = LayoutInflater.from(context);
-		list = new ArrayList<DiscountCardData>();
+		list = new ArrayList<MyDiscountCard>();
 	}
 
-	public void setData(ArrayList<DiscountCardData> list) {
+	public void setData(ArrayList<MyDiscountCard> list) {
 		this.list = list;
 		notifyDataSetChanged();
 	}
@@ -54,14 +55,21 @@ public class DiscountCardAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new Holder();
 			convertView = inflater.inflate(R.layout.discount_card_list_item, null);
-			holder.tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
+			holder.item_tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
+            holder.item_tv_money = (TextView) convertView.findViewById(R.id.item_tv_money);
+            holder.item_tv_date = (TextView) convertView.findViewById(R.id.item_tv_date);
+            holder.item_tv_description = (TextView) convertView.findViewById(R.id.item_tv_description);
+
 			holder.rl_bg = (RelativeLayout) convertView.findViewById(R.id.rl_bg);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
 		
-		holder.tv_name.setText(list.get(position).getType());
+		holder.item_tv_name.setText(list.get(position).getService_type_name());
+		holder.item_tv_money.setText("￥"+list.get(position).getValue());
+		holder.item_tv_date.setText("有效期至"+list.get(position).getTo_date());
+		holder.item_tv_description.setText(list.get(position).getDescription());
 		
 		if(position%2 == 0){
 		    holder.rl_bg.setBackgroundResource(R.drawable.youhuiquan_bg_4);
@@ -71,9 +79,11 @@ public class DiscountCardAdapter extends BaseAdapter {
 		
 		return convertView;
 	}
-	
 	class Holder {
-		TextView tv_name;
+		TextView item_tv_name;
+		TextView item_tv_money;
+		TextView item_tv_date;
+		TextView item_tv_description;
 		RelativeLayout rl_bg;
 	}
 

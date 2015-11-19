@@ -26,6 +26,8 @@ public class Constants {
     public final static String URL_THIRD_PARTY_LOGIN = ROOT_URL + "user/login-3rd.json";
     /** 用户详情接口 **/
     public static final String URL_GET_USER_INFO = ROOT_URL + "user/get_userinfo.json";
+    /**绑定手机号接口**/
+    public static final String URL_POST_BIND_MOBILE = ROOT_URL + "user/bind_mobile.json";
 
     /** app更新接口 **/
     public static final String URL_GET_VERSION = "http://182.92.160.194/" + "d/version.xml";// 测试用，需更换
@@ -69,6 +71,10 @@ public class Constants {
     public static final String URL_GET_ORDER_GET_LIST = ROOT_URL +"order/get_list.json";
     /**订单详情**/
     public static final String URL_GET_ORDER_DETAIL = ROOT_URL +"order/get_detail.json";
+    /**我的优惠券列表接口**/
+    public static final String URL_GET_MY_DISCOUNT_CARD_LIST = ROOT_URL +"user/get_coupons.json";
+    /**兑换优惠券接口**/
+    public static final String URL_POST_EXCHANGE_DISCOUNT_CARD = ROOT_URL +"user/post_coupon.json";
 
     
     /** 添加通讯录好友接口 **/
@@ -100,8 +106,10 @@ public class Constants {
    //行政人学院
     public final static String URL_XUEYUAN = "http://mishuzhuli.com";
      
- 
-    
+    /**订单状态**/
+    public static final int ORDER_NOT_PAY = 1; // 未支付
+    public static final int ORDER_HAS_PAY = 2; // 已支付
+
     
     
     /*** 网络返回状态码 ***/
@@ -128,6 +136,9 @@ public class Constants {
     public static  String CARD_ADD_MORNING_CONTENT = "";
     public static  String CARD_ADD_AFFAIR_CONTENT = "";
     public static  String CARD_ADD_NOTIFICATION_CONTENT = "";
+    public static  String ADDRESS_NAME_CONTENT = ""; 
+    public static  String DISCOUNT_CARD_CONTENT = ""; 
+    public static  String REAL_PAY_CONTENT = ""; 
 
    
     /**封面相册常量**/
@@ -169,6 +180,8 @@ public class Constants {
     
      /**服务订单下单接口**/
      public static final String URL_POST_PARTNER_SERVICE_BUY=ROOT_URL + "order/post_add.json";
+     /**已存在的订单下单接口**/
+     public static final String URL_POST_EXISTED_PARTNER_SERVICE_BUY=ROOT_URL + "order/post_pay.json";
   
      
      /** 会员充值在线支付成功同步接口 **/

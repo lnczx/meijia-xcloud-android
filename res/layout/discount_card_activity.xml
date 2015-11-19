@@ -58,6 +58,7 @@
                         android:src="@drawable/iconfont_sousuo" />
 
                     <EditText
+                        android:id="@+id/et_card_passwd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"

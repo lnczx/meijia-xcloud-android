@@ -12,10 +12,7 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnCancelListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,22 +38,17 @@ import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
-import com.meijialife.simi.MyApplication;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.User;
-import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.BasicToolUtil;
-import com.meijialife.simi.utils.CalendarUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMDemoHelper;
-import com.simi.easemob.ui.EMLoginActivity;
-import com.simi.easemob.utils.PreferenceManager;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -128,8 +120,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     private void setConfig() {
         // 设置qq的
-        String appId = "1104763123";
-        String appKey = "LcMjbx1agQRGMzAs";
+        String appId = "1104934408";
+        String appKey = "bRW2glhUCR6aJYIZ";
         // 添加QQ支持, 并且设置QQ分享内容的target url
         UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(LoginActivity.this, appId, appKey);
         qqSsoHandler.addToSocialSDK();

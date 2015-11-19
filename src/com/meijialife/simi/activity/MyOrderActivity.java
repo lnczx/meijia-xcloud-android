@@ -145,11 +145,18 @@ public class MyOrderActivity extends BaseActivity implements OnClickListener, On
             break;
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getOrderList();
+    }
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 	    MyOrder myOrder = myOrderList.get(position);
 	    Intent intent = new Intent(this,OrderDetailsActivity.class);
 	    intent.putExtra("myOrder", myOrder);
+	    intent.putExtra("orderId",myOrder.getOrder_id()+"");
+	    intent.putExtra("orderStatusId",myOrder.getOrder_status());
 		startActivity(intent);
 	}
 }

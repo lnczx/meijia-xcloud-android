@@ -11,14 +11,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.BindMobileActivity;
 import com.meijialife.simi.activity.PartnerActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
+import com.meijialife.simi.activity.PayZeroOrderActivity;
+import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.SecretarySenior;
 import com.meijialife.simi.bean.ServicePrices;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.utils.StringUtils;
 
 /**
  * 秘书服务订单适配器
@@ -77,6 +84,7 @@ public class SecretaryServiceAdapter extends BaseAdapter {
             holder.tv_title = (TextView) convertView.findViewById(R.id.item_tv_title);
             holder.tv_price = (TextView) convertView.findViewById(R.id.item_tv_price);
             holder.tv_buy = (TextView) convertView.findViewById(R.id.item_tv_buy);
+            holder.ll_partner_service = (LinearLayout)convertView.findViewById(R.id.ll_partner_service);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -84,15 +92,44 @@ public class SecretaryServiceAdapter extends BaseAdapter {
 
         holder.tv_title.setText(mList.get(position).getName() + "：");
         holder.tv_price.setText(mList.get(position).getPrice() + "元");
-
-        holder.tv_buy.setOnClickListener(new OnClickListener() {
+        User user = DBHelper.getUser(context);
+        final String mobile = user.getMobile();
+        final String name = user.getName();
+        final Double disPrice =mList.get(position).getDis_price();
+            holder.tv_buy.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
+                        Intent intent = new Intent(context,BindMobileActivity.class);
+                        context.startActivity(intent);
+                    }else {
+                        if(disPrice>0){//普通金额支付界面
+                            Intent intent = new Intent(context, PayOrderActivity.class);
+                            intent.putExtra("PartnerDetail",partnerDetail);
+                            intent.putExtra("from", PayOrderActivity.FROM_MISHU);
+                            intent.putExtra("flag", PayOrderActivity.FROM_FIND);
+                            intent.putExtra("servicePrices",mList.get(position));
+                            context.startActivity(intent);
+                        }else {//免费咨询跳转到0元支付界面
+                            Intent intent = new Intent(context, PayZeroOrderActivity.class);
+                            intent.putExtra("PartnerDetail",partnerDetail);
+                            intent.putExtra("from", PayOrderActivity.FROM_MISHU);
+                            intent.putExtra("flag", PayOrderActivity.FROM_FIND);
+                            intent.putExtra("servicePrices",mList.get(position));
+                            context.startActivity(intent);
+                        }
+                      
+                    }
+                }
+            });
+        
+        holder.ll_partner_service.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // Toast.makeText(context, mList.get(position).getPrice()+"元", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, PayOrderActivity.class);
-                intent.putExtra("PartnerDetail",partnerDetail);
-                intent.putExtra("from", PayOrderActivity.FROM_MISHU);
-                intent.putExtra("servicePrices",mList.get(position));
+            public void onClick(View arg0) {
+                String detailUrl = mList.get(position).getDetail_url();
+                Intent intent = new Intent(context,WebViewActivity.class);
+                intent.putExtra("url", detailUrl);
+                intent.putExtra("title","服务详情");
                 context.startActivity(intent);
             }
         });
@@ -104,6 +141,7 @@ public class SecretaryServiceAdapter extends BaseAdapter {
         TextView tv_title;
         TextView tv_price;
         TextView tv_buy;
+        LinearLayout ll_partner_service;
     }
 
     private ProgressDialog m_pDialog;

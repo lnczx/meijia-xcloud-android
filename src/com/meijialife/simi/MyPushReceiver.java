@@ -1,6 +1,5 @@
 package com.meijialife.simi;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Notification;
@@ -24,7 +23,6 @@ import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.ReceiverBean;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.UIUtils;
 
 public class MyPushReceiver extends BroadcastReceiver {
 

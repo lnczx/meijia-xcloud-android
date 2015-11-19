@@ -85,14 +85,15 @@
                 android:id="@+id/layout_quan"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/list_item_height"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="2dp"
                 android:background="@color/simi_color_white"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin" 
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <TextView
+                    android:id="@+id/tv_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -100,14 +101,23 @@
                     android:textColor="@color/simi_color_gray" />
 
                 <TextView
+                    android:id="@+id/tv_discount_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/tv_coupon"
+                    android:layout_centerVertical="true"
+                    android:drawablePadding="5dp"
+                    android:text=""
+                    android:textColor="@color/red_text_color"
+                   />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:drawablePadding="5dp"
                     android:drawableRight="@drawable/arrow_right"
-                    android:text="节省了40元"
-                    android:textColor="@color/red_text_color" />
+                   />
             </RelativeLayout>
 
             <RelativeLayout
@@ -116,21 +126,68 @@
                 android:layout_marginTop="1dp"
                 android:background="@color/simi_color_white"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"     android:visibility="gone">
+                android:paddingRight="@dimen/activity_horizontal_margin"  
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_real_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="实际支付："
+                    android:textColor="@color/simi_color_gray" />
+
+                <TextView
+                    android:id="@+id/tv_real_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_real_value"
+                    android:layout_centerVertical="true"
+                    android:text=""
+                    android:textColor="@color/red_text_color"
+                     />
+            </RelativeLayout>
+              <LinearLayout
+                android:id="@+id/ll_service_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="8dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="联系方式"
+                    android:textColor="@color/simi_color_gray" />
+            </LinearLayout>
+              <RelativeLayout
+                android:id="@+id/layout_addr"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_height"
+                android:layout_marginTop="2dp"
+                android:background="@color/simi_color_white"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin" 
+                android:visibility="visible"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="还需支付："
+                    android:text="服务方式："
                     android:textColor="@color/simi_color_gray" />
 
                 <TextView
+                    android:id="@+id/tv_addr_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="60元" />
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@drawable/arrow_right"
+                    android:text=""
+                    android:textColor="@color/black_deep" />
             </RelativeLayout>
 
             <LinearLayout
@@ -142,7 +199,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="支付信息"
+                    android:text="支付方式"
                     android:textColor="@color/simi_color_gray" />
             </LinearLayout>
 
