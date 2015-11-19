@@ -778,14 +778,17 @@
         </activity>
         <activity
             android:name="com.meijialife.simi.photo.activity.ImageFile" 
+            android:screenOrientation="portrait"
             >
         </activity>
         <activity
             android:name="com.meijialife.simi.photo.activity.ShowAllPhoto"
+             android:screenOrientation="portrait"
              >
         </activity>
         <activity
             android:name="com.meijialife.simi.photo.activity.GalleryActivity"
+            android:screenOrientation="portrait"
             >
         </activity>
         <!--秘书详情显示大图滑动-->
@@ -796,6 +799,17 @@
        	</activity>
        	<activity
             android:name="com.meijialife.simi.activity.PartnerActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+       	<activity
+            android:name="com.meijialife.simi.activity.BindMobileActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name="com.meijialife.simi.activity.PayZeroOrderActivity"
+            android:screenOrientation="portrait"
             >
         </activity>
     </application>

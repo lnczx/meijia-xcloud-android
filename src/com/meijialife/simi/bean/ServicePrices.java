@@ -16,6 +16,16 @@ public class ServicePrices implements Serializable{
     private Double dis_price;//折扣价
     private String name;//价格名称
     private Long service_price_id;//服务类别
+    private int is_addr;
+    
+    
+   
+    public int getIs_addr() {
+        return is_addr;
+    }
+    public void setIs_addr(int is_addr) {
+        this.is_addr = is_addr;
+    }
     public Long getId() {
         return id;
     }

@@ -18,11 +18,48 @@ public class MyOrder implements Serializable{
     private String mobile;//手机号
     private String name;//用户名称
     private String service_type_name;//服务类别名称
+    private Long service_type_id;//服务类别Id
+    private Long service_price_id;//服务报价Id
+    private String service_price_name;//服务报价名称
     private String addr_name;//服务地址
     private String order_status_name;//订单状态
     private String add_time_str;//下单时间
     private String order_money;//订单金额
     private String order_pay;//订单实际支付金额
+    private int order_status;//订单状态Id 1 = 未支付 2 = 已支付
+    private int is_addr;//是否需要地址   0 = 不需要 1 = 需要
+    
+    
+    public Long getService_type_id() {
+        return service_type_id;
+    }
+    public void setService_type_id(Long service_type_id) {
+        this.service_type_id = service_type_id;
+    }
+    public Long getService_price_id() {
+        return service_price_id;
+    }
+    public void setService_price_id(Long service_price_id) {
+        this.service_price_id = service_price_id;
+    }
+    public String getService_price_name() {
+        return service_price_name;
+    }
+    public void setService_price_name(String service_price_name) {
+        this.service_price_name = service_price_name;
+    }
+    public int getIs_addr() {
+        return is_addr;
+    }
+    public void setIs_addr(int is_addr) {
+        this.is_addr = is_addr;
+    }
+    public int getOrder_status() {
+        return order_status;
+    }
+    public void setOrder_status(int order_status) {
+        this.order_status = order_status;
+    }
     public Long getOrder_id() {
         return order_id;
     }

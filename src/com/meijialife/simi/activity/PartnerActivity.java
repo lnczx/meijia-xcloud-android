@@ -2,25 +2,27 @@ package com.meijialife.simi.activity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
+
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
@@ -38,6 +40,7 @@ import com.meijialife.simi.photo.activity.GalleryUrlActivity;
 import com.meijialife.simi.ui.MyHorizontalScrollView;
 import com.meijialife.simi.ui.MyHorizontalScrollView.OnItemClickListener;
 import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.ui.TagGroup;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -65,6 +68,9 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
     private List<SecretaryImages> secretaryImagesList;
     private List<UserTag> userTagList;
     private PartnerDetail partnerDetail;
+    
+    private String partner_user_id;
+    private String service_type_id;
             
             
     @Override
@@ -78,8 +84,8 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         setTitleName("秘书助理详情");
         requestBackBtn();
         partner = (Partner) getIntent().getSerializableExtra("Partner");
-        String partner_user_id = String.valueOf(partner.getUser_id());
-        String service_type_id = String.valueOf(partner.getService_type_id());
+        partner_user_id = String.valueOf(partner.getUser_id());
+        service_type_id = String.valueOf(partner.getService_type_id());
         getPartnerDetail(service_type_id, partner_user_id);        
     }
     /**
@@ -171,6 +177,15 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         item_tv_des_name.setText(partnerDetail.getResponse_time_name());
         finalBitmap.display(item_iv_icon, partnerDetail.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
         
+        TagGroup tg = (TagGroup) findViewById(R.id.ll_user_tags);
+        userTagList = partnerDetail.getUser_tags();
+        List<String> userTags =new ArrayList<String>();
+        for (Iterator iterator = userTagList.iterator(); iterator.hasNext();) {
+            UserTag userTag = (UserTag) iterator.next();
+            userTags.add(userTag.getTag_name());
+        }
+        tg.setTags(userTags);
+/*        
         LinearLayout ll = (LinearLayout)findViewById(R.id.ll_user_tags);
         userTagList = partnerDetail.getUser_tags();
         for (Iterator iterator = userTagList.iterator(); iterator.hasNext();) {
@@ -181,8 +196,8 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
             tv.setTextColor(R.color.simi_color_white);
             ll.addView(tv);
         }
-  
-    
+        
+*/    
     
     }
     /**
@@ -214,6 +229,11 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
             listview.setAdapter(adapter);
         }
         
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //getPartnerDetail(service_type_id, partner_user_id);
     }
     /**
      * 点击进入显示大图activity

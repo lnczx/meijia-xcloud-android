@@ -10,6 +10,7 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -55,8 +56,11 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
     private TextView mRemarks;
     private BitmapDrawable defaultBitmap;
     private ImageView mHeadImage;
+    private TextView tv_city_name;
+
     
     private String orderStatus;
+    private int orderStatusId;//订单状态Id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +84,15 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         mRemarks = (TextView) findViewById(R.id.itemt_tv_remarks);
         mContent = (TextView) findViewById(R.id.item_tv_order_content);
         mHeadImage = (ImageView) findViewById(R.id.item_tv_icon);
-        
+        tv_city_name =(TextView)findViewById(R.id.item_tv_city_name);
+
+       
         //获取Intent中值
         user = DBHelper.getUser(this);
-        myOrder = (MyOrder) getIntent().getSerializableExtra("myOrder");
-        order_id = String.valueOf(myOrder.getOrder_id());
+        /*myOrder = (MyOrder) getIntent().getSerializableExtra("myOrder");
+        order_id = String.valueOf(myOrder.getOrder_id());*/
+        order_id = getIntent().getStringExtra("orderId");
+        orderStatusId = getIntent().getIntExtra("orderStatusId",1);
         
         //访问订单详情接口
         getOrderDetail();
@@ -155,31 +163,44 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
      * 根据接口返回的值，赋值展示订单详情
      * @param myOrderDetail
      */
-    public void showMyOrderDetail(MyOrderDetail myOrderDetail) {
+    public void showMyOrderDetail(final MyOrderDetail myOrderDetail) {
         orderStatus = myOrderDetail.getOrder_status_name();
         mOrderNo.setText(myOrderDetail.getOrder_no().trim());
         mContent.setText(myOrderDetail.getService_content());
         mOrderName.setText(myOrderDetail.getService_type_name().trim());
         mOrderDate.setText(myOrderDetail.getAdd_time_str().trim());
         mOrderStatus.setText(myOrderDetail.getOrder_status_name().trim());
-        mOrderMoney.setText(myOrderDetail.getOrder_money().trim() + "元");
+        mOrderMoney.setText(myOrderDetail.getOrder_pay().trim() + "元");
         mRemarks.setText(myOrderDetail.getRemarks().trim());
         mOrderPayType.setText(myOrderDetail.getPay_type_name().trim());
+        tv_city_name.setText(myOrderDetail.getCity_name());
         finalBitmap.display(mHeadImage, myOrderDetail.getPartner_user_head_img(), defaultBitmap.getBitmap(), defaultBitmap.getBitmap());
-        if(orderStatus.equals("待支付")){
-            mOrderStatus.setClickable(true);
-            mOrderStatus.setOnClickListener(new OnClickListener() {
+        mOrderStatus.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   Toast.makeText(OrderDetailsActivity.this, "待支付",Toast.LENGTH_SHORT).show();
+                    if(orderStatusId ==Constants.ORDER_NOT_PAY){
+                        mOrderStatus.setClickable(true);
+                        Intent intent = new Intent(OrderDetailsActivity.this,PayOrderActivity.class);
+                        intent.putExtra("flag",PayOrderActivity.FROM_MYORDER_DETAIL);
+                        intent.putExtra("myOrderDetail",myOrderDetail);
+                        startActivity(intent);
+                    }else {
+                        mOrderStatus.setClickable(false);
+                    }
                 }
             });
+        
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getOrderDetail();
+        if(orderStatusId ==Constants.ORDER_NOT_PAY){
+            mOrderStatus.setClickable(true);
         }else {
             mOrderStatus.setClickable(false);
         }
-        
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

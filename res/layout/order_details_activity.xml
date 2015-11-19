@@ -66,12 +66,13 @@
                         android:text="机票" />
 
                     <TextView
-                        android:id="@+id/item_tv_date"
+                        android:id="@+id/item_tv_order_money1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="2014-11-11 08:00:00"
-                        android:textColor="@color/simi_color_gray" />
+                        android:text="199元"
+                        android:textColor="@color/simi_color_gray" 
+                        />
                 </LinearLayout>
 
                 <TextView
@@ -80,7 +81,63 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="已支付" />
+		            android:gravity="center"
+		            android:paddingTop="5dp"
+		            android:paddingBottom="5dp"
+		            android:paddingLeft="8dp"
+		            android:paddingRight="8dp"
+		            android:background="@drawable/btn_buy"
+                    android:text="已支付"
+                    android:clickable="true"
+                     />
+            </RelativeLayout>
+            
+             <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_height"
+                android:layout_marginTop="1dp"
+                android:background="@color/simi_color_white"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="下单时间："
+                    android:textColor="@color/simi_color_gray" />
+
+                <TextView
+                    android:id="@+id/item_tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="2015-11-18" />
+            </RelativeLayout>
+             
+             <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_height"
+                android:layout_marginTop="1dp"
+                android:background="@color/simi_color_white"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="所在城市："
+                    android:textColor="@color/simi_color_gray" />
+
+                <TextView
+                    android:id="@+id/item_tv_city_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="北京" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -129,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="1500" />
+                    android:text="1500元" />
             </RelativeLayout>
 
             <RelativeLayout

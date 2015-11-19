@@ -34,7 +34,6 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.PartnerActivity;
-import com.meijialife.simi.activity.SecretaryActivity;
 import com.meijialife.simi.adapter.SecretaryAdapter;
 import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.database.DBHelper;
@@ -58,7 +57,7 @@ public class Find2Fra extends BaseFragment {
 
     private static final String URL_1 = "http://s.click.taobao.com/x0Kmfjx";//办公用品链接
     private WebView webview;
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.find_2_fra, null);
@@ -123,14 +122,13 @@ public class Find2Fra extends BaseFragment {
 
     }
     //初始化四个选项（秘书助理，综合服务，设计策划，办公用品）
-    private void initTab(View v) {
+    private void initTab( View v) {
         webview = (WebView) v.findViewById(R.id.partner_web_view);
         radiogroup = (RadioGroup) v.findViewById(R.id.radiogroup);
         line_1 = (View) v.findViewById(R.id.line_1);
         line_2 = (View) v.findViewById(R.id.line_2);
-        line_3 = (View) v.findViewById(R.id.line_3);
+        line_3 = (View) v.findViewById(R.id.line_3);    
         line_4 = (View) v.findViewById(R.id.line_4);
-
         radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup grop, int checkedId) {
@@ -145,19 +143,21 @@ public class Find2Fra extends BaseFragment {
                 }
                 if (checkedId == grop.getChildAt(1).getId()) {// 综合服务
                     line_2.setVisibility(View.VISIBLE);
-                    getPartnerList("1,33,42");
                     webview.setVisibility(View.GONE);
+                    getPartnerList("1,33,42");
                 }
                 if (checkedId == grop.getChildAt(2).getId()) {//设计策划
                     line_3.setVisibility(View.VISIBLE);
-                    getPartnerList("79");
                     webview.setVisibility(View.GONE);
+                    getPartnerList("79");
+                   
                 }
                 //webview展示网页
                 if (checkedId == grop.getChildAt(3).getId()) {//办公用品
                     line_4.setVisibility(View.VISIBLE);
-                    initWebView(URL_1);
                     webview.setVisibility(View.VISIBLE);
+                    initWebView(URL_1);
+                   
                 }
 
             }

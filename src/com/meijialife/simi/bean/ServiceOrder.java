@@ -17,7 +17,7 @@ public class ServiceOrder implements Serializable{
     private String mobile;//手机号
     private String name;//用户名称
     private String service_type_name;//服务类别名称
-    private String add_name;//服务地址
+    private String addr_name;//服务地址
     private String order_status_name;//订单状态
     private String add_time_str;//下单时间
     private String order_money;//订单金额
@@ -70,11 +70,11 @@ public class ServiceOrder implements Serializable{
     public void setService_type_name(String service_type_name) {
         this.service_type_name = service_type_name;
     }
-    public String getAdd_name() {
-        return add_name;
+    public String getAddr_name() {
+        return addr_name;
     }
-    public void setAdd_name(String add_name) {
-        this.add_name = add_name;
+    public void setAddr_name(String addr_name) {
+        this.addr_name = addr_name;
     }
     public String getOrder_status_name() {
         return order_status_name;

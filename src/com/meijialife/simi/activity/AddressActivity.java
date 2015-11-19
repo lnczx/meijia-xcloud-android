@@ -84,10 +84,14 @@ public class AddressActivity extends BaseActivity implements OnClickListener, On
     }
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+		AddressData addressData = (AddressData)addressList.get(position);
+		Intent intent = new Intent();
+		intent.putExtra("addr_id",addressData.getId());
+		intent.putExtra("addressData",addressData);
+		setResult(RESULT_OK, intent);
+		finish();
 	}
-	
 	/**
      * 获取地址列表
      */
