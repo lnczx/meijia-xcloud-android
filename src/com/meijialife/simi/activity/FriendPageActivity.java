@@ -95,6 +95,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
     private BitmapDrawable defDrawable;
     
     private Friend friend;//当前查看的好友数据
+    private String friend_id;//获取好友Id
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,9 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
     }
     
     private void init(LayoutInflater inflater) {
-        friend = (Friend)getIntent().getSerializableExtra("friend");
+        //friend = (Friend)getIntent().getSerializableExtra("friend");
+        friend_id = getIntent().getStringExtra("friend_id");
+
         setTitleName("个人主页");
         requestBackBtn();
         
@@ -289,7 +292,8 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id+"");
-        map.put("view_user_id", friend.getFriend_id()+"");
+//        map.put("view_user_id", friend.getFriend_id()+"");
+        map.put("view_user_id", friend_id);
         AjaxParams param = new AjaxParams(map);
 
         showDialog();
@@ -380,7 +384,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("service_date", "");
-        map.put("user_id", friend.getFriend_id()+"");
+        map.put("user_id", friend_id);
         map.put("card_from", card_from+"");
         AjaxParams param = new AjaxParams(map);
 

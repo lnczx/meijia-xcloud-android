@@ -57,14 +57,14 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
     	setTitleName("更多");
     	requestBackBtn();
 
-    	rl_help = (RelativeLayout) findViewById(R.id.index_4_rl_help);
+    	/*rl_help = (RelativeLayout) findViewById(R.id.index_4_rl_help);*/
 		rl_agree = (RelativeLayout) findViewById(R.id.index_4_rl_agree);
 		rl_feedback = (RelativeLayout) findViewById(R.id.index_4_rl_feedback);
 		rl_about = (RelativeLayout) findViewById(R.id.index_4_rl_about);
 		rl_update = (RelativeLayout) findViewById(R.id.index_4_rl_update);
 		rl_service = (RelativeLayout) findViewById(R.id.index_4_rl_service);
 
-		rl_help.setOnClickListener(this);
+		/*rl_help.setOnClickListener(this);*/
 		rl_agree.setOnClickListener(this);
 		rl_feedback.setOnClickListener(this);
 		rl_about.setOnClickListener(this);
@@ -82,11 +82,11 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
 		Intent intent = null;
 		switch (v.getId()) {
-		case R.id.index_4_rl_help: // 使用帮助
+		/*case R.id.index_4_rl_help: // 使用帮助
 			intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra("url", Constants.URL_USER_HELP);
 			intent.putExtra("title", "使用帮助");
-			break;
+			break;*/
 		case R.id.index_4_rl_agree: // 用户协议
 			intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra("url", Constants.URL_WEB_AGREE);

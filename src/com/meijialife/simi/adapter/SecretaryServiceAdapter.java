@@ -24,6 +24,7 @@ import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.SecretarySenior;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.StringUtils;
 
@@ -39,6 +40,7 @@ public class SecretaryServiceAdapter extends BaseAdapter {
     private String sec_id;
     private PartnerDetail partnerDetail;
     private ServicePrices servicePrices;//服务报价
+    private UserInfo userInfo;
 
     public SecretaryServiceAdapter(Context context) {
         this.context = context;
@@ -54,9 +56,10 @@ public class SecretaryServiceAdapter extends BaseAdapter {
      * @param friendList
      *            现有好友数据
      */
-    public void setData(List<ServicePrices> secData,PartnerDetail partnerDetail) {
+    public void setData(List<ServicePrices> secData,PartnerDetail partnerDetail,UserInfo userInfo) {
         this.mList = secData;
         this.partnerDetail = partnerDetail;
+        this.userInfo = userInfo;
         notifyDataSetChanged();
     }
 
@@ -91,10 +94,9 @@ public class SecretaryServiceAdapter extends BaseAdapter {
         }
 
         holder.tv_title.setText(mList.get(position).getName() + "：");
-        holder.tv_price.setText(mList.get(position).getPrice() + "元");
-        User user = DBHelper.getUser(context);
-        final String mobile = user.getMobile();
-        final String name = user.getName();
+        holder.tv_price.setText(mList.get(position).getDis_price() + "元");
+        final String mobile = userInfo.getMobile();
+        final String name = userInfo.getName();
         final Double disPrice =mList.get(position).getDis_price();
             holder.tv_buy.setOnClickListener(new OnClickListener() {
                 @Override

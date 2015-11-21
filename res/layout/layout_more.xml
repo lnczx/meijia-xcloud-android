@@ -27,7 +27,9 @@
                 android:id="@+id/index_4_rl_help"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/list_item_height"
-                android:background="@drawable/btn_list_item_bg" >
+                android:background="@drawable/btn_list_item_bg" 
+                android:visibility="gone"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"

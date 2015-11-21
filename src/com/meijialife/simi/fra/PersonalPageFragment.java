@@ -18,6 +18,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,7 +27,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,10 +105,20 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     
+    private ImageButton ibtn_rq;//右侧显示个人二维码信息
+    
+    private  View v ;
+    private LayoutInflater inflater1;
+    private PopupWindow mPopupWindow;
+    private View music_popunwindwow;
+    private LinearLayout ll_rq;
+    private ImageView iv_rq_left;
+    
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.index_4, null);
-        
+         v = inflater.inflate(R.layout.index_4, null);
+         inflater1 = inflater;
 //        if(this.getResources().getConfiguration().orientation ==Configuration.ORIENTATION_LANDSCAPE){
 //            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 //         }
@@ -130,6 +145,34 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
         view.findViewById(R.id.item_qianbao).setOnClickListener(this);
         view.findViewById(R.id.item_youhui).setOnClickListener(this);
         view.findViewById(R.id.item_jifen).setOnClickListener(this);
+       
+        
+        ibtn_rq = (ImageButton)view.findViewById(R.id.ibtn_rq);
+        ibtn_rq.setVisibility(View.VISIBLE);
+        music_popunwindwow = inflater.inflate(    
+                R.layout.mine_rq_layout, null);
+        ll_rq = (LinearLayout)music_popunwindwow.findViewById(R.id.ll_rq);
+        iv_rq_left = (ImageView)music_popunwindwow.findViewById(R.id.iv_rq_left);
+      
+        
+        ll_rq.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closePopWindow();
+            }
+        });
+        ibtn_rq.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popRqCode();
+            }
+        });
+        iv_rq_left.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closePopWindow();
+            }
+        });
         
         iv_top_head.setOnClickListener(this);
         ImageButton ibtn_message = (ImageButton) view.findViewById(R.id.ibtn_message);
@@ -236,12 +279,25 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
         case R.id.item_jifen://积分
             startActivity(new Intent(getActivity(),PointsActivity.class));
             break;
-
         default:
             break;
         }
     }
-
+    
+    private void popRqCode(){
+        if(null == mPopupWindow || !mPopupWindow.isShowing()){  
+             mPopupWindow = new PopupWindow(music_popunwindwow,LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);  
+             mPopupWindow.showAtLocation(v.findViewById(R.id.fl_main), Gravity.RIGHT|Gravity.BOTTOM, 0, 0);  
+             getMyRqCode();
+        }
+    }
+    private void closePopWindow(){
+        if(null != mPopupWindow && mPopupWindow.isShowing()){  
+            mPopupWindow.dismiss();  
+        }  
+        
+    }
+    
     class TitleClickListener implements OnClickListener {
 
         @Override
@@ -442,6 +498,74 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
                                     adapter_2.setData(new ArrayList<Cards>());
                                     tv_tips_2.setVisibility(View.VISIBLE);
                                 }
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息
+                if(!StringUtils.isEmpty(errorMsg.trim())){
+                    UIUtils.showToast(getActivity(), errorMsg);
+                }
+            }
+        });
+    }
+    
+    /**
+     * 获取卡片数据
+     * @param card_from 0 = 所有卡片  1 = 我发布的 2 = 我参与的,默认为0
+     */
+    private void getMyRqCode() {
+
+        String user_id = DBHelper.getUser(getActivity()).getId();
+
+        if (!NetworkUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user_id+"");
+        AjaxParams param = new AjaxParams(map);
+
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_MY_RQ_CODE, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if(StringUtils.isNotEmpty(data)){
+                               String rq_url =data;
+                               finalBitmap.display(music_popunwindwow.findViewById(R.id.iv_rq_code), rq_url,defDrawable.getBitmap(),defDrawable.getBitmap());
+                            }else {
+                                Toast.makeText(getActivity(),"您的二维码还没有生存",Toast.LENGTH_SHORT).show();
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

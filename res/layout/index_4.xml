@@ -1,7 +1,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:id="@+id/fl_main"
+     >
 
     <FrameLayout
         android:id="@+id/rl_root"
@@ -94,11 +96,24 @@
                     android:padding="15dp"
                     android:src="@drawable/icon_plus_duanxin"
                     android:visibility="invisible" />
+                
+                 <ImageButton
+                    android:id="@+id/ibtn_rq"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/my_rq_code"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="12dp"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/ibtn_person"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="15dp"

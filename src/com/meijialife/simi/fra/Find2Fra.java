@@ -112,10 +112,19 @@ public class Find2Fra extends BaseFragment {
         webview.getSettings().setDomStorageEnabled(true);// DOM Storage
         // displayWebview.getSettings().setUserAgentString("User-Agent:Android");//设置用户代理，一般不用
         webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+   
+        webview.getSettings().setAllowFileAccess(true);
+        webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        webview.getSettings().setLoadWithOverviewMode(true);
+        webview.getSettings().setSavePassword(false);
+        webview.getSettings().setSaveFormData(false);
+        
+        
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
+                //view.loadData(url, "text/html", "utf-8");
                 return true;
             }
         });

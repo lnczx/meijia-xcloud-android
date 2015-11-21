@@ -170,7 +170,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         mOrderName.setText(myOrderDetail.getService_type_name().trim());
         mOrderDate.setText(myOrderDetail.getAdd_time_str().trim());
         mOrderStatus.setText(myOrderDetail.getOrder_status_name().trim());
-        mOrderMoney.setText(myOrderDetail.getOrder_pay().trim() + "元");
+        mOrderMoney.setText(myOrderDetail.getOrder_money().trim() + "元");
         mRemarks.setText(myOrderDetail.getRemarks().trim());
         mOrderPayType.setText(myOrderDetail.getPay_type_name().trim());
         tv_city_name.setText(myOrderDetail.getCity_name());

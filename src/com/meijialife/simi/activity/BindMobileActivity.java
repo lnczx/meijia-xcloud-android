@@ -93,6 +93,7 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
     public void initView(){
         setTitleName("绑定手机号");
         requestBackBtn();
+        
         et_user = (EditText) findViewById(R.id.bind_user_name);
         et_pwd = (EditText) findViewById(R.id.bind_password);
         et_name = (EditText) findViewById(R.id.bind_name);
@@ -110,6 +111,7 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
         login_not_get_captcha.setOnClickListener(this);    
         
         user = DBHelper.getUser(this);
+        et_name.setText(user.getName());
     }
     @Override
     public void onClick(View v) {
@@ -188,7 +190,7 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            loginSuccess(data);
+                            bindSuccess();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(BindMobileActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -205,18 +207,15 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
                     e.printStackTrace();
                     UIUtils.showToast(BindMobileActivity.this, "登录失败,请稍后重试");
                 }
-
             }
         });
     }
     
-    private void loginSuccess(String data) {
-       /* Gson gson = new Gson();
-        user = gson.fromJson(data, User.class);
-        DBHelper.updateUser(BindMobileActivity.this, user);*/
-        // 登录成功
+    private void bindSuccess() {
         Toast.makeText(getApplicationContext(), "绑定成功！", Toast.LENGTH_SHORT).show();
         finish();
+        //绑定成功之后，获得userInfo，更新本地User表和UserInfo表
+        getUserInfo();
     }
     private void getUserInfo() {
         if (user == null) {
@@ -246,7 +245,6 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
                 super.onSuccess(t);
                 String errorMsg = "";
                 dismissDialog();
-                LogOut.i("========", "用户详情 onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -258,7 +256,9 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
                                 Gson gson = new Gson();
                                 userInfo = gson.fromJson(data, UserInfo.class);
                                 DBHelper.updateUserInfo(BindMobileActivity.this, userInfo);
-
+                                user.setName(userInfo.getName());
+                                user.setMobile(userInfo.getMobile());
+                                DBHelper.updateUser(BindMobileActivity.this, user);
                             } else {
                                 // UIUtils.showToast(BindMobileActivity.this, "数据错误");
                             }

@@ -14,8 +14,9 @@
         <RelativeLayout
             android:id="@+id/rl_bg"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:layout_weight="1"
+            android:paddingBottom="5dp"
             android:background="@drawable/youhuiquan_bg_1" >
 
             <TextView
@@ -31,13 +32,26 @@
                 android:id="@+id/item_tv_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|center_horizontal"
                 android:layout_below="@id/item_tv_name"
                 android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:text="￥120.00"
                 android:textColor="@color/simi_color_white"
-                android:textSize="24sp" />
+                android:textSize="25sp" />
+            <TextView
+                android:id="@+id/item_tv_introduce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_tv_money"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="8dp"
+                android:text='中意"焕新礼包"兑换券'
+                android:textColor="@color/simi_color_white"
+                android:textSize="15sp" />
         </RelativeLayout>
 
         <LinearLayout
