@@ -5,6 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+     <RelativeLayout
+        android:id="@+id/rl_company_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_list_item_bg"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <com.meijialife.simi.ui.RoundImageView
+            android:id="@+id/iv_icon_4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/iconfont_company_tongxunbu"
+            imagecontrol:border_inside_color="@color/simi_color_white"
+            imagecontrol:border_outside_color="@color/simi_color_white"
+            imagecontrol:border_thickness_in="1dp"
+            imagecontrol:border_thickness_out="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/iv_icon_4"
+            android:text="企业通讯录" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_add"
@@ -41,6 +76,42 @@
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
     </RelativeLayout>
+    
+     <RelativeLayout
+        android:id="@+id/rl_rq"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_list_item_bg"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <com.meijialife.simi.ui.RoundImageView
+            android:id="@+id/iv_icon_3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/iconfont_rq_code"
+            imagecontrol:border_inside_color="@color/simi_color_white"
+            imagecontrol:border_outside_color="@color/simi_color_white"
+            imagecontrol:border_thickness_in="1dp"
+            imagecontrol:border_thickness_out="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/iv_icon_3"
+            android:text="扫一扫加好友" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right" />
+    </RelativeLayout>
+    
 
     <View
         android:layout_width="match_parent"

@@ -62,4 +62,9 @@
     <color name="style_red">#ff4c41</color>
     <color name="style_divider_color">#C9C7CD</color>
 
+    <!-- 二维码扫描 -->
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+
 </resources>

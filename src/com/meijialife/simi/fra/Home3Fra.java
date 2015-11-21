@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,11 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.ContactAddFriendsActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
+import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.adapter.FriendAdapter;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.database.DBHelper;
@@ -43,6 +46,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.meijialife.simi.zxing.code.MipcaActivityCapture;
 
 /**
  * home3
@@ -63,6 +67,9 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
     private ArrayList<Friend> friendList = new ArrayList<Friend>();
     private RelativeLayout rl_add;  //添加通讯录好友
     private RelativeLayout rl_find; //寻找秘书和助理
+    private RelativeLayout rl_rq;   //扫一扫加好友
+    private RelativeLayout rl_company_contacts;
+    private final static int SCANNIN_GREQUEST_CODES = 5;
     
     private int checkedIndex = 1;   //当前选中的Tab位置, 0=消息   1=好友
     private MainActivity activity;
@@ -110,8 +117,12 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         
         rl_add = (RelativeLayout)v.findViewById(R.id.rl_add);
         rl_find = (RelativeLayout)v.findViewById(R.id.rl_find);
+        rl_rq = (RelativeLayout)v.findViewById(R.id.rl_rq);
+        rl_company_contacts = (RelativeLayout)v.findViewById(R.id.rl_company_contacts);
         rl_add.setOnClickListener(this);
         rl_find.setOnClickListener(this);
+        rl_rq.setOnClickListener(this);
+        rl_company_contacts.setOnClickListener(this);
 	}
 	
 	private void initTab(View v){
@@ -233,7 +244,8 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 //        Toast.makeText(getActivity(), ""+friendList.get(arg2).getName(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), FriendPageActivity.class);
-        intent.putExtra("friend", friendList.get(arg2));
+        //intent.putExtra("friend", friendList.get(arg2));
+        intent.putExtra("friend_id", friendList.get(arg2).getFriend_id());
         startActivity(intent);
     }
 
@@ -248,10 +260,109 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         case R.id.rl_find:   //寻找秘书和助理
             startActivity(new Intent(getActivity(), FindSecretaryActivity.class));
             break;
-
+        case R.id.rl_rq://扫一扫加好友
+            Intent intents = new Intent();
+            intents.setClass(getActivity(), MipcaActivityCapture.class);
+            intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
+            break;
+        case R.id.rl_company_contacts://企业通讯录
+                //跳转到企业通讯录
+            break;
         default:
             break;
         }
     }
-	
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+        case SCANNIN_GREQUEST_CODES:
+            if(resultCode == (-1)){
+                Bundle bundle = data.getExtras();
+                String tag = bundle.getString("tag");
+                if(tag.equals("xcloud")){
+                    String friend_id =bundle.getString("friend_id");
+                    addFriend(friend_id);
+                }else {
+                    Toast.makeText(getActivity(), "二维码不正确",Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+   /**
+    * 添加好友接口
+    * @param friend_id
+    */
+    public void addFriend(final String friend_id) {
+
+        String user_id = DBHelper.getUser(getActivity()).getId();
+
+        if (!NetworkUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user_id+"");
+        map.put("friend_id", friend_id);
+        AjaxParams param = new AjaxParams(map);
+
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_ADD_FRIEND, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            //添加成功，跳转到好友界面
+                            Intent intent = new Intent(getActivity(),FriendPageActivity.class);
+                            intent.putExtra("friend_id",friend_id);
+                            startActivity(intent);
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息
+                if(!StringUtils.isEmpty(errorMsg.trim())){
+                    UIUtils.showToast(getActivity(), errorMsg);
+                }
+            }
+        });
+
+    }
+    
+    
+    
+    
+    
 }

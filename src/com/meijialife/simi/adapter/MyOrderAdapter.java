@@ -84,7 +84,7 @@ public class MyOrderAdapter extends BaseAdapter {
 		holder.tv_name.setText(orderList.get(position).getService_type_name()+":");
 	    holder.tv_date.setText(orderList.get(position).getAdd_time_str());
 	    holder.tv_status.setText(orderList.get(position).getOrder_status_name());
-	    holder.tv_order_money.setText(orderList.get(position).getOrder_pay()+"元");
+	    holder.tv_order_money.setText(orderList.get(position).getOrder_money()+"元");
 	    finalBitmap.display(holder.iv_head_img, orderList.get(position).getPartner_user_head_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
 		holder.tv_addr.setText(orderList.get(position).getAddr_name());
 		      holder.ll_order_status.setOnClickListener(new OnClickListener() {

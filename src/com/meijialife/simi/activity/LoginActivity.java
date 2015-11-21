@@ -137,7 +137,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     private void initView() {
 
-        setTitleName("登录");
+        setTitleName("快速注册与登录");
 
         et_user = (EditText) findViewById(R.id.login_user_name);
         et_pwd = (EditText) findViewById(R.id.login_password);
@@ -699,7 +699,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         dismissDialog();
-                        Toast.makeText(getApplicationContext(), "环信登录成功！", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "环信登录成功！", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -861,7 +861,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            UIUtils.showToast(LoginActivity.this, "推送绑定成功");
+//                            UIUtils.showToast(LoginActivity.this, "推送绑定成功");
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = LoginActivity.this.getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

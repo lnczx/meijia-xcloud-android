@@ -28,7 +28,12 @@ public class Constants {
     public static final String URL_GET_USER_INFO = ROOT_URL + "user/get_userinfo.json";
     /**绑定手机号接口**/
     public static final String URL_POST_BIND_MOBILE = ROOT_URL + "user/bind_mobile.json";
-
+    /**获取我的二维码接口**/
+    public static final String URL_GET_MY_RQ_CODE = ROOT_URL +"user/get_qrcode.json";
+    /**添加好友接口**/
+    public static final String URL_GET_ADD_FRIEND = ROOT_URL +"user/add_friend.json";
+    
+    
     /** app更新接口 **/
     public static final String URL_GET_VERSION = "http://182.92.160.194/" + "d/version.xml";// 测试用，需更换
     /** 城市列表接口 **/
@@ -143,6 +148,8 @@ public class Constants {
    
     /**封面相册常量**/
     public static String COVER_ALBUM_INTRODUCE_CONTENT ="";
+    /**二维码扫描返回常量**/
+    public static String SCAN_RQ_TAG = "xcloud";
     /** 本地临时文件根目录 **/
      public static final String PATH_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Simi";
     //

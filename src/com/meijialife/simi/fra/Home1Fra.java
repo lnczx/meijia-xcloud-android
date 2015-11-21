@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private ArrayList<Cards> cardlist;// 卡片数据
 
     private TextView tv_tips;// 没有数据时的提示
+    private ImageView iv_no_card;//没有数据时提示 图片
 
     private int card_from; // 0 = 所有卡片 1 = 我发布的 2 = 我参与的,默认为0
 
@@ -128,6 +130,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private void initListView(View v) {
         listview = (ListView) v.findViewById(R.id.listview);
         tv_tips = (TextView) v.findViewById(R.id.tv_tips);
+        iv_no_card =(ImageView) v.findViewById(R.id.iv_no_card);
         /*
          * ArrayList<String> list = new ArrayList<String>(); for (int i = 0; i < 4; i++) { list.add("今日无安排" + i); }
          */
@@ -203,10 +206,12 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                                 }.getType());
                                 adapter.setData(cardlist);
                                 tv_tips.setVisibility(View.GONE);
+                                iv_no_card.setVisibility(View.GONE);
                                 // UIUtils.showToast(getActivity(), "有数据");
                             } else {
                                 adapter.setData(new ArrayList<Cards>());
                                 tv_tips.setVisibility(View.VISIBLE);
+                                iv_no_card.setVisibility(View.VISIBLE);
                                 // UIUtils.showToast(getActivity(), "没有数据");
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误

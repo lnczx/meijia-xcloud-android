@@ -59,7 +59,7 @@ public class DiscountCardAdapter extends BaseAdapter {
             holder.item_tv_money = (TextView) convertView.findViewById(R.id.item_tv_money);
             holder.item_tv_date = (TextView) convertView.findViewById(R.id.item_tv_date);
             holder.item_tv_description = (TextView) convertView.findViewById(R.id.item_tv_description);
-
+            holder.item_tv_introduce = (TextView)convertView.findViewById(R.id.item_tv_introduce);
 			holder.rl_bg = (RelativeLayout) convertView.findViewById(R.id.rl_bg);
 			convertView.setTag(holder);
 		} else {
@@ -70,7 +70,7 @@ public class DiscountCardAdapter extends BaseAdapter {
 		holder.item_tv_money.setText("￥"+list.get(position).getValue());
 		holder.item_tv_date.setText("有效期至"+list.get(position).getTo_date());
 		holder.item_tv_description.setText(list.get(position).getDescription());
-		
+		holder.item_tv_introduce.setText(list.get(position).getIntroduction());
 		if(position%2 == 0){
 		    holder.rl_bg.setBackgroundResource(R.drawable.youhuiquan_bg_4);
 		}else{
@@ -84,6 +84,7 @@ public class DiscountCardAdapter extends BaseAdapter {
 		TextView item_tv_money;
 		TextView item_tv_date;
 		TextView item_tv_description;
+		TextView item_tv_introduce;
 		RelativeLayout rl_bg;
 	}
 

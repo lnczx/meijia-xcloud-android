@@ -53,6 +53,8 @@
     <string name="camera_cancel">取消</string>
     <string name="no_photo">相册没有图片</string>
     
-      <string name="add_tag">Add Tag</string>
-
+    <string name="add_tag">Add Tag</string>
+     <!--二维码扫描  -->
+	<string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+	
 </resources>

@@ -34,6 +34,7 @@ import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.SecretaryImages;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.bean.UserTag;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.photo.activity.GalleryUrlActivity;
@@ -71,6 +72,8 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
     
     private String partner_user_id;
     private String service_type_id;
+    
+    private UserInfo userInfo;
             
             
     @Override
@@ -86,7 +89,9 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         partner = (Partner) getIntent().getSerializableExtra("Partner");
         partner_user_id = String.valueOf(partner.getUser_id());
         service_type_id = String.valueOf(partner.getService_type_id());
-        getPartnerDetail(service_type_id, partner_user_id);        
+        getPartnerDetail(service_type_id, partner_user_id);  
+        
+        userInfo = DBHelper.getUserInfo(PartnerActivity.this);
     }
     /**
      * 获取服务人员详情
@@ -185,20 +190,7 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
             userTags.add(userTag.getTag_name());
         }
         tg.setTags(userTags);
-/*        
-        LinearLayout ll = (LinearLayout)findViewById(R.id.ll_user_tags);
-        userTagList = partnerDetail.getUser_tags();
-        for (Iterator iterator = userTagList.iterator(); iterator.hasNext();) {
-            UserTag userTag = (UserTag) iterator.next();
-            TextView tv = new TextView(this);
-            tv.setText(userTag.getTag_name());
-            tv.setBackgroundResource(R.drawable.lab_for_sec);
-            tv.setTextColor(R.color.simi_color_white);
-            ll.addView(tv);
-        }
-        
-*/    
-    
+  
     }
     /**
      * 服务商图片展示
@@ -225,7 +217,7 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         listview = (ListView) findViewById(R.id.listview);
         adapter = new SecretaryServiceAdapter(this);
         if(list!=null && list.size()>0){
-            adapter.setData(list,partnerDetail);
+            adapter.setData(list,partnerDetail,userInfo);
             listview.setAdapter(adapter);
         }
         
@@ -233,7 +225,8 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        //getPartnerDetail(service_type_id, partner_user_id);
+        getUserInfo();
+        getPartnerDetail(service_type_id,partner_user_id);
     }
     /**
      * 点击进入显示大图activity
@@ -249,16 +242,69 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         startActivity(intent);
         overridePendingTransition(0, 0);
     }
-    /* private void initSecDefaultPhotos(){
-    secretaryImagesList = new ArrayList<SecretaryImages>();
-    SecretaryImages si1 = new SecretaryImages(user.getId(),R.drawable.mishutupian01);
-    SecretaryImages si2 = new SecretaryImages(user.getId(),R.drawable.mishutupian02);
-    SecretaryImages si3 = new SecretaryImages(user.getId(),R.drawable.mishutupian03);
-    SecretaryImages si4 = new SecretaryImages(user.getId(),R.drawable.mishutupian04);
-    secretaryImagesList.add(si1);
-    secretaryImagesList.add(si2);
-    secretaryImagesList.add(si4);
-    secretaryImagesList.add(si3);
-}*/
+    private void getUserInfo() {
+        if (user == null) {
+            Toast.makeText(PartnerActivity.this, "用户信息错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!NetworkUtils.isNetworkConnected(PartnerActivity.this)) {
+            Toast.makeText(PartnerActivity.this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
 
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user.getId());
+        AjaxParams param = new AjaxParams(map);
+
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_USER_INFO, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(PartnerActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                userInfo = gson.fromJson(data, UserInfo.class);
+                            } else {
+                                // UIUtils.showToast(BindMobileActivity.this, "数据错误");
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息|
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(PartnerActivity.this, errorMsg);
+                }
+            }
+        });
+    }
 }

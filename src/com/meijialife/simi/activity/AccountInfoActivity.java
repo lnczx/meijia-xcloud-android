@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager.OnActivityResultListener;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.Utils;
+import com.meijialife.simi.zxing.code.MipcaActivityCapture;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.utils.HTTPUtils;
 
@@ -118,7 +120,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
 
         title_btn_edit_layout.setVisibility(View.VISIBLE);
         title_btn_edit_layout.setOnClickListener(this);
-
+       
     }
 
     private void init() {
@@ -168,12 +170,12 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         case R.id.tv_account_logout: // 退出登陆
             logOut();
             break;
-
         default:
             break;
         }
     }
-
+    
+    
     /**
      * 点击右上角编辑按钮
      */
@@ -443,7 +445,6 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 结果码不等于取消时候
         if (resultCode != RESULT_CANCELED) {
-
             switch (requestCode) {
             case IMAGE_REQUEST_CODE: // 从手机相册返回的
                 startPhotoZoom(data.getData());
