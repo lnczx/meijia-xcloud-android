@@ -1,9 +1,7 @@
 package com.meijialife.simi.adapter;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,8 +32,6 @@ import android.widget.Toast;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CardDetailsActivity;
-import com.meijialife.simi.activity.MainPlusTravelActivity;
-import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.database.DBHelper;

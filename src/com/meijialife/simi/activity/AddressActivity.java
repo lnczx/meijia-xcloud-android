@@ -8,7 +8,6 @@ import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -42,6 +41,8 @@ public class AddressActivity extends BaseActivity implements OnClickListener, On
 	private ListView listview;
     private AddressListAdapter adapter;
     private ArrayList<AddressData> addressList;
+    
+    private int flag = 0;// 1= 支付页面进入（执行事件） 0 = 其他页面进入（不执行事件）
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class AddressActivity extends BaseActivity implements OnClickListener, On
     	listview.setOnItemClickListener(this);
     	adapter = new AddressListAdapter(this, true);
     	listview.setAdapter(adapter);
+    	flag = getIntent().getIntExtra("flag",0);
     	
     	findViewById(R.id.address_manage_btn_new).setOnClickListener(this);
     }
@@ -85,12 +87,14 @@ public class AddressActivity extends BaseActivity implements OnClickListener, On
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		AddressData addressData = (AddressData)addressList.get(position);
-		Intent intent = new Intent();
-		intent.putExtra("addr_id",addressData.getId());
-		intent.putExtra("addressData",addressData);
-		setResult(RESULT_OK, intent);
-		finish();
+	    AddressData addressData = (AddressData)addressList.get(position);
+	    if(flag==1){
+	        Intent intent = new Intent();
+	        intent.putExtra("addr_id",addressData.getId());
+	        intent.putExtra("addressData",addressData);
+	        setResult(RESULT_OK, intent);
+	        finish();
+	    }
 	}
 	/**
      * 获取地址列表

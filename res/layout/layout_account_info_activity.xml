@@ -178,6 +178,30 @@
                         android:textColor="@color/simi_color_red"
                         android:textSize="@dimen/font_size_16" />
                 </RelativeLayout>
+                 <RelativeLayout
+                    android:id="@+id/rl_item_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_item_height"
+                    android:background="@drawable/btn_list_item_bg" >
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="常用地址"
+                        android:textColor="@color/simi_color_gray"
+                        android:textSize="17.6sp" />
+
+                   <ImageView
+	                   android:layout_width="13dp"
+	                   android:layout_height="13dp"
+	                   android:layout_alignParentRight="true"
+	                   android:layout_centerVertical="true"
+	                   android:layout_marginRight="10dp"
+	                   android:src="@drawable/arrow_right" />
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"

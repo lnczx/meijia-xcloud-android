@@ -58,16 +58,11 @@ public class FindSecretaryActivity extends BaseListActivity implements OnClickLi
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        // TODO Auto-generated method stub
         Partner partner = partnerList.get(position);
-/*//        Toast.makeText(this, ""+secretary.getName(), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(FindSecretaryActivity.this, SecretaryActivity.class);
-        intent.putExtra("sec_id", secretary.getSec_id());
-        intent.putExtra("sec_name", secretary.getName());
-        intent.putExtra("sec_description", secretary.getDescription());
-        intent.putExtra("sec_img", secretary.getHead_img());
+        Intent intent = new Intent(FindSecretaryActivity.this,PartnerActivity.class);
+        intent.putExtra("Partner",partnerList.get(position));
         startActivity(intent);
-        super.onListItemClick(l, v, position, id);*/
+        
     }
 
     @Override
@@ -96,7 +91,8 @@ public class FindSecretaryActivity extends BaseListActivity implements OnClickLi
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id+"");
-        map.put("service_type_id", "75");
+        map.put("page", "0");
+        map.put("service_type_ids", "75,180");
         AjaxParams param = new AjaxParams(map);
 
         showDialog();

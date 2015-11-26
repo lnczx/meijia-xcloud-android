@@ -1,6 +1,5 @@
 package com.meijialife.simi.activity;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +16,7 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -734,6 +735,9 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                         String msg = obj.getString("msg");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             et_comment.setText("");
+                            //评论成功，收起键盘
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);  
+                            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);  
                             getCommentList();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(CardDetailsActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();

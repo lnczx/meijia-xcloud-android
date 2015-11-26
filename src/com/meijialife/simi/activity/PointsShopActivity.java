@@ -136,8 +136,10 @@ public class PointsShopActivity extends Activity {
         }
 
         mTitle.setTextColor(titlel.intValue());
-        mNavigationBar.setBackgroundColor(navl.intValue());
-        mBackView.setPadding(50, 50, 50, 50);
+        mTitle.setTextColor(this.getResources().getColor(R.color.title_text_color));
+        //mNavigationBar.setBackgroundColor(navl.intValue());
+        mNavigationBar.setBackgroundColor(this.getResources().getColor(R.color.simi_color_white));
+        mBackView.setPadding(10, 10, 10, 10);
         mBackView.setClickable(true);
 
         // 添加后退按钮监听事件
@@ -264,9 +266,11 @@ public class PointsShopActivity extends Activity {
   //自定义导航栏，包含 后退按钮，页面标题，分享按钮（默认隐藏）
     protected void initNavigationBar(){
         int dp200 = dip2px(this,200);
-        int dp50 = dip2px(this,50);
+        int dp100 = dip2px(this,100);
+        int dp30 = dip2px(this,30);
         int dp20 = dip2px(this,20);
         int dp10 = dip2px(this,10);
+        int dp15 = dip2px(this,15);
         
         mNavigationBar=new RelativeLayout(this);
         mNavigationBar.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.FILL_PARENT,dp20));
@@ -281,10 +285,12 @@ public class PointsShopActivity extends Activity {
         
         mBackView = new ImageView(this);
         mBackView.setImageDrawable(getResources().getDrawable(R.drawable.title_left_back));
-        RelativeLayout.LayoutParams mBackLayout=new RelativeLayout.LayoutParams(dp50, dp50);
+        
+        //mBackView.setImageResource(R.drawable.title_left_back);
+        RelativeLayout.LayoutParams mBackLayout=new RelativeLayout.LayoutParams(dp30,dp30);
         mBackLayout.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         mBackLayout.addRule(RelativeLayout.ALIGN_PARENT_LEFT); 
-        mBackLayout.setMargins(dp10, 0, 0, 0);
+        mBackLayout.setMargins(dp20, 0, 0, 0);
         mNavigationBar.addView(mBackView,mBackLayout);
         
         //在导航栏的右侧添加分享按钮（无分享信息的页面隐藏）

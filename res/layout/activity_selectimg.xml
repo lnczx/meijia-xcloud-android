@@ -12,10 +12,12 @@
          >
 		 <ImageView
 	       android:id="@+id/title_btn_left"
-	       android:layout_width="50dp"
+	       android:layout_width="130dp"
 	       android:layout_height="match_parent"
 	       android:layout_gravity="center_vertical"
 	       android:focusable="true"
+	       android:paddingLeft="30dp"
+           android:paddingRight="90dp"
 	       android:scaleType="centerInside"
 	       android:src="@drawable/title_left_back"
 	       android:visibility="visible" />

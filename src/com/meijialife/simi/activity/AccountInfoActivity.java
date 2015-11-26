@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager.OnActivityResultListener;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -50,7 +49,6 @@ import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.Utils;
-import com.meijialife.simi.zxing.code.MipcaActivityCapture;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.utils.HTTPUtils;
 
@@ -104,11 +102,13 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         RelativeLayout item_3 = (RelativeLayout) findViewById(R.id.rl_item_3);// 性别
         RelativeLayout item_4 = (RelativeLayout) findViewById(R.id.rl_item_4);// 私秘卡
         TextView tv_logout = (TextView) findViewById(R.id.tv_account_logout);// 退出登陆
-
+        RelativeLayout item_5 = (RelativeLayout)findViewById(R.id.rl_item_5);//常用地址
+        
         item_0.setOnClickListener(this);
         item_3.setOnClickListener(this);
         item_4.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
+        item_5.setOnClickListener(this);
 
         title_btn_edit_layout = (RelativeLayout) findViewById(R.id.title_btn_edit_layout);
         title_btn_edit = (TextView) findViewById(R.id.title_btn_edit);
@@ -164,8 +164,10 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         case R.id.rl_item_4: // 封面相册
             Intent intent = new Intent(AccountInfoActivity.this,com.meijialife.simi.photo.activity.MainActivity.class);
             startActivity(intent);
-            
            // showCoverAlbum();
+            break;
+        case R.id.rl_item_5: //常用地址
+            startActivity(new Intent(this, AddressActivity.class));
             break;
         case R.id.tv_account_logout: // 退出登陆
             logOut();

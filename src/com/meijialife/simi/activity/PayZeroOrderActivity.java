@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +28,6 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.bean.MyOrder;
 import com.meijialife.simi.bean.MyOrderDetail;
 import com.meijialife.simi.bean.PartnerDetail;
-import com.meijialife.simi.bean.ServiceOrder;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
@@ -159,9 +159,13 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
                     json = new JSONObject(t.toString());
                     int status = Integer.parseInt(json.getString("status"));
                     String msg = json.getString("msg");
-
                     if (status == Constants.STATUS_SUCCESS) { // 正确
+                        JSONObject obj = json.getJSONObject("data");
+                        orderId = obj.getString("order_id");
                         Toast.makeText(PayZeroOrderActivity.this,"购买成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PayZeroOrderActivity.this,OrderDetailsActivity.class); 
+                        intent.putExtra("orderId",orderId);
+                        startActivity(intent);
                         finish();
                     } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                         Toast.makeText(PayZeroOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();

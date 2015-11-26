@@ -80,7 +80,10 @@ public class Constants {
     public static final String URL_GET_MY_DISCOUNT_CARD_LIST = ROOT_URL +"user/get_coupons.json";
     /**兑换优惠券接口**/
     public static final String URL_POST_EXCHANGE_DISCOUNT_CARD = ROOT_URL +"user/post_coupon.json";
+    /**我的钱包接口（用户消费明细）**/
+    public static final String URL_GET_WALLET_LIST = ROOT_URL +"user/get_detail_pay.json";
 
+    
     
     /** 添加通讯录好友接口 **/
     public static final String URL_POST_FRIEND = ROOT_URL + "user/post_friend.json";

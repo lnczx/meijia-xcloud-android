@@ -105,7 +105,7 @@ public class Find2Fra extends BaseFragment {
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);// 设置js可以直接打开窗口，如window.open()，默认为false
         webview.getSettings().setJavaScriptEnabled(true);// 是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
         webview.getSettings().setSupportZoom(true);// 是否可以缩放，默认true
-        webview.getSettings().setBuiltInZoomControls(true);// 是否显示缩放按钮，默认false
+//        webview.getSettings().setBuiltInZoomControls(true);// 是否显示缩放按钮，默认false
         webview.getSettings().setUseWideViewPort(true);// 设置此属性，可任意比例缩放。大视图模式
         webview.getSettings().setLoadWithOverviewMode(true);// 和setUseWideViewPort(true)一起解决网页自适应问题
         webview.getSettings().setAppCacheEnabled(false);// 是否使用缓存
@@ -153,12 +153,12 @@ public class Find2Fra extends BaseFragment {
                 if (checkedId == grop.getChildAt(1).getId()) {// 综合服务
                     line_2.setVisibility(View.VISIBLE);
                     webview.setVisibility(View.GONE);
-                    getPartnerList("1,33,42");
+                    getPartnerList("1,16,33,42,52,61,189,191");
                 }
                 if (checkedId == grop.getChildAt(2).getId()) {//设计策划
                     line_3.setVisibility(View.VISIBLE);
                     webview.setVisibility(View.GONE);
-                    getPartnerList("79");
+                    getPartnerList("67,79");
                    
                 }
                 //webview展示网页

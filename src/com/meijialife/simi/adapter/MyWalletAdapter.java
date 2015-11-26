@@ -18,21 +18,21 @@ import com.meijialife.simi.bean.MyWalletData;
  */
 public class MyWalletAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
-	private ArrayList<MyWalletData> list;
+	private ArrayList<MyWalletData> myWalletDataList;
 
 	public MyWalletAdapter(Context context) {
 		inflater = LayoutInflater.from(context);
-		list = new ArrayList<MyWalletData>();
+		myWalletDataList = new ArrayList<MyWalletData>();
 	}
 
 	public void setData(ArrayList<MyWalletData> list) {
-		this.list = list;
+		this.myWalletDataList = list;
 		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
-		return list.size();
+		return myWalletDataList.size();
 	}
 
 	@Override
@@ -46,24 +46,32 @@ public class MyWalletAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		Holder holder = null;
 		if (convertView == null) {
 			holder = new Holder();
 			convertView = inflater.inflate(R.layout.my_wallet_list_item, null);
-			holder.tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
+			holder.item_tv_order_type = (TextView) convertView.findViewById(R.id.item_tv_order_type);
+			holder.item_tv_order_pay = (TextView) convertView.findViewById(R.id.item_tv_order_pay);
+			holder.item_tv_date = (TextView) convertView.findViewById(R.id.item_tv_date);
+			holder.item_tv_mobile = (TextView) convertView.findViewById(R.id.item_tv_mobile);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
 		
-		holder.tv_name.setText(list.get(position).getType());
-		
+		holder.item_tv_order_type.setText(myWalletDataList.get(position).getOrder_type_name()+"");
+		holder.item_tv_order_pay.setText(myWalletDataList.get(position).getOrder_pay()+"元");
+		holder.item_tv_mobile.setText(myWalletDataList.get(position).getMobile());
+		holder.item_tv_date.setText(myWalletDataList.get(position).getAdd_time_str());
 		return convertView;
 	}
 	
 	class Holder {
-		TextView tv_name;
+		TextView item_tv_order_type;
+		TextView item_tv_order_pay;
+		TextView item_tv_date;
+		TextView item_tv_mobile;
 	}
 
 }
