@@ -59,8 +59,8 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.fra.Find2Fra;
 import com.meijialife.simi.fra.Home1Fra;
-import com.meijialife.simi.fra.Home2Fra;
 import com.meijialife.simi.fra.Home3Fra;
+import com.meijialife.simi.fra.PersonalFragment;
 import com.meijialife.simi.fra.PersonalPageFragment;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SlideMenu;
@@ -304,7 +304,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             break;
         case R.id.tab_bt_4: // 我的
             currentTabIndex = 4;
-            change(new PersonalPageFragment());
+            change(new PersonalFragment());
+//            change(new PersonalPageFragment());
             setSelected(mBt4);
             // updateTitle(4);
             slideMenu.isUse = true;

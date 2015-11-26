@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.wxpay.WxConstants;
 import com.meijialife.simi.wxpay.WxPay;
@@ -52,8 +53,10 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 //             builder.show();
             if (resp.errCode == BaseResp.ErrCode.ERR_OK) {
 //                PayOrderActivity.postCardOnlinePay(this, this, WxPay.outTradeNo, "2", "SUCCESS");
+                Intent intent = new Intent(this,OrderDetailsActivity.class); 
+                intent.putExtra("orderId",PayOrderActivity.orderId);
+                startActivity(intent);
                 WxPay.activity.finish();
-              
             }
             WXPayEntryActivity.this.finish();
         }

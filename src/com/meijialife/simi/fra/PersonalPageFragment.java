@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -154,7 +155,14 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
         ll_rq = (LinearLayout)music_popunwindwow.findViewById(R.id.ll_rq);
         iv_rq_left = (ImageView)music_popunwindwow.findViewById(R.id.iv_rq_left);
       
-        
+        /**
+         * 沉浸式状态栏(像ios那样的状态栏与应用统一颜色样式)android.4.4支持
+         */
+        getActivity().getWindow().addFlags(
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏 
+        getActivity().getWindow().addFlags( 
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);//透明导航栏  
+      
         ll_rq.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

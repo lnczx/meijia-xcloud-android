@@ -50,6 +50,7 @@ public class DiscountCardActivity extends BaseActivity implements OnClickListene
     private User user;
     private EditText et_card_passwd;
     private String card_password;
+    private int flag = 0;//0=其他页面进入 1=支付页面进入(执行事件)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +72,18 @@ public class DiscountCardActivity extends BaseActivity implements OnClickListene
     	listview = (ListView)findViewById(R.id.listview);
     	adapter = new DiscountCardAdapter(this);
     	listview.setAdapter(adapter);
+    	flag = getIntent().getIntExtra("flag",0);
     	
     	listview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MyDiscountCard myDiscountCard = (MyDiscountCard)myDiscountCardList.get(position);
-                Intent intent = new Intent();
-                intent.putExtra("myDiscountCard",myDiscountCard);
-                setResult(RESULT_FIRST_USER, intent);
-                finish();
+                if(flag==1){
+                    Intent intent = new Intent();
+                    intent.putExtra("myDiscountCard",myDiscountCard);
+                    setResult(RESULT_FIRST_USER, intent);
+                    finish();
+                }
             }
         });
     	

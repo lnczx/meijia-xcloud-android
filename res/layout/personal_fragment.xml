@@ -1,15 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:id="@+id/fl_main"
-     >
+    android:background="@android:color/white" >
 
     <FrameLayout
         android:id="@+id/rl_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="-180dp"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -21,9 +19,9 @@
                 android:id="@+id/rl_top"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:fitsSystemWindows="true"  
-			    android:clipToPadding="true"
-                android:background="@drawable/bg_person_page" >
+                android:background="@drawable/bg_person_page"
+                android:clipToPadding="true"
+                android:fitsSystemWindows="true" >
 
                 <com.meijialife.simi.ui.RoundImageView
                     android:id="@+id/iv_top_head"
@@ -98,18 +96,18 @@
                     android:padding="15dp"
                     android:src="@drawable/icon_plus_duanxin"
                     android:visibility="invisible" />
-                
-                 <ImageButton
+
+                <ImageButton
                     android:id="@+id/ibtn_rq"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="12dp"
                     android:background="@android:color/transparent"
                     android:scaleType="centerInside"
                     android:src="@drawable/my_rq_code"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="12dp"
                     android:visibility="gone" />
 
                 <ImageButton
@@ -120,9 +118,10 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="15dp"
+                    android:background="@drawable/main_menu"
                     android:padding="25dp"
-                    android:background="@drawable/main_menu" 
-                    />
+                    android:visibility="gone"
+                     />
             </RelativeLayout>
 
             <LinearLayout
@@ -219,52 +218,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_medium"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal" >
+                android:layout_height="fill_parent"
+                android:scrollbars="none|vertical" >
 
-                <Button
-                    android:id="@+id/btn_my_send"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_personpage_tab_indicator"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:text="我发布的"
-                    android:textColor="@drawable/personpage_tab_selector"
-                    android:textSize="@dimen/my_publish_text_size" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/activity_bg_color" />
-
-                <Button
-                    android:id="@+id/btn_my_in"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_personpage_tab_indicator"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:text="我参与的"
-                    android:textColor="@drawable/personpage_tab_selector"
-                    android:textSize="@dimen/my_publish_text_size" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="@color/activity_bg_color" />
-
-            <com.meijialife.simi.ui.NoScrollViewPager
-                android:id="@+id/vp_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-            </com.meijialife.simi.ui.NoScrollViewPager>
+                <include layout="@layout/person_scroll_view" />
+            </ScrollView>
         </LinearLayout>
     </FrameLayout>
 

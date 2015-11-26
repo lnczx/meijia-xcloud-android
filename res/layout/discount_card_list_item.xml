@@ -46,12 +46,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_tv_money"
                 android:layout_alignParentBottom="true"
-                android:gravity="center"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="8dp"
-                android:text='中意"焕新礼包"兑换券'
+                android:text='"焕新礼包"兑换券'
                 android:textColor="@color/simi_color_white"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -73,7 +72,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="1.仅限本人使用\n2.仅限中意客户参加‘换新礼包’兑换使用\n3.服务类型仅适用于保洁"
-                android:textColor="@color/simi_color_gray" />
+                android:textColor="@color/simi_color_gray" 
+                android:textSize="13sp"
+                />
         </LinearLayout>
     </LinearLayout>
 

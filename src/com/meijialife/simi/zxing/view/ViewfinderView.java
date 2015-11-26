@@ -29,7 +29,7 @@ public final class ViewfinderView extends View {
 	/**
 	 * 刷新界面的时间
 	 */
-	private static final long ANIMATION_DELAY = 10L;
+	private static final long ANIMATION_DELAY = 20L;
 	private static final int OPAQUE = 0xFF;
 
 	/**

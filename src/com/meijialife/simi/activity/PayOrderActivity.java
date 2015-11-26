@@ -85,7 +85,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      */
     private String reMoney; // 充值金额
     private int pay_type;// 支付方式
-    private String orderId;// 订单Id
+    public  static String orderId;// 订单Id
     private int is_addr;// 0 = 不需要 1 = 需要
     private String addr_id;// 用户地址Id
     private String user_coupon_id = "0";
@@ -202,6 +202,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+                intent.putExtra("flag",1);// 1=表示从支付页面进入优惠券列表
                 intent.setClass(PayOrderActivity.this, DiscountCardActivity.class);
                 startActivityForResult(intent, 1);
             }
@@ -218,6 +219,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+                intent.putExtra("flag",1);// 1=表示从支付页面跳入地址列表
                 intent.setClass(PayOrderActivity.this, AddressActivity.class);
                 startActivityForResult(intent, 0);
             }
@@ -294,30 +296,16 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 }
             } else if (flag == FROM_MYORDER) {// 来自于订单页面支付(待支付支付)
                 if (iv_order_select_alipay.isSelected()) {// 支付宝支付秘书服务
-                    /*
-                     * new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, guanjiaCallback, mobile, ConsAli.PAY_TO_MS_CARD, "0.01"
-                     * order_pay , myOrder.getOrder_no()).pay();
-                     */
                     postExistedOrderBuyFromMyOrderList(PAY_TYPE_ALIPAY, myOrder);
                 } else if (iv_order_select_weixin.isSelected()) {// 微信支付秘书服务
-                // new WxPay(PayOrderActivity.this, PayOrderActivity.this,/* ConsAli.PAY_TO_MS_CARD */0, myOrder.getOrder_no(), "秘书服务购买", "0.01" /*
-                // order_pay */);
                     postExistedOrderBuyFromMyOrderList(PAY_TYPE_WXPAY, myOrder);
                 } else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
                 }
             } else if (flag == FROM_MYORDER_DETAIL) {// 来自于订单页面支付(待支付支付)
                 if (iv_order_select_alipay.isSelected()) {// 支付宝支付秘书服务
-                    /*
-                     * new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, guanjiaCallback, mobile, ConsAli.PAY_TO_MS_CARD, "0.01"
-                     * order_pay , myOrderDetail.getOrder_no()).pay();
-                     */
                     postExistedOrderBuyFromMyOrderDetail(PAY_TYPE_ALIPAY, myOrderDetail);
                 } else if (iv_order_select_weixin.isSelected()) {// 微信支付秘书服务
-                    /*
-                     * new WxPay(PayOrderActivity.this, PayOrderActivity.this, ConsAli.PAY_TO_MS_CARD 0, myOrderDetail.getOrder_no(), "秘书服务购买", "0.01"
-                     * order_pay );
-                     */
                     postExistedOrderBuyFromMyOrderDetail(PAY_TYPE_WXPAY, myOrderDetail);
                 } else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
@@ -341,8 +329,10 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 String tradeNo = msg;
                 Toast.makeText(getApplication(), "支付成功！", 1).show();
                 // 支付成功跳转到订单详情页面
-               // Intent intent = new Intent(PayOrderActivity.this,MyOrderDetail.class); intent.putExtra("orderId",orderId); startActivity(intent);
-                finish();
+                Intent intent = new Intent(PayOrderActivity.this,OrderDetailsActivity.class); 
+                intent.putExtra("orderId",orderId);
+                startActivity(intent);
+                PayOrderActivity.this.finish();
                 // 管家卡在线支付同步接口
                 // postSeniorOnlinePay(activity, context, tradeNo);
             } else {
@@ -467,10 +457,10 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         }
 
         if (payType == PAY_TYPE_ALIPAY) {
-            new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, guanjiaCallback, mobile, ConsAli.PAY_TO_MS_CARD, "0.01"/* order_pay */,
+            new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, guanjiaCallback, mobile, ConsAli.PAY_TO_MS_CARD, /*"0.01"*/order_pay,
                     order_no).pay();
         } else if (payType == PAY_TYPE_WXPAY) {
-            new WxPay(PayOrderActivity.this, PayOrderActivity.this,/* ConsAli.PAY_TO_MS_CARD */0, order_no, "秘书服务购买", "0.01" /* order_pay */);
+            new WxPay(PayOrderActivity.this, PayOrderActivity.this,/* ConsAli.PAY_TO_MS_CARD */0, order_no, "秘书服务购买", /*"0.01"*/  order_pay );
         }
     }
 
@@ -771,7 +761,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             new WxPay(PayOrderActivity.this, PayOrderActivity.this, ConsAli.PAY_TO_MEMBER, card_order_no, "云行政会员卡充值", card_pay);
         }
     }
-
     /**
      * 会员充值在线支付成功同步接口
      * 
