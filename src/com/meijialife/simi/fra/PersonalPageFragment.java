@@ -60,7 +60,7 @@ import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
- * 我的
+ * 我的---暂时不使用
  * 
  * @author RUI
  * 

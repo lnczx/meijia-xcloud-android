@@ -1,6 +1,5 @@
 package com.meijialife.simi.activity;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,22 +12,18 @@ import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
-import org.apache.commons.logging.Log;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -44,7 +39,6 @@ import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.ContactBean;
-import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.ToggleButton;
@@ -301,7 +295,8 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.layout_select_phonenumber:// 选择通讯录
-            Intent intent = new Intent(MainPlusMeettingActivity.this, ContactSelectActivity.class);
+            Intent intent = new Intent(MainPlusMeettingActivity.this, ContactChooseActivity.class);
+//            Intent intent = new Intent(MainPlusMeettingActivity.this, ContactSelectActivity.class);
             startActivityForResult(intent, GET_CONTACT);
 
             break;
