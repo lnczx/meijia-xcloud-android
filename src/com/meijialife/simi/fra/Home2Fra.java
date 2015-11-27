@@ -22,7 +22,7 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.utils.StringUtils;
 
 /**
- * 发现
+ * 发现----暂时不使用
  * @author RUI
  *
  */

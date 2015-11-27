@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/activity_bg_color" 
+     >
+
+    <RelativeLayout
+        android:id="@+id/view_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/title_btn_left"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:focusable="true"
+            android:paddingLeft="30dp"
+    	    android:paddingRight="90dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/title_left_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/header_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:focusable="false"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="选择接收人"
+            android:textColor="@color/title_text_color"
+            android:textSize="@dimen/title_bar_text_size" />
+
+        <TextView
+            android:id="@+id/title_btn_ok"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/title_left_back"
+            android:text="确定"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:textColor="@color/simi_color_red"
+            android:textSize="17.6sp"
+            android:visibility="visible" />
+
+        
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_list_item_bg"
+        android:layout_gravity="center_vertical"
+        >
+        <TextView
+            android:id="@+id/tv_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已选择:"
+            android:textColor="@color/text_normal"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center|center_vertical"
+            android:layout_marginTop="20dp"
+            />
+         <TextView
+            android:id="@+id/tv_contacts_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="张三"
+            android:textColor="@color/text_normal"
+            android:gravity="center|center_vertical"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/tv_tag"
+            />
+      </RelativeLayout>
+       <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/cut_off_rule" />
+     <RelativeLayout
+        android:id="@+id/rl_company_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_list_item_bg"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <com.meijialife.simi.ui.RoundImageView
+            android:id="@+id/iv_icon_4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/iconfont_company_tongxunbu"
+            imagecontrol:border_inside_color="@color/simi_color_white"
+            imagecontrol:border_outside_color="@color/simi_color_white"
+            imagecontrol:border_thickness_in="1dp"
+            imagecontrol:border_thickness_out="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/iv_icon_4"
+            android:text="企业通讯录" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right" />
+    </RelativeLayout>
+  <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/cut_off_rule" />
+    <RelativeLayout
+        android:id="@+id/rl_friend_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_list_item_bg"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <com.meijialife.simi.ui.RoundImageView
+            android:id="@+id/iv_icon_1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/iconfont_tongxunbu"
+            imagecontrol:border_inside_color="@color/simi_color_white"
+            imagecontrol:border_outside_color="@color/simi_color_white"
+            imagecontrol:border_thickness_in="1dp"
+            imagecontrol:border_thickness_out="1dp" />
+
+        <TextView
+            android:id="@+id/tv_name_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/iv_icon_1"
+            android:text="添加通讯录好友" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right" />
+    </RelativeLayout>
+    
+  <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="4dp"
+        android:text="我的好友" />
+    <ListView
+        android:id="@+id/lv_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dip"
+        android:layout_weight="1.0" 
+        >
+    </ListView>
+
+</LinearLayout>
