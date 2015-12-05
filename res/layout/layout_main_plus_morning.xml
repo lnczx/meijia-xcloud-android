@@ -210,6 +210,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:layout_toLeftOf="@id/arrow"
+                        android:ems="6"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:textColor="@color/red_text_color" />
                     
                 </RelativeLayout>

@@ -22,6 +22,25 @@ public class Friend implements Serializable {
     public String head_img;
     /** 环信账号名称 **/
     public String im_username;
+    
+    public String mobile;
+    
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public String getFriend_id() {
         return friend_id;

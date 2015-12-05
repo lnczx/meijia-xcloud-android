@@ -41,13 +41,14 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
+import com.meijialife.simi.activity.ApplicationsCenterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
-import com.meijialife.simi.activity.PointsActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
+import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -87,11 +88,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private LinearLayout ll_rq;
     private ImageView iv_rq_left;
     private LayoutInflater layoutInflater;
-
-    private static final String SHOP_URL = "http://mishuzhuli.com/category/xingzhengbaike";
-    private static final String ATTEST_URL = "http://mishuzhuli.com/category/renzhengkaoshi";
-    private static final String MONEY_URL = "http://123.57.173.36/simi-h5/sec/#!/register.html";
-    private static final String TRAIN_URL = "http://mishuzhuli.com/category/wendangfanwen";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -228,6 +224,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             startActivity(intent6);
             break;
         case R.id.rl_person_items1:// 工具箱--更多
+             startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
             break;
         case R.id.rl_person_items2:// 我的成长--LV
             break;
@@ -260,22 +257,37 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             startActivity(intent1);
             break;
         case R.id.rl_person_shop:// 知识库
-            popWebView(SHOP_URL);
+//            popWebView(Constants.SHOP_URL);
+            intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent.putExtra("url", Constants.SHOP_URL);
+            startActivity(intent);
             break;
         case R.id.rl_person_attest:// 认证考试
-            popWebView(ATTEST_URL);
+//            popWebView(Constants.ATTEST_URL);
+            intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent.putExtra("url", Constants.ATTEST_URL);
+            startActivity(intent);
             break;
         case R.id.rl_person_money:// 兼职赚钱
-            popWebView(MONEY_URL);
+//            popWebView(Constants.MONEY_URL);
+            intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent.putExtra("url", Constants.MONEY_URL);
+            startActivity(intent);
             break;
         case R.id.rl_person_train:// 培训
-            popWebView(TRAIN_URL);
+//            popWebView(Constants.TRAIN_URL);
+            intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent.putExtra("url", Constants.TRAIN_URL);
+            startActivity(intent);
             break;
         default:
             break;
         }
     }
 
+    
+    
+    
     private PopupWindow popupWindow;
     private WebView webview;
     private ImageView iv_person_left;

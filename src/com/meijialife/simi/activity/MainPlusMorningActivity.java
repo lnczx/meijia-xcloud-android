@@ -113,6 +113,9 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
     private UserInfo userInfo;
     private RelativeLayout layout_select_who;
     private boolean isUsersenior;
+    private HashMap<Integer,String> currentMap;//保存选择的人员
+    private ArrayList<String> list;
+    private HashMap<Integer,String> contactBeanMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +156,11 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
 
+        list = new ArrayList<String>();
+        currentMap = new HashMap<Integer, String>();
+        contactBeanMap = new HashMap<Integer,String>();
+        contactList = new ArrayList<String>();
+        
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
        isUsersenior = StringUtils.isEquals(user_type, "1");
@@ -293,7 +301,11 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.layout_select_phonenumber:// 选择通讯录
-            Intent intent = new Intent(MainPlusMorningActivity.this, ContactSelectActivity.class);
+            Intent intent = new Intent(MainPlusMorningActivity.this, ContactChooseActivity.class);
+            intent.putExtra("currentMap",currentMap);
+            intent.putStringArrayListExtra("list",list);
+            intent.putExtra("contactBeanMap",contactBeanMap);
+            intent.putStringArrayListExtra("contactList",contactList);
             startActivityForResult(intent, GET_CONTACT);
 
             break;
@@ -574,27 +586,32 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
             case GET_CONTACT:
-                contactList = data.getExtras().getStringArrayList("contact");
-
-                if (contactList != null && contactList.size() > 0) {
+                currentMap = (HashMap)data.getSerializableExtra("currentMap");
+                list = data.getExtras().getStringArrayList("list");
+                contactBeanMap = (HashMap<Integer, String>)data.getSerializableExtra("contactBeanMap");
+                contactList = data.getExtras().getStringArrayList("contactList"); 
+                if (list != null && list.size() > 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             String name = null;
-                            for (int i = 0; i < contactList.size(); i++) {
-                                String bean = contactList.get(i).toString();
+                            StringBuilder sb = new StringBuilder();
+                            for (int i = 0; i < list.size(); i++) {
+                                String bean = list.get(i).toString();
                                 if (name != null) {
-                                    name += "," + bean.substring(0, bean.indexOf("\n"));
+                                    name = bean.substring(0, bean.indexOf("\n"));
                                 } else {
                                     name = bean.substring(0, bean.indexOf("\n"));
                                 }
+                                sb.append(name+",");
                             }
-
-                            tv_select_name.setText("已选择：" + name);
-                            tv_select_number.setText(contactList.size() + "位");
+                            tv_select_name.setText("已选择：" + sb.toString());
+                            tv_select_number.setText(list.size() + "位");
                         }
                     });
-
+                }else {
+                    tv_select_name.setText("已选择：" + "");
+                    tv_select_number.setText(0+ "位");
                 }
                 break;
             case GET_USER:
@@ -614,12 +631,12 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
         showDialog();
 
         if (!isUpdate) {// 如果不是更新的
-            if (null != contactList && contactList.size() > 0) {
+            if (null != list && list.size() > 0) {
 
                 ArrayList<ContactBean> arrayList = new ArrayList<>();
-                for (int i = 0; i < contactList.size(); i++) {
+                for (int i = 0; i < list.size(); i++) {
                     contactBean = new ContactBean();
-                    String bean = contactList.get(i).toString();
+                    String bean = list.get(i).toString();
                     String name = bean.substring(0, bean.indexOf("\n"));
                     String number = bean.substring(bean.indexOf("\n") + 1, bean.length());
                     contactBean.setMobile(number);

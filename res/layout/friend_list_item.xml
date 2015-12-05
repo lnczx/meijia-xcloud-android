@@ -31,7 +31,22 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/item_iv_icon"
-            android:text="张三" />
+            android:text="" />
+         <TextView
+            android:id="@+id/item_tv_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/item_tv_name"
+            android:text=""
+            android:visibility="gone"
+             />
+       <TextView
+            android:id="@+id/item_tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+           />
 
          <CheckBox
              android:id="@+id/cb_check_box"
@@ -44,6 +59,7 @@
              android:visibility="gone"
              android:focusableInTouchMode="false"
              android:focusable="false"
+             android:clickable="false"
               />
   
     </RelativeLayout>

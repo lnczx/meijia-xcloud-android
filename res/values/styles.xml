@@ -59,24 +59,24 @@
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/text_normal</item>
     </style>
-    
-    <!--多张图片上传样式-->
+
+    <!-- 多张图片上传样式 -->
     <style name="PostBarShareAnim">
         <item name="android:windowEnterAnimation">@anim/postbar_share_anim_fade_in</item>
         <item name="android:windowExitAnimation">@anim/postbar_share_anim_fade_out</item>
     </style>
-    
-        <style name="PopupAnimation" mce_bogus="1" parent="android:Animation">
+
+    <style name="PopupAnimation" mce_bogus="1" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/activity_translate_in</item>
         <item name="android:windowExitAnimation">@anim/activity_translate_out</item>
     </style>
-	
-	<style name="PopupAnimation1" parent="android:Animation" mce_bogus="1">          
-        <item name="android:windowEnterAnimation">@anim/popup_enter</item>     
-        <item name="android:windowExitAnimation">@anim/popup_exit</item>     
-    </style> 
-    <!--秘书生活照显示大图-->
-      <style name="ImageScale" parent="android:Theme.Black.NoTitleBar">
+
+    <style name="PopupAnimation1" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    </style>
+    <!-- 秘书生活照显示大图 -->
+    <style name="ImageScale" parent="android:Theme.Black.NoTitleBar">
         <item name="android:windowAnimationStyle">@style/AnimHead</item>
         <item name="android:windowNoTitle">true</item>
         <!-- 无标题 -->
@@ -92,15 +92,17 @@
         <item name="android:backgroundDimEnabled">false</item>
         <!-- 模糊 -->
     </style>
-    <!--服务人员标签样式-->
-       <style name="TagGroup">
+    <!-- 服务人员标签样式 -->
+    <style name="TagGroup">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="atg_isAppendMode">false</item>
         <item name="atg_inputHint">@string/add_tag</item>
-        <item name="atg_borderColor">#F1F1F1</item><!--#49C120-->
+        <item name="atg_borderColor">#F1F1F1</item>
+ <!-- #49C120 -->
         <item name="atg_textColor">@color/simi_color_dark_gray</item>
-        <item name="atg_backgroundColor">#F1F1F1</item><!-- #FFFFFF -->
+        <item name="atg_backgroundColor">#F1F1F1</item>
+ <!-- #FFFFFF -->
         <item name="atg_dashBorderColor">#AAAAAA</item>
         <item name="atg_inputHintColor">#80000000</item>
         <item name="atg_inputTextColor">#DE000000</item>
@@ -116,9 +118,29 @@
         <item name="atg_horizontalPadding">3dp</item>
         <item name="atg_verticalPadding">3dp</item>
     </style>
-      
-      
-      
-      
 
-</resources> 
+    <style name="TagGroups">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="atg_isAppendMode">false</item>
+        <item name="atg_inputHint">@string/add_tag</item>
+        <item name="atg_borderColor">#F1F1F1</item>
+        <item name="atg_textColor">@color/simi_color_dark_gray</item>
+        <item name="atg_backgroundColor">#FFFFFF</item>
+        <item name="atg_dashBorderColor">#AAAAAA</item>
+        <item name="atg_inputHintColor">#80000000</item>
+        <item name="atg_inputTextColor">#DE000000</item>
+        <item name="atg_checkedBorderColor">#49C120</item>
+        <item name="atg_checkedTextColor">#FFFFFF</item>
+        <item name="atg_checkedMarkerColor">#FFFFFF</item>
+        <item name="atg_checkedBackgroundColor">#F1F1F1</item>
+        <item name="atg_pressedBackgroundColor">#F1F1F1</item>
+        <item name="atg_borderStrokeWidth">0.5dp</item>
+        <item name="atg_textSize">15sp</item>
+        <item name="atg_horizontalSpacing">4dp</item>
+        <item name="atg_verticalSpacing">4dp</item>
+        <item name="atg_horizontalPadding">5dp</item>
+        <item name="atg_verticalPadding">5dp</item>
+    </style>
+
+</resources>

@@ -44,6 +44,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
+                    android:text="最多输入200字"
+                    android:textSize="10sp"
+                    android:textColor="@color/text_normal"
                     />
             </RelativeLayout>
         </LinearLayout>

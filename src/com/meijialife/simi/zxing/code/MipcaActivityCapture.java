@@ -126,21 +126,9 @@ public class MipcaActivityCapture extends Activity implements Callback {
 		}else {
 			Intent resultIntent = new Intent();
 			Bundle bundle = new Bundle();
-			try {
-			    if(resultString.contains(Constants.SCAN_RQ_TAG)){
-			        JSONObject json = new JSONObject(resultString.trim());
-	                bundle.putString("friend_id",(String)json.get("user_id"));
-	                bundle.putString("tag",(String)json.get("tag"));
-			    }else {
-			        bundle.putString("friend_id","0");
-                    bundle.putString("tag","other");
-                }
-//                bundle.putParcelable("bitmap", barcode);
-                resultIntent.putExtras(bundle);
+			    bundle.putString("result", resultString.trim());
+			    resultIntent.putExtras(bundle);
                 this.setResult(RESULT_OK, resultIntent);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 		}
 		MipcaActivityCapture.this.finish();
 	}

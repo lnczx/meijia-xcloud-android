@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -25,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -34,6 +36,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.PartnerActivity;
+import com.meijialife.simi.activity.SearchViewActivity;
 import com.meijialife.simi.adapter.SecretaryAdapter;
 import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.database.DBHelper;
@@ -54,6 +57,7 @@ public class Find2Fra extends BaseFragment {
     private ListView listview_1;
     private SecretaryAdapter adapter;//服务商适配器
     private ArrayList<Partner> partnerList; // 所有服务商--秘书列表
+    private RelativeLayout rl_total_search;//搜索框
 
     private static final String URL_1 = "http://s.click.taobao.com/x0Kmfjx";//办公用品链接
     private WebView webview;
@@ -70,6 +74,7 @@ public class Find2Fra extends BaseFragment {
      * 初始化适配器
      */
     public void init(View v) {
+        rl_total_search = (RelativeLayout)v.findViewById(R.id.rl_total_search);
         listview_1 = (ListView) v.findViewById(R.id.partner_list_view);
         adapter = new SecretaryAdapter(activity);
         listview_1.setAdapter(adapter);
@@ -83,6 +88,14 @@ public class Find2Fra extends BaseFragment {
                 
             }
         });
+        
+        rl_total_search.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),SearchViewActivity.class));
+            }
+        });
+        
     }
     public Find2Fra() {
         super();

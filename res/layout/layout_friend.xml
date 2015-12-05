@@ -32,13 +32,25 @@
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/iv_icon_4"
             android:text="企业通讯录" />
-
-        <ImageView
+         <ImageView
+            android:id="@+id/iv_arrow"
             android:layout_width="10dp"
             android:layout_height="13dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
+        <TextView
+            android:id="@+id/tv_has_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_arrow"
+            android:text="立即创建" 
+            android:textColor="@color/text_normal"
+            android:textSize="12sp"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 
     <RelativeLayout

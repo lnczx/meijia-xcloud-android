@@ -173,8 +173,8 @@
 
                 <RelativeLayout
                     android:id="@+id/layout_meeting_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
                     android:gravity="center_vertical"
                     android:padding="5dp" >
 
@@ -210,6 +210,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:layout_toLeftOf="@id/arrow"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:ems="6"
                         android:textColor="@color/red_text_color" />
                 </RelativeLayout>
 

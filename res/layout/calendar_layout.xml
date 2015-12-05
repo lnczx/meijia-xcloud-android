@@ -63,6 +63,16 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/main_menu" 
                     android:visibility="gone"
+                    /> 
+                 <ImageButton
+                    android:id="@+id/btn_saoma"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/iconfont_saoma"
+                    android:padding="20dp" 
+                    android:visibility="visible"
                     />
                 <!-- 查看自己发布的按钮 -->
                 <ImageButton
@@ -72,15 +82,25 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/iconfont_chakan" />
+                    android:background="@drawable/iconfont_chakan"
+                    android:visibility="gone"
+                     />
                 <!-- 收缩日历按钮 -->
-                <ImageButton
+               <!--  <ImageButton
                     android:id="@+id/btn_rili"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
                     android:layout_toLeftOf="@id/btn_chakan"
+                    android:background="@drawable/icon_rili" /> -->
+                <ImageButton
+                    android:id="@+id/btn_rili"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                   	android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:background="@drawable/icon_rili" />
             </RelativeLayout>
         </LinearLayout>

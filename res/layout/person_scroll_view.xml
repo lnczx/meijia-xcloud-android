@@ -38,7 +38,7 @@
                     android:textColor="@color/black_deep"
                     android:textStyle="bold" />
 
-                <!--
+                
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                     android:layout_marginLeft="170dp"
                     android:layout_marginRight="30dp"
                     android:text="更多"
-                    android:textColor="@color/text_normal"
+                    android:textColor="#929292"
                     android:textStyle="bold"
                     android:layout_alignBaseline="@id/iv_person_tools"
                      />
@@ -60,7 +60,7 @@
                     android:layout_alignBaseline="@id/iv_person_tools"
                     android:layout_marginTop="2dp"
                     />
-                -->
+               
             </RelativeLayout>
 
             <View
