@@ -83,6 +83,10 @@ public class Constants {
     /**我的钱包接口（用户消费明细）**/
     public static final String URL_GET_WALLET_LIST = ROOT_URL +"user/get_detail_pay.json";
 
+    /**服务人员搜索**/
+    public static final String URL_GET_PARTNER_LIST_BY_KW =ROOT_URL +"partner/search.json";
+    /**获得热搜列表**/
+    public static final String URL_GET_HOT_KW_LIST = ROOT_URL +"partner/get_hot_keyword.json";
     
     
     /** 添加通讯录好友接口 **/
@@ -153,6 +157,22 @@ public class Constants {
     public static String COVER_ALBUM_INTRODUCE_CONTENT ="";
     /**二维码扫描返回常量**/
     public static String SCAN_RQ_TAG = "xcloud";
+    public static String RQ_TAG_FRIEND = "xcloud://";//标识加好友扫描
+    public static String RQ_TAG_OTHER = "xcloud-h5://";//标识其他类型扫描
+
+    /**企业注册H5页面**/
+    public final static String HAS_COMPANY ="http://123.57.173.36/simi-h5/show/company-reg.html";
+    /**二维码扫描类型识别**/
+    public static final String QR_TAG_COMPANY ="company";//公司注册或人员加入
+    public static final String QR_TAG_MEETING = "meeting";//会以或会议室
+    public static final String QR_TAG_EXPRESS = "express";//快递
+    public static final String QR_TAG_WATER = "water";//送水
+    public static final String QR_TAG_CLEAN = "clean";//保洁
+    public static final String QR_TAG_GREEN = "green";//绿植
+    public static final String QR_TAG_FRIEND = "friend";//绿植
+    public static final String QR_ACTION_NEW = "add";//添加
+    public static final String QR_ACTION_SEE = "see";//查看
+
     /** 本地临时文件根目录 **/
      public static final String PATH_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Simi";
     //
@@ -206,5 +226,37 @@ public class Constants {
      //微信异步通知接口
      public static final String URL_ORDER_WEIXIN_NOTIFY = HOST + "/simi/wxpay-notify-ordercard.do";
 
-
+     /*
+      * H5页面链接
+      */
+     //知识库
+     public static final String SHOP_URL = "http://mishuzhuli.com/category/xingzhengbaike";
+     //认证考试
+     public static final String ATTEST_URL = "http://mishuzhuli.com/category/renzhengkaoshi";
+     //培训
+     public static final String MONEY_URL = "http://123.57.173.36/simi-h5/sec/#!/register.html";
+     //积分赚钱
+     public static final String TRAIN_URL = "http://mishuzhuli.com/category/wendangfanwen";
+     //云考勤
+     public static final String YUN_KAO_QIN = "http://123.57.173.36/simi-h5/show/order-checkin.html";
+     //会议室
+     public static final String HUI_YI_SHI= "http://123.57.173.36/simi-h5/show/order-meeting.html";
+     //送水
+     public static final String SONG_SHUI = "http://123.57.173.36/simi-h5/show/order-water.html";
+     //保洁
+     public static final String BAO_JIE = "http://light.yunjiazheng.com/oncecleaning/";
+     //快递
+     public static final String KUAI_DI = "http://m.kuaidi100.com/";
+     //绿植
+     public static final String LV_ZHI = "http://123.57.173.36/simi-h5/show/order-green.html";
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
 }

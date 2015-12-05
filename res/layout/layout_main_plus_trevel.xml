@@ -276,7 +276,7 @@
                 <RelativeLayout
                     android:id="@+id/layout_beizhu_messsage"
                     android:layout_width="match_parent"
-                    android:layout_height="42dp"
+                    android:layout_height="43dp"
                     android:gravity="center_vertical" >
 
                     <ImageView
@@ -311,8 +311,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:layout_toLeftOf="@id/iv_arrow"
-                        android:maxWidth="150dp"
+                        android:ems="6"
                         android:singleLine="true"
+                        android:ellipsize="end"
                         android:textColor="@color/red_text_color" />
                 </RelativeLayout>
 

@@ -291,12 +291,12 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             if (!slideMenu.isMainScreenShowing()) {
                 return;
             }
+            view_title_bar.setVisibility(View.GONE);
             //change(new Home2Fra());
             change(new Find2Fra(this));
             setSelected(mBt2);
             updateTitle(2);
             slideMenu.isUse = false;
-            view_title_bar.setVisibility(View.VISIBLE);
             break;
         case R.id.tab_bt_3: // 秘友
             currentTabIndex = 3;

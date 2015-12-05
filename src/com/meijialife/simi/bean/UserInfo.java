@@ -86,7 +86,18 @@ public class UserInfo implements Serializable {
     private String im_password;
     /** 百度云 **/
     private String client_id;
+    /**是否为某个公司职员0=否 1=是**/
+    private int has_company;
     
+    
+    public int getHas_company() {
+        return has_company;
+    }
+
+    public void setHas_company(int has_company) {
+        this.has_company = has_company;
+    }
+
     public String getId() {
         return id;
     }

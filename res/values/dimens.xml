@@ -13,7 +13,7 @@
     <dimen name="title_button_vertical_margin">4dp</dimen>
     
     <!-- title size值 -->
-	<dimen name="title_bar_height">55dp</dimen>
+	<dimen name="title_bar_height">48dp</dimen>
     <dimen name="title_bar_text_size">20sp</dimen>
     
     <!-- 输入框高度 -->
@@ -38,7 +38,11 @@
     
     
     <!--首页下边栏字体大小-->
-    <dimen name="bottom_bar_text_size">10sp</dimen>
+    <dimen name="bottom_bar_text_size">9sp</dimen>
+    <dimen name="bottom_bar_icon_width_size">20dp</dimen>
+    <dimen name="bottom_bar_icon_height_size">20dp</dimen>
+    <dimen name="bottom_padding_top_size">5dp</dimen>
+    
     
     <!--我的（我的发布+我参与）字体大小 -->
     <dimen name="my_publish_text_size">13sp</dimen>

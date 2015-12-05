@@ -66,5 +66,9 @@
     <color name="result_view">#b0000000</color>
     <color name="viewfinder_mask">#60000000</color>
     <color name="possible_result_points">#c0ffff00</color>
+    <!-- gridview应用中心 -->
+    <color name="griditems_bg">#ffe8ecef</color>
+    <color name="commo_text_color">#ff333333</color>
+    <color name="line">#ffd3dde6</color>
 
 </resources>

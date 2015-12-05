@@ -38,8 +38,8 @@ public final class CameraManager {
 
   private static final String TAG = CameraManager.class.getSimpleName();
 
-  private static final int MIN_FRAME_WIDTH = 240;
-  private static final int MIN_FRAME_HEIGHT = 240;
+  private static final int MIN_FRAME_WIDTH = 360;
+  private static final int MIN_FRAME_HEIGHT = 360;
   private static final int MAX_FRAME_WIDTH = 480;
   private static final int MAX_FRAME_HEIGHT = 360;
 
@@ -233,6 +233,8 @@ public final class CameraManager {
       } else if (height > MAX_FRAME_HEIGHT) {
         height = MAX_FRAME_HEIGHT;
       }
+       height = screenResolution.y * 2 / 5;
+       width = screenResolution.x * 3 / 5;
       int leftOffset = (screenResolution.x - width) / 2;
       int topOffset = (screenResolution.y - height) / 2;
       framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);

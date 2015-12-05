@@ -7,7 +7,7 @@
     <include
         android:id="@+id/view_title_bar"
         layout="@layout/layout_title_bar" />
-
+     
     <RelativeLayout
         android:id="@+id/tab_container"
         android:layout_width="match_parent"
@@ -34,14 +34,15 @@
                 android:orientation="vertical" >
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/bottom_bar_icon_width_size"
+                    android:layout_height="@dimen/bottom_bar_icon_height_size"
                     android:src="@drawable/tab_index_bg_selector" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="首页"
+                    android:paddingTop="@dimen/bottom_padding_top_size"
                     android:textColor="@color/tab_text_color_selector" 
                     android:textSize="@dimen/bottom_bar_text_size"
                     />
@@ -58,14 +59,15 @@
                 android:orientation="vertical" >
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/bottom_bar_icon_width_size"
+                    android:layout_height="@dimen/bottom_bar_icon_height_size"
                     android:src="@drawable/tab_search_bg_selector" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="发现"
+                    android:paddingTop="@dimen/bottom_padding_top_size"
                     android:textColor="@color/tab_text_color_selector" 
                     android:textSize="@dimen/bottom_bar_text_size"
                     />
@@ -105,14 +107,15 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="@dimen/bottom_bar_icon_width_size"
+                        android:layout_height="@dimen/bottom_bar_icon_height_size"
                         android:src="@drawable/tab_message_bg_selector" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="好友"
+                        android:paddingTop="@dimen/bottom_padding_top_size"
                         android:textColor="@color/tab_text_color_selector"
                         android:textSize="@dimen/bottom_bar_text_size"
                          />
@@ -144,14 +147,15 @@
                 android:orientation="vertical" >
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/bottom_bar_icon_width_size"
+                    android:layout_height="@dimen/bottom_bar_icon_height_size"
                     android:src="@drawable/tab_profile_bg_selector" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我的"
+                    android:paddingTop="@dimen/bottom_padding_top_size"
                     android:textColor="@color/tab_text_color_selector"
                     android:textSize="@dimen/bottom_bar_text_size"
                      />
