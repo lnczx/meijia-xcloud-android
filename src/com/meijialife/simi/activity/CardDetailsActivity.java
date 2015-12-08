@@ -248,7 +248,11 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         ArrayList<CardAttend> attends = card.getAttends();
         String attend = "";// 卡片参与的所有人名
         for (int i = 0; i < attends.size(); i++) {
-            attend += attends.get(i).getName();
+             if(StringUtils.isEmpty(attends.get(i).getName())){
+                 attend += attends.get(i).getMobile();
+             }else {
+                 attend += attends.get(i).getName();
+            }
             if (i != attends.size() - 1) {
                 attend += ",";
             }

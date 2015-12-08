@@ -3,90 +3,45 @@
     xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@color/activity_bg_color" 
-     >
+    android:background="@color/activity_bg_color"
+    android:orientation="vertical" >
 
-    <RelativeLayout
-        android:id="@+id/view_title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-        android:gravity="center_vertical" >
+    <include
+        android:id="@+id/view_choose_title_bar"
+        layout="@layout/layout_choose_title_bar" />
 
-        <ImageView
-            android:id="@+id/title_btn_left"
-            android:layout_width="130dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:focusable="true"
-            android:paddingLeft="30dp"
-    	    android:paddingRight="90dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/title_left_back"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/header_tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:focusable="false"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="选择接收人"
-            android:textColor="@color/title_text_color"
-            android:textSize="@dimen/title_bar_text_size" />
-
-        <TextView
-            android:id="@+id/title_btn_ok"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/title_left_back"
-            android:text="确定"
-            android:gravity="center"
-            android:layout_centerVertical="true"
-            android:textColor="@color/simi_color_red"
-            android:textSize="17.6sp"
-            android:visibility="visible" />
-
-        
-    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_list_item_bg"
         android:layout_gravity="center_vertical"
-        >
+        android:background="@drawable/btn_list_item_bg" >
+
         <TextView
             android:id="@+id/tv_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="已选择:"
-            android:textColor="@color/text_normal"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
             android:padding="10dp"
-            />
-         <TextView
+            android:text="已选择:"
+            android:textColor="@color/text_normal" />
+
+        <TextView
             android:id="@+id/tv_contacts_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/text_normal"
-          	 android:padding="10dp"
             android:layout_toRightOf="@id/tv_tag"
-            />
-      </RelativeLayout>
-       <View
+            android:padding="10dp"
+            android:text=""
+            android:textColor="@color/text_normal" />
+    </RelativeLayout>
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/cut_off_rule" />
-     <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/rl_company_contacts"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -114,16 +69,31 @@
             android:text="企业通讯录" />
 
         <ImageView
+            android:id="@+id/iv_arrow"
             android:layout_width="10dp"
             android:layout_height="13dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
+
+        <TextView
+            android:id="@+id/tv_has_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_arrow"
+            android:text="立即创建"
+            android:textColor="@color/text_normal"
+            android:textSize="12sp"
+            android:visibility="gone" />
     </RelativeLayout>
-  <View
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/cut_off_rule" />
+
     <RelativeLayout
         android:id="@+id/rl_friend_contacts"
         android:layout_width="match_parent"
@@ -159,21 +129,21 @@
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
     </RelativeLayout>
-    
-  <TextView
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="4dp"
         android:text="我的好友" />
+
     <ListView
         android:id="@+id/lv_list_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="10dip"
-        android:layout_weight="1.0" 
-        >
+        android:layout_weight="1.0" >
     </ListView>
 
 </LinearLayout>

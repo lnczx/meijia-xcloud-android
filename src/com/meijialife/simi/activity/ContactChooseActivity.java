@@ -2,7 +2,6 @@ package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import net.tsz.afinal.FinalHttp;
@@ -16,7 +15,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,17 +27,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.android.phone.mrpc.core.p;
-import com.alipay.android.phone.mrpc.core.t;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.ContactsAdapter;
-import com.meijialife.simi.bean.ContactBean;
 import com.meijialife.simi.bean.Friend;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -55,20 +50,21 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
 
     private RelativeLayout rl_company_contacts;// 企业通讯录
     private RelativeLayout rl_friend_contacts;// 好友通讯录
+    private UserInfo userInfo;
     private ArrayList<Friend> friendList = new ArrayList<Friend>();
     private TextView tv_contacts_list;// 显示勾选联系人
 
     private ListView listview;
     private ContactsAdapter adapter;
-    private HashMap<Integer, Boolean> isSelected;
     private CheckBox cb;
     private TextView tv_name;
     private TextView tv_mobile;
     private TextView tv_id;
-    private HashMap<Integer,String> currentMap;//
-    private HashMap<Integer,String> contactBeanMap;
-    private ArrayList<String> list;
-
+    private TextView tv_temp;
+  
+    private TextView tv_has_company;//显示是否拥有企业
+    private int flag =1;//1=来自卡片页面0=来自企业通讯录
+    
     @SuppressLint("UseSparseArrays")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,43 +77,50 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
         rl_friend_contacts = (RelativeLayout) findViewById(R.id.rl_friend_contacts);
         tv_contacts_list = (TextView) findViewById(R.id.tv_contacts_list);
 
+        tv_has_company = (TextView) findViewById(R.id.tv_has_company);
+        userInfo = DBHelper.getUserInfo(this);
+        if (userInfo.getHas_company() == 0) {
+            tv_has_company.setVisibility(View.VISIBLE);
+        } else {
+            tv_has_company.setVisibility(View.GONE);
+        }
+        
         title_btn_ok.setOnClickListener(this);
         title_btn_left.setOnClickListener(this);
         rl_company_contacts.setOnClickListener(this);
         rl_friend_contacts.setOnClickListener(this);
-        
-        contactList = new ArrayList<String>();
-        currentMap = new HashMap<Integer,String>();
-        getcontactIntList = new ArrayList<Integer>();
-        contactBeanMap = new HashMap<Integer,String>();
-        list = new ArrayList<String>();
-        
-        
-        currentMap= (HashMap<Integer, String>)getIntent().getSerializableExtra("currentMap");
-        list= getIntent().getStringArrayListExtra("list");
-        contactBeanMap= (HashMap<Integer, String>)getIntent().getSerializableExtra("contactBeanMap");
-        contactList= getIntent().getStringArrayListExtra("contactList");
-
+     
         StringBuilder sb = new StringBuilder();
-        Iterator iter = currentMap.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            sb.append(entry.getValue()+",");
+        String name = null;
+        String str = null;
+        for (int i = 0; i < Constants.finalContactList.size(); i++) {
+            String bean = Constants.finalContactList.get(i).toString();
+            if (name != null) {
+                name = bean.substring(0, bean.indexOf("\n"));
+                if(name.equals("")||name.length()<=0){
+                    name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                }
+            } else {
+                name = bean.substring(0, bean.indexOf("\n"));
+                if(name.equals("")||name.length()<=0){
+                    name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                }
+            }
+            sb.append(name+",");
+            str = sb.toString();
+            str = str.substring(0,str.lastIndexOf(","));
         }
-        tv_contacts_list.setText(sb.toString());
+        tv_contacts_list.setText(str);
         
         header_tv_name.setText("选择接收人");
         title_btn_left.setVisibility(View.VISIBLE);
         listview = (ListView) findViewById(R.id.lv_list_view);
         adapter = new ContactsAdapter(this);
-        isSelected = adapter.getIsSelected();
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
         listview.setItemsCanFocus(false);
         
       
-
-        getFriendList(currentMap);
 
         listview.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -126,81 +129,85 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
                 tv_name = (TextView) view.findViewById(R.id.item_tv_name);
                 tv_mobile = (TextView)view.findViewById(R.id.item_tv_mobile);
                 tv_id = (TextView) view.findViewById(R.id.item_tv_id);
+                tv_temp = (TextView)view.findViewById(R.id.item_tv_temp);
+
                 if (cb.isChecked() == false) {
                     cb.setChecked(true);
-                    ContactBean contactBean = new ContactBean();
-                    String name = tv_name.getText().toString().trim();
-                    String mobile = tv_mobile.getText().toString().trim();
-                    contactBean.setName(name);
-                    contactBean.setMobile(mobile);
-                    contactBeanMap.put(position,name+"\n"+mobile);
-                    currentMap.put(position,name);
+                    CharSequence num = tv_temp.getText();
+                    Constants.finalContactList.add(num.toString());
                 } else {
                     cb.setChecked(false);
-                    currentMap.remove(position);
-                    contactBeanMap.remove(position);
+                    CharSequence num = tv_temp.getText();
+                    Constants.finalContactList.remove(num.toString());
+                  
                 }
-                //name+mobile
-                list = new ArrayList<String>();
-                changeList(contactList,list);//通讯录同步
-                mapToList(contactBeanMap, list);//好友同步
-               
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         StringBuilder sb = new StringBuilder();
                         String name = null;
-                        for (int i = 0; i < list.size(); i++) {
-                            String bean = list.get(i).toString();
+                        String str  = null;
+                        for (int i = 0; i < Constants.finalContactList.size(); i++) {
+                            String bean = Constants.finalContactList.get(i).toString();
                             if (name != null) {
                                 name = bean.substring(0, bean.indexOf("\n"));
+                                if(name.equals("")||name.length()<=0){
+                                    name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                                }
                             } else {
                                 name = bean.substring(0, bean.indexOf("\n"));
+                                if(name.equals("")||name.length()<=0){
+                                    name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                                }
                             }
                             sb.append(name+",");
+                            str = sb.toString();
+                            str = str.substring(0,str.lastIndexOf(","));
                         }
-                        tv_contacts_list.setText(sb.toString());
+                        tv_contacts_list.setText(str);
                     }
                 });
             }
         });
+        getFriendList(Constants.finalContactList);
     }
-
-    private void changeList(ArrayList<String> orgin,ArrayList<String> target){
-        for (int i = 0; i < orgin.size(); i++) {
-            target.add(orgin.get(i));
-        }
-    }
-    private void mapToList(HashMap<Integer,String> map,ArrayList<String> list){
-        Iterator iter = map.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            list.add(entry.getValue().toString());
-        }
-    }
-       
+    
+    
+    /**
+     * 处理singleTask下不能接受Intent传值
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }   
+    
     @Override
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
         case R.id.rl_company_contacts:// 企业通讯录
+            if (userInfo.getHas_company() == 0) {
+                Intent intent1 = new Intent(this, WebViewActivity.class);
+                intent1.putExtra("title", "企业通讯录");
+                intent1.putExtra("url", Constants.HAS_COMPANY);
+                startActivity(intent1);
+            } else {
+                intent = new Intent(ContactChooseActivity.this,CompanyListActivity.class);
+                intent.putExtra("flag",1);
+                startActivity(intent);
+            }
             break;
         case R.id.rl_friend_contacts:// 选择接收人--->选择联系人
-            contactList.clear();    
             intent = new Intent(this, ContactSelectActivity.class);
-            intent.putIntegerArrayListExtra("getcontactIntList",getcontactIntList);
             startActivityForResult(intent, GET_CONTACTS);
             break;
         case R.id.title_btn_ok:// 确定按钮
             postContactData();
             break;
         case R.id.title_btn_left:// 左侧返回按钮
-            if (list != null && list.size() > 0) {
+            if (Constants.finalContactList != null && Constants.finalContactList.size() > 0) {
                 intent = new Intent();
-                intent.putExtra("currentMap", currentMap);
-                intent.putStringArrayListExtra("list", list);
-                intent.putExtra("contactBeanMap",contactBeanMap);
-                intent.putStringArrayListExtra("contactList",contactList);
                 setResult(RESULT_OK, intent);
                 ContactChooseActivity.this.finish();
             }
@@ -212,33 +219,30 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
     }
 
     public static final int GET_CONTACTS = 1003;
-    private ArrayList<String> contactList;
-    private ArrayList<Integer> getcontactIntList;
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
             case GET_CONTACTS:
-                contactList = data.getExtras().getStringArrayList("contact");
-                getcontactIntList = data.getExtras().getIntegerArrayList("getcontactIntList");
-                if (contactList != null && contactList.size() > 0) {
-                    //name+mobile
-                    list = new ArrayList<String>();
-                    mapToList(contactBeanMap, list);//好友同步
-                    changeList(contactList,list);//通讯录同步
+                if (Constants.finalContactList != null && Constants.finalContactList.size() > 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             StringBuilder sb = new StringBuilder();
                             String name = null;
-                            for (int i = 0; i < list.size(); i++) {
-                                String bean = list.get(i).toString();
+                            for (int i = 0; i < Constants.finalContactList.size(); i++) {
+                                String bean = Constants.finalContactList.get(i).toString();
                                 if (name != null) {
                                     name = bean.substring(0, bean.indexOf("\n"));
+                                    if(name.equals("")||name.length()<=0){
+                                        name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                                    }
                                 } else {
                                     name = bean.substring(0, bean.indexOf("\n"));
+                                    if(name.equals("")||name.length()<=0){
+                                        name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                                    }
                                 }
                                 sb.append(name+",");
                             }
@@ -252,13 +256,12 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
             }
         }
     }
-
     /**
      * 获取好友列表
      * 
      * @param isShowDlg
      */
-    public void getFriendList(final HashMap<Integer,String> hashMap) {
+    public void getFriendList(final ArrayList<String> myFriendList) {
         String user_id = DBHelper.getUser(ContactChooseActivity.this).getId();
 
         if (!NetworkUtils.isNetworkConnected(ContactChooseActivity.this)) {
@@ -285,7 +288,6 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
                 super.onSuccess(t);
                 String errorMsg = "";
                 dismissDialog();
-                LogOut.i("========", "onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -297,9 +299,9 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
                                 Gson gson = new Gson();
                                 friendList = gson.fromJson(data, new TypeToken<ArrayList<Friend>>() {
                                 }.getType());
-                                adapter.setData(friendList,hashMap);
+                                adapter.setData(friendList,myFriendList,flag);
                             } else {
-                                adapter.setData(friendList,hashMap);
+                                adapter.setData(friendList,myFriendList,flag);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -316,7 +318,6 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                     errorMsg = getString(R.string.servers_error);
-
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
@@ -326,16 +327,73 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
         });
 
     }
-
+    
+    /**
+     * 获取用户详情接口
+     */
+    private void getUserInfo() {
+        if (!NetworkUtils.isNetworkConnected(ContactChooseActivity.this)) {
+            Toast.makeText(ContactChooseActivity.this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", userInfo.getId());
+        AjaxParams param = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_USER_INFO, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(ContactChooseActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                userInfo = gson.fromJson(data, UserInfo.class);
+                                DBHelper.updateUserInfo(ContactChooseActivity.this, userInfo);
+                            } else {
+                                // UIUtils.showToast(getActivity().this, "数据错误");
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息|
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(ContactChooseActivity.this, errorMsg);
+                }
+            }
+        });
+    }
     public void postContactData() {
-        if (list.size() > 10) {
+        if (Constants.finalContactList.size() > 10) {
             UIUtils.showToast(this, "您最多可以选择10个联系人哦");
         } else {
             Intent intent = new Intent();
-            intent.putExtra("currentMap", currentMap);
-            intent.putStringArrayListExtra("list", list);
-            intent.putExtra("contactBeanMap",contactBeanMap);
-            intent.putStringArrayListExtra("contactList",contactList);
             setResult(RESULT_OK, intent);
             ContactChooseActivity.this.finish();
         }
@@ -360,11 +418,33 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
             m_pDialog.hide();
         }
     }
-
+    
     @Override
     protected void onResume() {
         super.onResume();
-
+        getUserInfo(); 
+        StringBuilder sb = new StringBuilder();
+        String name = null;
+        String str = null;
+        for (int i = 0; i < Constants.finalContactList.size(); i++) {
+            String bean = Constants.finalContactList.get(i).toString();
+            if (name != null) {
+                name = bean.substring(0, bean.indexOf("\n"));
+                if(name.equals("")||name.length()<=0){
+                    name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                }
+            } else {
+                name = bean.substring(0, bean.indexOf("\n"));
+                if(name.equals("")||name.length()<=0){
+                    name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                }
+            }
+            sb.append(name+",");
+            str = sb.toString();
+            str = str.substring(0,str.lastIndexOf(","));
+        }
+        tv_contacts_list.setText(str);
+        getFriendList(Constants.finalContactList);
     }
 
     @Override
@@ -375,9 +455,6 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
 
     @Override
     protected void onDestroy() {
-        currentMap.clear();
-        list.clear();
-        contactBeanMap.clear();
         super.onDestroy();
     }
 

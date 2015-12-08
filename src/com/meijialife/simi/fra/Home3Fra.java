@@ -8,7 +8,6 @@ import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -33,7 +32,9 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.ContactAddFriendsActivity;
+import com.meijialife.simi.activity.ContactChooseActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.WebViewActivity;
@@ -281,7 +282,8 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
                 intent1.putExtra("url", Constants.HAS_COMPANY);
                 startActivity(intent1);
             } else {
-                Toast.makeText(getActivity(), "企业通讯录", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getActivity(),CompanyListActivity.class);
+                startActivity(intent);
             }
             break;
         default:

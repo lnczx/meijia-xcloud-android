@@ -1,5 +1,8 @@
 package com.meijialife.simi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Environment;
 
 public class Constants {
@@ -87,7 +90,10 @@ public class Constants {
     public static final String URL_GET_PARTNER_LIST_BY_KW =ROOT_URL +"partner/search.json";
     /**获得热搜列表**/
     public static final String URL_GET_HOT_KW_LIST = ROOT_URL +"partner/get_hot_keyword.json";
-    
+    /**获得用户所属企业列表**/
+    public static final String URL_GET_COMPANY_LIST =ROOT_URL +"company/get_by_user.json";
+    /**获得企业员工列表**/
+    public static final String URL_GET_STAFF_LIST = ROOT_URL +"company/get_staffs.json";
     
     /** 添加通讯录好友接口 **/
     public static final String URL_POST_FRIEND = ROOT_URL + "user/post_friend.json";
@@ -250,7 +256,8 @@ public class Constants {
      //绿植
      public static final String LV_ZHI = "http://123.57.173.36/simi-h5/show/order-green.html";
      
-     
+     /**保存卡片创建的联系人**/
+     public static ArrayList<String> finalContactList = new ArrayList<String>();
      
      
      

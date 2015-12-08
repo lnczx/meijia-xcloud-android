@@ -1,7 +1,6 @@
 package com.meijialife.simi.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import net.tsz.afinal.annotation.sqlite.Id;
 import net.tsz.afinal.annotation.sqlite.Table;

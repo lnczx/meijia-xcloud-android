@@ -11,17 +11,18 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.CityData;
+import com.meijialife.simi.bean.CompanyData;
+
 
 /**
- * 城市列表适配器
- *
+ * @description：公司列表适配器
+ * @author： kerryg
+ * @date:2015年12月5日 
  */
-public final class CityListAdapter extends BaseAdapter {
+public final class CompanyListAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<CityData> datas;
-
+	private List<CompanyData> datas;
 	private LayoutInflater layoutInflater;
 
 	/**
@@ -30,14 +31,14 @@ public final class CityListAdapter extends BaseAdapter {
 	 * @param showDel
 	 *            是否显示删除按钮
 	 */
-	public CityListAdapter(Context context) {
+	public CompanyListAdapter(Context context) {
 		this.context = context;
 		layoutInflater = LayoutInflater.from(context);
-		this.datas = new ArrayList<CityData>();
+		this.datas = new ArrayList<CompanyData>();
 	}
 	
-	public void setData(List<CityData> citys) {
-		this.datas = citys;
+	public void setData(List<CompanyData> companyDataList) {
+		this.datas = companyDataList;
 		notifyDataSetChanged();
 	}
 
@@ -56,25 +57,25 @@ public final class CityListAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = layoutInflater.inflate(R.layout.city_list_item, null);//
+			convertView = layoutInflater.inflate(R.layout.company_list_item, null);//
 
 			holder = new ViewHolder();
 
-			holder.tv_addr = (TextView) convertView.findViewById(R.id.city_item_tv_addr);
-
+			holder.item_tv_id = (TextView)convertView.findViewById(R.id.item_tv_id);
+			holder.item_tv_name = (TextView)convertView.findViewById(R.id.item_tv_name);
 			convertView.setTag(holder);
 
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-
-	 
-		holder.tv_addr.setText(datas.get(position).getName());
+		holder.item_tv_id.setText(datas.get(position).getCompany_id());
+		holder.item_tv_name.setText(datas.get(position).getCompany_name());
 		return convertView;
 	}
 
 	private static class ViewHolder {
-		TextView tv_addr; // 地址
+		TextView item_tv_id; //公司id
+		TextView item_tv_name;//公司名称
 	}
 
 	 
