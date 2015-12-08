@@ -59,6 +59,7 @@ public class Find2Fra extends BaseFragment {
     private ArrayList<Partner> partnerList; // 所有服务商--秘书列表
     private RelativeLayout rl_total_search;//搜索框
 
+//    private static final String URL_1 = "http://eqxiu.com/s/7r1oOxJd";//办公用品链接
     private static final String URL_1 = "http://s.click.taobao.com/x0Kmfjx";//办公用品链接
     private WebView webview;
     

@@ -31,7 +31,7 @@
             android:focusable="false"
             android:gravity="center"
             android:singleLine="true"
-            android:text="私密"
+            android:text=""
             android:textColor="@color/title_text_color"
             android:textSize="@dimen/title_bar_text_size" 
             android:ellipsize="end"

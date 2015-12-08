@@ -3,9 +3,7 @@ package com.meijialife.simi.adapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +12,16 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.Friend;
-import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.utils.StringUtils;
 
 /**
- * 好友适配器
+ * 通讯录
  *
  */
-public class ContactsAdapter extends BaseAdapter {
+public class CompanyAdapter extends BaseAdapter {
     private LayoutInflater inflater;
-    private ArrayList<Friend> list;
-
-    private FinalBitmap finalBitmap;
-    private BitmapDrawable defDrawable;
+    private ArrayList<String> list;
     private Context context;
     private ArrayList<String> contactList;
     private int flag=1;
@@ -35,32 +29,17 @@ public class ContactsAdapter extends BaseAdapter {
     // 用来控制CheckBox选中状态
     private static HashMap<Integer, Boolean> isSelected;
 
-    public ContactsAdapter(Context context) {
+    public CompanyAdapter(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
-        list = new ArrayList<Friend>();
-        finalBitmap = FinalBitmap.create(context);
-        defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_defult_touxiang);
-        isSelected = new HashMap<Integer, Boolean>();
+        list = new ArrayList<String>();
         contactList = new ArrayList<String>();
     }
 
-    public void setData(ArrayList<Friend> list, ArrayList<String> contactList,int flag) {
+    public void setData(ArrayList<String> list, ArrayList<String> contactList) {
         this.list = list;
         this.contactList = contactList;
-        for (int i = 0; i < list.size(); i++) {
-            getIsSelected().put(i, false);
-        }
-        this.flag = flag;
         notifyDataSetChanged();
-    }
-
-    public static HashMap<Integer, Boolean> getIsSelected() {
-        return isSelected;
-    }
-
-    public static void setIsSelected(HashMap<Integer, Boolean> isSelected) {
-        ContactsAdapter.isSelected = isSelected;
     }
 
     @Override
@@ -83,10 +62,9 @@ public class ContactsAdapter extends BaseAdapter {
         Holder holder = null;
         if (convertView == null) {
             holder = new Holder();
-            convertView = inflater.inflate(R.layout.friend_list_item, null);
+            convertView = inflater.inflate(R.layout.contact_selected_item, null);
             holder.tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
             holder.tv_id = (TextView) convertView.findViewById(R.id.item_tv_id);
-            holder.iv_header = (RoundImageView) convertView.findViewById(R.id.item_iv_icon);
             holder.cb = (CheckBox) convertView.findViewById(R.id.cb_check_box);
             holder.tv_mobile = (TextView)convertView.findViewById(R.id.item_tv_mobile);
             holder.tv_temp = (TextView)convertView.findViewById(R.id.item_tv_temp);
@@ -99,20 +77,20 @@ public class ContactsAdapter extends BaseAdapter {
         } else {
             holder = (Holder) convertView.getTag();
         }
-        if (StringUtils.isEmpty(list.get(position).getName())) {
-            holder.tv_name.setText(list.get(position).getMobile());
-        } else {
-            holder.tv_name.setText(list.get(position).getName());
-        }
-        holder.tv_mobile.setText(list.get(position).getMobile());
-        holder.tv_id.setText(list.get(position).getFriend_id());
-        String contactStr =list.get(position).getName()+"\n"+
-                    list.get(position).getMobile()+"\n"+list.get(position).getFriend_id();
-        holder.tv_temp.setText(contactStr);
+        
+        String str = list.get(position);
+        String name = str.substring(0,str.indexOf("\n"));
+        String mobile = str.substring(str.indexOf("\n")+1,str.lastIndexOf("\n"));
+        String user_id = str.substring(str.lastIndexOf("\n")+1,str.length());
+        
+        holder.tv_name.setText(name);
+        holder.tv_mobile.setText(mobile);
+        holder.tv_id.setText(user_id);
+        holder.tv_temp.setText(str);
         if(contactList.size()>0){
             for (int i = 0; i < contactList.size(); i++) {
                 CharSequence contatct = contactList.get(i);
-                CharSequence temp = contactStr;
+                CharSequence temp = str;
                 if(contatct.equals(temp)){
                     holder.cb.setChecked(true);
                 }
@@ -120,13 +98,10 @@ public class ContactsAdapter extends BaseAdapter {
         }else {
             holder.cb.setChecked(false);
         }
-        String url = list.get(position).getHead_img();
-        finalBitmap.display(holder.iv_header, url, defDrawable.getBitmap(), defDrawable.getBitmap());
         return convertView;
     }
 
     class Holder {
-        RoundImageView iv_header;
         TextView tv_name;
         TextView tv_id;
         CheckBox cb;

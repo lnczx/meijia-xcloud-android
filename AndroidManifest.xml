@@ -292,7 +292,9 @@
         <activity
             android:name=".activity.ContactChooseActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:launchMode="singleTop"
+            />
         <activity
             android:name=".activity.CityListActivity"
             android:screenOrientation="portrait"
@@ -837,6 +839,19 @@
             android:name="com.meijialife.simi.activity.SearchViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize"
+            >
+        </activity>
+         <activity
+            android:name="com.meijialife.simi.activity.CompanyListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+            android:launchMode="singleTop"
+            >
+        </activity>
+         <activity
+            android:name="com.meijialife.simi.activity.StaffListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
             >
         </activity>
         <!--configChanges

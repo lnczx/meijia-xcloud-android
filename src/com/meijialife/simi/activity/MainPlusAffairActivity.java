@@ -111,11 +111,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private UserInfo userInfo;
     private RelativeLayout layout_select_who;
     private boolean isUsersenior;
-    private HashMap<Integer,String> currentMap;//保存选择的人员
-    private ArrayList<String> list;
-    private HashMap<Integer,String> contactBeanMap;
-    private ArrayList<String> contactList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_affair);
@@ -155,11 +150,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
-        
-        currentMap = new HashMap<Integer, String>();
-        list = new ArrayList<String>();
-        contactBeanMap = new HashMap<Integer,String>();
-        contactList = new ArrayList<String>();
         
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
@@ -303,10 +293,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         switch (v.getId()) {
         case R.id.layout_select_phonenumber:// 选择通讯录
             Intent intent = new Intent(MainPlusAffairActivity.this, ContactChooseActivity.class);
-            intent.putExtra("currentMap",currentMap);
-            intent.putStringArrayListExtra("list",list);
-            intent.putExtra("contactBeanMap",contactBeanMap);
-            intent.putStringArrayListExtra("contactList",contactList);
             startActivityForResult(intent, GET_CONTACT);
             break;
         case R.id.layout_meeting_content:
@@ -582,33 +568,37 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
             case GET_CONTACT:
-                currentMap = (HashMap)data.getSerializableExtra("currentMap");
-                list = data.getExtras().getStringArrayList("list");
-                contactBeanMap = (HashMap<Integer, String>)data.getSerializableExtra("contactBeanMap");
-                contactList = data.getExtras().getStringArrayList("contactList"); 
-                if (list != null && list.size() > 0) {
+                if (Constants.finalContactList != null && Constants.finalContactList.size() > 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             String name = null;
+                            String str = null;
                             StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < list.size(); i++) {
-                                String bean = list.get(i).toString();
+                            for (int i = 0; i < Constants.finalContactList.size(); i++) {
+                                String bean = Constants.finalContactList.get(i).toString();
                                 if (name != null) {
                                     name = bean.substring(0, bean.indexOf("\n"));
+                                    if(name.equals("")||name.length()<=0){
+                                        name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                                    }
                                 } else {
                                     name = bean.substring(0, bean.indexOf("\n"));
+                                    if(name.equals("")||name.length()<=0){
+                                        name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
+                                    }
                                 }
+                                
                                 sb.append(name+",");
+                                str = sb.toString();
+                                str = str.substring(0,str.lastIndexOf(","));
                             }
-                            
-                            tv_select_name.setText("已选择：" + sb.toString());
-                            tv_select_number.setText(list.size() + "位");
+                            tv_select_name.setText("已选择：" + str);
+                            tv_select_number.setText(Constants.finalContactList.size() + "位");
                         }
                     });
                 }else {
@@ -633,16 +623,18 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         showDialog();
 
         if (!isUpdate) {// 如果不是更新的
-            if (null != list && list.size() > 0) {
+            if (null != Constants.finalContactList && Constants.finalContactList.size() > 0) {
 
                 ArrayList<ContactBean> arrayList = new ArrayList<>();
-                for (int i = 0; i < list.size(); i++) {
+                for (int i = 0; i < Constants.finalContactList.size(); i++) {
                     contactBean = new ContactBean();
-                    String bean = list.get(i).toString();
+                    String bean = Constants.finalContactList.get(i).toString();
                     String name = bean.substring(0, bean.indexOf("\n"));
-                    String number = bean.substring(bean.indexOf("\n") + 1, bean.length());
+                    String number = bean.substring(bean.indexOf("\n") + 1, bean.lastIndexOf("\n"));
+                    String user_id = bean.substring(bean.lastIndexOf("\n")+1,bean.length());
                     contactBean.setMobile(number);
                     contactBean.setName(name);
+                    contactBean.setUser_id(user_id);
                     arrayList.add(contactBean);
 
                 }
@@ -770,9 +762,9 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
         Constants.CARD_ADD_AFFAIR_CONTENT="";
+        Constants.finalContactList = new ArrayList<String>();
     }
 
     @Override
