@@ -864,6 +864,20 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             >
         </activity>
+        <!--发现详情页面-->
+          <activity
+            android:name="com.meijialife.simi.activity.Find2DetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+            >
+        </activity>
+        <!--发现页面webView-->
+          <activity
+            android:name="com.meijialife.simi.activity.WebViewsFindActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+            >
+        </activity>
     </application>
 
 </manifest>

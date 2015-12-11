@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg_color" >
+
+    <RelativeLayout
+        android:id="@+id/rl_find_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+      >
+
+        <ImageView
+            android:id="@+id/iv_person_left"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="90dp"
+            android:scaleType="center"
+            android:src="@drawable/title_left_back"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_person_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/title_text_color"
+            android:textSize="@dimen/title_bar_text_size"
+            android:width="150dp" />
+
+        <ImageView
+            android:id="@+id/iv_person_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/iconfont_guanbi"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true" 
+        android:visibility="gone"
+        >
+		
+        <LinearLayout
+            android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/black"
+            >
+         </LinearLayout>
+        <Button
+            android:id="@+id/bt_button"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="咨询"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:background="@color/simi_color_red"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_button"
+        android:layout_below="@id/rl_find_view"
+        android:background="@android:color/transparent"
+        android:paddingBottom="20dp" />
+
+</RelativeLayout>

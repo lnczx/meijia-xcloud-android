@@ -15,10 +15,8 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.baidu.location.LLSInterface;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.Partner;
-import com.meijialife.simi.bean.Secretary;
 import com.meijialife.simi.bean.UserTag;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.TagGroup;

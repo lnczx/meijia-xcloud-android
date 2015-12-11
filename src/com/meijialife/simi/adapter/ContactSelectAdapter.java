@@ -12,14 +12,14 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.Contact;
-import com.meijialife.simi.utils.StringUtils;
+
 
 /**
- * 通讯录
- *
+ * @description：好友选择通讯录适配器
+ * @author： kerryg
+ * @date:2015年12月9日 
  */
-public class CompanyAdapter extends BaseAdapter {
+public class ContactSelectAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private ArrayList<String> list;
     private Context context;
@@ -29,7 +29,7 @@ public class CompanyAdapter extends BaseAdapter {
     // 用来控制CheckBox选中状态
     private static HashMap<Integer, Boolean> isSelected;
 
-    public CompanyAdapter(Context context) {
+    public ContactSelectAdapter(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         list = new ArrayList<String>();
@@ -90,8 +90,10 @@ public class CompanyAdapter extends BaseAdapter {
         if(contactList.size()>0){
             for (int i = 0; i < contactList.size(); i++) {
                 CharSequence contatct = contactList.get(i);
+                String temp1 = contatct.toString();
+                String mobile2 = temp1.substring(temp1.indexOf("\n")+1,temp1.lastIndexOf("\n"));
                 CharSequence temp = str;
-                if(contatct.equals(temp)){
+                if(mobile2.equals(mobile)){
                     holder.cb.setChecked(true);
                 }
             } 
