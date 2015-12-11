@@ -64,12 +64,15 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
   
     private TextView tv_has_company;//显示是否拥有企业
     private int flag =1;//1=来自卡片页面0=来自企业通讯录
+    private ArrayList<String> mobileList;
     
     @SuppressLint("UseSparseArrays")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_choose_list);
 
+        mobileList = new ArrayList<String>();
+        
         ImageView title_btn_left = (ImageView) findViewById(R.id.title_btn_left);
         TextView header_tv_name = (TextView) findViewById(R.id.header_tv_name);
         title_btn_ok = (TextView) findViewById(R.id.title_btn_ok);
@@ -217,7 +220,13 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
         }
 
     }
-
+    private void getMobileList(ArrayList<String> list){
+        for (int i = 0; i < list.size(); i++) {
+            String temp = list.get(i);
+            String mobile = temp.substring(temp.indexOf("\n")+1,temp.lastIndexOf("\n"));
+            mobileList.add(mobile);
+        }
+    }
     public static final int GET_CONTACTS = 1003;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -1,7 +1,6 @@
 package com.meijialife.simi.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -34,7 +33,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         setContentView(R.layout.webview_activity);
         super.onCreate(savedInstanceState);
 

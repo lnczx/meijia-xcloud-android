@@ -6,7 +6,6 @@ import android.content.Context;
 import com.baidu.mapapi.SDKInitializer;
 import com.igexin.sdk.PushManager;
 import com.simi.easemob.EMDemoHelper;
-import com.simi.easemob.utils.ShareConfig;
 
 public class MyApplication extends Application {
 

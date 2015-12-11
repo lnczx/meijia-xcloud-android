@@ -35,6 +35,10 @@ public class Constants {
     public static final String URL_GET_MY_RQ_CODE = ROOT_URL +"user/get_qrcode.json";
     /**添加好友接口**/
     public static final String URL_GET_ADD_FRIEND = ROOT_URL +"user/add_friend.json";
+    /**获取频道列表接口**/
+    public static final String URL_GET_CHANEL_LIST = ROOT_URL +"op/get_channels.json";
+    /**获取频道内广告信息接口**/
+    public static final String URL_GET_ADS_LIST = ROOT_URL + "op/get_ads.json";
     
     
     /** app更新接口 **/
@@ -258,7 +262,6 @@ public class Constants {
      
      /**保存卡片创建的联系人**/
      public static ArrayList<String> finalContactList = new ArrayList<String>();
-     
      
      
      

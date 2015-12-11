@@ -11,26 +11,17 @@ import net.tsz.afinal.http.AjaxParams;
 import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +43,6 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CollapseCalendarView;
 import com.meijialife.simi.ui.CollapseCalendarView.OnDateSelect;
 import com.meijialife.simi.ui.calendar.CalendarManager;
-import com.meijialife.simi.utils.AlertWindow;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -106,6 +96,10 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         v.findViewById(R.id.btn_saoma).setOnClickListener(this);
 
         layout_mask = v.findViewById(R.id.layout_mask);
+        //沉浸式状态栏(像ios那样的状态栏与应用统一颜色样式)android.4.4支持 
+      /*  getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
+*/
         
         userInfo = DBHelper.getUserInfo(getActivity());
     }
