@@ -4,17 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Cards implements Serializable{
-    private int total_zan;
     private String ticket_from_city_id;
     private String set_sec_remarks;
     private String create_user_id;
     private String set_remind;
-    private String card_id;
     private String create_user_name;
-    private String service_time;
-    private String service_content;
-    private String card_type_name;
-    private String total_comment;
     private String ticket_to_city_id;
     private String name;
     private String user_id;
@@ -22,18 +16,41 @@ public class Cards implements Serializable{
     private String user_head_img;//新增
     private String ticket_from_city_name;
     private String ticket_type;
-    private String add_time_str;
-    private String status;
-    private ArrayList<CardAttend> attends;
     private String ticket_to_city_name;
     private String set_sec_do;
-    private String service_addr;
     private String update_time;
-    private String card_type;
     private String set_now_send;
     private ArrayList<CardZan> zan_top10;
     private String add_time;
     
+    private String card_id;
+    private String card_type_name;
+    private String card_type;
+    private String title;
+    private ArrayList<CardAttend> attends;
+    private String service_time;
+    private String service_addr;
+    private String service_content;
+    private int total_zan;
+    private String total_comment;
+    private String add_time_str;
+    private String status;
+    private CardExtra card_extra;
+    
+   
+    public CardExtra getCard_extra() {
+        return card_extra;
+    }
+    public void setCard_extra(CardExtra card_extra) {
+        this.card_extra = card_extra;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+ 
     public int getTotal_zan() {
         return total_zan;
     }
