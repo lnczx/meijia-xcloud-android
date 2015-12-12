@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,7 +34,10 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.bean.CardAttend;
+import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
+import com.meijialife.simi.bean.WeatherDatas;
+import com.meijialife.simi.bean.WeatherIndex;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.fra.Home1Fra;
 import com.meijialife.simi.ui.CustomShareBoard;
@@ -128,10 +132,14 @@ public class ListAdapter extends BaseAdapter {
         String remark = list.get(position).getService_content();
         long timeL = Long.parseLong(list.get(position).getService_time());
         String date = dateFormat.format(timeL*1000);
+        //天气卡片额外信息
+//        String cardExtra =list.get(position).getCard_extra();
+//        ArrayList<WeatherDatas> weatherDatasList = cardExtra.getWeatherDatas();
+//        WeatherIndex weatherIndex = cardExtra.getWeather_index();
+        
         
         vh.tv_title.setText(title);
         vh.tv_date_str.setText(timeStr);
-        vh.tv_remark.setText(remark);
         vh.tv_zan.setText(""+list.get(position).getTotal_zan());
         vh.tv_comment.setText(""+list.get(position).getTotal_comment());
         
@@ -165,7 +173,7 @@ public class ListAdapter extends BaseAdapter {
         }
         
         String typeStr = "";
-        //卡片类型 0 = 通用(保留) 1 = 会议安排 2 = 秘书叫早 3 = 事务提醒 4 = 邀约通知 5 = 差旅规划
+        //卡片类型 0 = 通用(保留) 1 = 会议安排 2 = 秘书叫早 3 = 事务提醒 4 = 邀约通知 5 = 差旅规划 99=天气卡片
         int type = Integer.parseInt(list.get(position).getCard_type());
         switch (type) {
         case 0://通用(保留)
@@ -180,6 +188,9 @@ public class ListAdapter extends BaseAdapter {
             vh.tv_2.setVisibility(View.VISIBLE);
             vh.tv_3.setText("提醒人：" + attend);
             vh.tv_3.setVisibility(View.VISIBLE);
+            vh.tv_remark.setText(remark);
+            vh.ll_weather.setVisibility(View.GONE);
+            vh.ll_social.setVisibility(View.VISIBLE);
             typeStr = "会议安排";
             break;
         case 2://秘书叫早
@@ -190,7 +201,11 @@ public class ListAdapter extends BaseAdapter {
             vh.tv_2.setText("提醒人：" + attend);
             vh.tv_2.setVisibility(View.VISIBLE);
             vh.tv_3.setVisibility(View.INVISIBLE);
+            vh.ll_weather.setVisibility(View.GONE);
             typeStr = "秘书叫早";
+            vh.tv_remark.setText(remark);
+            vh.ll_weather.setVisibility(View.GONE);
+            vh.ll_social.setVisibility(View.VISIBLE);
             break;
         case 3://事务提醒
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_3));
@@ -201,6 +216,9 @@ public class ListAdapter extends BaseAdapter {
             vh.tv_2.setVisibility(View.VISIBLE);
             vh.tv_3.setVisibility(View.INVISIBLE);
             typeStr = "事务提醒";
+            vh.tv_remark.setText(remark);
+            vh.ll_weather.setVisibility(View.GONE);
+            vh.ll_social.setVisibility(View.VISIBLE);
             break;
         case 4://邀约通知
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_4));
@@ -211,20 +229,54 @@ public class ListAdapter extends BaseAdapter {
             vh.tv_2.setVisibility(View.VISIBLE);
             vh.tv_3.setVisibility(View.INVISIBLE);
             typeStr = "邀约通知";
+            vh.tv_remark.setText(remark);
+            vh.ll_weather.setVisibility(View.GONE);
+            vh.ll_social.setVisibility(View.VISIBLE);
             break;
         case 5://差旅规划
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_1));
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_chailv));
-            String ticket_from_city_name = list.get(position).getTicket_from_city_name();
-            String ticket_to_city_name = list.get(position).getTicket_to_city_name();
-            vh.tv_1.setText("城市：从 " + ticket_from_city_name + " 到 " + ticket_to_city_name);
+          /*  String ticket_from_city_name = list.get(position).getTicket_from_city_name();
+            String ticket_to_city_name = list.get(position).getTicket_to_city_name();*/
+//            vh.tv_1.setText("城市：从 " + ticket_from_city_name + " 到 " + ticket_to_city_name);
             vh.tv_1.setVisibility(View.VISIBLE);
             vh.tv_2.setText("时间：" + date);
             vh.tv_2.setVisibility(View.VISIBLE);
             vh.tv_3.setText("航班：");
             vh.tv_3.setVisibility(View.VISIBLE);
             typeStr = "差旅规划";
+            vh.tv_remark.setText(remark);
+            vh.ll_weather.setVisibility(View.GONE);
+            vh.ll_social.setVisibility(View.VISIBLE);
             break;
+      /*  case 99://天气卡片
+            vh.ll_weather.setVisibility(View.VISIBLE);
+            vh.ll_social.setVisibility(View.GONE);
+            vh.tv_remark.setText(weatherIndex.getDes());
+
+            vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_1));
+            vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_chailv));
+           
+            WeatherDatas weatherDatas1 =weatherDatasList.get(0);
+            WeatherDatas weatherDatas2 =weatherDatasList.get(0);
+            WeatherDatas weatherDatas3 =weatherDatasList.get(0);
+            WeatherDatas weatherDatas4 =weatherDatasList.get(0);
+            
+            vh.tv_1.setText("温度："+weatherDatas1.getTemperature() );
+            vh.tv_1.setVisibility(View.VISIBLE);
+            vh.tv_2.setText("风力：" + weatherDatas1.getWind());
+            vh.tv_2.setVisibility(View.VISIBLE);
+            vh.tv_3.setText("天气："+weatherDatas1.getWeather());
+            vh.tv_3.setVisibility(View.VISIBLE);
+            vh.tv_weather1.setText(weatherDatas2.getDate());
+            vh.tv_weather2.setText(weatherDatas3.getDate());
+            vh.tv_weather3.setText(weatherDatas4.getDate());
+            vh.tv_temp1.setText(weatherDatas2.getTemperature());
+            vh.tv_temp2.setText(weatherDatas3.getTemperature());
+            vh.tv_temp3.setText(weatherDatas4.getTemperature());
+            
+            typeStr = "天气预报";
+            break;*/
 
         default:
             break;
@@ -248,6 +300,14 @@ public class ListAdapter extends BaseAdapter {
         vh.tv_zan = (TextView) v.findViewById(R.id.tv_zan);
         vh.tv_comment = (TextView) v.findViewById(R.id.tv_comment);
         vh.tv_share = (TextView) v.findViewById(R.id.tv_share);
+        vh.ll_social = (LinearLayout)v.findViewById(R.id.ll_social);
+        vh.ll_weather = (LinearLayout)v.findViewById(R.id.ll_weather);
+        vh.tv_weather1 =(TextView)v.findViewById(R.id.tv_weather1);
+        vh.tv_weather2 =(TextView)v.findViewById(R.id.tv_weather2);
+        vh.tv_weather3 =(TextView)v.findViewById(R.id.tv_weather3);
+        vh.tv_temp1 =(TextView)v.findViewById(R.id.tv_temp1);
+        vh.tv_temp2 =(TextView)v.findViewById(R.id.tv_temp2);
+        vh.tv_temp3 =(TextView)v.findViewById(R.id.tv_temp3);
         
         //赞
         vh.tv_zan.setOnClickListener(new OnClickListener() {
@@ -296,6 +356,14 @@ public class ListAdapter extends BaseAdapter {
         private TextView tv_zan;    // 被赞数量
         private TextView tv_comment;// 评论数量
         private TextView tv_share;// 分享
+        private LinearLayout ll_social;//底部分享
+        private LinearLayout ll_weather;//底部天气
+        private TextView tv_weather1;
+        private TextView tv_temp1;
+        private TextView tv_weather2;
+        private TextView tv_temp2;
+        private TextView tv_weather3;
+        private TextView tv_temp3;
 
     }
     

@@ -146,6 +146,7 @@
         android:background="#e1e1e1" />
 
     <LinearLayout
+        android:id="@+id/ll_social"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -201,5 +202,92 @@
                 android:textColor="#676767" />
         </RelativeLayout>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_weather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp" >
 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/tv_weather1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableRight="@drawable/common_icon_like"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="#676767" />
+            <TextView
+                android:id="@+id/tv_temp1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_weather1"
+                android:layout_centerInParent="true"
+                android:paddingLeft="5dp"
+                android:gravity="center"
+                android:text="123"
+                android:textColor="#676767" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/tv_weather2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableRight="@drawable/common_icon_review"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="#676767" />
+             <TextView
+                android:id="@+id/tv_temp2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_weather2"
+                android:layout_centerInParent="true"
+                android:paddingLeft="5dp"
+                android:gravity="center"
+                android:text="123"
+                android:textColor="#676767" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/tv_weather3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableRight="@drawable/common_icon_share"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="21"
+                android:textColor="#676767" />
+            
+             <TextView
+                android:id="@+id/tv_temp3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_weather3"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="123"
+                android:textColor="#676767" />
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
