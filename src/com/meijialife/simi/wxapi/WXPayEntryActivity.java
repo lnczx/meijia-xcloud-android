@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.meijialife.simi.R;
 import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.wxpay.WxConstants;

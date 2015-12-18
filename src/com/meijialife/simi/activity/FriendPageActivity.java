@@ -36,6 +36,7 @@ import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
+import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.UserIndexData;

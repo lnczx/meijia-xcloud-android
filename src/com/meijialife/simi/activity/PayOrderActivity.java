@@ -692,6 +692,9 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", DBHelper.getUserInfo(this).getUser_id());
         map.put("card_type", card_id); // 充值卡类型
+        if(card_id.equals("0")){
+            map.put("card_money",card_pay);
+        }
         map.put("pay_type", payType + ""); // 支付类型 1 = 支付宝
         AjaxParams param = new AjaxParams(map);
 
@@ -748,17 +751,16 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             mobile2 = obj.getString("mobile");
             card_order_no = obj.getString("card_order_no");
             card_pay = obj.getString("card_pay");
-
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             Toast.makeText(this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
         }
         if (payType == PAY_TYPE_ALIPAY) {
-            new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, memberCallback, mobile2, ConsAli.PAY_TO_MEMBER, card_pay, card_order_no)
+            new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, memberCallback, mobile2, ConsAli.PAY_TO_MEMBER, card_pay /*"0.01"*/, card_order_no)
                     .pay();
         } else if (payType == PAY_TYPE_WXPAY) {
-            new WxPay(PayOrderActivity.this, PayOrderActivity.this, ConsAli.PAY_TO_MEMBER, card_order_no, "云行政会员卡充值", card_pay);
+            new WxPay(PayOrderActivity.this, PayOrderActivity.this, ConsAli.PAY_TO_MEMBER, card_order_no, "云行政会员卡充值", card_pay/*"0.01"*/);
         }
     }
     /**

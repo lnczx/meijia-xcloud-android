@@ -3,7 +3,9 @@ package com.meijialife.simi;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,13 +18,18 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +60,7 @@ import com.meijialife.simi.activity.ShareActivity;
 import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CalendarMark;
+import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.Remind;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
@@ -112,6 +120,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private BroadcastReceiver broadcastReceiver;
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
+    GetContactsRunnable getContactsRunnable;
 
     /**
      * 检查当前用户是否被删除
@@ -158,9 +167,29 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         });
         
       //更新手机联系人数据库
-        new Thread(new GetContactsRunnable(this, null)).start();
+        getContactsRunnable = new GetContactsRunnable(this, null);
+        List<Contact> contactList = DBHelper.getContacts(this);
+        if(contactList==null){
+            new Thread(getContactsRunnable).start();
+        }
+        /**
+         * 手机联系人注册内容监听器--当
+         */
+        ContactDBObserver observer = new ContactDBObserver(new Handler());
+        getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, observer);
+        
     }
-
+    
+    class ContactDBObserver extends ContentObserver{
+        public ContactDBObserver(Handler handler) {
+            super(handler);
+        }
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            new Thread(getContactsRunnable).start();
+        }
+    }
     /**
      * 检查是否第一次打开应用
      * 
@@ -215,7 +244,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     private void init() {
         activity = this;
-
         view_title_bar = (RelativeLayout) findViewById(R.id.view_title_bar);
         tv_header = (TextView) findViewById(R.id.header_tv_name);
         mBt1 = (LinearLayout) findViewById(R.id.tab_bt_1);
@@ -298,7 +326,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             updateTitle(2);
             slideMenu.isUse = false;
             break;
-        case R.id.tab_bt_3: // 秘友
+        case R.id.tab_bt_3: // 圈子
             currentTabIndex = 3;
             change2Contacts();
             break;
@@ -430,7 +458,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             tv_header.setText("发现");
             break;
         case 3:
-            tv_header.setText("好友");
+            tv_header.setText("圈子");
             break;
         case 4:
             tv_header.setText("我的");
@@ -714,7 +742,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         DBHelper.getInstance(MainActivity.this).deleteAll(User.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(CalendarMark.class);
-
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         this.finish();
     }

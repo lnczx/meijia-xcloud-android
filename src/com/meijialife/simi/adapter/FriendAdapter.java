@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.utils.StringUtils;
 
 /**
  * 好友适配器
@@ -65,8 +66,11 @@ public class FriendAdapter extends BaseAdapter {
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
-		
-		holder.tv_name.setText(list.get(position).getName());
+		  if (StringUtils.isEmpty(list.get(position).getName())) {
+	            holder.tv_name.setText(list.get(position).getMobile());
+	        } else {
+	            holder.tv_name.setText(list.get(position).getName());
+	        }
 		String url = list.get(position).getHead_img();
         finalBitmap.display(holder.iv_header, url, defDrawable.getBitmap(), defDrawable.getBitmap());
 		return convertView;

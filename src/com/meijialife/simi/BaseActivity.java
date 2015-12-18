@@ -3,11 +3,14 @@ package com.meijialife.simi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.meijialife.simi.utils.LogOut;
 import com.umeng.analytics.MobclickAgent;
 
 
@@ -39,7 +42,7 @@ public class BaseActivity extends Activity{
 		title_btn_left.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				finish();
+			    finish();
 			}
 		});
 	}

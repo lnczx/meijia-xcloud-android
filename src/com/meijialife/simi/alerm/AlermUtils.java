@@ -133,8 +133,12 @@ public class AlermUtils {
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode,intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager am;
 
+	/*	Calendar calendar = Calendar.getInstance();  
+        calendar.setTimeInMillis(System.currentTimeMillis());  
+        calendar.add(Calendar.SECOND, 10); */
 		// 获取系统进程
 		am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+//		am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,c.getTimeInMillis(),pendingIntent);
 		am.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
 		
 		String tmps = "提醒设置时间为：" + c.get(Calendar.YEAR) + "年" + (c.get(Calendar.MONTH)+1) + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" + c.get(Calendar.HOUR_OF_DAY) + "时"+ ":" + c.get(Calendar.MINUTE) + "分";

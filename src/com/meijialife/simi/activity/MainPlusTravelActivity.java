@@ -2,7 +2,6 @@ package com.meijialife.simi.activity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,14 +30,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.alerm.AlermUtils;
-import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.Cards;
-import com.meijialife.simi.bean.ContactBean;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.ToggleButton;
@@ -58,7 +54,7 @@ import com.meijialife.simi.utils.UIUtils;
  * @author windows7
  * 
  */
-public class MainPlusTravelActivity extends BaseActivity implements OnClickListener, ItemScroListener  {
+public class MainPlusTravelActivity extends BaseActivity implements OnClickListener, ItemScroListener {
 
     public static final int START_CITY_FLAG = 1001;
     public static final int END_CITY_FLAG = 1002;
@@ -80,6 +76,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     private int mYear = 2015;
     private int mMonth = 0;
     private int mDay = 1;
+    private String startDate;// 出发日期
 
     private int mHour = 0;
     private int mMinute = 0;
@@ -139,7 +136,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
-      isUsersenior = StringUtils.isEquals(user_type, "1");
+        isUsersenior = StringUtils.isEquals(user_type, "1");
         if (isUsersenior) {
             layout_select_who.setVisibility(View.VISIBLE);
         } else {
@@ -512,6 +509,8 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         hour.setViewAdapter(numericWheelAdapter1);
         hour.setCyclic(false);// 是否可循环滑动
         // hour.addScrollingListener(scrollListener);
+        // 获得选中的时间
+        startDate = tv_date.getText().toString().trim();
 
         minute = (WheelView) view.findViewById(R.id.minute);
         NumericWheelAdapter numericWheelAdapter2 = new NumericWheelAdapter(this, 0, 59, "%02d");
@@ -539,6 +538,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                 int mhour = hour.getCurrentItem();
                 int mMinu = minute.getCurrentItem();
 
+                // 用户选中的时间
                 String time = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu);
                 // Calendar cal = Calendar.getInstance();
                 // int hour = cal.get(Calendar.HOUR_OF_DAY);
@@ -548,21 +548,33 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                 Date curDate = null;
                 Date currentTime = new Date();
 
-                String timeString = new SimpleDateFormat("HH:mm").format(currentTime.getTime());
+                Date chooseAllDate = null;
+                Date curAllDate = null;
+                Long chooseLong = 0L;
+                Long curLong = 0L;
 
-                try {
-                    chooseDate = new SimpleDateFormat("HH:mm").parse(time);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                // 系统当前时间(time)
+                String timeString = DateUtils.getStringByPattern(currentTime.getTime(), "HH:mm");
+                //系统当前时间（date+time）
+                String timeAllString = DateUtils.getStringByPattern(currentTime.getTime(), "yyyy-MM-dd HH:mm");
+                if (StringUtils.isEmpty(startDate) || startDate.equals("点击选择日期")) {
+                    /**
+                     * 获取当前时间+用户选择的时间（time）
+                     */
+                    chooseDate = DateUtils.getDateByPattern(time, "HH:mm");
+                    curDate = DateUtils.getDateByPattern(timeString, "HH:mm");
+                    chooseLong = chooseDate.getTime();
+                    curLong = curDate.getTime();
+                } else {
+                    /**
+                     * 获取当前时间+用户选择的时间（date+time）
+                     */
+                    chooseAllDate = DateUtils.getDateByPattern(startDate + " " + time, "yyyy-MM-dd HH:mm");
+                    curAllDate = DateUtils.getDateByPattern(timeAllString, "yyyy-MM-dd HH:mm");
+                    chooseLong = chooseAllDate.getTime();
+                    curLong = curAllDate.getTime();
                 }
-
-                try {
-                    curDate = new SimpleDateFormat("HH:mm").parse(timeString);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                if (chooseDate.getTime() < curDate.getTime()) {
+                if (chooseLong < curLong) {
                     UIUtils.showToast(MainPlusTravelActivity.this, "您只能选择未来时间进行提醒哦！");
                 } else {
                     tv_chufa_time.setText(time);
@@ -570,6 +582,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                         mTimePopup.dismiss();
                     }
                 }
+
             }
         });
         TextView cancel = (TextView) view.findViewById(R.id.tv_cancel);
@@ -785,7 +798,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
         final Date fdate = mdate;
 
-        if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
+        if (StringUtils.isEquals(userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
             UIUtils.showToast(MainPlusTravelActivity.this, "请选择为谁创建");
         }
 
@@ -804,7 +817,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         map.put("card_id", "0");
         map.put("card_type", "5");
         map.put("create_user_id", c_id + "");
-        map.put("user_id", isUsersenior?for_userid:c_id);
+        map.put("user_id", isUsersenior ? for_userid : c_id);
         map.put("service_time", cultime);
         map.put("service_content", Constants.CARD_ADD_TREAVEL_CONTENT);
         map.put("set_remind", remindAlerm + "");
@@ -873,14 +886,14 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     public void onFinished() {
         int mYear = year.getCurrentItem() + 2015;
         int mMonth = month.getCurrentItem() + 1;
-        
+
         int maxIndex = getDay(mYear, mMonth);
         int index = day.getCurrentItem();
-        if(index > maxIndex-1){
+        if (index > maxIndex - 1) {
             index = maxIndex;
-            day.setCurrentItem(index-1);
+            day.setCurrentItem(index - 1);
         }
-        
+
         initDay(mYear, mMonth);
     }
 }

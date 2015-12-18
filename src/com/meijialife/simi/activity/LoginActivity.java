@@ -739,7 +739,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
         getTotalByMonth(year + "", month + "");
 
-        for (int i = 0; i < 8; i++) {
+      /*  for (int i = 0; i < 8; i++) {
             if (month == 12) {
                 month = 1;
                 year += 1;
@@ -747,7 +747,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 month += 1;
             }
             getTotalByMonth(year + "", month + "");
-        }
+        }*/
     }
 
     /**

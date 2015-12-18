@@ -21,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -47,6 +46,7 @@ import com.meijialife.simi.adapter.ImgAdapter;
 import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
 import com.meijialife.simi.bean.CalendarMark;
+import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.FindBean;
 import com.meijialife.simi.bean.UserInfo;
@@ -77,6 +77,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private ListView listview;
     private ListAdapter adapter;
     private ArrayList<Cards> cardlist;// 卡片数据
+    private ArrayList<CardExtra> cardExtrasList;
     private Cards[] cards;
 
     private TextView tv_tips;// 没有数据时的提示
@@ -109,8 +110,8 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private ImgAdapter imgAdapter;
     private String title_name = "发现";
     
-    private Boolean card_flag = false;
-    private Boolean ad_flag = false;
+    private boolean card_flag = false;
+    private boolean ad_flag = false;
     
     //获取当前位置经纬度
     private LocationClient locationClient = null;
@@ -127,30 +128,26 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // }
         
-//        initLocation();
+        initLocation();
         init(v);
         initCalendar(v);
         initListView(v);
-        //如果广告和卡片有一个有值，则不显示
-        if(card_flag || ad_flag){
-            tv_tips.setVisibility(View.GONE);
-            iv_no_card.setVisibility(View.GONE);
-        }else {
-            tv_tips.setVisibility(View.VISIBLE);
-            iv_no_card.setVisibility(View.VISIBLE);
-        }
+       
         return v;
     }
-
+    /**
+     * 获取用户当前位置的经纬度
+     */
     private void initLocation(){
         locationClient = new LocationClient(getActivity());
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);        //是否打开GPS
         option.setCoorType("bd09ll");       //设置返回值的坐标类型。
         option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
-        option.setProdName("LocationDemo"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
+        option.setProdName("Secretary"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
         option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
         locationClient.setLocOption(option);
+        locationClient.start();
         
         locationClient.registerLocationListener(new BDLocationListener() {
             @Override
@@ -162,9 +159,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 longitude = location.getLongitude()+"";//经度
             }
         });
-        Toast.makeText(getActivity(),latitude+"--"+longitude,Toast.LENGTH_LONG).show();
-        
-        
     }
     
     private void init(View v) {
@@ -178,25 +172,67 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
     
-       
-        ll_focus_indicator_container = (LinearLayout) v.findViewById(R.id.ll_focus_indicator_container);
-        gallery = (MyGallery) v.findViewById(R.id.gallery);
-        gallery.setAdapter(imgAdapter);
-        gallery.setFocusable(true);
-        gallery.setOnItemSelectedListener(new OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                    int selIndex, long arg3) {
-                selIndex = selIndex % findBeanList.size();
-                // 修改上一次选中项的背景
-                portImg.get(preSelImgIndex).setImageResource(R.drawable.ic_focus);
-                // 修改当前选中项的背景
-                portImg.get(selIndex).setImageResource(R.drawable.ic_focus_select);
-                preSelImgIndex = selIndex;
+        tv_ad_des = (TextView) v.findViewById(R.id.tv_ad_des);
+        tv_ad_goto_type = (TextView) v.findViewById(R.id.tv_goto_type);
+        tv_ad_goto_url = (TextView) v.findViewById(R.id.tv_goto_url);
+        iv_ad_icon = (ImageView) v.findViewById(R.id.iv_ad_icon);
+        tv_ad_share = (TextView)v.findViewById(R.id.tv_share);
+        tv_service_type_ids = (TextView)v.findViewById(R.id.tv_service_type_ids);
+        layout_mask = v.findViewById(R.id.layout_mask);
+        userInfo = DBHelper.getUserInfo(getActivity());
+    }
+
+    /**
+     * 初始化日历
+     * 
+     * @param v
+     */
+    private void initCalendar(View v) {
+        today_date = LocalDate.now().toString();
+
+        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now()
+                .plusYears(1));
+
+        calendarView = (CollapseCalendarView) v.findViewById(R.id.layout_calendar);
+        calendarView.init(calendarManager, getActivity(), this);
+
+        calendarView.setListener(new OnDateSelect() {
+            @Override
+            public void onDateSelected(LocalDate date) {
+                today_date = date.toString();
+//                getAdListByChannelId("0");
+                if(findBeanList!=null && findBeanList.size()>0){
+                    ad_flag = true;
+                }
+                getCardListData(today_date, card_from);
+                //如果广告和卡片有一个有值，则不显示
             }
 
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
         });
+
+    }
+
+    public static void showMask() {
+        layout_mask.setVisibility(View.VISIBLE);
+    }
+
+    public static void GoneMask() {
+        layout_mask.setVisibility(View.GONE);
+    }
+
+    private void initListView(View v) {
+        listview = (ListView) v.findViewById(R.id.listview);
+        tv_tips = (TextView) v.findViewById(R.id.tv_tips);
+        iv_no_card = (ImageView) v.findViewById(R.id.iv_no_card);
+        
+        LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
+        listview.addHeaderView(ll);
+
+        gallery = (MyGallery) ll.findViewById(R.id.gallery);
+        ll_focus_indicator_container = (LinearLayout) ll.findViewById(R.id.ll_focus_indicator_container);
+
+        gallery.setAdapter(imgAdapter);
+        gallery.setFocusable(true);
         gallery.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -227,72 +263,21 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 }
             }
         });
-        
-        getAdListByChannelId("0");//首页广告位显示
-
-        tv_ad_des = (TextView) v.findViewById(R.id.tv_ad_des);
-        tv_ad_goto_type = (TextView) v.findViewById(R.id.tv_goto_type);
-        tv_ad_goto_url = (TextView) v.findViewById(R.id.tv_goto_url);
-        iv_ad_icon = (ImageView) v.findViewById(R.id.iv_ad_icon);
-        tv_ad_share = (TextView)v.findViewById(R.id.tv_share);
-        tv_service_type_ids = (TextView)v.findViewById(R.id.tv_service_type_ids);
-//        ll_ad = (LinearLayout)v.findViewById(R.id.ll_ad);
-
-        layout_mask = v.findViewById(R.id.layout_mask);
-        //沉浸式状态栏(像ios那样的状态栏与应用统一颜色样式)android.4.4支持 
-      /*  getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
-*/
-        
-        userInfo = DBHelper.getUserInfo(getActivity());
-    }
-
-    /**
-     * 初始化日历
-     * 
-     * @param v
-     */
-    private void initCalendar(View v) {
-        today_date = LocalDate.now().toString();
-
-        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now()
-                .plusYears(1));
-
-        calendarView = (CollapseCalendarView) v.findViewById(R.id.layout_calendar);
-        calendarView.init(calendarManager, getActivity(), this);
-
-        calendarView.setListener(new OnDateSelect() {
-            @Override
-            public void onDateSelected(LocalDate date) {
-                today_date = date.toString();
-                getCardListData(today_date, card_from);
-                //如果广告和卡片有一个有值，则不显示
-                if(card_flag || ad_flag){
-                    tv_tips.setVisibility(View.GONE);
-                    iv_no_card.setVisibility(View.GONE);
-                }else {
-                    tv_tips.setVisibility(View.VISIBLE);
-                    iv_no_card.setVisibility(View.VISIBLE);
-                }
+       /* gallery.setOnItemSelectedListener(new OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                    int selIndex, long arg3) {
+                selIndex = selIndex % findBeanList.size();
+                // 修改上一次选中项的背景
+                portImg.get(preSelImgIndex).setImageResource(R.drawable.ic_focus);
+                // 修改当前选中项的背景
+                portImg.get(selIndex).setImageResource(R.drawable.ic_focus_select);
+                preSelImgIndex = selIndex;
             }
 
-        });
-
-    }
-
-    public static void showMask() {
-        layout_mask.setVisibility(View.VISIBLE);
-    }
-
-    public static void GoneMask() {
-        layout_mask.setVisibility(View.GONE);
-    }
-
-    private void initListView(View v) {
-        listview = (ListView) v.findViewById(R.id.listview);
-        tv_tips = (TextView) v.findViewById(R.id.tv_tips);
-        iv_no_card = (ImageView) v.findViewById(R.id.iv_no_card);
-        
+            public void onNothingSelected(AdapRterView<?> arg0) {
+            }
+        });*/
+        getAdListByChannelId("0");//首页广告位显示
         /*
          * ArrayList<String> list = new ArrayList<String>(); for (int i = 0; i < 4; i++) { list.add("今日无安排" + i); }
          */
@@ -300,10 +285,14 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
-                intent.putExtra("Cards", cardlist.get(arg2));
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                int p = position-1;
+                if(!cardlist.get(p).getCard_type().equals("99")){
+                    Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
+                    intent.putExtra("Cards", cardlist.get(p));
+                    intent.putExtra("card_extra",cardExtrasList.get(p));
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -311,11 +300,22 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public void onResume() {
         super.onResume();
-
+        LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
+        gallery = (MyGallery) ll.findViewById(R.id.gallery);
+        
         getTotalByMonth();
         getCardListData(today_date, card_from);
         getAdListByChannelId("0");
-        //如果广告和卡片有一个有值，则不显示
+//        getUserInfo();
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        gallery.destroy();
+    }
+
+    public void isShowDefaultCard(boolean card_flag,boolean ad_flag){
         if(card_flag || ad_flag){
             tv_tips.setVisibility(View.GONE);
             iv_no_card.setVisibility(View.GONE);
@@ -323,11 +323,8 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             tv_tips.setVisibility(View.VISIBLE);
             iv_no_card.setVisibility(View.VISIBLE);
         }
-        
-        getUserInfo();
-
     }
-
+    
     /**
      * 获取卡片数据
      * 
@@ -367,30 +364,34 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 super.onSuccess(t);
                 String errorMsg = "";
                 dismissDialog();
-                LogOut.i("========", "onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
                         int status = obj.getInt("status");
                         String msg = obj.getString("msg");
-                        String data = obj.getString("data");
+                        String data = obj.getString("data").trim();
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data)) {
+                            if (StringUtils.isNotEmpty(data.trim())) {
                                 Gson gson = new Gson();
+                                cardlist = new ArrayList<Cards>();
+                                cardExtrasList = new ArrayList<CardExtra>();
                                 cardlist = gson.fromJson(data, new TypeToken<ArrayList<Cards>>() {
                                 }.getType());
-                                
-                                adapter.setData(cardlist);
-                                card_flag = true;
-                              /*  tv_tips.setVisibility(View.GONE);
-                                iv_no_card.setVisibility(View.GONE);*/
-                                // UIUtils.showToast(getActivity(), "有数据");
+                                for (int i = 0; i < cardlist.size(); i++) {
+                                    Cards cards2 = cardlist.get(i);
+                                    CardExtra cardExtra = new CardExtra();
+                                   cardExtra = gson.fromJson(cards2.getCard_extra(),CardExtra.class);
+                                   cardExtrasList.add(cardExtra);
+                                }
+                               /* JsonArray array = new JsonParser().parse(data).getAsJsonArray();
+                                for (final JsonElement elem : array) {
+                                    cardlist.add(new Gson().fromJson(elem, Cards.class));
+                                }*/
+                                adapter.setData(cardlist,cardExtrasList);
+                                isShowDefaultCard(true,ad_flag);
                             } else {
-                                adapter.setData(new ArrayList<Cards>());
-                                card_flag = false;
-                               /* tv_tips.setVisibility(View.VISIBLE);
-                                iv_no_card.setVisibility(View.VISIBLE);*/
-                                // UIUtils.showToast(getActivity(), "没有数据");
+                                adapter.setData(new ArrayList<Cards>(),new ArrayList<CardExtra>());
+                                isShowDefaultCard(false,ad_flag);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -553,18 +554,10 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                                 findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
                                 }.getType());
                                 imgAdapter.setData(findBeanList);
-                                ad_flag = true;
-//                                showAdView(findBeanList);
-//                                adapter.setData(findBeanList);
-//                                tv_tips.setVisibility(View.GONE);
-//                                iv_no_card.setVisibility(View.GONE);
+                                isShowDefaultCard(card_flag,true);
                             } else {
-//                                showAdView(findBeanList);
-//                                adapter.setData(new ArrayList<FindBean>());
                                 imgAdapter.setData(new ArrayList<FindBean>());
-                                ad_flag = false;
-//                                tv_tips.setVisibility(View.VISIBLE);
-//                                iv_no_card.setVisibility(View.VISIBLE);
+                                isShowDefaultCard(card_flag,false);
                             }
                             InitFocusIndicatorContainer();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -761,13 +754,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     public void onCardUpdate() {
         getCardListData(today_date, card_from);
         //如果广告和卡片有一个有值，则不显示
-        if(card_flag || ad_flag){
-            tv_tips.setVisibility(View.GONE);
-            iv_no_card.setVisibility(View.GONE);
-        }else {
-            tv_tips.setVisibility(View.VISIBLE);
-            iv_no_card.setVisibility(View.VISIBLE);
-        }
     }
     /**
      * 获取用户详情
@@ -835,10 +821,10 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     public void onDestroy() {
         super.onDestroy();
         gallery.destroy();
-       /* if (locationClient != null && locationClient.isStarted()) {
+        if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
             locationClient = null;
-        }*/
+        } 
     }
     
     private void InitFocusIndicatorContainer() {

@@ -34,7 +34,6 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.ContactAddFriendsActivity;
-import com.meijialife.simi.activity.ContactChooseActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.WebViewActivity;

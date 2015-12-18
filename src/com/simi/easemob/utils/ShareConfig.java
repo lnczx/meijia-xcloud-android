@@ -1,10 +1,9 @@
 package com.simi.easemob.utils;
 
 import android.app.Activity;
-import android.content.Context;
 
+import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.simi.easemob.EMDemoHelper;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.media.QQShareContent;
@@ -22,11 +21,19 @@ public class ShareConfig {
     private final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
     private Activity mContext;
     private static ShareConfig instance;
+    private static String card_id;
 
     public static ShareConfig getInstance() {
         if (instance == null) {
             instance = new ShareConfig();
         }
+        return instance;
+    }
+    public static ShareConfig getInstance(String cardId) {
+        if (instance == null) {
+            instance = new ShareConfig();
+        }
+        card_id = cardId;
         return instance;
     }
 
@@ -39,7 +46,6 @@ public class ShareConfig {
         // 设置分享的内容
         setShareContent();
     }
-
     /**
      * 根据不同的平台设置不同的分享内容</br>
      */
@@ -50,7 +56,7 @@ public class ShareConfig {
 
         QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
         qZoneSsoHandler.addToSocialSDK();
-        mController.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
+        mController.setShareContent(Constants.SHARE_CONTENT);
 
         UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
 //        UMImage urlImage = new UMImage(mContext, "http://www.umeng.com/images/pic/social/integrated_3.png");
@@ -62,43 +68,48 @@ public class ShareConfig {
         // "/storage/sdcard0/emoji.gif");
 
         WeiXinShareContent weixinContent = new WeiXinShareContent();
-        weixinContent.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
-        weixinContent.setTitle("云行政，企业行政服务第一平台");
-        weixinContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        weixinContent.setShareContent(Constants.SHARE_CONTENT);
+        weixinContent.setTitle(Constants.SHARE_TITLE);
+        weixinContent.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
+//        weixinContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         weixinContent.setShareMedia(localImage);
         mController.setShareMedia(weixinContent);
 
         // 设置朋友圈分享的内容
         CircleShareContent circleMedia = new CircleShareContent();
-        circleMedia.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
-        circleMedia.setTitle("云行政，企业行政服务第一平台");
+        circleMedia.setShareContent(Constants.SHARE_CONTENT);
+        circleMedia.setTitle(Constants.SHARE_TITLE);
         circleMedia.setShareMedia(localImage);
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
-        circleMedia.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        circleMedia.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
+//        circleMedia.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         mController.setShareMedia(circleMedia);
 
 
         // 设置QQ空间分享内容
         QZoneShareContent qzone = new QZoneShareContent();
-        qzone.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
-        qzone.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
-        qzone.setTitle("云行政，企业行政服务第一平台");
+        qzone.setShareContent(Constants.SHARE_CONTENT);
+        qzone.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
+//        qzone.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        qzone.setTitle(Constants.SHARE_TITLE);
         qzone.setShareMedia(localImage);
         // qzone.setShareMedia(uMusic);
         mController.setShareMedia(qzone);
 
         QQShareContent qqShareContent = new QQShareContent();
-        qqShareContent.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
-        qqShareContent.setTitle("云行政，企业行政服务第一平台");
+        qqShareContent.setShareContent(Constants.SHARE_CONTENT);
+        qqShareContent.setTitle(Constants.SHARE_TITLE);
         qqShareContent.setShareMedia(localImage);
-        qqShareContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+//        qqShareContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        qqShareContent.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
         mController.setShareMedia(qqShareContent);
 
         SinaShareContent sinaContent = new SinaShareContent();
-        sinaContent.setTitle("云行政，企业行政服务第一平台");
-        sinaContent.setShareContent("云行政，企业行政服务第一平台！极大降低企业行政管理成本，有效提升行政综合服务能力，快来试试吧！体验就送礼哦：http://51xingzheng.cn/h5-app-download.html");
-        sinaContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        sinaContent.setTitle(Constants.SHARE_TITLE);
+        sinaContent.setShareContent(Constants.SHARE_CONTENT);
+        sinaContent.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
+//        sinaContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         sinaContent.setShareMedia(localImage);
         mController.setShareMedia(sinaContent);
 

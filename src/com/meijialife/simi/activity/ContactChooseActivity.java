@@ -338,7 +338,7 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
     }
     
     /**
-     * 获取用户详情接口
+     * 获取用户详情接口---公司注册之后更新用户信息
      */
     private void getUserInfo() {
         if (!NetworkUtils.isNetworkConnected(ContactChooseActivity.this)) {

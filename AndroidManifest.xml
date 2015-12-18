@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meijialife.simi"
-    android:versionCode="10"
-    android:versionName="1.5.6" >
+    android:versionCode="11"
+    android:versionName="1.5.7" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -661,14 +661,14 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- 提醒的接收器 -->
-        <receiver
+      <!--   <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
-            android:process=":newinst" />
-        <!--
+            android:process=":newinst" /> -->
+        
              <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
             android:process=":remote" />
-        -->
+       
 
 
         <!-- 个推SDK配置开始 -->
