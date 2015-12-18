@@ -86,6 +86,11 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
             break;
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getMyWalletList();
+    }
     public void getMyWalletList(){
         //判断是否有网络
         if (!NetworkUtils.isNetworkConnected(MyWalletActivity.this)) {

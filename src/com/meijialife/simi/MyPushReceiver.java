@@ -116,11 +116,13 @@ public class MyPushReceiver extends BroadcastReceiver {
     }
 
     private void setNotification(ReceiverBean receiverBean) {
+        //NotificationManager状态通知的管理类，必须通过getSystemService()方法来获取
         NotificationManager manager = (NotificationManager) mContext.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
 
+        //点击通知负责页面跳转
         Intent intent = new Intent(mContext, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+        //android3.0以后采用NotificationCompat构建
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
         builder.setContentTitle(receiverBean.getRemind_title());
         builder.setContentText(receiverBean.getRemind_content());

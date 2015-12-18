@@ -10,9 +10,20 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp">
-
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+        
+		<TextView
+		    android:id="@+id/tv_pinglun_name"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="名字:"
+		    />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pinglun_name"
+            >
         <TextView
             android:id="@+id/item_tv_date"
             android:layout_width="wrap_content"
@@ -27,7 +38,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/item_tv_date"
-            android:text="没好的一切都是那么令人动" />
+            android:text="没好的一切都是那么令人动" 
+            android:paddingLeft="10dp"
+            />
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

@@ -13,6 +13,5 @@
     <include layout="@layout/layout_friend" />
     <!-- 消息 -->
     <include layout="@layout/layout_friend_msg" />
-    
 
 </LinearLayout>

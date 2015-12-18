@@ -285,7 +285,7 @@ public class SplashActivity extends Activity {
      */
 	private void getCitys(long addtime) {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("T", String.valueOf(addtime));
+		map.put("t", String.valueOf(addtime));
 		AjaxParams param = new AjaxParams(map);
 
 		new FinalHttp().get(Constants.URL_GET_CITY_LIST, param,
@@ -386,7 +386,7 @@ public class SplashActivity extends Activity {
         
         getTotalByMonth(year+"", month+"");
         
-        for(int i = 0; i < 8; i++){
+       /* for(int i = 0; i < 8; i++){
             if(month == 12){
                 month = 1;
                 year += 1;
@@ -394,7 +394,7 @@ public class SplashActivity extends Activity {
                 month += 1;
             }
             getTotalByMonth(year+"", month+"");
-        }
+        }*/
     }
     
     /**

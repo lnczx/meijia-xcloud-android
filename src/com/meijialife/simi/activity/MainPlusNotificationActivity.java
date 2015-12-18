@@ -130,7 +130,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private void initView(Cards card) {
         requestBackBtn();
         requestRightBtn();
-        setTitleName("邀约通知");
+        setTitleName("面试邀约");
 
         findViewById(R.id.layout_select_time).setOnClickListener(this);
         findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);

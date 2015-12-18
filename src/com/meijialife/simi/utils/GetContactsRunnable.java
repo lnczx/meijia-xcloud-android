@@ -3,6 +3,7 @@ package com.meijialife.simi.utils;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
@@ -43,15 +44,18 @@ public class GetContactsRunnable implements Runnable {
     public void run() {
         // TODO Auto-generated method stub
         Uri uri = ContactsContract.Contacts.CONTENT_URI;
+        //projection用于标识哪些colums需要返回到cursor中
         String[] projection = new String[] { ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.PHOTO_ID };
+        //查询的过滤参数
         String selection = null;// ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '1'" modify by garry
+        //查询条件参数
         String[] selectionArgs = null;
+        //查询结果的排列方式
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
+        //获取一个包含指定数据的Cursor对象，并有activity接管这个cursor的生命周期
         Cursor cursor = activity.managedQuery(uri, projection, selection, selectionArgs, sortOrder);
         Cursor phonecur = null;
-
         contactsList.clear();
-
         while (cursor != null && cursor.moveToNext()) {
 
             // 取得联系人名字

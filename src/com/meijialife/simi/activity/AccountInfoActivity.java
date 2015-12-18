@@ -82,6 +82,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
     private RelativeLayout title_btn_edit_layout;// 编辑按钮layout
     private TextView title_btn_edit;// 编辑按钮
     private boolean isEdit; // 是否正在编辑
+    private TextView tv_logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         RelativeLayout item_0 = (RelativeLayout) findViewById(R.id.rl_item_0);// 头像
         RelativeLayout item_3 = (RelativeLayout) findViewById(R.id.rl_item_3);// 性别
         RelativeLayout item_4 = (RelativeLayout) findViewById(R.id.rl_item_4);// 私秘卡
-        TextView tv_logout = (TextView) findViewById(R.id.tv_account_logout);// 退出登陆
+        tv_logout = (TextView) findViewById(R.id.tv_account_logout);// 退出登陆
         RelativeLayout item_5 = (RelativeLayout)findViewById(R.id.rl_item_5);//常用地址
         
         item_0.setOnClickListener(this);
@@ -186,11 +187,12 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         if (isEdit) {
             // 开始编辑
             et_name.setEnabled(true);
-            title_btn_edit.setBackgroundColor(getResources().getColor(R.color.transparent));
-            ;
+//            title_btn_edit.setBackgroundColor(getResources().getColor(R.color.transparent));
             title_btn_edit.setText("保存");
+            tv_logout.setVisibility(View.GONE);
         } else {
             // 编辑完成，post修改信息接口
+            tv_logout.setVisibility(View.VISIBLE);
             postUserinfo();
         }
     }
@@ -244,8 +246,8 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             Toast.makeText(AccountInfoActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
                             et_name.setEnabled(false);
-                            title_btn_edit.setBackgroundResource(R.drawable.icon_plus_mishuchuli);
-                            title_btn_edit.setText("");
+//                            title_btn_edit.setBackgroundResource(R.drawable.icon_plus_mishuchuli);
+                            title_btn_edit.setText("编辑");
 
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(AccountInfoActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();

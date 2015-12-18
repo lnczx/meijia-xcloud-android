@@ -35,17 +35,15 @@ public class Cards implements Serializable{
     private String total_comment;
     private String add_time_str;
     private String status;
-    private CardExtra card_extra;
-    
-   
-    public CardExtra getCard_extra() {
-        return card_extra;
-    }
-    public void setCard_extra(CardExtra card_extra) {
-        this.card_extra = card_extra;
-    }
+    private String card_extra;
     public String getTitle() {
         return title;
+    }
+    public String getCard_extra() {
+        return card_extra;
+    }
+    public void setCard_extra(String card_extra) {
+        this.card_extra = card_extra;
     }
     public void setTitle(String title) {
         this.title = title;

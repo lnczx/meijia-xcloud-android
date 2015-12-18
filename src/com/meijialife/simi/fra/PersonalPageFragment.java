@@ -48,6 +48,7 @@ import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsActivity;
 import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
+import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.bean.UserInfo;

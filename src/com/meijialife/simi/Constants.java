@@ -262,11 +262,11 @@ public class Constants {
      
      /**保存卡片创建的联系人**/
      public static ArrayList<String> finalContactList = new ArrayList<String>();
-     
-     
-     
-     
-     
-     
+     /**分享跳转链接**/
+     public static String SHARE_TARGET_URL = "http://123.57.173.36//simi-h5/show/card-share.html?card_id=";
+     /**分享标题**/
+     public static String SHARE_TITLE = "云行政，企业行政人力服务平台";
+     /**分享内容**/
+     public static String SHARE_CONTENT ="有来自好友的分享，点击查看详情。云行政，极大降低企业运行成本，极速提升企业工作效率，快来试试吧！";
      
 }

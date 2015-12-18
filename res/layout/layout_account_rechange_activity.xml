@@ -61,7 +61,7 @@
                 android:background="@drawable/btn_list_item_bg" >
 
                 <TextView
-                    android:id="@+id/tv_name"
+                    android:id="@+id/tv_charge"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
@@ -73,14 +73,17 @@
                     android:textSize="17.6sp" />
 
                 <EditText
-                    android:id="@+id/et_name"
+                    android:id="@+id/et_value"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/tv_name"
+                    android:layout_toLeftOf="@id/tv_charge"
                     android:background="@null"
                     android:hint="请输入你要充值的金额"
                     android:paddingLeft="10dp"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"
+                    android:maxLength="10"
                     android:textSize="@dimen/font_size_16" />
             </RelativeLayout>
 

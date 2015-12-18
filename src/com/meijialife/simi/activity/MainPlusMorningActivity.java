@@ -127,7 +127,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
     private void initView(Cards card) {
         requestBackBtn();
         requestRightBtn();
-        setTitleName("秘书叫早");
+        setTitleName("通知公告");
 
         findViewById(R.id.layout_select_time).setOnClickListener(this);
         findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);

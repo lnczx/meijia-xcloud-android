@@ -24,9 +24,8 @@
             android:layout_width="@dimen/card_icon_size"
             android:layout_height="@dimen/card_icon_size"
             android:layout_centerVertical="true"
-            android:background="@drawable/icon_main_item_chifan" 
             android:layout_marginLeft="@dimen/card_icon_margin_left"
-            />
+            android:background="@drawable/icon_main_item_chifan" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -49,8 +48,7 @@
                 android:layout_marginTop="5dp"
                 android:text="刚刚 "
                 android:textColor="#a4a4a4"
-                android:textSize="@dimen/card_time_tip"
-                 />
+                android:textSize="@dimen/card_time_tip" />
         </LinearLayout>
 
         <RelativeLayout
@@ -96,6 +94,17 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@drawable/card_default_shiwu" />
+
+            <TextView
+                android:id="@+id/iv_default_tep"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/simi_color_gray"
+                android:textSize="25sp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -202,36 +211,49 @@
                 android:textColor="#676767" />
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_weather"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp" >
+        android:padding="8dp" >
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="1" 
+            android:paddingLeft="15dp"
+            >
 
             <TextView
                 android:id="@+id/tv_weather1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableRight="@drawable/common_icon_like"
-                android:drawablePadding="5dp"
-                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:gravity="left"
+                android:paddingRight="3dp"
                 android:text="0"
                 android:textColor="#676767" />
+
+            <ImageView
+                android:id="@+id/iv_weather1"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/tv_weather1"
+                android:scaleType="center"
+                android:layout_centerVertical="true"
+                android:src="@drawable/common_icon_like" />
+
             <TextView
                 android:id="@+id/tv_temp1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_weather1"
-                android:layout_centerInParent="true"
-                android:paddingLeft="5dp"
+                android:layout_alignBaseline="@id/iv_weather1"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_weather1"
                 android:gravity="center"
+                android:paddingLeft="3dp"
                 android:text="123"
                 android:textColor="#676767" />
         </RelativeLayout>
@@ -239,26 +261,38 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="1" 
+            android:paddingLeft="15dp"
+            >
 
             <TextView
                 android:id="@+id/tv_weather2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableRight="@drawable/common_icon_review"
-                android:drawablePadding="5dp"
+                android:layout_centerVertical="true"
                 android:gravity="center"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:text="0"
                 android:textColor="#676767" />
-             <TextView
+
+            <ImageView
+                android:id="@+id/iv_weather2"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/tv_weather2"
+                android:scaleType="center"
+            	android:layout_centerVertical="true"
+                android:src="@drawable/common_icon_like" />
+
+            <TextView
                 android:id="@+id/tv_temp2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_weather2"
                 android:layout_centerInParent="true"
-                android:paddingLeft="5dp"
-                android:gravity="center"
+                android:layout_toRightOf="@id/iv_weather2"
+                android:gravity="left"
+                android:paddingLeft="3dp"
                 android:text="123"
                 android:textColor="#676767" />
         </RelativeLayout>
@@ -266,28 +300,41 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
-
+            android:layout_weight="1" 
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            >
             <TextView
                 android:id="@+id/tv_weather3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:drawableRight="@drawable/common_icon_share"
-                android:drawablePadding="5dp"
+                android:layout_centerVertical="true"
                 android:gravity="center"
-                android:text="21"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="0"
                 android:textColor="#676767" />
-            
-             <TextView
+
+            <ImageView
+                android:id="@+id/iv_weather3"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/tv_weather3"
+                android:scaleType="center"
+                android:layout_centerVertical="true"
+                android:src="@drawable/common_icon_like" />
+
+            <TextView
                 android:id="@+id/tv_temp3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tv_weather3"
                 android:layout_centerInParent="true"
-                android:gravity="center"
+                android:layout_toRightOf="@id/iv_weather3"
+                android:gravity="left"
                 android:text="123"
+                android:paddingLeft="3dp"
                 android:textColor="#676767" />
         </RelativeLayout>
     </LinearLayout>
+
 </LinearLayout>

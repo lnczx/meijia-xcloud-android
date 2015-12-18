@@ -45,6 +45,7 @@ import com.meijialife.simi.adapter.CardCommentAdapter;
 import com.meijialife.simi.adapter.CardZanAdapter;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.CardComment;
+import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
@@ -53,6 +54,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.simi.easemob.utils.ShareConfig;
 
 /**
  * 卡片详情
@@ -82,6 +84,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     private Button btn_send; // 评论
 
     private Cards card;// 卡片数据
+    private CardExtra cardExtra;// 卡片数据
     private View layout_mask;
     private TextView tv_tongji_zan;
     private LinearLayout layout_dianzan;
@@ -117,6 +120,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
     private void init() {
         card = (Cards) getIntent().getSerializableExtra("Cards");
+        cardExtra = (CardExtra) getIntent().getSerializableExtra("card_extra");
         user = DBHelper.getUser(this);
         
         finalBitmap = FinalBitmap.create(this);
@@ -234,7 +238,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         String timeStr = card.getAdd_time_str();
         
         if(sec_icon != null){
-            finalBitmap.display(sec_icon, card.getUser_head_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
+            finalBitmap.display(sec_icon,  card.getUser_head_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
         }
         if(sec_title != null){
             sec_title.setText(card.getUser_name());
@@ -291,12 +295,12 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_3.setText("提醒人：" + attend);
             tv_3.setVisibility(View.VISIBLE);
             break;
-        case 2:// 秘书叫早
+        case 2:// 通知公告
             iv_icon.setBackground(getResources().getDrawable(R.drawable.icon_plus_5));
             iv_image.setBackground(getResources().getDrawable(R.drawable.card_default_mishu));
             tv_1.setText("时间：" + date);
             tv_1.setVisibility(View.VISIBLE);
-            tv_2.setText("提醒人：" + attend);
+            tv_2.setText("接收人：" + attend);
             tv_2.setVisibility(View.VISIBLE);
             break;
         case 3:// 事务提醒
@@ -307,7 +311,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_2.setText("提醒人：" + attend);
             tv_2.setVisibility(View.VISIBLE);
             break;
-        case 4:// 邀约通知
+        case 4:// 面试邀约
             iv_icon.setBackground(getResources().getDrawable(R.drawable.icon_plus_4));
             iv_image.setBackground(getResources().getDrawable(R.drawable.card_default_yaoyue));
             tv_1.setText("时间：" + date);
@@ -350,6 +354,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             postZan(card);
             break;
         case R.id.tv_share: // 分享
+            ShareConfig.getInstance(card.getCard_id()).init(this);;
             postShare();
             break;
         case R.id.btn_cancel_layout: // 取消
@@ -417,7 +422,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                     startActivity(intent);
 
                     break;
-                case 2:// 秘书叫早
+                case 2://通知公告
                     Intent intent2 = new Intent(CardDetailsActivity.this, MainPlusMorningActivity.class);
                     intent2.putExtra("cards", card);
                     startActivity(intent2);
@@ -427,7 +432,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                     intent3.putExtra("cards", card);
                     startActivity(intent3);
                     break;
-                case 4:// 邀约通知
+                case 4:// 面试邀约
                     Intent intent4 = new Intent(CardDetailsActivity.this, MainPlusNotificationActivity.class);
                     intent4.putExtra("cards", card);
                     startActivity(intent4);
@@ -763,6 +768,10 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             }
         });
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     /**

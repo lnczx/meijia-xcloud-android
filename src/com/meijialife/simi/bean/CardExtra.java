@@ -13,8 +13,16 @@ public class CardExtra implements Serializable {
     private ArrayList<WeatherDatas> weatherDatas;
     private WeatherIndex weatherIndex;
     private String cityName;
+    private String real_temp;
     
  
+    
+    public String getReal_temp() {
+        return real_temp;
+    }
+    public void setReal_temp(String real_temp) {
+        this.real_temp = real_temp;
+    }
     public WeatherIndex getWeatherIndex() {
         return weatherIndex;
     }
@@ -32,6 +40,8 @@ public class CardExtra implements Serializable {
     private String poi_name;
     
     
+  
+ 
     public ArrayList<WeatherDatas> getWeatherDatas() {
         return weatherDatas;
     }

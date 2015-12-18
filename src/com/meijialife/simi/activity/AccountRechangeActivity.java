@@ -10,7 +10,11 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +42,8 @@ public class AccountRechangeActivity extends BaseActivity {
     private AccountRechangeAdapter adapter;
     private ListView listview;
     private TextView tv_money;
+    private TextView tv_charge;//充值按钮
+    private EditText et_value;//输入金额
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,8 @@ public class AccountRechangeActivity extends BaseActivity {
 
         tv_money = (TextView) findViewById(R.id.tv_money);
         listview = (ListView) findViewById(R.id.listview);
+        tv_charge = (TextView)findViewById(R.id.tv_charge);
+        et_value = (EditText)findViewById(R.id.et_value);
         adapter = new AccountRechangeAdapter(this);
 
         getRechangeList();
@@ -62,11 +70,38 @@ public class AccountRechangeActivity extends BaseActivity {
         if (null != userInfo) {
             tv_money.setText(userInfo.getRest_money());
         }
+        
+        tv_charge.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String money = et_value.getText().toString().trim();
+                if(StringUtils.isEmpty(money)){
+                    Toast.makeText(AccountRechangeActivity.this, "充值金额不能为空",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                double charge_money = new Double(money).doubleValue();
+                if(charge_money<0.01){
+                    Toast.makeText(AccountRechangeActivity.this, "充值金额不能小于0.01元",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent = new Intent(AccountRechangeActivity.this, PayOrderActivity.class);
+                intent.putExtra("from",PayOrderActivity.FROM_MEMBER);
+                intent.putExtra("name", "充值");
+                intent.putExtra("card_pay", money);
+                intent.putExtra("card_value", money);
+                intent.putExtra("card_id", "0");
+                startActivity(intent);
+            }
+        });
 
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tv_money.setText("");
+    }
     /**
-     * 获取秘书列表
+     * 获取充值卡列表
      */
     public void getRechangeList() {
 

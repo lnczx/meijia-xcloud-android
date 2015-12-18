@@ -84,7 +84,7 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         init();
     }
     private void init(){
-        setTitleName("秘书助理详情");
+        setTitleName("详情");
         requestBackBtn();
         partner = (Partner) getIntent().getSerializableExtra("Partner");
         partner_user_id = String.valueOf(partner.getUser_id());

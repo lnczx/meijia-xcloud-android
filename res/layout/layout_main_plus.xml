@@ -83,7 +83,7 @@
             android:drawablePadding="12dp"
             android:drawableTop="@drawable/icon_plus_4"
             android:gravity="center_horizontal"
-            android:text="邀约通知"
+            android:text="面试邀约"
             android:textColor="#333333"
             android:textSize="18sp" />
 
@@ -95,7 +95,7 @@
             android:drawablePadding="12dp"
             android:drawableTop="@drawable/icon_plus_5"
             android:gravity="center_horizontal"
-            android:text="秘书叫早"
+            android:text="通知公告"
             android:textColor="#333333"
             android:textSize="18sp" />
 
