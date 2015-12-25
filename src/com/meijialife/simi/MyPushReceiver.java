@@ -82,8 +82,9 @@ public class MyPushReceiver extends BroadcastReceiver {
                     long remindTime = Long.parseLong(receiverBean.getRemind_time());
                     fdate = new Date(remindTime);
                     LogOut.debug("格式化后的date为:" + fdate);
-
-                    AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content());
+                    if(!receiverBean.getCard_id().equals("0")){
+                        AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content());
+                    }
                 }
             }
             break;

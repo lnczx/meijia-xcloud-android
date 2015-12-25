@@ -1,5 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,11 +31,10 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="30dp"
-                    android:src="@drawable/ic_defult_touxiang" 
-           			imagecontrol:border_inside_color="#f9f9f9"  
-           			imagecontrol:border_outside_color="#f9f9f9"  
-      				imagecontrol:border_thickness_in="2dp" 
-                    />
+                    android:src="@drawable/ic_defult_touxiang"
+                    imagecontrol:border_inside_color="#f9f9f9"
+                    imagecontrol:border_outside_color="#f9f9f9"
+                    imagecontrol:border_thickness_in="2dp" />
 
                 <RelativeLayout
                     android:id="@+id/fyzb_personal_page_content"
@@ -43,7 +42,6 @@
                     android:layout_height="95dp"
                     android:layout_below="@id/iv_top_head" >
 
-                    
                     <RelativeLayout
                         android:id="@+id/user_login"
                         android:layout_width="wrap_content"
@@ -126,8 +124,7 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/main_menu"
                     android:padding="25dp"
-                    android:visibility="gone"
-                     />
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <LinearLayout
@@ -232,6 +229,13 @@
                 <include layout="@layout/person_scroll_view" />
             </ScrollView>
         </LinearLayout>
+
+        <View
+            android:id="@+id/layout_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#a2000000"
+            android:visibility="gone" />
     </FrameLayout>
 
 </FrameLayout>

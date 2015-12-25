@@ -10,6 +10,7 @@
         layout="@layout/layout_title_bar" />
 
     <TextView
+        android:id="@+id/tv_menu_type1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="工具与服务"
@@ -29,6 +30,7 @@
     </GridView>
 
     <TextView
+        android:id="@+id/tv_menu_type2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="成长与赚钱" 

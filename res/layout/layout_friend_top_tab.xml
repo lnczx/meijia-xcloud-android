@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+     >
 
     <View
         android:layout_width="match_parent"
@@ -21,6 +22,16 @@
             android:orientation="horizontal" >
 
             <RadioButton
+                android:id="@+id/rb_dynamic"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:text="动态"
+                android:textColor="@color/index2_radiobutton_color" />
+            <RadioButton
+                android:id="@+id/rb_friend"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -30,6 +41,7 @@
                 android:textColor="@color/index2_radiobutton_color" />
 
             <RadioButton
+                android:id="@+id/rb_msg"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -51,9 +63,15 @@
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:background="@color/simi_color_red" />
-
             <View
                 android:id="@+id/line_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/simi_color_red" />
+
+            <View
+                android:id="@+id/line_3"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"

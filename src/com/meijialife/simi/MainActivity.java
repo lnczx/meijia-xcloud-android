@@ -1,11 +1,11 @@
 package com.meijialife.simi;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,8 +17,9 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.ContentObserver;
@@ -29,7 +30,6 @@ import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -58,6 +58,7 @@ import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
 import com.meijialife.simi.activity.WebViewActivity;
+import com.meijialife.simi.alerm.AlermReceiver;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Contact;
@@ -391,6 +392,18 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             break;
         case R.id.item_8: // 更多
             startActivity(new Intent(this, MoreActivity.class));
+          /*  AlarmManager am;
+            Calendar calendar = Calendar.getInstance();  
+            calendar.setTimeInMillis(System.currentTimeMillis());  
+            calendar.add(Calendar.SECOND, 10); 
+
+            intent = new Intent(this,MoreActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            // 获取系统进程
+            am = (AlarmManager)getSystemService(this.ALARM_SERVICE);
+//          am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,c.getTimeInMillis(),pendingIntent);
+            am.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+            */
             break;
         default:
             break;

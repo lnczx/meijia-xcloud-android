@@ -220,10 +220,10 @@
         android:padding="8dp" >
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" 
-            android:paddingLeft="15dp"
+            android:paddingLeft="10dp"
             >
 
             <TextView
@@ -232,16 +232,16 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="left"
-                android:paddingRight="3dp"
+                android:paddingRight="1dp"
                 android:text="0"
                 android:textColor="#676767" />
 
             <ImageView
                 android:id="@+id/iv_weather1"
-                android:layout_width="15dp"
+                android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/tv_weather1"
-                android:scaleType="center"
+                android:scaleType="centerInside"
                 android:layout_centerVertical="true"
                 android:src="@drawable/common_icon_like" />
 
@@ -253,16 +253,16 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/iv_weather1"
                 android:gravity="center"
-                android:paddingLeft="3dp"
-                android:text="123"
+                android:paddingLeft="1dp"
+                android:text="6~-5.c"
                 android:textColor="#676767" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" 
-            android:paddingLeft="15dp"
+            android:paddingLeft="5dp"
             >
 
             <TextView
@@ -270,18 +270,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:gravity="center"
-                android:paddingLeft="3dp"
+                android:gravity="left"
                 android:paddingRight="3dp"
                 android:text="0"
                 android:textColor="#676767" />
 
             <ImageView
                 android:id="@+id/iv_weather2"
-                android:layout_width="15dp"
+                android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/tv_weather2"
-                android:scaleType="center"
+                android:scaleType="centerInside"
             	android:layout_centerVertical="true"
                 android:src="@drawable/common_icon_like" />
 
@@ -293,34 +292,32 @@
                 android:layout_toRightOf="@id/iv_weather2"
                 android:gravity="left"
                 android:paddingLeft="3dp"
-                android:text="123"
+                android:text="6~-5.c"
                 android:textColor="#676767" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" 
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             >
             <TextView
                 android:id="@+id/tv_weather3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:gravity="center"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
+                android:gravity="left"
+                android:paddingRight="1dp"
                 android:text="0"
                 android:textColor="#676767" />
 
             <ImageView
                 android:id="@+id/iv_weather3"
-                android:layout_width="15dp"
+                android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/tv_weather3"
-                android:scaleType="center"
+                android:scaleType="centerInside"
                 android:layout_centerVertical="true"
                 android:src="@drawable/common_icon_like" />
 
@@ -331,8 +328,8 @@
                 android:layout_centerInParent="true"
                 android:layout_toRightOf="@id/iv_weather3"
                 android:gravity="left"
-                android:text="123"
-                android:paddingLeft="3dp"
+                android:text="6~-5.c"
+                android:paddingLeft="1dp"
                 android:textColor="#676767" />
         </RelativeLayout>
     </LinearLayout>

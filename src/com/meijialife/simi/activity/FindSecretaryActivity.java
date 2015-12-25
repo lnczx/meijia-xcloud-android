@@ -24,7 +24,6 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.SecretaryAdapter;
 import com.meijialife.simi.bean.Partner;
-import com.meijialife.simi.bean.Secretary;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
