@@ -1,4 +1,4 @@
-package com.meijialife.simi.photo.activity;
+package com.meijialife.simi.publish;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +116,7 @@ public class AlbumActivity extends Activity {
 	private class CancelListener implements OnClickListener {
 		public void onClick(View v) {
 			Bimp.tempSelectBitmap.clear();
-			intent.setClass(mContext, MainActivity.class);
+			intent.setClass(mContext, PublishDynamicActivity.class);
 			startActivity(intent);
 		}
 	}

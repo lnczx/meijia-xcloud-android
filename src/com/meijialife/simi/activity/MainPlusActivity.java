@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.publish.PublishDynamicActivity;
 import com.meijialife.simi.utils.StringUtils;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.ui.ChatActivity;
@@ -73,10 +73,13 @@ public class MainPlusActivity extends Activity implements OnClickListener {
             break;
         case R.id.tv_plus_more:
             
-            Intent  intent = new Intent(this, WebViewActivity.class);
+          /*  Intent  intent = new Intent(this, WebViewActivity.class);
             intent.putExtra("url",Constants.URL_MORE_INFO);
             intent.putExtra("title", "更多服务");
+            startActivity(intent);*/
+            Intent intent = new Intent(this,PublishDynamicActivity.class);
             startActivity(intent);
+            MainPlusActivity.this.finish();
 
             break;
         case R.id.iv_plus_close:

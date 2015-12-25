@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
@@ -34,11 +35,15 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.ContactAddFriendsActivity;
+import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.adapter.FriendAdapter;
+import com.meijialife.simi.adapter.FriendDynamicAdapter;
+import com.meijialife.simi.adapter.FriendDynamicAdapter.onDynamicUpdateListener;
 import com.meijialife.simi.bean.Friend;
+import com.meijialife.simi.bean.FriendDynamicData;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
@@ -52,13 +57,14 @@ import com.meijialife.simi.zxing.code.MipcaActivityCapture;
  * @author： kerryg
  * @date:2015年12月1日
  */
-public class Home3Fra extends BaseFragment implements OnItemClickListener, OnClickListener {
+public class Home3Fra extends BaseFragment implements OnItemClickListener, OnClickListener,onDynamicUpdateListener {
 
     private RadioGroup radiogroup;// 顶部Tab
-    private View line_1, line_2;
+    private View line_1, line_2,line_3;
 
     private LinearLayout layout_msg; // 消息View
     private LinearLayout layout_friend; // 好友View
+    private LinearLayout layout_dynamic; // 动态View
 
     /** 秘友Tab下所有控件 **/
     private ListView listview;
@@ -70,10 +76,22 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
     private RelativeLayout rl_company_contacts;
     private TextView tv_has_company;// 显示理解创建
     private final static int SCANNIN_GREQUEST_CODES = 5;
-
-    private int checkedIndex = 1; // 当前选中的Tab位置, 0=消息 1=好友
+    
+    private ListView lv_friend_dynamic;
+    private FriendDynamicAdapter friendDynamicAdapter;
+    private ArrayList<FriendDynamicData> friendDynamicDatas = new ArrayList<FriendDynamicData>();
+    
+ 
+    private int checkedIndex = 0; // 当前选中的Tab位置, 0=消息 1=好友
+    
     private MainActivity activity;
     private UserInfo userInfo;// 获取用户详情
+    
+    
+    private RadioButton rb_feed;//动态
+    private RadioButton rb_friend;//好友
+    private RadioButton rb_msg;//消息
+    
 
     public Home3Fra() {
     }
@@ -98,24 +116,36 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
 
     @Override
     public void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
-        if (checkedIndex == 0) {
+        if (Constants.checkedIndex == 0) {
+            getFriendDynamicList();
+        } else if (Constants.checkedIndex == 1) {
             getFriendList(false);
-        } else if (checkedIndex == 1) {
-
         }
     }
 
     private void init(View v) {
         layout_msg = (LinearLayout) v.findViewById(R.id.layout_msg);
         layout_friend = (LinearLayout) v.findViewById(R.id.layout_friend);
+        layout_dynamic = (LinearLayout)v.findViewById(R.id.layout_friend_dynamic);
         tv_has_company = (TextView) v.findViewById(R.id.tv_has_company);
 
         listview = (ListView) v.findViewById(R.id.listview);
         listview.setOnItemClickListener(this);
         adapter = new FriendAdapter(getActivity());
         listview.setAdapter(adapter);
+        
+        lv_friend_dynamic = (ListView)v.findViewById(R.id.lv_friend_dynamic);
+        friendDynamicAdapter = new FriendDynamicAdapter(getActivity(),this);
+        lv_friend_dynamic.setAdapter(friendDynamicAdapter);
+        lv_friend_dynamic.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), DynamicDetailsActivity.class);
+                intent.putExtra("friendDynamic", friendDynamicDatas.get(position));
+                startActivity(intent);
+            }
+        });
 
         userInfo = DBHelper.getUserInfo(getActivity());
         if (userInfo.getHas_company() == 0) {
@@ -137,6 +167,11 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         radiogroup = (RadioGroup) v.findViewById(R.id.radiogroup);
         line_1 = (View) v.findViewById(R.id.line_1);
         line_2 = (View) v.findViewById(R.id.line_2);
+        line_3 = (View) v.findViewById(R.id.line_3);
+        
+        rb_feed = (RadioButton)v.findViewById(R.id.rb_dynamic);
+        rb_friend = (RadioButton)v.findViewById(R.id.rb_friend);
+        rb_msg = (RadioButton)v.findViewById(R.id.rb_msg);
 
         radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -144,30 +179,39 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
             public void onCheckedChanged(RadioGroup grop, int checkedId) {
                 line_1.setVisibility(View.INVISIBLE);
                 line_2.setVisibility(View.INVISIBLE);
-
-                if (checkedId == grop.getChildAt(0).getId()) {
-                    checkedIndex = 0;
+                line_3.setVisibility(View.INVISIBLE);
+                
+                if (checkedId == rb_feed.getId()) {
+                    Constants.checkedIndex = 0;
                     line_1.setVisibility(View.VISIBLE);
+                    layout_dynamic.setVisibility(View.VISIBLE);
                     layout_msg.setVisibility(View.GONE);
-                    layout_friend.setVisibility(View.VISIBLE);
-
+                    layout_friend.setVisibility(View.GONE);
+                    getFriendDynamicList();
                 }
-                if (checkedId == grop.getChildAt(1).getId()) {
+
+                if (checkedId == rb_friend.getId()) {
+                    Constants.checkedIndex = 1;
+                    line_2.setVisibility(View.VISIBLE);
+                    layout_msg.setVisibility(View.GONE);
+                    layout_dynamic.setVisibility(View.GONE);
+                    layout_friend.setVisibility(View.VISIBLE);
+                    getFriendList(false);
+                }
+                if (checkedId == rb_msg.getId()) {
                     /*
                      * checkedIndex = 1; line_2.setVisibility(View.VISIBLE); layout_msg.setVisibility(View.GONE);
                      * layout_friend.setVisibility(View.VISIBLE); getFriendList(true);
                      */
-
                     // 跳转到消息View
                     if (activity != null) {
                         ((MainActivity) activity).change2IM();
                     }
                 }
-
+            
             }
         });
-
-        radiogroup.getChildAt(0).performClick();
+        radiogroup.getChildAt(Constants.checkedIndex).performClick();
     }
 
     /**
@@ -244,7 +288,74 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
                 }
             }
         });
-
+    }
+  /**
+   * 获取好友动态列表接口
+   */
+    public void getFriendDynamicList() {
+        
+        String user_id = DBHelper.getUser(getActivity()).getId();
+        if (!NetworkUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user_id + "");
+        map.put("feed_from", "0");
+        AjaxParams param = new AjaxParams(map);
+       
+        new FinalHttp().get(Constants.URL_GET_FRIEND_DYNAMIC_LIST, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                LogOut.i("========", "onSuccess：" + t);
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                friendDynamicDatas = gson.fromJson(data, new TypeToken<ArrayList<FriendDynamicData>>() {
+                                }.getType());
+                                friendDynamicAdapter.setData(friendDynamicDatas);
+                            } else {
+                                friendDynamicAdapter.setData(new ArrayList<FriendDynamicData>());
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(getActivity(), errorMsg);
+                }
+            }
+        });
+        
     }
 
     @Override
@@ -382,6 +493,11 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
                 }
             }
         });
+    }
+
+    @Override
+    public void onDynamicUpdate() {
+        getFriendDynamicList();        
     }
 
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RadioButton;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -20,6 +21,7 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMConversation.EMConversationType;
 import com.easemob.easeui.ui.EaseConversationListFragment;
 import com.easemob.util.NetUtils;
+import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.simi.easemob.EMConstant;
@@ -32,6 +34,7 @@ import com.simi.easemob.db.InviteMessgeDao;
 public class ConversationListFragment extends EaseConversationListFragment{
 
     private RadioGroup radiogroup;//顶部Tab
+    private RadioButton rb_friend,rb_feed;//好友
     
     private TextView errorText;
     
@@ -59,19 +62,26 @@ public class ConversationListFragment extends EaseConversationListFragment{
      */
     private void initTab(){
         radiogroup = (RadioGroup)getView().findViewById(R.id.radiogroup);
+        rb_friend = (RadioButton)getView().findViewById(R.id.rb_friend);
+        rb_feed = (RadioButton)getView().findViewById(R.id.rb_dynamic);
         radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             
             @Override
             public void onCheckedChanged(RadioGroup grop, int checkedId) {
                 
                 if(checkedId == grop.getChildAt(0).getId()){
-                  //跳转到通讯录View
+                	Constants.checkedIndex = 0;
+                  //跳转到动态View
                     if(activity != null){
                         ((MainActivity)activity).change2Contacts();
                     }
                 }
                 if(checkedId == grop.getChildAt(1).getId()){
-                    
+                	Constants.checkedIndex=1;
+                	//跳转到好友View
+                	 if(activity != null){
+                         ((MainActivity)activity).change2Contacts();
+                     }
                 }
                 
             }

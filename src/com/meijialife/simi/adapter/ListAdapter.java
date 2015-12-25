@@ -390,7 +390,8 @@ public class ListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 //                context.startActivity(new Intent(context, ShareActivity.class));
-                ShareConfig.getInstance(list.get(position).getCard_id()).init((Activity)context);;
+//                ShareConfig.getInstance(list.get(position).getCard_id()).init((Activity)context);;
+                ShareConfig.getInstance().init((Activity)context,list.get(position).getCard_id());;
                 postShare();
             }
         });

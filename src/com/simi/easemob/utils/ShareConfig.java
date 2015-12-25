@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.utils.StringUtils;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.media.QQShareContent;
@@ -46,10 +47,16 @@ public class ShareConfig {
         // 设置分享的内容
         setShareContent();
     }
-    /**
-     * 根据不同的平台设置不同的分享内容</br>
-     */
-    public void setShareContent() {
+    
+    public void init(Activity context,String card_id) {
+        this.mContext = context;
+
+        // 配置需要分享的相关平台
+        configPlatforms();
+        // 设置分享的内容
+        setShareContent(card_id);
+    }
+    public void setShareContent(String card_id) {
 
         // 配置SSO
         mController.getConfig().setSsoHandler(new SinaSsoHandler());
@@ -82,7 +89,7 @@ public class ShareConfig {
         circleMedia.setShareMedia(localImage);
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
-        circleMedia.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
+            circleMedia.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
 //        circleMedia.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         mController.setShareMedia(circleMedia);
 
@@ -90,7 +97,8 @@ public class ShareConfig {
         // 设置QQ空间分享内容
         QZoneShareContent qzone = new QZoneShareContent();
         qzone.setShareContent(Constants.SHARE_CONTENT);
-        qzone.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
+      
+            qzone.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
 //        qzone.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
         qzone.setTitle(Constants.SHARE_TITLE);
         qzone.setShareMedia(localImage);
@@ -101,15 +109,80 @@ public class ShareConfig {
         qqShareContent.setShareContent(Constants.SHARE_CONTENT);
         qqShareContent.setTitle(Constants.SHARE_TITLE);
         qqShareContent.setShareMedia(localImage);
-//        qqShareContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
-        qqShareContent.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
+            qqShareContent.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
         mController.setShareMedia(qqShareContent);
 
         SinaShareContent sinaContent = new SinaShareContent();
         sinaContent.setTitle(Constants.SHARE_TITLE);
         sinaContent.setShareContent(Constants.SHARE_CONTENT);
         sinaContent.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
-//        sinaContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        sinaContent.setShareMedia(localImage);
+        mController.setShareMedia(sinaContent);
+
+    }
+    /**
+     * 根据不同的平台设置不同的分享内容</br>
+     */
+    public void setShareContent() {
+
+        // 配置SSO
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
+        qZoneSsoHandler.addToSocialSDK();
+        mController.setShareContent(Constants.SHARE_CONTENT);
+
+        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
+//        UMImage urlImage = new UMImage(mContext, "http://www.umeng.com/images/pic/social/integrated_3.png");
+        // UMImage resImage = new UMImage(mContext, R.drawable.icon);
+
+        // UMEmoji emoji = new UMEmoji(mContext,
+        // "http://www.pc6.com/uploadimages/2010214917283624.gif");
+        // UMEmoji emoji = new UMEmoji(mContext,
+        // "/storage/sdcard0/emoji.gif");
+
+        WeiXinShareContent weixinContent = new WeiXinShareContent();
+        weixinContent.setShareContent(Constants.SHARE_CONTENT);
+        weixinContent.setTitle(Constants.SHARE_TITLE);
+        weixinContent.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
+        
+//        weixinContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        weixinContent.setShareMedia(localImage);
+        mController.setShareMedia(weixinContent);
+
+        // 设置朋友圈分享的内容
+        CircleShareContent circleMedia = new CircleShareContent();
+        circleMedia.setShareContent(Constants.SHARE_CONTENT);
+        circleMedia.setTitle(Constants.SHARE_TITLE);
+        circleMedia.setShareMedia(localImage);
+        // circleMedia.setShareMedia(uMusic);
+        // circleMedia.setShareMedia(video);
+            circleMedia.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
+//        circleMedia.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        mController.setShareMedia(circleMedia);
+
+
+        // 设置QQ空间分享内容
+        QZoneShareContent qzone = new QZoneShareContent();
+        qzone.setShareContent(Constants.SHARE_CONTENT);
+            qzone.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
+//        qzone.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        qzone.setTitle(Constants.SHARE_TITLE);
+        qzone.setShareMedia(localImage);
+        // qzone.setShareMedia(uMusic);
+        mController.setShareMedia(qzone);
+
+        QQShareContent qqShareContent = new QQShareContent();
+        qqShareContent.setShareContent(Constants.SHARE_CONTENT);
+        qqShareContent.setTitle(Constants.SHARE_TITLE);
+        qqShareContent.setShareMedia(localImage);
+            qqShareContent.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
+        mController.setShareMedia(qqShareContent);
+
+        SinaShareContent sinaContent = new SinaShareContent();
+        sinaContent.setTitle(Constants.SHARE_TITLE);
+        sinaContent.setShareContent(Constants.SHARE_CONTENT);
+        qqShareContent.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
         sinaContent.setShareMedia(localImage);
         mController.setShareMedia(sinaContent);
 

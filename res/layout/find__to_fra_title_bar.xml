@@ -3,7 +3,7 @@
     android:id="@+id/view_to_fra_title_bar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_height"
-    android:background="@color/title_background_color"
+    android:background="@color/simi_color_red"
     android:gravity="center_vertical"
     android:visibility="visible" >
 

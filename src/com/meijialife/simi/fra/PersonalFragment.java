@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,16 +48,17 @@ import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
-import com.meijialife.simi.activity.ShareActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.simi.easemob.utils.ShareConfig;
 
 /**
  * @description：
@@ -88,6 +90,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private LinearLayout ll_rq;
     private ImageView iv_rq_left;
     private LayoutInflater layoutInflater;
+    private static View layout_mask;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -104,6 +108,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
         iv_top_head = (RoundImageView) view.findViewById(R.id.iv_top_head);
 
+        layout_mask = v.findViewById(R.id.layout_mask);
         tv_top_nickname = (TextView) view.findViewById(R.id.tv_top_nickname);
         tv_city = (TextView) view.findViewById(R.id.tv_city);
         tv_distance = (TextView) view.findViewById(R.id.tv_distance);
@@ -229,7 +234,10 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.rl_person_items2:// 我的成长--LV
             break;
         case R.id.rl_person_items3:// 推荐给好友
-            startActivity(new Intent(getActivity(), ShareActivity.class));
+//            startActivity(new Intent(getActivity(), ShareActivity.class));
+//          context.startActivity(new Intent(context, ShareActivity.class));
+            ShareConfig.getInstance().init(getActivity());;
+            postShare();
             break;
         case R.id.rl_person_items4:// 更多
             startActivity(new Intent(getActivity(), MoreActivity.class));
@@ -284,8 +292,27 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             break;
         }
     }
+    private void postShare() {
+        PersonalFragment.showMask();
+        CustomShareBoard shareBoard = new CustomShareBoard(getActivity());
+        shareBoard.setOnDismissListener(new OnDismissListener() {
+            
+            @Override
+            public void onDismiss() {
+                PersonalFragment.GoneMask(); 
+            }
+        });
+        shareBoard.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+    }
 
-    
+    public static void showMask() {
+        layout_mask.setVisibility(View.VISIBLE);
+    }
+
+    public static void GoneMask() {
+        layout_mask.setVisibility(View.GONE);
+    }
+
     
     
     private PopupWindow popupWindow;

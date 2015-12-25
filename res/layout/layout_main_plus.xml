@@ -29,14 +29,14 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/tv_plus_travel"
+            android:id="@+id/tv_plus_affair"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="12dp"
-            android:drawableTop="@drawable/icon_plus_1"
+            android:drawableTop="@drawable/icon_plus_3"
             android:gravity="center_horizontal"
-            android:text="差旅规划"
+            android:text="事务提醒"
             android:textColor="#333333"
             android:textSize="18sp" />
 
@@ -53,14 +53,14 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tv_plus_affair"
+            android:id="@+id/tv_plus_morning"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="12dp"
-            android:drawableTop="@drawable/icon_plus_3"
+            android:drawableTop="@drawable/icon_plus_5"
             android:gravity="center_horizontal"
-            android:text="事务提醒"
+            android:text="通知公告"
             android:textColor="#333333"
             android:textSize="18sp" />
     </LinearLayout>
@@ -88,14 +88,14 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tv_plus_morning"
+            android:id="@+id/tv_plus_travel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="12dp"
-            android:drawableTop="@drawable/icon_plus_5"
+            android:drawableTop="@drawable/icon_plus_1"
             android:gravity="center_horizontal"
-            android:text="通知公告"
+            android:text="差旅规划"
             android:textColor="#333333"
             android:textSize="18sp" />
 

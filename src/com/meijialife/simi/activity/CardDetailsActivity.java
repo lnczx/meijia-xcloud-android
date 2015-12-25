@@ -354,7 +354,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             postZan(card);
             break;
         case R.id.tv_share: // 分享
-            ShareConfig.getInstance(card.getCard_id()).init(this);;
+            ShareConfig.getInstance().init(this,card.getCard_id());;
             postShare();
             break;
         case R.id.btn_cancel_layout: // 取消

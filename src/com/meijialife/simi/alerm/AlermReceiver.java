@@ -13,8 +13,10 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.CardAlertActivity;
 import com.meijialife.simi.utils.LogOut;
 
 /**
@@ -36,22 +38,32 @@ public class AlermReceiver extends BroadcastReceiver {
         this.context = context;
 
         playAudio();
-
         // NotifyUtils.bigNotify(context, 100, "私人秘书", "会议时间到啦~~~~");
         LogOut.i(TAG, "提醒进来啦。。。");
+//       Toast.makeText(context, "提醒进来了",Toast.LENGTH_SHORT).show();
         Bundle bundle = intent.getExtras();
         String title = bundle.getString("title");
         String text = bundle.getString("text");
         LogOut.i(TAG, "==" + title + ":" + text);
 
         showDlg(context, title, text);
+        
 //        PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
 //        mWakelock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.SCREEN_DIM_WAKE_LOCK, "SimpleTimer");
 //        mWakelock.acquire();
+       /* Intent intent2 = new Intent(context,CardAlertActivity.class);
+        intent2.putExtra("title",title);
+        intent2.putExtra("time",text);
+        intent2.putExtra("date",text);
+        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent2);*/
         
-
     }
 
+    
+    
+    
+    
     private void showDlg(Context context, String title, String text) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setIcon(context.getResources().getDrawable(R.drawable.ic_launcher_logo_alerm));
@@ -93,6 +105,4 @@ public class AlermReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
     }
-    
-
 }

@@ -43,19 +43,19 @@ public class MyGallery extends Gallery {
 
 	public MyGallery(Context paramContext) {
 		super(paramContext);
-		timer.schedule(task, 3000, 3000);
+		timer.schedule(task, 10000, 10000);
 	}
 
 	public MyGallery(Context paramContext, AttributeSet paramAttributeSet) {
 		super(paramContext, paramAttributeSet);
-		timer.schedule(task, 3000, 3000);
+		timer.schedule(task, 10000, 10000);
 
 	}
 
 	public MyGallery(Context paramContext, AttributeSet paramAttributeSet,
 			int paramInt) {
 		super(paramContext, paramAttributeSet, paramInt);
-		timer.schedule(task, 3000, 3000);
+		timer.schedule(task, 3000, 6000);
 
 	}
 

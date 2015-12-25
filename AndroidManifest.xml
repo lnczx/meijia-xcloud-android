@@ -8,14 +8,13 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="22" />
 
-    <!--上传多张照片所需权限-->
+    <!-- 上传多张照片所需权限 -->
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.CAMERA" />
-    <!--扫描二维码权限-->
+    <!-- 扫描二维码权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    
-    
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -25,9 +24,9 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
-	<!-- QQ、QQ空间所需权限 -->
+    <!-- QQ、QQ空间所需权限 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -288,13 +287,12 @@
             android:name=".activity.ContactSelectActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-       	<!-- 卡片中选择联系人-->
+        <!-- 卡片中选择联系人 -->
         <activity
             android:name=".activity.ContactChooseActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
             android:launchMode="singleTop"
-            />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.CityListActivity"
             android:screenOrientation="portrait"
@@ -335,7 +333,6 @@
             android:name=".activity.NullWaitActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-       
         <activity
             android:name=".activity.PointsShopActivity"
             android:screenOrientation="portrait"
@@ -349,8 +346,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" 
-             />
+            android:theme="@android:style/Theme.Translucent" />
 
         <!-- =============================以下全部是环信相关内容================================= -->
 
@@ -661,30 +657,30 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- 提醒的接收器 -->
-      <!--   <receiver
-            android:name="com.meijialife.simi.alerm.AlermReceiver"
-            android:process=":newinst" /> -->
         
-             <receiver
+          <!--    <receiver
+            android:name="com.meijialife.simi.alerm.AlermReceiver"
+            android:process=":newinst" /> -->
+        <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
             android:process=":remote" />
-       
-
+        <service android:name="com.meijialife.simi.broadcastReceiver.ServiceManager" >
+        </service>
 
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
         <meta-data
             android:name="PUSH_APPID"
             android:value="6t18dZQ2Vn9nv7ozqdl4EA" />
- <!-- 替换为应用的APPID -->
+        <!-- 替换为应用的APPID -->
         <meta-data
             android:name="PUSH_APPKEY"
             android:value="QjVBVFMC7U8kmpjwnKCtc7" />
- <!-- 替换为应用的APPKEY -->
+        <!-- 替换为应用的APPKEY -->
         <meta-data
             android:name="PUSH_APPSECRET"
             android:value="tt7n6qd2Gi8sQqWMz0rN45" />
- <!-- 替换为应用的APPSECRET -->
+        <!-- 替换为应用的APPSECRET -->
         <!-- 配置第三方Receiver 用来接收ClientId和透传消息 -->
         <receiver
             android:name="com.meijialife.simi.MyPushReceiver"
@@ -775,107 +771,111 @@
             android:process=":pushservice" />
 
         <!-- 个推SDK配置结束 -->
-        <!--上传多张图片注册activity-->
+        <!-- 上传多张图片注册activity -->
         <activity
             android:name="com.meijialife.simi.photo.activity.MainActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.meijialife.simi.photo.activity.AlbumActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.meijialife.simi.photo.activity.ImageFile" 
-            android:screenOrientation="portrait"
-            >
+            android:name="com.meijialife.simi.photo.activity.ImageFile"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.meijialife.simi.photo.activity.ShowAllPhoto"
-             android:screenOrientation="portrait"
-             >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.meijialife.simi.photo.activity.GalleryActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
-        <!--秘书详情显示大图滑动-->
+        <!-- 秘书详情显示大图滑动 -->
         <activity
-              android:name="com.meijialife.simi.photo.activity.GalleryUrlActivity"
-              android:configChanges="orientation"
-              android:theme="@style/ImageScale" >
-       	</activity>
-       	<activity
-            android:name="com.meijialife.simi.activity.PartnerActivity"
-            android:screenOrientation="portrait"
-            >
+            android:name="com.meijialife.simi.photo.activity.GalleryUrlActivity"
+            android:configChanges="orientation"
+            android:theme="@style/ImageScale" >
         </activity>
-       	<activity
+        <activity
+            android:name="com.meijialife.simi.activity.PartnerActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.meijialife.simi.activity.BindMobileActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.meijialife.simi.activity.PayZeroOrderActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
-         <activity
+        <activity
             android:name="com.meijialife.simi.activity.ApplicationsCenterActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
-            >
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" >
         </activity>
         <activity
             android:name="com.meijialife.simi.activity.WebViewsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            >
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="com.meijialife.simi.activity.SearchViewActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            >
+            android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
-         <activity
+        <activity
             android:name="com.meijialife.simi.activity.CompanyListActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
             android:launchMode="singleTop"
-            >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-         <activity
+        <activity
             android:name="com.meijialife.simi.activity.StaffListActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-            >
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--configChanges
-        	配置该属性之后横竖屏切换的时候直接调用onCreate方法中的onConfigurationChanged()。不会使用onCreate()方法
+        <!--
+            configChanges
+        	配置该属性之后横竖屏切换的时候直接调用onCreate方法中的onConfigurationChanged()。不会使用onCreate()方法
         -->
         <activity
             android:name="com.meijialife.simi.zxing.code.MipcaActivityCapture"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            >
+            android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
-        <!--发现详情页面-->
-          <activity
+        <!-- 发现详情页面 -->
+        <activity
             android:name="com.meijialife.simi.activity.Find2DetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-            >
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--发现页面webView-->
-          <activity
+        <!-- 发现页面webView -->
+        <activity
             android:name="com.meijialife.simi.activity.WebViewsFindActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name="com.meijialife.simi.activity.CardAlertActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" 
+            >
+        </activity>
+        <!--发布动态activity-->
+        <activity
+            android:name="com.meijialife.simi.publish.PublishDynamicActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            >
+        </activity>
+        <!--动态详情activity-->
+        <activity
+            android:name="com.meijialife.simi.activity.DynamicDetailsActivity"
+            android:screenOrientation="portrait"
             >
         </activity>
     </application>

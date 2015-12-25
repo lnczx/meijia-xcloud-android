@@ -40,7 +40,7 @@ import com.meijialife.simi.utils.UIUtils;
  * @author： kerryg
  * @date:2015年12月3日
  */
-public class ApplicationsCenterActivity extends BaseActivity {
+public class ApplicationsCenter1Activity extends BaseActivity {
 
     private GridView gv_application1;
     private GridView gv_application2;
@@ -91,35 +91,39 @@ public class ApplicationsCenterActivity extends BaseActivity {
                 String open_type = appToolsData.getOpen_type().trim();
                 String url = appToolsData.getUrl().trim();
                 String auth_url = appToolsData.getAuth_url().trim();
-                String name = appToolsData.getName().trim();
                 if (open_type.equals("h5")) {
-                    Intent intent = new Intent(ApplicationsCenterActivity.this, WebViewsActivity.class);
+                    Intent intent = new Intent(ApplicationsCenter1Activity.this, WebViewsActivity.class);
                     intent.putExtra("url", url);
                     startActivity(intent);
                 } else if (open_type.equals("app")) {
-                    if (name.equals("钱包")) {
-                        startActivity(new Intent(ApplicationsCenterActivity.this, MyWalletActivity.class));
-                    } else if (name.equals("优惠券")) {
-                        startActivity(new Intent(ApplicationsCenterActivity.this, DiscountCardActivity.class));
-                    } else if (name.equals("订单")) {
-                        startActivity(new Intent(ApplicationsCenterActivity.this, MyOrderActivity.class));
-                    } else if (name.equals("积分商城")) {
-                        Intent intent6 = new Intent();
-                        intent6.setClass(ApplicationsCenterActivity.this, PointsShopActivity.class);
-                        intent6.putExtra("navColor", "#E8374A"); 
-                        // 配置导航条的背景颜色，请用#ffffff长格式。
-                        intent6.putExtra("titleColor", "#ffffff");
-                        // 配置导航条标题的颜色，请用#ffffff长格式。
-                        intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id="
-                                + DBHelper.getUserInfo(ApplicationsCenterActivity.this).getUser_id()); 
-                        // 配置自动登陆地址，每次需服务端动态生成。
-                        startActivity(intent6);
-                    } 
+
                 } else {
-                    Intent intent = new Intent(ApplicationsCenterActivity.this, WebViewsActivity.class);
+                    Intent intent = new Intent(ApplicationsCenter1Activity.this, WebViewsActivity.class);
                     intent.putExtra("url", auth_url);
                     startActivity(intent);
                 }
+
+                /*
+                 * TextView tv_application_name = (TextView)view.findViewById(R.id.tv_application_name); String name =
+                 * tv_application_name.getText().toString().trim(); if(name.equals("钱包")){ startActivity(new Intent(ApplicationsCenterActivity.this,
+                 * MyWalletActivity.class)); }else if(name.equals("优惠券")){ startActivity(new Intent(ApplicationsCenterActivity.this,
+                 * DiscountCardActivity.class)); }else if (name.equals("订单")) { startActivity(new Intent(ApplicationsCenterActivity.this,
+                 * MyOrderActivity.class)); } else if (name.equals("积分商城")) { Intent intent6 = new Intent();
+                 * intent6.setClass(ApplicationsCenterActivity.this, PointsShopActivity.class); intent6.putExtra("navColor", "#E8374A"); //
+                 * 配置导航条的背景颜色，请用#ffffff长格式。 intent6.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。 intent6.putExtra("url",
+                 * Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(ApplicationsCenterActivity.this).getUser_id()); //
+                 * 配置自动登陆地址，每次需服务端动态生成。 startActivity(intent6); } else if(name.equals("云考勤")){ Intent intent = new
+                 * Intent(ApplicationsCenterActivity.this,WebViewsActivity.class); intent.putExtra("url", Constants.YUN_KAO_QIN);
+                 * startActivity(intent); }else if(name.equals("会议室")){ Intent intent = new
+                 * Intent(ApplicationsCenterActivity.this,WebViewsActivity.class); intent.putExtra("url", Constants.HUI_YI_SHI);
+                 * startActivity(intent); }else if (name.equals("送水")) { Intent intent = new
+                 * Intent(ApplicationsCenterActivity.this,WebViewsActivity.class); intent.putExtra("url", Constants.SONG_SHUI); startActivity(intent);
+                 * } else if (name.equals("保洁")) { Intent intent = new Intent(ApplicationsCenterActivity.this,WebViewsActivity.class);
+                 * intent.putExtra("url", Constants.BAO_JIE); startActivity(intent); } else if(name.equals("快递")){ Intent intent = new
+                 * Intent(ApplicationsCenterActivity.this,WebViewsActivity.class); intent.putExtra("url", Constants.KUAI_DI); startActivity(intent);
+                 * }else if(name.equals("绿植")){ Intent intent = new Intent(ApplicationsCenterActivity.this,WebViewsActivity.class);
+                 * intent.putExtra("url", Constants.LV_ZHI); startActivity(intent); }
+                 */
             }
         });
         gv_application2.setOnItemClickListener(new OnItemClickListener() {
@@ -131,16 +135,29 @@ public class ApplicationsCenterActivity extends BaseActivity {
                 String url = appToolsData.getUrl().trim();
                 String auth_url = appToolsData.getAuth_url().trim();
                 if (open_type.equals("h5")) {
-                    Intent intent = new Intent(ApplicationsCenterActivity.this, WebViewsActivity.class);
+                    Intent intent = new Intent(ApplicationsCenter1Activity.this, WebViewsActivity.class);
                     intent.putExtra("url", url);
                     startActivity(intent);
                 } else if (open_type.equals("app")) {
 
                 } else {
-                    Intent intent = new Intent(ApplicationsCenterActivity.this, WebViewsActivity.class);
+                    Intent intent = new Intent(ApplicationsCenter1Activity.this, WebViewsActivity.class);
                     intent.putExtra("url", auth_url);
                     startActivity(intent);
                 }
+
+                /*
+                 * TextView tv_application_name = (TextView)view.findViewById(R.id.tv_application_name); String name =
+                 * tv_application_name.getText().toString().trim();
+                 * 
+                 * if(name.equals("知识库")){ Intent intent = new Intent(ApplicationsCenterActivity.this,WebViewsActivity.class); intent.putExtra("url",
+                 * Constants.SHOP_URL); startActivity(intent); }else if (name.equals("认证考试")) { Intent intent = new
+                 * Intent(ApplicationsCenterActivity.this,WebViewsActivity.class); intent.putExtra("url", Constants.ATTEST_URL);
+                 * startActivity(intent); }else if (name.equals("培训")) { Intent intent = new
+                 * Intent(ApplicationsCenterActivity.this,WebViewsActivity.class); intent.putExtra("url", Constants.TRAIN_URL); startActivity(intent);
+                 * }else if (name.equals("积分赚钱")) { Intent intent = new Intent(ApplicationsCenterActivity.this,WebViewsActivity.class);
+                 * intent.putExtra("url", Constants.MONEY_URL); startActivity(intent); }
+                 */
             }
         });
     }
@@ -165,7 +182,7 @@ public class ApplicationsCenterActivity extends BaseActivity {
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
-                Toast.makeText(ApplicationsCenterActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ApplicationsCenter1Activity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -210,7 +227,7 @@ public class ApplicationsCenterActivity extends BaseActivity {
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(ApplicationsCenterActivity.this, errorMsg);
+                    UIUtils.showToast(ApplicationsCenter1Activity.this, errorMsg);
                 }
             }
         });

@@ -39,6 +39,8 @@ public class Constants {
     public static final String URL_GET_CHANEL_LIST = ROOT_URL +"op/get_channels.json";
     /**获取频道内广告信息接口**/
     public static final String URL_GET_ADS_LIST = ROOT_URL + "op/get_ads.json";
+    /**获得应用列表接口**/
+    public static final String URL_GET_APP_TOOLS = ROOT_URL + "op/get_appTools.json";
     
     
     /** app更新接口 **/
@@ -67,6 +69,8 @@ public class Constants {
     public static final String URL_GET_USER_INDEX = ROOT_URL + "user/get_user_index.json";
     /** 获取好友列表接口 **/
     public static final String URL_GET_FRIENDS = ROOT_URL + "user/get_friends.json";
+    /**获取好友动态列表接口**/
+    public static final String URL_GET_FRIEND_DYNAMIC_LIST = ROOT_URL + "feed/get_list.json";
     /** 获取秘书列表接口 **/
     public static final String URL_GET_SEC = ROOT_URL + "sec/get_list.json";
     /** 秘书服务接口 **/
@@ -90,6 +94,24 @@ public class Constants {
     /**我的钱包接口（用户消费明细）**/
     public static final String URL_GET_WALLET_LIST = ROOT_URL +"user/get_detail_pay.json";
 
+    //关于动态的接口
+    /**动态点赞接口**/
+    public static final String URL_POST_FEED_ZAN = ROOT_URL +"feed/post_zan.json";
+    /**动态评论接口**/
+    public static final String URL_POST_FEED_COMMENT = ROOT_URL +"feed/post_comment.json";
+    /**发表动态接口**/
+    public static final String URL_POST_FRIEND_DYNAMIC = ROOT_URL + "feed/post_feed.json";
+    /**获取动态详情接口**/
+    public static final String URL_GET_DYNAMIC_DETAIL = ROOT_URL + "feed/get_detail.json";
+    /**获取动态评论的列表**/
+    public static final String URL_GET_DYNAMIC_COMMENT_LIST = ROOT_URL + "feed/get_comment_list.json";
+    /**动态发表评论的接口**/
+    public static final String URL_POST_DYNAMIC_COMMENT = ROOT_URL + "feed/post_comment.json";
+    
+    
+    
+    
+    
     /**服务人员搜索**/
     public static final String URL_GET_PARTNER_LIST_BY_KW =ROOT_URL +"partner/search.json";
     /**获得热搜列表**/
@@ -152,6 +174,10 @@ public class Constants {
     public static final String AFFAIR = "affair"; 
     public static final String NOTIFICATION = "notification"; 
     public static final String TRAVEL = "travel";//旅行
+
+    //应用中心菜单类别
+    public static final String MENU_TYPE_T = "t";//t=工具与服务
+    public static final String MENU_TYPE_D = "d";//t=成长与赚钱
     
     public static  String CARD_ADD_TREAVEL_CONTENT = "";
     public static  String CARD_ADD_MEETING_CONTENT = "";
@@ -264,9 +290,14 @@ public class Constants {
      public static ArrayList<String> finalContactList = new ArrayList<String>();
      /**分享跳转链接**/
      public static String SHARE_TARGET_URL = "http://123.57.173.36//simi-h5/show/card-share.html?card_id=";
+     
+     public static String SHARE_CUSTOMER_TARGET_URL = "http://51xingzheng.cn/h5-app-download.html";
      /**分享标题**/
      public static String SHARE_TITLE = "云行政，企业行政人力服务平台";
      /**分享内容**/
      public static String SHARE_CONTENT ="有来自好友的分享，点击查看详情。云行政，极大降低企业运行成本，极速提升企业工作效率，快来试试吧！";
+     
+     //checkdIndex标记用于切换=动态，好友，消息
+     public static int checkedIndex = 0;
      
 }
