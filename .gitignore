@@ -1,4 +1,7 @@
 
 /bin
-/.settin/gen
-/project.propertie
+/.setting
+/gen
+/project.properties
+
+
