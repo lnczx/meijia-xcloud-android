@@ -452,7 +452,8 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
         }
     }
 
-    private void populateWeekLayout(@NonNull Week week, @NonNull WeekView weekView) {
+    @SuppressLint("ResourceAsColor")
+	private void populateWeekLayout(@NonNull Week week, @NonNull WeekView weekView) {
 
         List<Day> days = week.getDays();
         for (int i = 0; i < 7; i++) {
@@ -461,6 +462,7 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             LinearLayout layout = (LinearLayout) weekView.getChildAt(i);
             DayView dayView = (DayView) layout.findViewById(R.id.tvDayView);
             DayView tvChinaDay = (DayView) layout.findViewById(R.id.tvChinaDay);
+            View view_today = (View) layout.findViewById(R.id.view_today);
             
             View buttomMark = (View) layout.findViewById(R.id.buttomMark);
             String date = day.getTextLong();
@@ -470,15 +472,15 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             }else{
                 buttomMark.setVisibility(View.INVISIBLE);
             }
-            
-            View view_today = (View) layout.findViewById(R.id.view_today);
             if(day.isToday()){
                 //如果是今天，显示红色大圆圈
                 view_today.setVisibility(View.VISIBLE);
+//                dayView.setTextColor(R.color.text_calendar_today);
             }else{
                 view_today.setVisibility(View.GONE);
+//                dayView.setTextColor(R.color.text_calendar);
             }
-            
+          
             dayView.setText(day.getText());
             layout.setSelected(day.isSelected());
             dayView.setCurrent(day.isCurrent());
@@ -502,6 +504,9 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             } else {
                 dayView.setOnClickListener(null);
             }
+            
+         
+            
         }
 
     }
