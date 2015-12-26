@@ -13,7 +13,7 @@
 
    <item lib:state_current="true"
           android:state_pressed="true"
-          android:color="@color/simi_color_white" />
+          android:color="@color/simi_color_red" />
 
     <item lib:state_current="true"
           android:color="@color/simi_color_red" />
