@@ -55,6 +55,7 @@
         android:gravity="left|top"
         android:hint="请输入您的自我介绍吧..."       
         android:background="@color/title_background_color"
+        android:maxLength="120" 
          >
     </EditText>
 	<View
