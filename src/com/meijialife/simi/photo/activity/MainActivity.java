@@ -24,6 +24,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -396,8 +397,14 @@ public class MainActivity extends Activity {
     private static final int TAKE_PICTURE = 0x000001;
 
     public void photo() {
-        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(openCameraIntent, TAKE_PICTURE);
+        String SDState = Environment.getExternalStorageState();
+        if(SDState.equals(Environment.MEDIA_MOUNTED))
+        {
+            Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(openCameraIntent, TAKE_PICTURE);
+        }else {
+            Toast.makeText(this,"内存卡不存在", Toast.LENGTH_LONG).show();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -411,6 +418,7 @@ public class MainActivity extends Activity {
 
                 ImageItem takePhoto = new ImageItem();
                 takePhoto.setBitmap(bm);
+                takePhoto.setImagePath(FileUtils.SDPATH+fileName+".JPEG");
                 Bimp.tempSelectBitmap.add(takePhoto);
             }
             break;

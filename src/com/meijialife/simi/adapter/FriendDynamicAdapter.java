@@ -3,7 +3,6 @@ package com.meijialife.simi.adapter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
@@ -25,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
@@ -33,9 +33,7 @@ import android.widget.Toast;
 
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.DynamicDetailsActivity;
-import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.DynamicImaData;
 import com.meijialife.simi.bean.FriendDynamicData;
 import com.meijialife.simi.database.DBHelper;
@@ -196,6 +194,9 @@ public class FriendDynamicAdapter extends BaseAdapter {
         vh.tv_comment = (TextView) v.findViewById(R.id.tv_comment);
         vh.tv_share = (TextView) v.findViewById(R.id.tv_share);
         vh.iv_more = (NineGridlayout)v.findViewById(R.id.iv_more);
+      /*  WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int width = wm.getDefaultDisplay().getWidth();
+        vh.iv_more.setDefaultWidth(width*2/3);*/
         // 赞
         vh.tv_zan.setOnClickListener(new OnClickListener() {
             @Override
