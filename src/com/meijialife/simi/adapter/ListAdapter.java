@@ -288,9 +288,10 @@ public class ListAdapter extends BaseAdapter {
           
             vh.tv_status.setTextColor(context.getResources().getColor(R.color.simi_color_red));
             vh.tv_status.setText(cardExtrasList.get(position).getCityName());   
-          
-            if(weatherDatasList!=null && weatherDatasList.size()>0){
+            if (null != weatherIndex) {
                 vh.tv_remark.setText(weatherIndex.getDes());
+            }
+            if(weatherDatasList!=null && weatherDatasList.size()>0){
                 WeatherDatas weatherDatas1 =weatherDatasList.get(0);
                 WeatherDatas weatherDatas2 =weatherDatasList.get(1);
                 WeatherDatas weatherDatas3 =weatherDatasList.get(2);
