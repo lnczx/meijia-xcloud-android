@@ -34,7 +34,8 @@ public class DefaultFormatter implements Formatter {
     @Override public String getHeaderText(@CalendarType int type, @NonNull LocalDate from, @NonNull LocalDate to) {
         switch (type) {
             case CalendarUnit.TYPE_WEEK:
-                return from.toString(weekHeaderFormatter);
+                return from.toString(monthHeaderFormatter); //add by andye  2015年12月
+//                return from.toString(weekHeaderFormatter);//第52周
             case CalendarUnit.TYPE_MONTH:
                 return from.toString(monthHeaderFormatter);
             default:

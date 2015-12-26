@@ -426,7 +426,14 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             mPrev.setEnabled(mManager.hasPrev());
             mNext.setEnabled(mManager.hasNext());
 
-            mTitleView.setText(mManager.getHeaderText());
+            try {//add by andye ,2015.12.26
+                String titleDay=mManager.getHeaderText();
+                String monthString=titleDay.replaceAll("年", ".").replaceAll("月", "");
+                mTitleView.setText(monthString);
+            } catch (Exception e) {
+                mTitleView.setText("");
+                e.printStackTrace();
+            }
 
             if (mManager.getState() == CalendarManager.State.MONTH) {
                 populateMonthLayout((Month) mManager.getUnits());
@@ -449,7 +456,14 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             mPrev.setEnabled(mManager.hasPrev());
             mNext.setEnabled(mManager.hasNext());
             
-            mTitleView.setText(mManager.getHeaderText());
+            try {//add by andye ,2015.12.26
+                String titleDay=mManager.getHeaderText();
+                String monthString=titleDay.replaceAll("年", ".").replaceAll("月", "");
+                mTitleView.setText(monthString);
+            } catch (Exception e) {
+                mTitleView.setText("");
+                e.printStackTrace();
+            }
             
             if (mManager.getState() == CalendarManager.State.MONTH) {
                 populateMonthLayout((Month) mManager.getUnits());
