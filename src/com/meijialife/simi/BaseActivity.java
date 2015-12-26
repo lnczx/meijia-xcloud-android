@@ -119,11 +119,20 @@ public class BaseActivity extends Activity{
 	}
 
 	public void dismissDialog() {
-		if (m_pDialog != null && m_pDialog.isShowing()) {
-			m_pDialog.hide();
-		}
-	}
+        if (m_pDialog != null && m_pDialog.isShowing()) {
+            // m_pDialog.hide();
+            m_pDialog.dismiss();
+            m_pDialog = null;
+        }
+    }
 	
+	@Override
+	protected void onStop() {
+	    // TODO Auto-generated method stub
+	    super.onStop();
+	    dismissDialog();
+	
+	}
 	@Override
 	protected void onResume() {
 	    // TODO Auto-generated method stub

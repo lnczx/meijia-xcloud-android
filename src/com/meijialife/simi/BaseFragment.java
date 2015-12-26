@@ -22,11 +22,19 @@ public class BaseFragment extends Fragment{
 		m_pDialog.show();
 	}
 
-	public void dismissDialog() {
-		if (m_pDialog != null && m_pDialog.isShowing()) {
-			m_pDialog.hide();
-		}
-	}
-    
+	   public void dismissDialog() {
+	        if (m_pDialog != null && m_pDialog.isShowing()) {
+	            // m_pDialog.hide();
+	            m_pDialog.dismiss();
+	            m_pDialog = null;
+	        }
+	    }
+	 
+    @Override
+    public void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        dismissDialog();
+    }
  
 }
