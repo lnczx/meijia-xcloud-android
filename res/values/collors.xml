@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="text_normal">#626262</color>
+    <color name="text_normal">#525252</color>
+    <color name="text_chinaday">#a3a3a3</color>
     <color name="text_light">#ababab</color>
     <color name="text_super_light">#c0c0c0</color>
     
