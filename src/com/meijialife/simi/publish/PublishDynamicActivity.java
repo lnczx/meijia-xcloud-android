@@ -2,26 +2,13 @@ package com.meijialife.simi.publish;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,12 +48,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.photo.activity.AlbumActivity;
-import com.meijialife.simi.photo.activity.GalleryActivity;
+import com.meijialife.simi.publish.AlbumActivity;
+import com.meijialife.simi.publish.GalleryActivity;
 import com.meijialife.simi.photo.util.Bimp;
 import com.meijialife.simi.photo.util.FileUtils;
 import com.meijialife.simi.photo.util.ImageItem;
@@ -96,6 +87,18 @@ public class PublishDynamicActivity  extends Activity{
     private User user;
     private FragmentManager mFM = null;
     private String sec_introduce = "";
+    
+    /**
+     * 获取当前地理位置
+     */
+    private String longitude ="";//经度
+    private String latitude ="";//纬度
+    private String addrStr = "";//位置
+    private LocationClient locationClient = null;
+    private static final int UPDATE_TIME = 5000;
+    private static int LOCATION_COUTNS = 0;
+    private static int count =0;
+    
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,16 +108,44 @@ public class PublishDynamicActivity  extends Activity{
         parentView = getLayoutInflater().inflate(R.layout.activity_selectimg, null);
         setContentView(parentView);
         Init();
+        initLocation();
+    }
+    
+    /**
+     * 获取用户当前位置的经纬度
+     */
+    private void initLocation(){
+        locationClient = new LocationClient(this);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);        //是否打开GPS
+        option.setCoorType("bd09ll");       //设置返回值的坐标类型。
+        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
+        option.setProdName("Secretary"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
+        option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
+        locationClient.setLocOption(option);
+        locationClient.start();
+        
+        locationClient.registerLocationListener(new BDLocationListener() {
+            @Override
+            public void onReceiveLocation(BDLocation location) {
+                if(location==null){
+                    return ;
+                }
+                latitude =  location.getLatitude()+"";//纬度
+                longitude = location.getLongitude()+"";//经度
+                addrStr =location.getAddrStr();
+            }
+        });
     }
 
     public void Init() {
         user = DBHelper.getUser(PublishDynamicActivity.this);
         pop = new PopupWindow(PublishDynamicActivity.this);
-
+        
         View view = getLayoutInflater().inflate(R.layout.item_popupwindows, null);
-
         ll_popup = (LinearLayout) view.findViewById(R.id.ll_popup);
 
+        
         pop.setWidth(LayoutParams.MATCH_PARENT);
         pop.setHeight(LayoutParams.WRAP_CONTENT);
         pop.setBackgroundDrawable(new BitmapDrawable());
@@ -126,9 +157,12 @@ public class PublishDynamicActivity  extends Activity{
         m_et_introduce = (EditText) findViewById(R.id.et_introduce);
         m_btn_left = (ImageView) findViewById(R.id.title_btn_left);
         title_tv_name = (TextView)findViewById(R.id.title_tv_name);
+        m_tv_save.setText("发布");
         title_tv_name.setText("发布动态");
         m_et_introduce.setHint("发布你的动态吧！！！");
-        
+        if(!StringUtils.isEmpty(Constants.FEED_TITLE)){
+            m_et_introduce.setText(Constants.FEED_TITLE);
+        }
         m_tv_save.setOnClickListener(new savePhotoAndIntroduce());
 
         m_btn_left.setOnClickListener(new OnClickListener() {
@@ -158,6 +192,7 @@ public class PublishDynamicActivity  extends Activity{
         bt1.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 photo();
+                Constants.FEED_TITLE = m_et_introduce.getText().toString().trim();
                 pop.dismiss();
                 ll_popup.clearAnimation();
             }
@@ -167,6 +202,7 @@ public class PublishDynamicActivity  extends Activity{
                 Intent intent = new Intent(PublishDynamicActivity.this, AlbumActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
+                Constants.FEED_TITLE = m_et_introduce.getText().toString().trim();
                 pop.dismiss();
                 ll_popup.clearAnimation();
             }
@@ -204,12 +240,16 @@ public class PublishDynamicActivity  extends Activity{
             ArrayList<ImageItem> list = Bimp.tempSelectBitmap;
              sec_introduce = m_et_introduce.getText().toString().trim();
             if (StringUtils.isEmpty(sec_introduce)) {
-                Toast.makeText(PublishDynamicActivity.this, "自我介绍不能为空", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublishDynamicActivity.this, "请输入你的动态", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (list != null && list.size() > 0) {
-//                postFriendDynamic();
-                        postFriendDynamic();
+                if(list.size()>9){
+                    Toast.makeText(PublishDynamicActivity.this, "最多可以上传九张图片", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                count = 0;
+                postFriendDynamic();
             } else {
                 Toast.makeText(PublishDynamicActivity.this, "上传照片不能为空", Toast.LENGTH_SHORT).show();
                 return;
@@ -222,45 +262,93 @@ public class PublishDynamicActivity  extends Activity{
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                m_et_introduce.setText(Constants.COVER_ALBUM_INTRODUCE_CONTENT);
+                m_et_introduce.setText(Constants.FEED_TITLE);
             }
         });
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Constants.COVER_ALBUM_INTRODUCE_CONTENT="";
+        Constants.FEED_TITLE="";
     }
     /**
      * 发表动态接口
      * 
      */
-    private void postFriendDynamics() {
-        ArrayList<ImageItem> list = Bimp.tempSelectBitmap;
-        List<File> lists = new ArrayList<File>();
-        for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-            ImageItem imageItem = (ImageItem) iterator.next();
+    private void postFriendDynamic() {
+        showDialog();
             AjaxParams params = new AjaxParams();
-            try {
                 params.put("user_id", user.getId());
                 params.put("title",sec_introduce);
-                params.put("feed_imgs", new File(imageItem.getImagePath()));
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-            showDialog();
+                params.put("lat",latitude);
+                params.put("lng",longitude);
+                params.put("poi_name",addrStr);
             new FinalHttp().post(Constants.URL_POST_FRIEND_DYNAMIC, params, new AjaxCallBack<Object>() {
                 @Override
                 public void onFailure(Throwable t, int errorNo, String strMsg) {
                     super.onFailure(t, errorNo, strMsg);
                     LogOut.debug("错误码：" + errorNo);
-                    // dismissDialog();
+                     dismissDialog();
                     Toast.makeText(PublishDynamicActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onSuccess(Object t) {
                     super.onSuccess(t);
                     dismissDialog();
+                    try {
+                        if (StringUtils.isNotEmpty(t.toString())) {
+                            JSONObject obj = new JSONObject(t.toString());
+                            int status = obj.getInt("status");
+                            String msg = obj.getString("msg");
+                            String data = obj.getString("data");
+                            if (status == Constants.STATUS_SUCCESS) { // 正确
+                                //调用图片上传接口
+                                postFeedImgs(data.trim());
+                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                                Toast.makeText(PublishDynamicActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                                Toast.makeText(PublishDynamicActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
+                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                                Toast.makeText(PublishDynamicActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
+                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                                Toast.makeText(PublishDynamicActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(PublishDynamicActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        // UIUtils.showToast(context, "网络错误,请稍后重试");
+                    }
+                }
+            });
+    }
+    /**
+     * 动态上传图片接口
+     */
+    private void postFeedImgs(String fid) {
+        showDialog();
+        ArrayList<ImageItem> list = Bimp.tempSelectBitmap;
+        for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+            ImageItem imageItem = (ImageItem) iterator.next();
+            AjaxParams params = new AjaxParams();
+            try {
+                params.put("user_id", user.getId());
+                params.put("fid",fid);
+                params.put("feed_imgs", new File(imageItem.getImagePath()));
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            new FinalHttp().post(Constants.URL_POST_FEED_IMGS, params, new AjaxCallBack<Object>() {
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                    super.onFailure(t, errorNo, strMsg);
+                    LogOut.debug("错误码：" + errorNo);
+                    disProgressError();
+                }
+                @Override
+                public void onSuccess(Object t) {
+                    super.onSuccess(t);
                     LogOut.debug("成功:" + t.toString());
                     try {
                         if (StringUtils.isNotEmpty(t.toString())) {
@@ -268,14 +356,7 @@ public class PublishDynamicActivity  extends Activity{
                             int status = obj.getInt("status");
                             String msg = obj.getString("msg");
                             if (status == Constants.STATUS_SUCCESS) { // 正确
-                                Toast.makeText(PublishDynamicActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
-                                for (int i = 0; i < PublicWay.activityList.size(); i++) {
-                                    if (null != PublicWay.activityList.get(i)) {
-                                       PublicWay.activityList.get(i).finish();
-                                   }
-                               }
-                               Bimp.tempSelectBitmap.clear();
-                               Bimp.max = 0;
+                                disProgressSuccess();
                             } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                                 Toast.makeText(PublishDynamicActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                             } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -296,87 +377,37 @@ public class PublishDynamicActivity  extends Activity{
             });
         }
     }
-   
-    private void postFriendDynamic() {
-        new Thread() {
-            @Override
-            public void run() {
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(Constants.URL_POST_FRIEND_DYNAMIC);
-            MultipartEntity reqEntity = new MultipartEntity();
-            try {
-                reqEntity.addPart("user_id", new StringBody(user.getId()));
-                reqEntity.addPart("title",new StringBody(sec_introduce));
-            } catch (UnsupportedEncodingException e1) {
-                e1.printStackTrace();
-            }
-            ArrayList<ImageItem> list = Bimp.tempSelectBitmap;
-            List<File> lists = new ArrayList<File>();
-            for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-                ImageItem imageItem = (ImageItem) iterator.next();
-                File imageFile = new File(imageItem.getImagePath());
-                FileBody imageFileBody = new FileBody(imageFile);
-                reqEntity.addPart("feed_imgs", imageFileBody);
-            }
-            showDialog();
-            try {
-                post.setEntity(reqEntity);
-                HttpResponse response = client.execute(post);
-                HttpEntity entity = response.getEntity();
-                if (StringUtils.isNotEmpty(entity.toString())) {
-                    JSONObject obj = new JSONObject(entity.toString());
-                    int status = obj.getInt("status");
-                    String msg = obj.getString("msg");
-                    if (status == Constants.STATUS_SUCCESS) { // 正确
-                       
-                        mHandler.obtainMessage(0,
-                                EntityUtils.toString(response.getEntity()))
-                                .sendToTarget();
-                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                        Toast.makeText(PublishDynamicActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
-                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                        Toast.makeText(PublishDynamicActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
-                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                        Toast.makeText(PublishDynamicActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
-                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                        Toast.makeText(PublishDynamicActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(PublishDynamicActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
-                    }
+    private void disProgressError(){
+        ArrayList<ImageItem>  list= Bimp.tempSelectBitmap;
+        count++;
+        if(count == list.size()){
+            dismissDialog();
+            Toast.makeText(PublishDynamicActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < PublicWay.activityList.size(); i++) {
+                if (null != PublicWay.activityList.get(i)) {
+                    PublicWay.activityList.get(i).finish();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                // UIUtils.showToast(context, "网络错误,请稍后重试");
-            }catch (ClientProtocolException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
-    }
-        }.start();
+            Bimp.tempSelectBitmap.clear();
+            Bimp.max = 0;
+        }
     }
     
-    private Handler mHandler = new Handler() {
-        // 重写handleMessage()方法，此方法在UI线程运行
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-            // 如果成功，则显示从网络获取到的图片
-            case 0:
-                Toast.makeText(PublishDynamicActivity.this, (String)msg.obj, Toast.LENGTH_SHORT).show();
-                for (int i = 0; i < PublicWay.activityList.size(); i++) {
-                    if (null != PublicWay.activityList.get(i)) {
-                       PublicWay.activityList.get(i).finish();
-                   }
-               }
-               Bimp.tempSelectBitmap.clear();
-               Bimp.max = 0;
-                break;
+    private void disProgressSuccess(){
+        ArrayList<ImageItem>  list= Bimp.tempSelectBitmap;
+        count++;
+        if(count == list.size()){
+            dismissDialog();
+            Toast.makeText(PublishDynamicActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < PublicWay.activityList.size(); i++) {
+                if (null != PublicWay.activityList.get(i)) {
+                    PublicWay.activityList.get(i).finish();
+                }
             }
+            Bimp.tempSelectBitmap.clear();
+            Bimp.max = 0;
         }
-    };
+    }
     
     
     @SuppressLint("HandlerLeak")

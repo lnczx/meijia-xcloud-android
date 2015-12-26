@@ -35,6 +35,7 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.ContactAddFriendsActivity;
+import com.meijialife.simi.activity.ContactSelectActivity;
 import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
@@ -219,6 +220,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
      */
     public void getFriendList(boolean isShowDlg) {
 
+        showDialog();
         String user_id = DBHelper.getUser(getActivity()).getId();
 
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
@@ -231,9 +233,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         map.put("page", "1");
         AjaxParams param = new AjaxParams(map);
 
-        if (isShowDlg) {
-            showDialog();
-        }
+        showDialog();
         new FinalHttp().get(Constants.URL_GET_FRIENDS, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
@@ -293,18 +293,16 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
    * 获取好友动态列表接口
    */
     public void getFriendDynamicList() {
-        
+        showDialog();
         String user_id = DBHelper.getUser(getActivity()).getId();
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
         }
-        
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
         map.put("feed_from", "0");
         AjaxParams param = new AjaxParams(map);
-       
         new FinalHttp().get(Constants.URL_GET_FRIEND_DYNAMIC_LIST, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
@@ -374,6 +372,9 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
             Intent intent = new Intent(getActivity(), ContactAddFriendsActivity.class);
             intent.putExtra("friendList", friendList);
             startActivity(intent);
+            
+          /*  intent = new Intent(getActivity(), ContactSelectActivity.class);
+            startActivityForResult(intent, GET_CONTACTS);*/
             break;
         case R.id.rl_find: // 寻找秘书和助理
             startActivity(new Intent(getActivity(), FindSecretaryActivity.class));

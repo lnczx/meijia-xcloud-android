@@ -13,10 +13,11 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.photo.adapter.FolderAdapter;
 import com.meijialife.simi.photo.util.Bimp;
 import com.meijialife.simi.photo.util.PublicWay;
 import com.meijialife.simi.photo.util.Res;
+import com.meijialife.simi.publish.adapter.FolderAdapter;
+
 
 /**
  * @description：这个类主要是用来进行显示包含图片的文件夹

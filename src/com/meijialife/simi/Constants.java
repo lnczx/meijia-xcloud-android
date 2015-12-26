@@ -101,6 +101,8 @@ public class Constants {
     public static final String URL_POST_FEED_COMMENT = ROOT_URL +"feed/post_comment.json";
     /**发表动态接口**/
     public static final String URL_POST_FRIEND_DYNAMIC = ROOT_URL + "feed/post_feed.json";
+    /**动态上传图片接口**/
+    public static final String URL_POST_FEED_IMGS = ROOT_URL + "feed/post_feed_imgs.json";
     /**获取动态详情接口**/
     public static final String URL_GET_DYNAMIC_DETAIL = ROOT_URL + "feed/get_detail.json";
     /**获取动态评论的列表**/
@@ -191,6 +193,7 @@ public class Constants {
    
     /**封面相册常量**/
     public static String COVER_ALBUM_INTRODUCE_CONTENT ="";
+    
     /**二维码扫描返回常量**/
     public static String SCAN_RQ_TAG = "xcloud";
     public static String RQ_TAG_FRIEND = "xcloud://";//标识加好友扫描
@@ -299,5 +302,9 @@ public class Constants {
      
      //checkdIndex标记用于切换=动态，好友，消息
      public static int checkedIndex = 0;
+     //动态标题
+     public static String FEED_TITLE ="";
+
+     
      
 }
