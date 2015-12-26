@@ -52,7 +52,8 @@ public class SizeViewHolder extends AbstractViewHolder {
 
     public void onHidden() {
         getView().getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        getView().setVisibility(View.GONE);
+        //add by ye ，fix gone bug，gone-->visible
+        getView().setVisibility(View.VISIBLE);
     }
 
     @Override
