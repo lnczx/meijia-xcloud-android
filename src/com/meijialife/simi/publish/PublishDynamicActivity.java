@@ -337,12 +337,6 @@ public class PublishDynamicActivity  extends Activity{
                 params.put("user_id", user.getId());
                 params.put("fid",fid);
                 params.put("feed_imgs", new File(imageItem.getImagePath()));
-                /*    
-                    if (flag==1) {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    imageItem.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    InputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-                    params.put("feed_imgs", isBm);*/
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
             }

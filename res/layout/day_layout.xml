@@ -22,6 +22,7 @@
                 android:id="@+id/tvDayView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="12"
                 android:textColor="@color/text_calendar"
                 android:textSize="16sp" />
 
@@ -30,7 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/text_calendar"
+                android:text="初一"
+                android:textColor="@color/text_calendar_chinaday"
                 android:textSize="10sp" />
 
             <View
@@ -41,12 +43,12 @@
         </LinearLayout>
 
         <!-- 显示今天的红色圆圈 -->
+
         <View
             android:id="@+id/view_today"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:background="@drawable/bg_calendar_today" />
+            android:background="@drawable/bg_calendar_today"
+            android:visibility="gone" />
     </FrameLayout>
-
 </LinearLayout>
