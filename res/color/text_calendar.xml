@@ -9,13 +9,12 @@
 
     <item lib:state_current="true"
           android:state_selected="true"
-          android:color="@android:color/white" />
-
-    <item lib:state_current="true"
-          android:state_pressed="true"
-          android:color="@android:color/white" />
-
-    <item lib:state_current="true"
           android:color="@color/text_normal" />
 
+<!--     <item lib:state_current="true"
+          android:state_pressed="true"
+          android:color="@color/text_normal" />
+ -->
+    <item lib:state_current="true"
+          android:color="@color/text_normal" />
 </selector>
