@@ -364,7 +364,8 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
                 LocalDate date = LocalDate.now().withDayOfWeek(DateTimeConstants.MONDAY);
                 for (int i = 0; i < 7; i++) {
                     TextView textView = (TextView) layout.getChildAt(i);
-                    textView.setText(formatter.getDayName(date));
+//                    textView.setText(formatter.getDayName(date));
+                    textView.setText(getWeekName(i));
 
                     date = date.plusDays(1);
                 }
@@ -373,6 +374,43 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             }
         }
 
+    }
+    
+    /**
+     * 得到星期几的文字 garry
+     * @param i
+     * @return
+     */
+    private String getWeekName(int i){
+        String weekName = "";
+        switch (i) {
+        case 0:
+            weekName = "一";
+            break;
+        case 1:
+            weekName = "二";
+            break;
+        case 2:
+            weekName = "三";
+            break;
+        case 3:
+            weekName = "四";
+            break;
+        case 4:
+            weekName = "五";
+            break;
+        case 5:
+            weekName = "六";
+            break;
+        case 6:
+            weekName = "日";
+            break;
+
+        default:
+            break;
+        }
+        
+        return weekName;
     }
 
     public void populateLayout() {
