@@ -22,13 +22,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.photo.adapter.AlbumGridViewAdapter;
 import com.meijialife.simi.photo.util.AlbumHelper;
 import com.meijialife.simi.photo.util.Bimp;
 import com.meijialife.simi.photo.util.ImageBucket;
 import com.meijialife.simi.photo.util.ImageItem;
 import com.meijialife.simi.photo.util.PublicWay;
 import com.meijialife.simi.photo.util.Res;
+import com.meijialife.simi.publish.adapter.AlbumGridViewAdapter;
+
 
 /**
  * @description：这个是进入相册显示所有图片的界面

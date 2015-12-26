@@ -277,7 +277,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             public void onNothingSelected(AdapRterView<?> arg0) {
             }
         });*/
-        getAdListByChannelId("0");//首页广告位显示
+//        getAdListByChannelId("0");//首页广告位显示
         /*
          * ArrayList<String> list = new ArrayList<String>(); for (int i = 0; i < 4; i++) { list.add("今日无安排" + i); }
          */

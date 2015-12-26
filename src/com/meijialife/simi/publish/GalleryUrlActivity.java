@@ -11,9 +11,10 @@ import android.widget.TextView;
 
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.SecretaryImages;
-import com.meijialife.simi.photo.adapter.BasePagerAdapter.OnItemChangeListener;
-import com.meijialife.simi.photo.adapter.GalleryViewPager;
-import com.meijialife.simi.photo.adapter.UrlPagerAdapter;
+import com.meijialife.simi.publish.adapter.BasePagerAdapter.OnItemChangeListener;
+import com.meijialife.simi.publish.adapter.GalleryViewPager;
+import com.meijialife.simi.publish.adapter.UrlPagerAdapter;
+
 
 
 /**

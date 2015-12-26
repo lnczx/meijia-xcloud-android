@@ -199,13 +199,24 @@ public class AlbumActivity extends Activity {
 	
 	public void isShowOkBt() {
 		if (Bimp.tempSelectBitmap.size() > 0) {
-			okButton.setText(Res.getString("finish")+"(" + Bimp.tempSelectBitmap.size() + "/"+PublicWay.num+")");
-			preview.setPressed(true);
-			okButton.setPressed(true);
-			preview.setClickable(true);
-			okButton.setClickable(true);
-			okButton.setTextColor(Color.WHITE);
-			preview.setTextColor(Color.WHITE);
+		    if(Bimp.tempSelectBitmap.size()>9){
+		        Toast.makeText(this, "最大可以选择九张图片",Toast.LENGTH_SHORT).show();
+		        okButton.setText(Res.getString("finish")+"(" + Bimp.tempSelectBitmap.size() + "/"+PublicWay.num+")");
+	            preview.setPressed(false);
+	            preview.setClickable(false);
+	            okButton.setPressed(false);
+	            okButton.setClickable(false);
+	            okButton.setTextColor(Color.parseColor("#E1E0DE"));
+	            preview.setTextColor(Color.parseColor("#E1E0DE"));
+		    }else {
+		        okButton.setText(Res.getString("finish")+"(" + Bimp.tempSelectBitmap.size() + "/"+PublicWay.num+")");
+		        preview.setPressed(true);
+		        okButton.setPressed(true);
+		        preview.setClickable(true);
+		        okButton.setClickable(true);
+		        okButton.setTextColor(Color.WHITE);
+		        preview.setTextColor(Color.WHITE);
+            }
 		} else {
 			okButton.setText(Res.getString("finish")+"(" + Bimp.tempSelectBitmap.size() + "/"+PublicWay.num+")");
 			preview.setPressed(false);

@@ -20,11 +20,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.photo.adapter.AlbumGridViewAdapter;
 import com.meijialife.simi.photo.util.Bimp;
 import com.meijialife.simi.photo.util.ImageItem;
 import com.meijialife.simi.photo.util.PublicWay;
 import com.meijialife.simi.photo.util.Res;
+import com.meijialife.simi.publish.adapter.AlbumGridViewAdapter;
+
 /**
  * @description：这个是显示一个文件夹里面的所有图片时的界面
  * @author： kerryg
