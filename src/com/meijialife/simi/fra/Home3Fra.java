@@ -79,7 +79,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
     private final static int SCANNIN_GREQUEST_CODES = 5;
     
     private ListView lv_friend_dynamic;
-    private FriendDynamicAdapter friendDynamicAdapter;
+    private FriendDynamicAdapter friendDynamicAdapter;//好友动态适配器
     private ArrayList<FriendDynamicData> friendDynamicDatas = new ArrayList<FriendDynamicData>();
     
  

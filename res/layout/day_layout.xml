@@ -51,5 +51,4 @@
             android:background="@drawable/bg_calendar_today"
             android:visibility="gone" />
     </FrameLayout>
-
 </LinearLayout>
