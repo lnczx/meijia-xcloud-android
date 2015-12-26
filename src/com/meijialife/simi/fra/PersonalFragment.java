@@ -190,6 +190,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         super.onStop();
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        
+        dismissDialog();
 
     }
 
@@ -595,7 +597,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
     public void dismissDialog() {
         if (m_pDialog != null && m_pDialog.isShowing()) {
-            m_pDialog.hide();
+            // m_pDialog.hide();
+            m_pDialog.dismiss();
+            m_pDialog = null;
         }
     }
 
