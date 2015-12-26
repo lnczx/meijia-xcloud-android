@@ -1,7 +1,10 @@
 package com.meijialife.simi.publish;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -23,6 +26,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -56,8 +60,6 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.publish.AlbumActivity;
-import com.meijialife.simi.publish.GalleryActivity;
 import com.meijialife.simi.photo.util.Bimp;
 import com.meijialife.simi.photo.util.FileUtils;
 import com.meijialife.simi.photo.util.ImageItem;
@@ -98,6 +100,7 @@ public class PublishDynamicActivity  extends Activity{
     private static final int UPDATE_TIME = 5000;
     private static int LOCATION_COUTNS = 0;
     private static int count =0;
+    private static int flag = 0;
     
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +194,7 @@ public class PublishDynamicActivity  extends Activity{
         });
         bt1.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
+                flag = 1;//设置表明拍照图片
                 photo();
                 Constants.FEED_TITLE = m_et_introduce.getText().toString().trim();
                 pop.dismiss();
@@ -203,6 +207,7 @@ public class PublishDynamicActivity  extends Activity{
                 startActivity(intent);
                 overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
                 Constants.FEED_TITLE = m_et_introduce.getText().toString().trim();
+                flag = 0;//设置表明相册图片
                 pop.dismiss();
                 ll_popup.clearAnimation();
             }
@@ -238,20 +243,16 @@ public class PublishDynamicActivity  extends Activity{
         @Override
         public void onClick(View v) {
             ArrayList<ImageItem> list = Bimp.tempSelectBitmap;
-             sec_introduce = m_et_introduce.getText().toString().trim();
-            if (StringUtils.isEmpty(sec_introduce)) {
-                Toast.makeText(PublishDynamicActivity.this, "请输入你的动态", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (list != null && list.size() > 0) {
+            sec_introduce = m_et_introduce.getText().toString().trim();
+            if((list!=null && list.size()>0) || !StringUtils.isEmpty(sec_introduce)){
                 if(list.size()>9){
                     Toast.makeText(PublishDynamicActivity.this, "最多可以上传九张图片", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 count = 0;
                 postFriendDynamic();
-            } else {
-                Toast.makeText(PublishDynamicActivity.this, "上传照片不能为空", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(PublishDynamicActivity.this, "不能发布空的动态！", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -336,6 +337,12 @@ public class PublishDynamicActivity  extends Activity{
                 params.put("user_id", user.getId());
                 params.put("fid",fid);
                 params.put("feed_imgs", new File(imageItem.getImagePath()));
+                /*    
+                    if (flag==1) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    imageItem.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    InputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+                    params.put("feed_imgs", isBm);*/
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
             }
@@ -532,8 +539,14 @@ public class PublishDynamicActivity  extends Activity{
     private static final int TAKE_PICTURE = 0x000001;
 
     public void photo() {
-        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(openCameraIntent, TAKE_PICTURE);
+        String SDState = Environment.getExternalStorageState();
+        if(SDState.equals(Environment.MEDIA_MOUNTED))
+        {
+            Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(openCameraIntent, TAKE_PICTURE);
+        }else {
+            Toast.makeText(this,"内存卡不存在", Toast.LENGTH_LONG).show();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -546,6 +559,7 @@ public class PublishDynamicActivity  extends Activity{
                 FileUtils.saveBitmap(bm, fileName);
 
                 ImageItem takePhoto = new ImageItem();
+                takePhoto.setImagePath(FileUtils.SDPATH+fileName+".JPEG");
                 takePhoto.setBitmap(bm);
                 Bimp.tempSelectBitmap.add(takePhoto);
             }
@@ -553,6 +567,10 @@ public class PublishDynamicActivity  extends Activity{
         }
     }
 
+    
+    
+    
+    
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             for (int i = 0; i < PublicWay.activityList.size(); i++) {
