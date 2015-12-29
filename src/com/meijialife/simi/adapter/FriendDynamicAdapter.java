@@ -1,6 +1,5 @@
 package com.meijialife.simi.adapter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,12 +49,11 @@ import com.simi.easemob.utils.ShareConfig;
  */
 @SuppressLint("ResourceAsColor")
 public class FriendDynamicAdapter extends BaseAdapter {
-    private ArrayList<FriendDynamicData> list;
+    private ArrayList<FriendDynamicData> friendDynamicDatas;
     private ArrayList<DynamicImaData> dynamicImaDatas;
     
     private Context context;
     private onDynamicUpdateListener listener;
-    private SimpleDateFormat dateFormat;
 
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
@@ -64,100 +62,109 @@ public class FriendDynamicAdapter extends BaseAdapter {
 
     public FriendDynamicAdapter(Context context, onDynamicUpdateListener listener) {
         this.context = context;
-        list = new ArrayList<FriendDynamicData>();
+        this.friendDynamicDatas = new ArrayList<FriendDynamicData>();
         dynamicImaDatas = new ArrayList<DynamicImaData>();
         this.listener = listener;
-        dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         finalBitmap = FinalBitmap.create(context);
         defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ad_loading);
     }
 
     public FriendDynamicAdapter(Context context) {
         this.context = context;
-        list = new ArrayList<FriendDynamicData>();
+        friendDynamicDatas = new ArrayList<FriendDynamicData>();
         dynamicImaDatas = new ArrayList<DynamicImaData>();
-        dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         finalBitmap = FinalBitmap.create(context);
         defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ad_loading);
     }
 
     public void setData(ArrayList<FriendDynamicData> list) {
-        this.list = list;
+        this.friendDynamicDatas = list;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return friendDynamicDatas.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return friendDynamicDatas.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         return position;
     }
-
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position == list.size() - 1) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = null;
         ViewHolder vh = null;
         if (convertView == null) {
-            v = ininView(position);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_friend_dynamic, null);
+            vh = new ViewHolder();
+            vh.iv_icon = (ImageView) convertView.findViewById(R.id.iv_icon);
+            vh.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            vh.tv_date_str = (TextView) convertView.findViewById(R.id.tv_date_str);
+            vh.iv_image = (ImageView) convertView.findViewById(R.id.iv_image);
+            vh.tv_remark = (TextView) convertView.findViewById(R.id.tv_remark);
+
+            vh.tv_zan = (TextView) convertView.findViewById(R.id.tv_zan);
+            vh.tv_comment = (TextView)convertView.findViewById(R.id.tv_comment);
+            vh.tv_share = (TextView) convertView.findViewById(R.id.tv_share);
+            vh.iv_more = (NineGridlayout)convertView.findViewById(R.id.iv_more);
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            int width = wm.getDefaultDisplay().getWidth();
+            vh.iv_more.setDefaultWidth(width*3/5);
+            convertView.setTag(vh);
         } else {
-            v = convertView;
+            vh = (ViewHolder) convertView.getTag();
         }
-        vh = (ViewHolder) v.getTag();
         bindView(vh, position);
-        return v;
+        return convertView;
     }
 
     @SuppressLint("NewApi")
-    private void bindView(ViewHolder vh, int position) {
+    private void bindView(ViewHolder vh, final int position) {
 
-        dynamicImaDatas = list.get(position).getFeed_imgs();
-        vh.tv_name.setText(list.get(position).getName());
-        finalBitmap.display(vh.iv_icon,list.get(position).getHead_img(),defDrawable.getBitmap(), defDrawable.getBitmap());
-        vh.tv_remark.setText(list.get(position).getTitle());
-        vh.tv_date_str.setText(list.get(position).getAdd_time_str());
-        vh.tv_zan.setText("" + list.get(position).getTotal_zan());
-        vh.tv_comment.setText("" + list.get(position).getTotal_comment());
+        dynamicImaDatas = friendDynamicDatas.get(position).getFeed_imgs();
+        vh.tv_name.setText(friendDynamicDatas.get(position).getName());
+        finalBitmap.display(vh.iv_icon,friendDynamicDatas.get(position).getHead_img(),defDrawable.getBitmap(), defDrawable.getBitmap());
+        vh.tv_remark.setText(friendDynamicDatas.get(position).getTitle());
+        vh.tv_date_str.setText(friendDynamicDatas.get(position).getAdd_time_str());
+        vh.tv_zan.setText("" + friendDynamicDatas.get(position).getTotal_zan());
+        vh.tv_comment.setText("" + friendDynamicDatas.get(position).getTotal_comment());
         
         if(dynamicImaDatas!=null && dynamicImaDatas.size()>0){
             vh.iv_more.setVisibility(View.VISIBLE);
-            handlerOneImage(vh, dynamicImaDatas);
+            handlerOneImage(vh, dynamicImaDatas,position);
         }else {
             vh.iv_more.setVisibility(View.GONE);
         }
-        
-   /*     
-        if(dynamicImaDatas!=null && dynamicImaDatas.size()>0){
-            for (int i = 0; i < dynamicImaDatas.size(); i++) {
-                DynamicImaData dynamicImaData = dynamicImaDatas.get(0);
-                String small_url = dynamicImaData.getImg_small();
-                finalBitmap.display(vh.iv_image,small_url,defDrawable.getBitmap(), defDrawable.getBitmap());
+        vh.iv_more.setClickable(false);
+        // 赞
+        vh.tv_zan.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postZan(friendDynamicDatas.get(position));
             }
-        }*/
-        
-     
-        
+        });
+        // 评论
+        vh.tv_comment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DynamicDetailsActivity.class);
+                intent.putExtra("friendDynamic", friendDynamicDatas.get(position));
+                context.startActivity(intent);
+            }
+        });
+        // 分享
+        vh.tv_share.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareConfig.getInstance().init((Activity) context);
+                postShare();
+            }
+        });
       /*  for (Iterator iterator = dynamicImaDatas.iterator(); iterator.hasNext();) {
             DynamicImaData dynamicImaData = (DynamicImaData) iterator.next();
             String small_url = dynamicImaData.getImg_small();
@@ -165,21 +172,18 @@ public class FriendDynamicAdapter extends BaseAdapter {
         }*/
     }
 
-    private void handlerOneImage(ViewHolder vh, ArrayList<DynamicImaData> dynamicImaDatas) {
+    private void handlerOneImage(ViewHolder vh, ArrayList<DynamicImaData> dynamicImaDatas,final int pos) {
         dynamicImgAdapter = new DynamicImgAdapter(context, dynamicImaDatas);
         vh.iv_more.setAdapter(dynamicImgAdapter);
-        /*viewHolder.ivMore.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
+        vh.iv_more.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
             @Override
             public void onItemClick(View view, int position) {
-                //do some thing
-                L.d("onItemClick : " + position);
+                Intent intent = new Intent(context, DynamicDetailsActivity.class);
+                intent.putExtra("friendDynamic", friendDynamicDatas.get(pos));
+                context.startActivity(intent);
             }
-        });*/
+        });
     }
-
-    
-    
-    
     @SuppressLint("CutPasteId")
 	private View ininView(final int position) {
         ViewHolder vh = new ViewHolder();
@@ -194,14 +198,14 @@ public class FriendDynamicAdapter extends BaseAdapter {
         vh.tv_comment = (TextView) v.findViewById(R.id.tv_comment);
         vh.tv_share = (TextView) v.findViewById(R.id.tv_share);
         vh.iv_more = (NineGridlayout)v.findViewById(R.id.iv_more);
-      /*  WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         int width = wm.getDefaultDisplay().getWidth();
-        vh.iv_more.setDefaultWidth(width*2/3);*/
+        vh.iv_more.setDefaultWidth(width*3/5);
         // 赞
         vh.tv_zan.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                postZan(list.get(position));
+                postZan(friendDynamicDatas.get(position));
             }
         });
         // 评论
@@ -209,7 +213,7 @@ public class FriendDynamicAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DynamicDetailsActivity.class);
-                intent.putExtra("friendDynamic", list.get(position));
+                intent.putExtra("friendDynamic", friendDynamicDatas.get(position));
                 context.startActivity(intent);
             }
         });
@@ -320,15 +324,6 @@ public class FriendDynamicAdapter extends BaseAdapter {
 
             }
         });
-
-    }
-
-    public interface onCardUpdateListener {
-
-        /**
-         * 卡片数据有变动时用来数据显示
-         */
-        public void onCardUpdate();
 
     }
 

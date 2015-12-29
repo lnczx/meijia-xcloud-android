@@ -34,6 +34,7 @@ import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.alerm.AlermUtils;
+import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -823,8 +824,17 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         map.put("set_remind", remindAlerm + "");
         map.put("set_now_send", "0");
         map.put("set_sec_do", SET_SEC_DO + "");
-        map.put("ticket_from_city_id", start_city_id);
-        map.put("ticket_to_city_id", end_city_id);
+        JSONObject obj = new JSONObject(); 
+        try {
+            obj.put("ticket_from_city_id", start_city_id);
+            obj.put("ticket_to_city_id", end_city_id);
+            obj.put("ticket_type", "1");//1=飞机票
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        map.put("card_extra",obj.toString());
+      /*  map.put("ticket_from_city_id", start_city_id);
+        map.put("ticket_to_city_id", end_city_id);*/
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().post(Constants.URL_GET_ADD_CARD, param, new AjaxCallBack<Object>() {
 

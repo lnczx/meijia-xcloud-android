@@ -105,6 +105,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     private BitmapDrawable defDrawable;
     
     private User user;
+//    private String card_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +123,6 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         card = (Cards) getIntent().getSerializableExtra("Cards");
         cardExtra = (CardExtra) getIntent().getSerializableExtra("card_extra");
         user = DBHelper.getUser(this);
-        
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
     }
@@ -322,8 +322,12 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         case 5:// 差旅规划
             iv_icon.setBackground(getResources().getDrawable(R.drawable.icon_plus_1));
             iv_image.setBackground(getResources().getDrawable(R.drawable.card_default_chailv));
-            String ticket_from_city_name = card.getTicket_from_city_name();
-            String ticket_to_city_name = card.getTicket_to_city_name();
+            String ticket_from_city_name ="";
+            String ticket_to_city_name ="";
+            if(cardExtra!=null){
+                ticket_from_city_name = cardExtra.getTicket_from_city_name();
+                ticket_to_city_name = cardExtra.getTicket_to_city_name();
+            }
             tv_1.setText("城市：从 " + ticket_from_city_name + " 到 " + ticket_to_city_name);
             tv_1.setVisibility(View.VISIBLE);
             tv_2.setText("时间：" + date);
@@ -567,6 +571,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
+//        map.put("card_id", card_id);
         map.put("card_id", card.getCard_id());
         AjaxParams param = new AjaxParams(map);
 
@@ -594,6 +599,12 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 card = gson.fromJson(data, Cards.class);
+                                String card_extra = card.getCard_extra();
+                                if(!StringUtils.isEmpty(card_extra)){
+                                    cardExtra = gson.fromJson(card.getCard_extra(),CardExtra.class);
+                                }else {
+                                    cardExtra = new CardExtra();
+                                }
                                 showData();
                             } else {
                                 // UIUtils.showToast(getActivity(), "数据错误");

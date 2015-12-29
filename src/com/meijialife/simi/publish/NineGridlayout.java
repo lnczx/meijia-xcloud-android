@@ -134,7 +134,7 @@ public class NineGridlayout extends ViewGroup {
             if (childrenCount == 1) {
                 //只有一张图片
 //                childrenView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                childrenView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                childrenView.setScaleType(ImageView.ScaleType.FIT_XY);
             } else {
                 childrenView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }

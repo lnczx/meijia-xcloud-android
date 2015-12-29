@@ -289,6 +289,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 int p = position-1;
                 if(!cardlist.get(p).getCard_type().equals("99")){
                     Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
+//                    intent.putExtra("card_id", cardlist.get(p).getCard_id());
                     intent.putExtra("Cards", cardlist.get(p));
                     intent.putExtra("card_extra",cardExtrasList.get(p));
                     startActivity(intent);

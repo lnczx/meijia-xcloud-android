@@ -260,8 +260,14 @@ public class ListAdapter extends BaseAdapter {
         case 5://差旅规划
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_1));
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_chailv));
-            String ticket_from_city_name = list.get(position).getTicket_from_city_name();
-            String ticket_to_city_name = list.get(position).getTicket_to_city_name();
+          
+            String ticket_from_city_name ="";
+            String ticket_to_city_name ="";
+            CardExtra cardExtra = cardExtrasList.get(position);
+            if(cardExtra!=null){
+                ticket_from_city_name = cardExtra.getTicket_from_city_name();
+                ticket_to_city_name = cardExtra.getTicket_to_city_name();
+            }
             vh.tv_1.setText("城市：从 " + ticket_from_city_name + " 到 " + ticket_to_city_name);
             vh.tv_1.setVisibility(View.VISIBLE);
             vh.tv_2.setText("时间：" + date);
@@ -278,8 +284,9 @@ public class ListAdapter extends BaseAdapter {
         case 99://天气卡片
             vh.ll_weather.setVisibility(View.VISIBLE);
             vh.ll_social.setVisibility(View.GONE);
-            vh.iv_default_tep.setVisibility(View.VISIBLE);
-            vh.iv_image.setVisibility(View.GONE);
+            vh.iv_default_tep.setVisibility(View.GONE);
+            Date currentTime = new Date(System.currentTimeMillis());//获取当前时间  );
+            boolean  flag = DateUtils.isDayOrNight(currentTime);
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.iconfont_yunbaodan));
        
             //天气卡片额外信息
@@ -309,20 +316,22 @@ public class ListAdapter extends BaseAdapter {
                 vh.tv_weather2.setText(weatherDatas3.getDate());
                 vh.tv_weather3.setText(weatherDatas4.getDate());
                 
+                String url1="";
                 String url2="";
                 String url3="";
                 String url4="";
-                Date currentTime = new Date(System.currentTimeMillis());//获取当前时间  );
-                boolean  flag = DateUtils.isDayOrNight(currentTime);
                 if(flag){
+                    url1=weatherDatas1.getDayPictureUrl();
                     url2=weatherDatas2.getDayPictureUrl();
                     url3=weatherDatas3.getDayPictureUrl();
                     url4=weatherDatas4.getDayPictureUrl();
                 }else {
+                    url1 = weatherDatas1.getNightPictureUrl();
                     url2=weatherDatas2.getNightPictureUrl();
                     url3=weatherDatas3.getNightPictureUrl();
                     url4=weatherDatas4.getNightPictureUrl();
                 }
+                finalBitmap.display(vh.iv_image,url1,defDrawable.getBitmap(),defDrawable.getBitmap());
                 finalBitmap.display(vh.iv_weather1,url2,defDrawable.getBitmap(),defDrawable.getBitmap());
                 finalBitmap.display(vh.iv_weather2,url3,defDrawable.getBitmap(),defDrawable.getBitmap());
                 finalBitmap.display(vh.iv_weather3,url4,defDrawable.getBitmap(),defDrawable.getBitmap());

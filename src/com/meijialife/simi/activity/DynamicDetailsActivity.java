@@ -97,13 +97,13 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
 
         init();
         initView();
-        // getDynamicDetail();
         getCommentList();
 
     }
 
     private void init() {
         friendDynamic = (FriendDynamicData) getIntent().getSerializableExtra("friendDynamic");
+        getDynamicDetail();
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
     }

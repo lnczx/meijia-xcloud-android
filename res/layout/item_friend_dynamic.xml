@@ -92,7 +92,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="推荐本店的水煮鱼，麻辣小龙虾"
-                android:textColor="#8a8989" />
+                android:textColor="#8a8989" 
+                android:maxLines="2"
+                android:ellipsize="end"
+                />
 
             <com.meijialife.simi.publish.NineGridlayout
                 android:id="@+id/iv_more"
