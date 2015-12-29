@@ -52,51 +52,17 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/view_title_bar" >
-
-        <RelativeLayout
-            android:id="@+id/rl_buttom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/simi_color_white"
-            android:padding="10dp" >
-
-            <Button
-                android:id="@+id/btn_send"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/login_btn_bg_selector"
-                android:gravity="center"
-                android:text="评论"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/font_size_16" >
-            </Button>
-
-            <EditText
-                android:id="@+id/et_comment"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@id/btn_send"
-                android:background="@drawable/bg_main_plus_page"
-                android:hint="等你来评论"
-                android:paddingLeft="10dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"
-                android:textSize="14sp" />
-        </RelativeLayout>
+        android:layout_below="@id/view_title_bar"
+        android:scrollbars="vertical"
+        android:background="@color/simi_color_white"
+         >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/rl_buttom"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -115,27 +81,17 @@
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp" >
 
-                    <!--
-                         <ImageView
+                    <com.meijialife.simi.ui.RoundImageView
                         android:id="@+id/iv_icon"
                         android:layout_width="@dimen/card_icon_size"
                         android:layout_height="@dimen/card_icon_size"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/card_icon_margin_left" />
-                    -->
+                        android:layout_marginLeft="@dimen/card_icon_margin_left"
+                        android:src="@drawable/ic_defult_touxiang"
+                        imagecontrol:border_inside_color="#f9f9f9"
+                        imagecontrol:border_outside_color="#f9f9f9"
+                        imagecontrol:border_thickness_in="2dp" />
 
-  				<com.meijialife.simi.ui.RoundImageView
-		            android:id="@+id/iv_icon"
-		            android:layout_width="@dimen/card_icon_size"
-		            android:layout_height="@dimen/card_icon_size"
-		            android:layout_centerVertical="true"
-		            android:layout_marginLeft="@dimen/card_icon_margin_left"
-		            android:src="@drawable/ic_defult_touxiang"
-		            imagecontrol:border_inside_color="#f9f9f9"
-		            imagecontrol:border_outside_color="#f9f9f9"
-		            imagecontrol:border_thickness_in="2dp" />
-                    
-                    
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -149,13 +105,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black" />
+
                         <TextView
                             android:id="@+id/tv_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#a4a4a4"
-           				    android:textSize="@dimen/card_time_tip"
-                            />
+                            android:textSize="@dimen/card_time_tip" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -189,8 +145,7 @@
                         <com.meijialife.simi.publish.NineGridlayout
                             android:id="@+id/iv_more"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -198,6 +153,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp" >
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -230,8 +186,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="5dp"/>
-           
+                    android:layout_marginTop="5dp" />
+
                 <LinearLayout
                     android:id="@+id/layout_dianzan"
                     android:layout_width="match_parent"
@@ -303,8 +259,46 @@
                     android:overScrollMode="never" >
                 </ListView>
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_buttom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/simi_color_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="10dp"
+                 >
+                <Button
+                    android:id="@+id/btn_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/login_btn_bg_selector"
+                    android:gravity="center"
+                    android:text="评论"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_size_16" >
+                </Button>
+
+                <EditText
+                    android:id="@+id/et_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@id/btn_send"
+                    android:background="@drawable/bg_main_plus_page"
+                    android:hint="等你来评论"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"
+                    android:textSize="14sp" />
+            </RelativeLayout>
         </LinearLayout>
-    </RelativeLayout>
+    </ScrollView>
 
     <View
         android:id="@+id/layout_mask"

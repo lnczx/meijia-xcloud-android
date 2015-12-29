@@ -71,7 +71,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
             startActivity(new Intent(MainPlusActivity.this, MainPlusMorningActivity.class));
             MainPlusActivity.this.finish();
             break;
-        case R.id.tv_plus_more:
+        case R.id.tv_plus_more://发布动态
             
           /*  Intent  intent = new Intent(this, WebViewActivity.class);
             intent.putExtra("url",Constants.URL_MORE_INFO);
