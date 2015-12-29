@@ -233,9 +233,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
             startActivity(intent6);
             break;
-     /*   case R.id.rl_person_items1:// 工具箱--更多
+        case R.id.rl_person_items1:// 工具箱--更多
              startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
-            break;*/
+            break;
         case R.id.rl_person_items2:// 我的成长--LV
             break;
         case R.id.rl_person_items3:// 推荐给好友

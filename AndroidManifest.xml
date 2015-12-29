@@ -904,8 +904,12 @@
             android:theme="@style/ImageScale">
         </activity>
         <!--动态结束-->
-        
-        
+        <activity
+            android:name="com.meijialife.simi.publish.ImagePagerActivity"
+             android:configChanges="orientation"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
     </application>
 
 </manifest>

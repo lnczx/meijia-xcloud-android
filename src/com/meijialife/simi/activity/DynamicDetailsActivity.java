@@ -1,7 +1,10 @@
 package com.meijialife.simi.activity;
 
+import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
@@ -14,8 +17,12 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +48,7 @@ import com.meijialife.simi.bean.CardComment;
 import com.meijialife.simi.bean.DynamicImaData;
 import com.meijialife.simi.bean.FriendDynamicData;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.publish.ImagePagerActivity;
 import com.meijialife.simi.publish.NineGridlayout;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.RoundImageView;
@@ -48,6 +56,17 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.simi.easemob.utils.ShareConfig;
 
 /**
@@ -94,7 +113,8 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.dynamic_details_activity);
         super.onCreate(savedInstanceState);
-
+        
+        initImageLoader(this);
         init();
         initView();
         getCommentList();
@@ -169,17 +189,69 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
             iv_more.setVisibility(View.GONE);
         }
     }
-
+    private ArrayList<String> imgUrls;
     private void handlerOneImage(ArrayList<DynamicImaData> dynamicImaDatas) {
         dynamicImgAdapter = new DynamicImgAdapter(this, dynamicImaDatas);
         iv_more.setAdapter(dynamicImgAdapter);
-        /*
-         * viewHolder.ivMore.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
-         * 
-         * @Override public void onItemClick(View view, int position) { //do some thing L.d("onItemClick : " + position); } });
-         */
+        imgUrls = new ArrayList<String>();
+        for (Iterator iterator = dynamicImaDatas.iterator(); iterator.hasNext();) {
+            DynamicImaData dynamicImaData = (DynamicImaData) iterator.next();
+            imgUrls.add(dynamicImaData.getImg_url());
+        }
+          iv_more.setOnItemClickListerner(new NineGridlayout.OnItemClickListerner() {
+            @Override
+            public void onItemClick(View view, int position) {
+                
+                Intent intent = new Intent(DynamicDetailsActivity.this, ImagePagerActivity.class);
+                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (Serializable)imgUrls);
+                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+                startActivity(intent);
+//                imageBrower(position, dynamicImaDatas);  
+                
+            }
+          });
     }
+    /**
+     * 初始化加载图片的工具
+     * @param context
+     */
+    public static void initImageLoader(Context context){
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ad_loading)
+                .showImageOnFail(R.drawable.ad_loading)
+                .resetViewBeforeLoading(false)  // default
+                .delayBeforeLoading(0)
+                .cacheInMemory(true) // default
+                .cacheOnDisk(true) // default
+                .considerExifParams(true) // default
+                .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // default
+                .bitmapConfig(Bitmap.Config.ARGB_8888) // default
+                .displayer(new SimpleBitmapDisplayer()) // default
+                .handler(new Handler()) // default
+                .build();
+        File picPath = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "Secretary" + File.separator + "files");
 
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .memoryCacheExtraOptions(480, 800) // default = device screen dimensions
+                .diskCacheExtraOptions(480, 800, null)
+                .threadPoolSize(3) // default
+                .threadPriority(Thread.NORM_PRIORITY - 1) // default
+                .tasksProcessingOrder(QueueProcessingType.FIFO) // default
+                .denyCacheImageMultipleSizesInMemory()
+                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
+                .memoryCacheSize(2 * 1024 * 1024)
+                .memoryCacheSizePercentage(13) // default
+                .diskCache(new UnlimitedDiscCache(picPath)) // default
+                .diskCacheSize(50 * 1024 * 1024)
+                .diskCacheFileCount(1000)
+                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
+                .imageDownloader(new BaseImageDownloader(context)) // default
+                .imageDecoder(new BaseImageDecoder(true)) // default
+                .defaultDisplayImageOptions(options) // default
+                .writeDebugLogs()
+                .build();
+        ImageLoader.getInstance().init(config);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
