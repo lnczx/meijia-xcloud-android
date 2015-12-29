@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,6 +68,8 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
     private ImageButton mNext;
     @NonNull
     private LinearLayout mWeeksView;
+    
+    private ImageView bottom;//底部提示箭头
 
     @NonNull
     private final LayoutInflater mInflater;
@@ -341,6 +344,7 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
         mPrev = (ImageButton) findViewById(R.id.prev);
         mNext = (ImageButton) findViewById(R.id.next);
         mWeeksView = (LinearLayout) findViewById(R.id.weeks);
+        bottom = (ImageView)findViewById(R.id.bottom);
 
         mHeader = (LinearLayout) findViewById(R.id.header);
         mSelectionText = (TextView) findViewById(R.id.selection_title);
@@ -437,8 +441,10 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
 
             if (mManager.getState() == CalendarManager.State.MONTH) {
                 populateMonthLayout((Month) mManager.getUnits());
+                bottom.setBackgroundResource(R.drawable.rili_arrow_up);
             } else {
                 populateWeekLayout((Week) mManager.getUnits());
+                bottom.setBackgroundResource(R.drawable.rili_arrow_down);
             }
         }
 
