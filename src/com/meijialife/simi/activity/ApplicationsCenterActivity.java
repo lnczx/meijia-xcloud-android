@@ -30,6 +30,7 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.AppToolsAdapter;
 import com.meijialife.simi.bean.AppToolsData;
 import com.meijialife.simi.bean.Partner;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -53,6 +54,8 @@ public class ApplicationsCenterActivity extends BaseActivity {
     private ArrayList<AppToolsData> t_menu_List;// t=工具与服务
     private ArrayList<AppToolsData> d_menu_List;// d=成长与赚钱
     private ArrayList<AppToolsData> appToolsDatas;// 所有数据
+    
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class ApplicationsCenterActivity extends BaseActivity {
     private void initView() {
         setTitleName("应用中心");
         requestBackBtn();
+        user = DBHelper.getUser(this);
 
         gv_application1 = (GridView) findViewById(R.id.gv_application1);
         gv_application2 = (GridView) findViewById(R.id.gv_application2);
@@ -94,7 +98,7 @@ public class ApplicationsCenterActivity extends BaseActivity {
                 String name = appToolsData.getName().trim();
                 if (open_type.equals("h5")) {
                     Intent intent = new Intent(ApplicationsCenterActivity.this, WebViewsActivity.class);
-                    intent.putExtra("url", url);
+                    intent.putExtra("url", url+"?user_id="+user.getId());
                     startActivity(intent);
                 } else if (open_type.equals("app")) {
                     if (name.equals("钱包")) {
@@ -132,7 +136,7 @@ public class ApplicationsCenterActivity extends BaseActivity {
                 String auth_url = appToolsData.getAuth_url().trim();
                 if (open_type.equals("h5")) {
                     Intent intent = new Intent(ApplicationsCenterActivity.this, WebViewsActivity.class);
-                    intent.putExtra("url", url);
+                    intent.putExtra("url", url+"?user_id="+user.getId());
                     startActivity(intent);
                 } else if (open_type.equals("app")) {
 

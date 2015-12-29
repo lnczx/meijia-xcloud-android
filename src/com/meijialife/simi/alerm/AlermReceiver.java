@@ -1,5 +1,7 @@
 package com.meijialife.simi.alerm;
 
+import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -10,10 +12,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CardAlertActivity;
@@ -44,6 +44,8 @@ public class AlermReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         String title = bundle.getString("title");
         String text = bundle.getString("text");
+        Date  date = (Date) bundle.getSerializable("date");
+        String card_id = bundle.getString("card_id","");
         LogOut.i(TAG, "==" + title + ":" + text);
 
         showDlg(context, title, text);
@@ -53,8 +55,9 @@ public class AlermReceiver extends BroadcastReceiver {
 //        mWakelock.acquire();
        /* Intent intent2 = new Intent(context,CardAlertActivity.class);
         intent2.putExtra("title",title);
-        intent2.putExtra("time",text);
-        intent2.putExtra("date",text);
+        intent2.putExtra("text",text);
+        intent2.putExtra("date",date);
+        intent2.putExtra("card_id",card_id);
         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent2);*/
         

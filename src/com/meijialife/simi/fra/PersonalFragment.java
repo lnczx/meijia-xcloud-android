@@ -147,7 +147,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
+//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
         }
         
         ll_rq.setOnClickListener(new OnClickListener() {
@@ -184,7 +184,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         super.onResume();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
+//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
         }
 
         getUserData();
@@ -195,7 +195,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         super.onStop();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         dismissDialog();
 
@@ -233,9 +233,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
             startActivity(intent6);
             break;
-        case R.id.rl_person_items1:// 工具箱--更多
+     /*   case R.id.rl_person_items1:// 工具箱--更多
              startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
-            break;
+            break;*/
         case R.id.rl_person_items2:// 我的成长--LV
             break;
         case R.id.rl_person_items3:// 推荐给好友

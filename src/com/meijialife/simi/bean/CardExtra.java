@@ -15,6 +15,12 @@ public class CardExtra implements Serializable {
     private String cityName;
     private String real_temp;
     
+    private String ticket_type;//票务类型0=无，1=飞机票，2=火车票
+    private String ticket_from_city_name;//出发城市
+    private String ticket_from_city_id;//出发城市Id
+    private String ticket_to_city_name;//到达城市
+    private String ticket_to_city_id;//到达城市Id
+    
  
     
     public String getReal_temp() {
@@ -29,18 +35,10 @@ public class CardExtra implements Serializable {
     public void setWeatherIndex(WeatherIndex weatherIndex) {
         this.weatherIndex = weatherIndex;
     }
-    private String ticket_type;//票务类型
-    private String tikcet_from_city_name;//出发城市
-    private String ticket_from_city_id;//出发城市Id
-    private String ticket_to_city_name;//到达城市
-    private String ticket_to_city_id;//
-    
+   
     private String poi_lng;//
     private String poi_lat;//
     private String poi_name;
-    
-    
-  
  
     public ArrayList<WeatherDatas> getWeatherDatas() {
         return weatherDatas;
@@ -48,17 +46,19 @@ public class CardExtra implements Serializable {
     public void setWeatherDatas(ArrayList<WeatherDatas> weatherDatas) {
         this.weatherDatas = weatherDatas;
     }
+   
     public String getTicket_type() {
         return ticket_type;
     }
     public void setTicket_type(String ticket_type) {
         this.ticket_type = ticket_type;
     }
-    public String getTikcet_from_city_name() {
-        return tikcet_from_city_name;
+   
+    public String getTicket_from_city_name() {
+        return ticket_from_city_name;
     }
-    public void setTikcet_from_city_name(String tikcet_from_city_name) {
-        this.tikcet_from_city_name = tikcet_from_city_name;
+    public void setTicket_from_city_name(String ticket_from_city_name) {
+        this.ticket_from_city_name = ticket_from_city_name;
     }
     public String getTicket_from_city_id() {
         return ticket_from_city_id;

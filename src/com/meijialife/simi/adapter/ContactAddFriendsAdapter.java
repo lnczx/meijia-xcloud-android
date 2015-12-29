@@ -93,11 +93,23 @@ public class ContactAddFriendsAdapter extends BaseAdapter {
 		
 		boolean isFriend = false;//
 		for(int i = 0; i < friendList.size(); i++){
-		    if(friendList.get(i).getName().equals(contactList.get(position).getName())){
-		        isFriend = true;
-		    }
+		    String friendName = friendList.get(i).getName();
+		    String contactName = contactList.get(position).getName();
+		    
+		    String friendMobile = friendList.get(i).getMobile();
+		    String contactMobile = contactList.get(position).getPhoneNum();
+		    if(!StringUtils.isEmpty(friendName) && !StringUtils.isEmpty(contactName)){
+		        if(friendName.equals(contactName)){
+		            isFriend = true;
+		        }
+		    }else {
+		        if(!StringUtils.isEmpty(friendMobile) && !StringUtils.isEmpty(contactName)){
+		            if(friendMobile.equals(contactMobile)){
+		                isFriend = true;
+		            }
+		        }
+            }
 		}
-		
 		if(isFriend){
 		    holder.tv_add.setBackgroundResource(R.drawable.btn_gray_background);
 		    holder.tv_add.setEnabled(false);

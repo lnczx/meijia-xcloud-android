@@ -83,7 +83,51 @@ public class AlermUtils {
         }
         
     }
-    
+    public static void initAlerm(Context context, int remindAlerm, Date date, String title, String msg,String card_id){
+        if(date == null){
+            return;
+        }
+//        Date date = new Date(lDate.getYear()-1900, lDate.getMonthOfYear()-1, lDate.getDayOfMonth(), lTime.getHourOfDay(), lTime.getMinuteOfHour(), lTime.getSecondOfMinute());
+        
+        LogOut.i("===========", "任务时间"+formatYear.format(date)+"-" + formatMonth.format(date)+"-" + formatDay.format(date)+" " + formatHours.format(date)+":" + formatMinutes.format(date)+":" + formatSeconds.format(date));
+        
+        switch (remindAlerm) {
+        case 0://不提醒
+            LogOut.i(TAG, "不提醒");
+            break;
+        case 1://按时提醒
+            setAlerm(context, date, title, msg,card_id);
+            break;
+        case 2://5分钟
+            setAlerm(context, DateUtils.getDate5(date), title, msg,card_id);
+            break;
+        case 3://15分钟
+            setAlerm(context, DateUtils.getDate15(date), title, msg,card_id);
+            break;
+        case 4://提前30分钟
+            setAlerm(context, DateUtils.getDate30(date), title, msg,card_id);
+            break;
+        case 5://提前一个小时
+            setAlerm(context, DateUtils.getDate1(date), title, msg,card_id);
+            break;
+        case 6://提前2小时
+            setAlerm(context, DateUtils.getDate2(date), title, msg,card_id);
+            break;
+        case 7://提前6小时
+            setAlerm(context, DateUtils.getDate6(date), title, msg,card_id);
+            break;
+        case 8://提前一天
+            setAlerm(context, DateUtils.getDate1d(date), title, msg,card_id);
+            break;
+        case 9://提前两天
+            setAlerm(context, DateUtils.getDate2d(date), title, msg,card_id);
+            break;
+
+        default:
+            break;
+        }
+        
+    }
     /**
      * 初始化本地提醒闹钟
      * 
@@ -145,7 +189,49 @@ public class AlermUtils {
 		LogOut.i(TAG, tmps);
 	    LogOut.debug(tmps);
 	}
-	
+	private static void setAlerm(Context context, Date date, String title, String text,String card_id){
+        if(date == null){
+            return;
+        }
+        
+        Calendar c = Calendar.getInstance();        //提醒时间
+//      c.set(Calendar.YEAR, 2015);   //年
+//      c.set(Calendar.MONTH, 9);     //月（一月为0）
+//      c.set(Calendar.DAY_OF_MONTH, 18); //日
+//      c.set(Calendar.HOUR_OF_DAY, 22);  //时
+//        c.set(Calendar.MINUTE, 54);   //分
+//        c.set(Calendar.SECOND, 10);   //秒
+//        c.set(Calendar.MILLISECOND, 0);
+        
+        c.set(Calendar.YEAR, Integer.parseInt(formatYear.format(date)));   //年
+        c.set(Calendar.MONTH, (Integer.parseInt(formatMonth.format(date))-1));     //月（一月为0）
+        c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(formatDay.format(date))); //日
+        c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(formatHours.format(date)));  //时
+        c.set(Calendar.MINUTE, Integer.parseInt(formatMinutes.format(date)));   //分
+        c.set(Calendar.SECOND, 2);   //秒
+        c.set(Calendar.MILLISECOND, 0);
+
+        Intent intent = new Intent(context,AlermReceiver.class);
+        intent.putExtra("title", title);
+        intent.putExtra("text", text);
+        intent.putExtra("date",date);
+        intent.putExtra("card_id",card_id);
+        int requestCode = Integer.parseInt(formatCode.format(date));//为每个闹钟单独设置requestCode，防止被覆盖
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode,intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am;
+
+        Calendar calendar = Calendar.getInstance();  
+        calendar.setTimeInMillis(System.currentTimeMillis());  
+        calendar.add(Calendar.SECOND, 10); 
+        // 获取系统进程
+        am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+//      am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,c.getTimeInMillis(),pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
+        
+        String tmps = "提醒设置时间为：" + calendar.get(Calendar.YEAR) + "年" + (c.get(Calendar.MONTH)+1) + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" + c.get(Calendar.HOUR_OF_DAY) + "时"+ ":" + c.get(Calendar.MINUTE) + "分";
+        LogOut.i(TAG, tmps);
+        LogOut.debug(tmps);
+    }
 	/**
 	 * 取消提醒闹钟
 	 */

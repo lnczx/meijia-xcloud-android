@@ -61,7 +61,7 @@
              android:padding="10dp"
              />
          <TextView
-             android:id="@+id/tv_alert_other"
+             android:id="@+id/tv_alert_text"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="讨论原型"

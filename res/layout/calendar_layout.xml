@@ -69,8 +69,8 @@
                     /> 
                  <ImageButton
                     android:id="@+id/btn_saoma"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/bottom_bar_icon_width_size"
+                    android:layout_height="@dimen/bottom_bar_icon_height_size"
                     android:layout_marginLeft="15dp"
                     android:layout_centerVertical="true"
                     android:background="@drawable/iconfont_saoma"
@@ -99,8 +99,8 @@
                     android:background="@drawable/icon_rili" /> -->
                 <ImageButton
                     android:id="@+id/btn_rili"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="@dimen/bottom_bar_icon_width_size"
+                    android:layout_height="@dimen/bottom_bar_icon_height_size"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                    	android:layout_marginRight="@dimen/activity_horizontal_margin"

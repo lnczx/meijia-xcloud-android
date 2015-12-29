@@ -38,8 +38,14 @@ public class DynamicImgAdapter extends NineGridAdapter {
 
     @Override
     public String getUrl(int positopn) {
-        return getItem(positopn)==null ? 
-                null: ((DynamicImaData)getItem(positopn)).getImg_small();
+        if(list.size()>1){
+            return getItem(positopn)==null ? 
+                    null: ((DynamicImaData)getItem(positopn)).getImg_small();
+        }else{
+            return getItem(positopn)==null ? 
+                    null: ((DynamicImaData)getItem(positopn)).getImg_middle();
+        }
+      
     }
 
     @Override
