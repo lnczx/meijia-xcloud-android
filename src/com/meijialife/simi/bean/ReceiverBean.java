@@ -3,6 +3,7 @@ package com.meijialife.simi.bean;
 public class ReceiverBean {
 
     private String is_show;
+    private String action;
     private String card_id;
     private String card_type;
     private String service_time;
@@ -51,7 +52,12 @@ public class ReceiverBean {
     public void setRemind_content(String remind_content) {
         this.remind_content = remind_content;
     }
-    
+    public String getAction() {
+        return action;
+    }
+    public void setAction(String action) {
+        this.action = action;
+    }
     
     
 }
