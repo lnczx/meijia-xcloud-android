@@ -33,6 +33,9 @@ public class MyPushReceiver extends BroadcastReceiver {
     private Context mContext;
     private ReceiverBean receiverBean;
     private Date fdate;
+    private final String ACTION_SETCLOCK="setclock";
+    private final String ACTION_ALARM="alarm ";
+    private final String ACTION_MSG="msg ";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -75,15 +78,15 @@ public class MyPushReceiver extends BroadcastReceiver {
                     e.printStackTrace();
                 }
                 if (null != receiverBean) {
-                    if (StringUtils.isEquals(receiverBean.getIs_show(), "true")) {
+                    if (StringUtils.isEquals(receiverBean.getIs_show(), "true")&&StringUtils.isEquals(receiverBean.getAction(), ACTION_MSG)) {
                         setNotification(receiverBean);
-                    }
-
-                    long remindTime = Long.parseLong(receiverBean.getRemind_time());
-                    fdate = new Date(remindTime);
-                    LogOut.debug("格式化后的date为:" + fdate);
-                    if(!receiverBean.getCard_id().equals("0")){
-                        AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content(),receiverBean.getCard_id());
+                    }else if(StringUtils.isEquals(receiverBean.getAction(), ACTION_SETCLOCK)){
+                        long remindTime = Long.parseLong(receiverBean.getRemind_time());
+                        fdate = new Date(remindTime);
+                        LogOut.debug("格式化后的date为:" + fdate);
+                        if(!receiverBean.getCard_id().equals("0")){
+                            AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content(),receiverBean.getCard_id());
+                        } 
                     }
                 }
             }
