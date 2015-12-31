@@ -2,6 +2,7 @@ package com.meijialife.simi;
 
 import java.util.Date;
 
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,6 +23,7 @@ import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.ReceiverBean;
+import com.meijialife.simi.dialog.AlermDialog;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 
@@ -35,7 +38,7 @@ public class MyPushReceiver extends BroadcastReceiver {
     private Date fdate;
     private final String ACTION_SETCLOCK="setclock";
     private final String ACTION_ALARM="alarm ";
-    private final String ACTION_MSG="msg ";
+    private final String ACTION_MSG="msg";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -72,21 +75,28 @@ public class MyPushReceiver extends BroadcastReceiver {
 //                UIUtils.showToastLong(context, "接收到透传消息:" + data);
 
                 try {
-                    receiverBean = new Gson().fromJson(data, new TypeToken<ReceiverBean>() {
-                    }.getType());
+                    receiverBean = new Gson().fromJson(data, new TypeToken<ReceiverBean>() {}.getType());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 if (null != receiverBean) {
-                    if (StringUtils.isEquals(receiverBean.getIs_show(), "true")&&StringUtils.isEquals(receiverBean.getAction(), ACTION_MSG)) {
+                    if (StringUtils.isEquals(receiverBean.getIs_show(), "true") && StringUtils.isEquals(receiverBean.getAction(), ACTION_MSG)) {
+                        //推送通知
                         setNotification(receiverBean);
-                    }else if(StringUtils.isEquals(receiverBean.getAction(), ACTION_SETCLOCK)){
+                    } else if (StringUtils.isEquals(receiverBean.getAction(), ACTION_SETCLOCK)) {
+                        //设置闹钟
                         long remindTime = Long.parseLong(receiverBean.getRemind_time());
                         fdate = new Date(remindTime);
                         LogOut.debug("格式化后的date为:" + fdate);
-                        if(!receiverBean.getCard_id().equals("0")){
-                            AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content(),receiverBean.getCard_id());
-                        } 
+                        if (!receiverBean.getCard_id().equals("0")) {
+                            AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content(),
+                                    receiverBean.getCard_id());
+                        }
+                    }else if(StringUtils.isEquals(receiverBean.getAction(), ACTION_ALARM)){
+                        //弹出大屏闹钟
+                        AlermDialog dlg = new AlermDialog(context, receiverBean.getRemind_title(), receiverBean.getRemind_content());
+                        dlg.show();
+                        AlermUtils.playAudio(context);
                     }
                 }
             }

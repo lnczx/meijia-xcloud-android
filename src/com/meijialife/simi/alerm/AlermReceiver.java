@@ -17,6 +17,7 @@ import android.view.WindowManager;
 
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CardAlertActivity;
+import com.meijialife.simi.dialog.AlermDialog;
 import com.meijialife.simi.utils.LogOut;
 
 /**
@@ -37,7 +38,6 @@ public class AlermReceiver extends BroadcastReceiver {
         // TODO Auto-generated method stub
         this.context = context;
 
-        playAudio();
         // NotifyUtils.bigNotify(context, 100, "私人秘书", "会议时间到啦~~~~");
         LogOut.i(TAG, "提醒进来啦。。。");
 //       Toast.makeText(context, "提醒进来了",Toast.LENGTH_SHORT).show();
@@ -48,7 +48,10 @@ public class AlermReceiver extends BroadcastReceiver {
         String card_id = bundle.getString("card_id","");
         LogOut.i(TAG, "==" + title + ":" + text);
 
-        showDlg(context, title, text);
+        //弹出大屏闹钟
+        AlermDialog dlg = new AlermDialog(context, title, text);
+        dlg.show();
+        AlermUtils.playAudio(context);
         
 //        PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
 //        mWakelock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.SCREEN_DIM_WAKE_LOCK, "SimpleTimer");
@@ -63,11 +66,7 @@ public class AlermReceiver extends BroadcastReceiver {
         
     }
 
-    
-    
-    
-    
-    private void showDlg(Context context, String title, String text) {
+    /*private void showDlg(Context context, String title, String text) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setIcon(context.getResources().getDrawable(R.drawable.ic_launcher_logo_alerm));
         builder.setTitle(title);
@@ -93,19 +92,6 @@ public class AlermReceiver extends BroadcastReceiver {
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
         LogOut.i(TAG, "成功弹出提示框！");
-    }
+    }*/
 
-    /**
-     * 播放通知
-     */
-    private void playAudio() {
-        MediaPlayer mp = new MediaPlayer();
-        try {
-            mp.setDataSource(context, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-            mp.prepare();
-            mp.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
