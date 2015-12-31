@@ -7,6 +7,9 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="22" />
+    
+    <!-- 在后台服务中弹出dialog用 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <!-- 上传多张照片所需权限 -->
     <uses-feature android:name="android.hardware.camera" />

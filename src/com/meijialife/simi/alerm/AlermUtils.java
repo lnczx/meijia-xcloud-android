@@ -8,6 +8,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
@@ -247,5 +249,19 @@ public class AlermUtils {
 		
 //		Log.e("提醒 已取消");
 	}
+	
+	/**
+     * 播放通知
+     */
+    public static void playAudio(Context context) {
+        MediaPlayer mp = new MediaPlayer();
+        try {
+            mp.setDataSource(context, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+            mp.prepare();
+            mp.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
