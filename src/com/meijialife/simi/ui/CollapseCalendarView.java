@@ -532,10 +532,10 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             }
             if(day.isToday()){
                 //如果是今天，显示红色大圆圈
-                view_today.setVisibility(View.VISIBLE);
+//                view_today.setVisibility(View.VISIBLE);
                 dayView.setTextColor(getResources().getColor(R.color.text_calendar_today));
             }else{
-                view_today.setVisibility(View.GONE);
+//                view_today.setVisibility(View.GONE);
                 dayView.setTextColor(getResources().getColor(R.color.text_calendar));
             }
           
