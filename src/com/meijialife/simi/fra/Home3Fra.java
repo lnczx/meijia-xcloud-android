@@ -38,7 +38,7 @@ import com.meijialife.simi.activity.ContactAddFriendsActivity;
 import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
-import com.meijialife.simi.activity.WebViewActivity;
+import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.FriendAdapter;
 import com.meijialife.simi.adapter.FriendDynamicAdapter;
 import com.meijialife.simi.adapter.FriendDynamicAdapter.onDynamicUpdateListener;
@@ -91,6 +91,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
     private RadioButton rb_feed;//动态
     private RadioButton rb_friend;//好友
     private RadioButton rb_msg;//消息
+    private static View layout_mask;
     
 
     public Home3Fra() {
@@ -107,7 +108,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         // }
 
         View v = inflater.inflate(R.layout.index_3, null);
-
+      
         init(v);// 初始化
         initTab(v);
 
@@ -122,6 +123,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         } else if (Constants.checkedIndex == 1) {
             getFriendList(false);
         }
+        getUserInfo();
     }
 
     private void init(View v) {
@@ -129,6 +131,7 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         layout_friend = (LinearLayout) v.findViewById(R.id.layout_friend);
         layout_dynamic = (LinearLayout)v.findViewById(R.id.layout_friend_dynamic);
         tv_has_company = (TextView) v.findViewById(R.id.tv_has_company);
+        layout_mask = (View)v.findViewById(R.id.layout_mask);
 
         listview = (ListView) v.findViewById(R.id.listview);
         listview.setOnItemClickListener(this);
@@ -148,11 +151,11 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         });
 
         userInfo = DBHelper.getUserInfo(getActivity());
-        if (userInfo.getHas_company() == 0) {
-            tv_has_company.setVisibility(View.VISIBLE);
-        } else {
-            tv_has_company.setVisibility(View.GONE);
-        }
+//        if (userInfo.getHas_company() == 0) {
+//            tv_has_company.setVisibility(View.VISIBLE);
+//        } else {
+//            tv_has_company.setVisibility(View.GONE);
+//        }
         rl_add = (RelativeLayout) v.findViewById(R.id.rl_add);
         rl_find = (RelativeLayout) v.findViewById(R.id.rl_find);
         rl_rq = (RelativeLayout) v.findViewById(R.id.rl_rq);
@@ -213,7 +216,13 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         });
         radiogroup.getChildAt(Constants.checkedIndex).performClick();
     }
+    public static void showMask() {
+        layout_mask.setVisibility(View.VISIBLE);
+    }
 
+    public static void GoneMask() {
+        layout_mask.setVisibility(View.GONE);
+    }
     /**
      * 获取好友列表
      */
@@ -387,8 +396,9 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
         case R.id.rl_company_contacts:// 企业通讯录
             // 跳转到企业通讯录
             if (userInfo.getHas_company() == 0) {
-                Intent intent1 = new Intent(getActivity(), WebViewActivity.class);
-                intent1.putExtra("title", "企业通讯录");
+                Intent intent1 = new Intent(getActivity(), WebViewsActivity.class);
+//                Intent intent1 = new Intent(getActivity(), WebViewActivity.class);
+//                intent1.putExtra("title", "企业/团队通讯录");
                 intent1.putExtra("url", Constants.HAS_COMPANY);
                 startActivity(intent1);
             } else {
@@ -494,7 +504,83 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
             }
         });
     }
+    private void getUserInfo() {
+        if (userInfo == null) {
+            Toast.makeText(getActivity(), "用户信息错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!NetworkUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            return;
+        }
 
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", userInfo.getId());
+        AjaxParams param = new AjaxParams(map);
+
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_USER_INFO, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                userInfo = gson.fromJson(data, UserInfo.class);
+                                DBHelper.updateUserInfo(getActivity(), userInfo);
+                            } else {
+                                // UIUtils.showToast(getActivity(), "数据错误");
+                            }
+                            hasCompany();
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息|
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(getActivity(), errorMsg);
+                }
+            }
+        });
+    }
+    /**
+     * 访问接口判断是否注册公司
+     */
+    private void hasCompany(){
+        if (userInfo.getHas_company() == 0) {
+            tv_has_company.setVisibility(View.VISIBLE);
+        } else {
+            tv_has_company.setVisibility(View.GONE);
+        }
+    }
     @Override
     public void onDynamicUpdate() {
         getFriendDynamicList();        

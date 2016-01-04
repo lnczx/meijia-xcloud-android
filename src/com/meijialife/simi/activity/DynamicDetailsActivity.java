@@ -26,11 +26,13 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
@@ -51,6 +53,7 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.publish.ImagePagerActivity;
 import com.meijialife.simi.publish.NineGridlayout;
 import com.meijialife.simi.ui.CustomShareBoard;
+import com.meijialife.simi.ui.MyListView;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -79,7 +82,8 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
 
     // 评论控件声明
     private TextView tv_tips; // 没有评论时的提示
-    private ListView listview; // 评论list
+    private MyListView listview; // 评论list
+//    private ListView listview; // 评论list
     private CardCommentAdapter listAdapter;
     private EditText et_comment;// 评论输入框
     private Button btn_send; // 评论
@@ -129,15 +133,17 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
     }
 
     private void initView() {
-        setTitleName("");
+        setTitleName("详情");
         requestBackBtn();
 
         // 评论
         tv_tips = (TextView) findViewById(R.id.tv_tips);
-        listview = (ListView) findViewById(R.id.listview);
+        listview = (MyListView) findViewById(R.id.listview);
+//        listview = (ListView) findViewById(R.id.listview);
         listAdapter = new CardCommentAdapter(this);
         listview.setAdapter(listAdapter);
-
+       
+        
         // 赞
         gridview = (GridView) findViewById(R.id.gridview);
         gridAdapter = new DynamicZanAdapter(this);
@@ -164,6 +170,30 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
         tv_share.setOnClickListener(this);
 
     }
+    
+    public void setListViewHeightBasedOnChildren(ListView listView) {   
+        // 获取ListView对应的Adapter   
+        ListAdapter listAdapter = listView.getAdapter();   
+        if (listAdapter == null) {   
+            return;   
+        }   
+   
+        int totalHeight = 0;   
+        for (int i = 0, len = listAdapter.getCount(); i < len; i++) {   
+            // listAdapter.getCount()返回数据项的数目   
+            View listItem = listAdapter.getView(i, null, listView);   
+            // 计算子项View 的宽高   
+            listItem.measure(0, 0);    
+            // 统计所有子项的总高度   
+            totalHeight += listItem.getMeasuredHeight();    
+        }   
+   
+        ViewGroup.LayoutParams params = listView.getLayoutParams();   
+        params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));   
+        // listView.getDividerHeight()获取子项间分隔符占用的高度   
+        // params.height最后得到整个ListView完整显示需要的高度   
+        listView.setLayoutParams(params);   
+    }  
 
     @SuppressLint("NewApi")
     private void showData() {
@@ -405,6 +435,8 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
                                 ArrayList<CardComment> comments = gson.fromJson(data, new TypeToken<ArrayList<CardComment>>() {
                                 }.getType());
                                 listAdapter.setData(comments);
+                                //解决冲突ScrollView+ListView
+//                                setListViewHeightBasedOnChildren(listview);
                                 tv_tips.setVisibility(View.GONE);
                             } else {
                                 tv_tips.setVisibility(View.VISIBLE);

@@ -28,9 +28,23 @@ public class Partner implements Serializable{
     private String response_time_name;//下单响应时间
     private String introduction;//个人介绍
     private List<UserTag> user_tags;//标签tag_id(标签Id)tag_name(标签名称) 
-    
-    
+    private int weight_type;//权重类型 ： 0 = 默认 1 = 推荐 2 = 优惠 3 = 新人
+    private String weight_type_name;//0 = 默认 1 = 推荐 2 = 优惠 3 = 新人
    
+    
+    
+    public int getWeight_type() {
+        return weight_type;
+    }
+    public void setWeight_type(int weight_type) {
+        this.weight_type = weight_type;
+    }
+    public String getWeight_type_name() {
+        return weight_type_name;
+    }
+    public void setWeight_type_name(String weight_type_name) {
+        this.weight_type_name = weight_type_name;
+    }
     public Long getResponse_time() {
         return response_time;
     }

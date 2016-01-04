@@ -243,7 +243,16 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         if(sec_title != null){
             sec_title.setText(card.getUser_name());
         }
-
+        //取消卡片不能点击
+        if(Integer.valueOf(card.getStatus())==0){
+            btn_edit_layout.setClickable(false);
+            tv_edit.setClickable(false);
+            tv_edit.setTextColor(getResources().getColor(R.color.simi_color_gray));
+            btn_cancel_layout.setClickable(false);
+            tv_cancel.setClickable(false);
+            tv_cancel.setTextColor(getResources().getColor(R.color.simi_color_gray));
+        }
+        
         tv_title.setText(time);
         tv_remark.setText(remark);
         tv_date_str.setText(timeStr);

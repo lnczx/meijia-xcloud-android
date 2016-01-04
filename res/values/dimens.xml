@@ -48,4 +48,9 @@
     <dimen name="my_publish_text_size">13sp</dimen>
 	<!--上传多张图片大小-->
 	 <dimen name="ui_10_dip">10dip</dimen> 
+	 <!--账号信息字体大小 -->
+	<dimen name="account_text_size">15sp</dimen>
+	<!--登录图标大小  -->
+	<dimen name="login_btn_size">40dp</dimen>
+	 
 </resources>

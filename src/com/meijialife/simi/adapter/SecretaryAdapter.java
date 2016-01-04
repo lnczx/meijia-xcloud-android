@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.bean.UserTag;
+import com.meijialife.simi.ui.OffcutView;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.TagGroup;
 
@@ -78,6 +79,7 @@ public class SecretaryAdapter extends BaseAdapter {
 			holder.item_tv_addr_name = (TextView)convertView.findViewById(R.id.item_tv_addr_name);
 			holder.item_tv_des_name = (TextView)convertView.findViewById(R.id.item_tv_des_name);
 			holder.tg =(TagGroup)convertView.findViewById(R.id.ll_user_tags);
+			holder.ov_bar=(OffcutView)convertView.findViewById(R.id.ov_bar);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -88,6 +90,12 @@ public class SecretaryAdapter extends BaseAdapter {
 		holder.item_tv_fav.setText(partnerList.get(position).getService_type_name());
 		holder.item_tv_addr_name.setText(partnerList.get(position).getCity_and_region());
 		holder.item_tv_des_name.setText(partnerList.get(position).getResponse_time_name());
+		if(partnerList.get(position).getWeight_type()==1){//1=推荐(显示角标)
+		    holder.ov_bar.setVisibility(View.VISIBLE);
+		    holder.ov_bar.setText(partnerList.get(position).getWeight_type_name());
+		}else {
+		    holder.ov_bar.setVisibility(View.GONE);
+        }
 		//获得头像的url
         String url = partnerList.get(position).getHead_img();
         //将默认头像摄者为秘书头像
@@ -111,6 +119,7 @@ public class SecretaryAdapter extends BaseAdapter {
 		TextView item_tv_des_name;//服务响应时间
 		LinearLayout ll;
 		TagGroup tg;//用户标签
+		OffcutView ov_bar;//角标
 		
 	}
 

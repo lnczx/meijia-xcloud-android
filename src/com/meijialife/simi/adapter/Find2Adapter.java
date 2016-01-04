@@ -72,8 +72,8 @@ public class Find2Adapter extends BaseAdapter {
 			holder.tv_ad_goto_type = (TextView) convertView.findViewById(R.id.tv_goto_type);
 			holder.tv_ad_goto_url = (TextView) convertView.findViewById(R.id.tv_goto_url);
 			holder.iv_ad_icon = (ImageView) convertView.findViewById(R.id.iv_ad_icon);
-			holder.tv_ad_share = (TextView)convertView.findViewById(R.id.tv_share);
-			holder.tv_service_type_ids = (TextView)convertView.findViewById(R.id.tv_service_type_ids);
+/*			holder.tv_ad_share = (TextView)convertView.findViewById(R.id.tv_share);
+*/			holder.tv_service_type_ids = (TextView)convertView.findViewById(R.id.tv_service_type_ids);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -84,13 +84,13 @@ public class Find2Adapter extends BaseAdapter {
 		holder.tv_service_type_ids.setText(findBeanList.get(position).getService_type_ids());
 		String url = findBeanList.get(position).getImg_url();
         finalBitmap.display(holder.iv_ad_icon, url, defDrawable.getBitmap(), defDrawable.getBitmap());
-        holder.tv_ad_share.setOnClickListener(new OnClickListener() {
+  /*      holder.tv_ad_share.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(contexts,"share",Toast.LENGTH_SHORT).show();
             }
         });
-        
+        */
         
         return convertView;
 	}

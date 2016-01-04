@@ -34,7 +34,6 @@ import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.alerm.AlermUtils;
-import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;

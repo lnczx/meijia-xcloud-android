@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/iv_icon_4"
-            android:text="企业通讯录" />
+            android:text="企业/团队通讯录" />
          <ImageView
             android:id="@+id/iv_arrow"
             android:layout_width="10dp"

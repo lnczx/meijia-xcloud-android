@@ -38,7 +38,6 @@
             android:id="@+id/iv_rq_code"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/youhuiquan_bg_1"
             android:scaleType="centerInside"
             />
    </LinearLayout>

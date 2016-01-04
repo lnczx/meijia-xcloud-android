@@ -46,4 +46,17 @@
         android:textSize="17.6sp"
         android:visibility="visible" />
 
+    <ImageButton
+        android:id="@+id/ibtn_rq"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/company_rq"
+        android:visibility="gone" />
+
 </RelativeLayout>

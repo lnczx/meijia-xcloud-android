@@ -211,6 +211,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:layout_toLeftOf="@id/arrow"
+                        android:gravity="right"
                         android:ellipsize="end"
                         android:ems="6"
                         android:singleLine="true"

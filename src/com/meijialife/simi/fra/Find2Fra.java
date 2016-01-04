@@ -116,22 +116,16 @@ public class Find2Fra extends BaseFragment {
      */
     public void init(View v) {
         //获取屏幕宽度
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        indicatorWidth = dm.widthPixels / 4;
-        
-       /* 获得屏幕宽度的另一种方法
-        * DisplayMetrics dm1 = getResources().getDisplayMetrics();
-            dm1.heightPixels;
-        */
-        LayoutParams cursor_Params = (LayoutParams) iv_nav_indicator.getLayoutParams();
-        cursor_Params.width = indicatorWidth;// 初始化滑动下标的宽
-        iv_nav_indicator.setLayoutParams(cursor_Params);
-
-        mHsv.setSomeParam(rl_nav, iv_nav_left, iv_nav_right, getActivity());
-        // 获取布局填充器
-        // mInflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        mInflater = LayoutInflater.from(getActivity());
+      
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            indicatorWidth = dm.widthPixels / 4;
+            
+            LayoutParams cursor_Params = (LayoutParams) iv_nav_indicator.getLayoutParams();
+            cursor_Params.width = indicatorWidth;// 初始化滑动下标的宽
+            iv_nav_indicator.setLayoutParams(cursor_Params);
+            mHsv.setSomeParam(rl_nav, iv_nav_left, iv_nav_right, getActivity());
+            mInflater = LayoutInflater.from(getActivity());
         
     }
     private void setListener() {
@@ -332,7 +326,9 @@ public class Find2Fra extends BaseFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){//在Fragment中使用系统资源必须增加判断
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {

@@ -148,7 +148,8 @@ public class ListAdapter extends BaseAdapter {
         String timeStr = list.get(position).getAdd_time_str();
         String remark = list.get(position).getService_content();
         long timeL = Long.parseLong(list.get(position).getService_time());
-        String date = dateFormat.format(timeL*1000);
+//        String date = dateFormat.format(timeL*1000);
+        String  date = new SimpleDateFormat("yyyy年MM月dd日 HH:mm").format(timeL*1000);
         
         vh.tv_title.setText(title);
         vh.tv_date_str.setText(timeStr);

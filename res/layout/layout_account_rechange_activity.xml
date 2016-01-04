@@ -24,7 +24,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@android:color/white" >
+                android:background="@color/simi_color_red" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -37,14 +37,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="余额(元)： "
-                        android:textSize="12sp" />
+                        android:textSize="12sp" 
+                        android:textColor="@color/simi_color_white"
+                        />
 
                     <TextView
                         android:id="@+id/tv_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="330"
-                        android:textColor="@color/simi_color_red"
+                        android:textColor="@color/simi_color_white"
                         android:textSize="28sp" />
                 </LinearLayout>
             </RelativeLayout>

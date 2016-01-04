@@ -1,7 +1,6 @@
 package com.meijialife.simi;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +16,6 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,7 +55,6 @@ import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
 import com.meijialife.simi.activity.WebViewActivity;
-import com.meijialife.simi.alerm.AlermReceiver;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Contact;
@@ -337,7 +333,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 //            change(new PersonalPageFragment());
             setSelected(mBt4);
             // updateTitle(4);
-            slideMenu.isUse = true;
+            slideMenu.isUse = false;
             view_title_bar.setVisibility(View.GONE);
             break;
         case R.id.tab_bt_5: // 加号
@@ -417,7 +413,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         if (!slideMenu.isMainScreenShowing()) {
             return;
         }
-        view_title_bar.setVisibility(View.VISIBLE);
+        view_title_bar.setVisibility(View.GONE);
         conversationListFragment = new ConversationListFragment(this);
         change(conversationListFragment);
         setSelected(mBt3);
@@ -432,7 +428,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         if (!slideMenu.isMainScreenShowing()) {
             return;
         }
-        view_title_bar.setVisibility(View.VISIBLE);
+        view_title_bar.setVisibility(View.GONE);
         change(new Home3Fra(this));
         setSelected(mBt3);
         updateTitle(3);

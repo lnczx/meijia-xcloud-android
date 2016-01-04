@@ -36,7 +36,7 @@ import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.bean.DynamicImaData;
 import com.meijialife.simi.bean.FriendDynamicData;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.fra.Home1Fra;
+import com.meijialife.simi.fra.Home3Fra;
 import com.meijialife.simi.publish.NineGridlayout;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.utils.LogOut;
@@ -165,11 +165,6 @@ public class FriendDynamicAdapter extends BaseAdapter {
                 postShare();
             }
         });
-      /*  for (Iterator iterator = dynamicImaDatas.iterator(); iterator.hasNext();) {
-            DynamicImaData dynamicImaData = (DynamicImaData) iterator.next();
-            String small_url = dynamicImaData.getImg_small();
-            finalBitmap.display(vh.iv_image,small_url,defDrawable.getBitmap(), defDrawable.getBitmap());
-        }*/
     }
 
     private void handlerOneImage(ViewHolder vh, ArrayList<DynamicImaData> dynamicImaDatas,final int pos) {
@@ -253,13 +248,13 @@ public class FriendDynamicAdapter extends BaseAdapter {
         
     }
     private void postShare() {
-        Home1Fra.showMask();
+        Home3Fra.showMask();
         CustomShareBoard shareBoard = new CustomShareBoard((Activity) context);
         shareBoard.setOnDismissListener(new OnDismissListener() {
 
             @Override
             public void onDismiss() {
-                Home1Fra.GoneMask();
+                Home3Fra.GoneMask();
             }
         });
         shareBoard.showAtLocation(((Activity) context).getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);

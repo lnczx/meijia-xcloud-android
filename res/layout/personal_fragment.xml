@@ -21,8 +21,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@drawable/bg_person_page"
-                android:clipToPadding="true"
-                android:fitsSystemWindows="true" >
+               ><!-- 沉侵栏方式属性设置
+               	android:clipToPadding="true"
+                android:fitsSystemWindows="true"   -->
 
                 <com.meijialife.simi.ui.RoundImageView
                     android:id="@+id/iv_top_head"
@@ -31,7 +32,6 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="30dp"
-                    android:src="@drawable/ic_defult_touxiang"
                     imagecontrol:border_inside_color="#f9f9f9"
                     imagecontrol:border_outside_color="#f9f9f9"
                     imagecontrol:border_thickness_in="2dp" />

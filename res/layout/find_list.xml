@@ -24,20 +24,23 @@
             android:id="@+id/rl_tab"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/activity_bg_color" >
+            android:background="@color/simi_color_white" >
 
             <com.meijialife.simi.ui.SyncHorizontalScrollView
                 android:id="@+id/mHsv"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:fadingEdge="none"
-                android:scrollbars="none" >
+                android:scrollbars="none"
+                android:background="@color/simi_color_white"
+                 >
 
                 <RelativeLayout
                     android:id="@+id/rl_nav"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
+                    android:background="@color/simi_color_white"
                      >
 
                     <RadioGroup
@@ -45,7 +48,9 @@
                         android:layout_width="fill_parent"
                         android:layout_height="38dip"
                         android:layout_alignParentTop="true"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal"
+                        android:background="@color/simi_color_white"
+                         >
                     </RadioGroup>
 
                     <ImageView

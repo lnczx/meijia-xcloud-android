@@ -1,8 +1,10 @@
 package com.meijialife.simi.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.meijialife.simi.BaseActivity;
@@ -15,6 +17,7 @@ public class MainPlusContentActivity extends BaseActivity implements OnClickList
     private EditText tv_input_content;
     private String flag;
     private String content;
+    private String remindContent;//提示内容
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +35,23 @@ public class MainPlusContentActivity extends BaseActivity implements OnClickList
         if (StringUtils.isEquals(flag, Constants.MEETTING)) {
             setTitleName("会议内容");
             content = Constants.CARD_ADD_MEETING_CONTENT;
-
+            remindContent ="会议内容";
         } else if (StringUtils.isEquals(flag, Constants.TRAVEL)) {
             setTitleName("备注消息");
             content = Constants.CARD_ADD_TREAVEL_CONTENT;
+            remindContent ="备注内容";
         } else if (StringUtils.isEquals(flag, Constants.MORNING)) {
-            setTitleName("叫早内容");
+            setTitleName("通知公告");
             content = Constants.CARD_ADD_MORNING_CONTENT;
+            remindContent ="内容";
         } else if (StringUtils.isEquals(flag, Constants.AFFAIR)) {
             setTitleName("事务提醒");
             content = Constants.CARD_ADD_AFFAIR_CONTENT;
+            remindContent ="提醒内容";
         } else if (StringUtils.isEquals(flag, Constants.NOTIFICATION)) {
             setTitleName("邀约通知");
             content = Constants.CARD_ADD_NOTIFICATION_CONTENT;
+            remindContent ="邀约内容";
         }
 
         findViewById(R.id.tv_submit).setOnClickListener(this);
@@ -52,6 +59,8 @@ public class MainPlusContentActivity extends BaseActivity implements OnClickList
 
         if (StringUtils.isNotEmpty(content)) {
             tv_input_content.setText(content);
+        }else {
+            tv_input_content.setHint("请输入"+remindContent);
         }
 
     }
@@ -76,7 +85,11 @@ public class MainPlusContentActivity extends BaseActivity implements OnClickList
             } else if (StringUtils.isEquals(flag, Constants.NOTIFICATION)) {
                 Constants.CARD_ADD_NOTIFICATION_CONTENT = message;
             }
-            
+            //点击提交收回键盘
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputMethodManager != null) {
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
             MainPlusContentActivity.this.finish();
             break;
 

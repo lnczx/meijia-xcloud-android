@@ -35,7 +35,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/iv_person_tools"
                     android:text="工具箱"
-                    android:textColor="@color/black_deep"
+                    android:textColor="@color/simi_color_dark_gray"
                     android:textStyle="bold" />
 
                 
@@ -46,7 +46,7 @@
                     android:layout_marginLeft="170dp"
                     android:layout_marginRight="30dp"
                     android:text="更多"
-                    android:textColor="#929292"
+                    android:textColor="@color/simi_color_dark_gray"
                     android:textStyle="bold"
                     android:layout_alignBaseline="@id/iv_person_tools"
                     android:visibility="visible"
@@ -210,7 +210,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/iv_person_group"
                     android:text="我的成长"
-                    android:textColor="@color/black_deep"
+                    android:textColor="@color/simi_color_dark_gray"
                     android:textStyle="bold" />
                 <!--
                 <TextView
@@ -377,7 +377,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_person_promote_friend"
                 android:text="推荐给好友"
-                android:textColor="@color/black_deep"
+                android:textColor="@color/simi_color_dark_gray"
                 android:textStyle="bold" />
 
             <ImageView
@@ -415,7 +415,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_person_more"
                 android:text="更多"
-                android:textColor="@color/black_deep"
+                android:textColor="@color/simi_color_dark_gray"
                 android:textStyle="bold" />
 
             <ImageView
@@ -453,7 +453,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_person_business"
                 android:text="我是商家"
-                android:textColor="@color/black_deep"
+                android:textColor="@color/simi_color_dark_gray"
                 android:textStyle="bold" />
 
             <TextView
@@ -463,7 +463,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/iv_arrow"
                 android:text="4001691615"
-                android:textColor="@color/black_deep" />
+                android:textColor="@color/simi_color_dark_gray" />
 
             <ImageView
                 android:id="@+id/iv_arrow"

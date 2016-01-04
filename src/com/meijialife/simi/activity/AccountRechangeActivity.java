@@ -44,6 +44,7 @@ public class AccountRechangeActivity extends BaseActivity {
     private TextView tv_money;
     private TextView tv_charge;//充值按钮
     private EditText et_value;//输入金额
+    private UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class AccountRechangeActivity extends BaseActivity {
 
         getRechangeList();
 
-        UserInfo userInfo = DBHelper.getUserInfo(this);
+         userInfo = DBHelper.getUserInfo(this);
         if (null != userInfo) {
             tv_money.setText(userInfo.getRest_money());
         }
@@ -98,7 +99,9 @@ public class AccountRechangeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        tv_money.setText("");
+        if(null!=userInfo){
+            tv_money.setText(userInfo.getRest_money());
+        }
     }
     /**
      * 获取充值卡列表
