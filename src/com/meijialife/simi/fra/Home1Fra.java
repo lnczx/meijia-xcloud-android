@@ -289,9 +289,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 int p = position-1;
                 if(!cardlist.get(p).getCard_type().equals("99")){
                     Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
-//                    intent.putExtra("card_id", cardlist.get(p).getCard_id());
-                    intent.putExtra("Cards", cardlist.get(p));
-                    intent.putExtra("card_extra",cardExtrasList.get(p));
+                    intent.putExtra("card_id", cardlist.get(p).getCard_id());
+                  /*  intent.putExtra("Cards", cardlist.get(p));
+                    intent.putExtra("card_extra",cardExtrasList.get(p));*/
                     startActivity(intent);
                 }
             }
@@ -303,6 +303,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         super.onResume();
         LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
         gallery = (MyGallery) ll.findViewById(R.id.gallery);
+        initLocation();//启动gps定位
         
         getTotalByMonth();
         getCardListData(today_date, card_from);
@@ -314,6 +315,10 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     public void onStop() {
         super.onStop();
         gallery.destroy();
+        if (locationClient != null && locationClient.isStarted()) {
+            locationClient.stop();
+            locationClient = null;
+        } 
     }
 
     public void isShowDefaultCard(boolean card_flag,boolean ad_flag){
@@ -822,6 +827,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     public void onDestroy() {
         super.onDestroy();
         gallery.destroy();
+        //关闭定位
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
             locationClient = null;

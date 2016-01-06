@@ -84,7 +84,8 @@ public class ContactSelectActivity extends Activity {
         title_btn_left.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Constants.finalContactList != null && Constants.finalContactList.size() > 0) {
+                //&& Constants.finalContactList.size() > 0
+                if (Constants.finalContactList != null ) {
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);
                     ContactSelectActivity.this.finish();

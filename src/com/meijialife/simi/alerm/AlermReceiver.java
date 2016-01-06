@@ -49,20 +49,22 @@ public class AlermReceiver extends BroadcastReceiver {
         LogOut.i(TAG, "==" + title + ":" + text);
 
         //弹出大屏闹钟
-        AlermDialog dlg = new AlermDialog(context, title, text);
+       /* AlermDialog dlg = new AlermDialog(context, title, text,date);
         dlg.show();
-        AlermUtils.playAudio(context);
+        AlermUtils.playAudio(context);*/
         
 //        PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
 //        mWakelock = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.SCREEN_DIM_WAKE_LOCK, "SimpleTimer");
 //        mWakelock.acquire();
-       /* Intent intent2 = new Intent(context,CardAlertActivity.class);
+        Intent intent2 = new Intent(context,CardAlertActivity.class);
         intent2.putExtra("title",title);
         intent2.putExtra("text",text);
         intent2.putExtra("date",date);
         intent2.putExtra("card_id",card_id);
         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent2);*/
+        context.startActivity(intent2);
+        AlermUtils.playAudio(context);
+
         
     }
 

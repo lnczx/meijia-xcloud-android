@@ -263,11 +263,24 @@ public class PublishDynamicActivity  extends Activity{
                 m_et_introduce.setText(Constants.FEED_TITLE);
             }
         });
+//        initLocation();
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Constants.FEED_TITLE="";
+        if (locationClient != null && locationClient.isStarted()) {
+            locationClient.stop();
+            locationClient = null;
+        } 
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (locationClient != null && locationClient.isStarted()) {
+            locationClient.stop();
+            locationClient = null;
+        } 
     }
     /**
      * 发表动态接口

@@ -2,7 +2,6 @@ package com.meijialife.simi;
 
 import java.util.Date;
 
-import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,17 +12,20 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.WindowManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
+import com.meijialife.simi.activity.CardAlertActivity;
+import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.ReceiverBean;
-import com.meijialife.simi.dialog.AlermDialog;
+import com.meijialife.simi.fra.Find2Fra;
+import com.meijialife.simi.fra.PersonalFragment;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 
@@ -37,7 +39,7 @@ public class MyPushReceiver extends BroadcastReceiver {
     private ReceiverBean receiverBean;
     private Date fdate;
     private final String ACTION_SETCLOCK="setclock";
-    private final String ACTION_ALARM="alarm ";
+    private final String ACTION_ALARM="alarm";
     private final String ACTION_MSG="msg";
 
     @Override
@@ -85,6 +87,11 @@ public class MyPushReceiver extends BroadcastReceiver {
                         setNotification(receiverBean);
                     } else if (StringUtils.isEquals(receiverBean.getAction(), ACTION_SETCLOCK)) {
                         //设置闹钟
+                        if(StringUtils.isEquals(receiverBean.getIs_show(), "true")){
+                            setNotification3(receiverBean);
+                            AlermUtils.playAudio(context);
+
+                        }
                         long remindTime = Long.parseLong(receiverBean.getRemind_time());
                         fdate = new Date(remindTime);
                         LogOut.debug("格式化后的date为:" + fdate);
@@ -94,8 +101,12 @@ public class MyPushReceiver extends BroadcastReceiver {
                         }
                     }else if(StringUtils.isEquals(receiverBean.getAction(), ACTION_ALARM)){
                         //弹出大屏闹钟
-                        AlermDialog dlg = new AlermDialog(context, receiverBean.getRemind_title(), receiverBean.getRemind_content());
-                        dlg.show();
+                       /* long remindTime = Long.parseLong(receiverBean.getRemind_time());
+                        fdate = new Date(remindTime);
+                        AlermDialog dlg = new AlermDialog(context, receiverBean.getRemind_title(), receiverBean.getRemind_content(),fdate);
+                        dlg.show();*/
+                        //先弹出通知，然后点击显示大屏
+                        setNotification2(receiverBean);
                         AlermUtils.playAudio(context);
                     }
                 }
@@ -128,14 +139,19 @@ public class MyPushReceiver extends BroadcastReceiver {
             break;
         }
     }
-
+    /**
+     * 点击弹框进入app
+     * @param receiverBean
+     */
     private void setNotification(ReceiverBean receiverBean) {
         //NotificationManager状态通知的管理类，必须通过getSystemService()方法来获取
         NotificationManager manager = (NotificationManager) mContext.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
 
         //点击通知负责页面跳转
+//        Intent intent = new Intent(mContext, SplashActivity.class);
         Intent intent = new Intent(mContext, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //android3.0以后采用NotificationCompat构建
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
         builder.setContentTitle(receiverBean.getRemind_title());
@@ -150,4 +166,58 @@ public class MyPushReceiver extends BroadcastReceiver {
         manager.notify(1, builder.build());
 
     }
+    /**
+     * 点击弹框进入大屏
+     * @param receiverBean
+     */
+    private void setNotification2(ReceiverBean receiverBean) {
+        //NotificationManager状态通知的管理类，必须通过getSystemService()方法来获取
+        NotificationManager manager = (NotificationManager) mContext.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
+        long remindTime = Long.parseLong(receiverBean.getRemind_time());
+        fdate = new Date(remindTime);
+        //点击通知负责页面跳转
+        Intent intent = new Intent(mContext, CardAlertActivity.class);
+//        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.putExtra("title",receiverBean.getRemind_title());
+        intent.putExtra("text",receiverBean.getRemind_content());
+        intent.putExtra("date",fdate);
+        intent.putExtra("card_id",receiverBean.getCard_id());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 3, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //android3.0以后采用NotificationCompat构建
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+        builder.setContentTitle(receiverBean.getRemind_title());
+        builder.setContentText(receiverBean.getRemind_content());
+        builder.setSmallIcon(R.drawable.ic_launcher_logo);
+        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
+        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
+        manager.notify(1, builder.build());
+    }
+    /**
+     * 点击通知进入卡片详情
+     * @param receiverBean
+     */
+    private void setNotification3(ReceiverBean receiverBean) {
+        //NotificationManager状态通知的管理类，必须通过getSystemService()方法来获取
+        NotificationManager manager = (NotificationManager) mContext.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
+        //点击通知负责页面跳转
+        Intent intent = new Intent(mContext, CardDetailsActivity.class);
+//        Intent intent = new Intent(mContext, MoreActivity.class);
+        intent.putExtra("card_id",receiverBean.getCard_id());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //android3.0以后采用NotificationCompat构建
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+        builder.setContentTitle(receiverBean.getRemind_title());
+        builder.setContentText(receiverBean.getRemind_content());
+        builder.setSmallIcon(R.drawable.ic_launcher_logo);
+        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
+        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
+        manager.notify(1, builder.build());
+    }
+    
 }

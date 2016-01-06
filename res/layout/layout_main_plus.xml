@@ -16,7 +16,7 @@
         android:gravity="center_horizontal"
         android:text="直接找秘书"
         android:textColor="#333333"
-        android:textSize="18sp" />
+        android:textSize="@dimen/main_plus_text_size" />
 
     <LinearLayout
         android:id="@+id/layout_line_1"
@@ -38,7 +38,7 @@
             android:gravity="center_horizontal"
             android:text="事务提醒"
             android:textColor="#333333"
-            android:textSize="18sp" />
+            android:textSize="@dimen/main_plus_text_size" />
 
         <TextView
             android:id="@+id/tv_plus_meeting"
@@ -50,7 +50,7 @@
             android:gravity="center_horizontal"
             android:text="会议安排"
             android:textColor="#333333"
-            android:textSize="18sp" />
+            android:textSize="@dimen/main_plus_text_size" />
 
         <TextView
             android:id="@+id/tv_plus_morning"
@@ -62,7 +62,7 @@
             android:gravity="center_horizontal"
             android:text="通知公告"
             android:textColor="#333333"
-            android:textSize="18sp" />
+            android:textSize="@dimen/main_plus_text_size" />
     </LinearLayout>
 
     <LinearLayout
@@ -85,7 +85,7 @@
             android:gravity="center_horizontal"
             android:text="面试邀约"
             android:textColor="#333333"
-            android:textSize="18sp" />
+            android:textSize="@dimen/main_plus_text_size" />
 
         <TextView
             android:id="@+id/tv_plus_travel"
@@ -97,7 +97,7 @@
             android:gravity="center_horizontal"
             android:text="差旅规划"
             android:textColor="#333333"
-            android:textSize="18sp" />
+            android:textSize="@dimen/main_plus_text_size" />
 
         <TextView
             android:id="@+id/tv_plus_more"
@@ -109,7 +109,7 @@
             android:gravity="center_horizontal"
             android:text="发布动态"
             android:textColor="#333333"
-            android:textSize="18sp" />
+            android:textSize="@dimen/main_plus_text_size" />
     </LinearLayout>
 
     <ImageView
@@ -118,10 +118,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="3dp"
         android:background="@drawable/icon_plus_close"
         android:gravity="center_horizontal"
         android:textColor="#333333"
-        android:textSize="18sp" />
+        android:textSize="@dimen/main_plus_text_size" />
 
 </RelativeLayout>

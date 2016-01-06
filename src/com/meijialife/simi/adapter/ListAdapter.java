@@ -197,6 +197,8 @@ public class ListAdapter extends BaseAdapter {
         case 0://通用(保留)
             break;
         case 1://会议安排
+            vh.iv_image.setVisibility(View.VISIBLE);
+            vh.iv_weather_image.setVisibility(View.GONE);
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_2));
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_huiyi));
             vh.tv_1.setText("时间：" + date);
@@ -213,6 +215,8 @@ public class ListAdapter extends BaseAdapter {
             typeStr = "会议安排";
             break;
         case 2://通知公告
+            vh.iv_image.setVisibility(View.VISIBLE);
+            vh.iv_weather_image.setVisibility(View.GONE);
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_5));
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_mishu));
             vh.tv_1.setText("时间：" + date);
@@ -229,6 +233,8 @@ public class ListAdapter extends BaseAdapter {
             vh.iv_image.setVisibility(View.VISIBLE);
             break;
         case 3://事务提醒
+            vh.iv_image.setVisibility(View.VISIBLE);
+            vh.iv_weather_image.setVisibility(View.GONE);
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_3));
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_shiwu));
             vh.tv_1.setText("时间：" + date);
@@ -244,6 +250,8 @@ public class ListAdapter extends BaseAdapter {
             vh.iv_image.setVisibility(View.VISIBLE);
             break;
         case 4://面试邀约
+            vh.iv_image.setVisibility(View.VISIBLE);
+            vh.iv_weather_image.setVisibility(View.GONE);
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_4));
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_yaoyue));
             vh.tv_1.setText("时间：" + date);
@@ -261,7 +269,8 @@ public class ListAdapter extends BaseAdapter {
         case 5://差旅规划
             vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_1));
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_chailv));
-          
+            vh.iv_image.setVisibility(View.VISIBLE);
+            vh.iv_weather_image.setVisibility(View.GONE);
             String ticket_from_city_name ="";
             String ticket_to_city_name ="";
             CardExtra cardExtra = cardExtrasList.get(position);
@@ -283,6 +292,8 @@ public class ListAdapter extends BaseAdapter {
             vh.iv_image.setVisibility(View.VISIBLE);
             break;
         case 99://天气卡片
+            vh.iv_image.setVisibility(View.GONE);
+            vh.iv_weather_image.setVisibility(View.VISIBLE);
             vh.ll_weather.setVisibility(View.VISIBLE);
             vh.ll_social.setVisibility(View.GONE);
             vh.iv_default_tep.setVisibility(View.GONE);
@@ -332,7 +343,7 @@ public class ListAdapter extends BaseAdapter {
                     url3=weatherDatas3.getNightPictureUrl();
                     url4=weatherDatas4.getNightPictureUrl();
                 }
-                finalBitmap.display(vh.iv_image,url1,defDrawable.getBitmap(),defDrawable.getBitmap());
+                finalBitmap.display(vh.iv_weather_image,url1,defDrawable.getBitmap(),defDrawable.getBitmap());
                 finalBitmap.display(vh.iv_weather1,url2,defDrawable.getBitmap(),defDrawable.getBitmap());
                 finalBitmap.display(vh.iv_weather2,url3,defDrawable.getBitmap(),defDrawable.getBitmap());
                 finalBitmap.display(vh.iv_weather3,url4,defDrawable.getBitmap(),defDrawable.getBitmap());
@@ -356,6 +367,7 @@ public class ListAdapter extends BaseAdapter {
         View v = LayoutInflater.from(context).inflate(R.layout.item_home_cardlist, null);
         vh.iv_icon = (ImageView) v.findViewById(R.id.iv_icon);
         vh.iv_image = (ImageView) v.findViewById(R.id.iv_image);
+        vh.iv_weather_image = (ImageView)v.findViewById(R.id.iv_weather_image);
         vh.tv_title = (TextView) v.findViewById(R.id.tv_title);
         vh.tv_date_str = (TextView) v.findViewById(R.id.tv_date_str);
         vh.tv_status = (TextView) v.findViewById(R.id.tv_status);
@@ -418,6 +430,7 @@ public class ListAdapter extends BaseAdapter {
     class ViewHolder {
         private ImageView iv_icon;
         private ImageView iv_image;
+        private ImageView iv_weather_image;
         private TextView tv_title;
         private TextView tv_date_str;
         private TextView tv_status;

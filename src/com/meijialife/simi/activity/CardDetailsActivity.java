@@ -105,7 +105,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     private BitmapDrawable defDrawable;
     
     private User user;
-//    private String card_id;
+    private String card_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,24 +113,23 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         super.onCreate(savedInstanceState);
 
         init();
-        initView();
+//        initView();
 
         getCommentList();
 
     }
 
     private void init() {
-        card = (Cards) getIntent().getSerializableExtra("Cards");
-        cardExtra = (CardExtra) getIntent().getSerializableExtra("card_extra");
+      /*  card = (Cards) getIntent().getSerializableExtra("Cards");
+        cardExtra = (CardExtra) getIntent().getSerializableExtra("card_extra");*/
+        card_id = getIntent().getStringExtra("card_id");
+        getCardData(card_id);
+
         user = DBHelper.getUser(this);
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
-    }
-
-    private void initView() {
-        setTitleName(card.getCard_type_name());
+    
         requestBackBtn();
-
         btn_edit_layout = (RelativeLayout) findViewById(R.id.btn_edit_layout);
         btn_cancel_layout = (RelativeLayout) findViewById(R.id.btn_cancel_layout);
 
@@ -174,7 +173,14 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
         btn_edit_layout.setOnClickListener(this);
         btn_cancel_layout.setOnClickListener(this);
+        sec_layout = (RelativeLayout)findViewById(R.id.sec_layout);
+
         
+    
+    }
+
+    private void initView() {
+        setTitleName(card.getCard_type_name());
         if(Integer.valueOf(card.getStatus())==0){
             btn_edit_layout.setClickable(false);
             tv_edit.setClickable(false);
@@ -183,8 +189,6 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_cancel.setClickable(false);
             tv_cancel.setTextColor(getResources().getColor(R.color.simi_color_gray));
         }
-        
-        sec_layout = (RelativeLayout)findViewById(R.id.sec_layout);
         int userType = Integer.parseInt(user.getUser_type());//用户类型 0 = 普通用户 1= 秘书 2 = 服务商
         if(userType == 1){
             //如果是秘书
@@ -530,7 +534,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             UIUtils.showToast(CardDetailsActivity.this, "取消成功");
-                            getCardData();
+                            getCardData(card_id);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -561,7 +565,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        getCardData();
+        getCardData(card_id);
     }
 
     /**
@@ -569,7 +573,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
      * 
      * @param date
      */
-    private void getCardData() {
+    private void getCardData(String card_id) {
         showDialog();
         String user_id = DBHelper.getUser(this).getId();
 
@@ -581,7 +585,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
 //        map.put("card_id", card_id);
-        map.put("card_id", card.getCard_id());
+        map.put("card_id", card_id);
         AjaxParams param = new AjaxParams(map);
 
         new FinalHttp().get(Constants.URL_GET_CARD_DETAILS, param, new AjaxCallBack<Object>() {
@@ -614,6 +618,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                                 }else {
                                     cardExtra = new CardExtra();
                                 }
+                                initView();
                                 showData();
                             } else {
                                 // UIUtils.showToast(getActivity(), "数据错误");
@@ -658,7 +663,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
-        map.put("card_id", card.getCard_id());
+        map.put("card_id", card_id);
         map.put("page", "0");
         AjaxParams param = new AjaxParams(map);
 
@@ -833,7 +838,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                         int status = obj.getInt("status");
                         String msg = obj.getString("msg");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            getCardData();
+                            getCardData(card_id);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(CardDetailsActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -906,7 +911,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                                 sec_btn_accept.setVisibility(View.INVISIBLE);
                                 sec_btn_complete.setVisibility(View.INVISIBLE);
                             } 
-                            getCardData();
+                            getCardData(card_id);
                             
 //                            Toast.makeText(CardDetailsActivity.this, "请求成功", Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误

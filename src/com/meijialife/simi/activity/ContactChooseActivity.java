@@ -209,7 +209,8 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
             postContactData();
             break;
         case R.id.title_btn_left:// 左侧返回按钮
-            if (Constants.finalContactList != null && Constants.finalContactList.size() > 0) {
+            //&& Constants.finalContactList.size() > 0
+            if (Constants.finalContactList != null ) {
                 intent = new Intent();
                 setResult(RESULT_OK, intent);
                 ContactChooseActivity.this.finish();

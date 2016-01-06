@@ -138,7 +138,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         initLeft();
         mBt1.performClick();
 
-        initIM(savedInstanceState);
+//        initIM(savedInstanceState);
 
         // 分享页面初始化
         ShareConfig.getInstance().init(this);

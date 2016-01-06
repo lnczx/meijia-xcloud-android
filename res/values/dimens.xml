@@ -43,6 +43,12 @@
     <dimen name="bottom_bar_icon_height_size">25dp</dimen>
     <dimen name="bottom_padding_top_size">5dp</dimen>
     
+    <!--加号中文字大小-->
+   <dimen name="main_plus_text_size">16sp</dimen>
+   
+   <!--动态头像大小-->
+    <dimen name="feed_icon_size">43dp</dimen>
+    
     
     <!--我的（我的发布+我参与）字体大小 -->
     <dimen name="my_publish_text_size">13sp</dimen>

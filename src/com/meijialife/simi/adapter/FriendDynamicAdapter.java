@@ -44,8 +44,11 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.simi.easemob.utils.ShareConfig;
 
+
 /**
- * 首页卡片列表适配器
+ * @description：圈子--好友动态适配器
+ * @author： kerryg
+ * @date:2016年1月6日 
  */
 @SuppressLint("ResourceAsColor")
 public class FriendDynamicAdapter extends BaseAdapter {

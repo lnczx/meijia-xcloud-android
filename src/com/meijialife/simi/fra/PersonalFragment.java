@@ -13,8 +13,11 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +45,6 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
-import com.meijialife.simi.activity.ApplicationsCenterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
@@ -53,6 +56,7 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.utils.BlurUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -60,7 +64,7 @@ import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
 
 /**
- * @description：
+ * @description：我的页面
  * @author： kerryg
  * @date:2015年11月23日
  */
@@ -90,6 +94,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private ImageView iv_rq_left;
     private LayoutInflater layoutInflater;
     private static View layout_mask;
+    private RelativeLayout rl_top;
 
 
     @Override
@@ -106,7 +111,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
 
         iv_top_head = (RoundImageView) view.findViewById(R.id.iv_top_head);
-
+        rl_top = (RelativeLayout)view.findViewById(R.id.rl_top);
+//        setBackground(R.drawable.bg_person_page);
+        
         layout_mask = v.findViewById(R.id.layout_mask);
         tv_top_nickname = (TextView) view.findViewById(R.id.tv_top_nickname);
         tv_city = (TextView) view.findViewById(R.id.tv_city);
@@ -176,6 +183,27 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         // inflater = LayoutInflater.from(getActivity());
 
     }
+    /**
+     * 设置背景颜色模糊
+     * @param id
+     */
+    @SuppressWarnings("deprecation")
+    private void setBackground(int id)  
+    {       
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),id);//从资源文件中得到图片，并生成Bitmap图片       
+        final Bitmap blurBmp = BlurUtils.fastblur(getActivity(), bmp,1);//0-25，表示模糊值   
+        final Drawable newBitmapDrawable = new BitmapDrawable(blurBmp); // 将Bitmap转换为Drawable 
+        rl_top.post(new Runnable()  //调用UI线程
+        {           
+            @Override          
+            public void run() 
+            {               
+                rl_top.setBackgroundDrawable(newBitmapDrawable);//设置背景
+            }       
+        }); 
+    }
+    
+    
 
     @Override
     public void onResume() {
@@ -232,7 +260,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             startActivity(intent6);
             break;
         case R.id.rl_person_items1:// 工具箱--更多
-             startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
+//             startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
             break;
         case R.id.rl_person_items2:// 我的成长--LV
             break;

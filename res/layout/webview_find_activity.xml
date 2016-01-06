@@ -74,7 +74,7 @@
             android:gravity="center"
             android:text="咨询"
             android:textStyle="bold"
-            android:textSize="30sp"
+            android:textSize="@dimen/title_bar_text_size"
             android:background="@color/simi_color_red"
             android:textColor="@color/white" />
     </RelativeLayout>

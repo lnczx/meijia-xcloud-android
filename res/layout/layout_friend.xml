@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/cut_off_rule" />
      <RelativeLayout
         android:id="@+id/rl_company_contacts"
         android:layout_width="match_parent"

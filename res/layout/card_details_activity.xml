@@ -177,7 +177,7 @@
 
                     <RelativeLayout
                         android:id="@+id/rl_status"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"

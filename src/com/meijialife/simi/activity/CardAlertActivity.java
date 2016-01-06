@@ -69,7 +69,7 @@ public class CardAlertActivity extends Activity {
         mCardId = getIntent().getStringExtra("card_id");
         mAlertDate = (Date) getIntent().getSerializableExtra("date");
         
-        mAlert_time = new SimpleDateFormat("HH:mm:ss").format(mAlertDate);
+        mAlert_time = new SimpleDateFormat("HH:mm").format(mAlertDate);
         mAlert_date = new SimpleDateFormat("yyyy-MM-dd").format(mAlertDate);
 
         
@@ -99,10 +99,10 @@ public class CardAlertActivity extends Activity {
         bt_alert_detail.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CardAlertActivity.this, CardAlertActivity.class);
-//                intent.putExtra("card_id",mCardId);
-                intent.putExtra("Cards", card);
-                intent.putExtra("card_extra",cardExtra);
+                Intent intent = new Intent(CardAlertActivity.this, CardDetailsActivity.class);
+                intent.putExtra("card_id",mCardId);
+              /*  intent.putExtra("Cards", card);
+                intent.putExtra("card_extra",cardExtra);*/
                 startActivity(intent);
                 CardAlertActivity.this.finish();
             }

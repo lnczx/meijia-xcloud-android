@@ -153,6 +153,19 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
         
+        ArrayList<String> list = new ArrayList<String>();
+        String userName = userInfo.getName();
+        String mobile = userInfo.getMobile();
+        if(!StringUtils.isEmpty(mobile)){
+            if(StringUtils.isEmpty(userName)){
+                userName = mobile;
+            }
+            list.add(userName+"\n"+mobile+"\n"+userInfo.getId());
+            Constants.finalContactList = list;
+            tv_select_name.setText("已选择：" +userName);
+            tv_select_number.setText(Constants.finalContactList.size() + "位");            
+        }
+        
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
        isUsersenior = StringUtils.isEquals(user_type, "1");
