@@ -290,6 +290,9 @@ public class Constants {
      public static final String KUAI_DI = "http://m.kuaidi100.com/";
      //绿植
      public static final String LV_ZHI = "http://123.57.173.36/simi-h5/show/order-green.html";
+     //开店
+     public static final String KAI_DIAN = "http://123.57.173.36/simi-h5/show/store-my-index.html";
+     
      
      /**保存卡片创建的联系人**/
      public static ArrayList<String> finalContactList = new ArrayList<String>();

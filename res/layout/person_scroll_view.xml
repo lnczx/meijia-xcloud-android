@@ -346,7 +346,7 @@
                         android:layout_below="@id/iv_person_money"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="兼职赚钱" />
+                        android:text="开店" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
