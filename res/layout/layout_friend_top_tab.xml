@@ -29,6 +29,7 @@
                 android:button="@null"
                 android:gravity="right"
                 android:text="动态"
+                android:textSize="15sp"
                 android:textColor="@color/index2_radiobutton_color" />
             <RadioButton
                 android:id="@+id/rb_friend"
@@ -38,6 +39,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="好友"
+                android:textSize="15sp"
                 android:textColor="@color/index2_radiobutton_color" />
 
             <RadioButton
@@ -47,6 +49,7 @@
                 android:layout_weight="2"
                 android:button="@null"
                 android:gravity="left"
+                android:textSize="15sp"
                 android:text="消息"
                 android:textColor="@color/index2_radiobutton_color" />
         </RadioGroup>

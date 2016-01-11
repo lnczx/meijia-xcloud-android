@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -45,6 +46,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
+import com.meijialife.simi.activity.ApplicationsCenterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
@@ -132,7 +134,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         iv_rq_left = (ImageView) music_popunwindwow.findViewById(R.id.iv_rq_left);
 
         // 为每一栏增加点击事件
-        view.findViewById(R.id.rl_person_items1).setOnClickListener(this);
+//        view.findViewById(R.id.rl_person_items1).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items2).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items3).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items4).setOnClickListener(this);
@@ -146,6 +148,15 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         view.findViewById(R.id.rl_person_attest).setOnClickListener(this);
         view.findViewById(R.id.rl_person_money).setOnClickListener(this);
         view.findViewById(R.id.rl_person_train).setOnClickListener(this);
+        //长按进入应用中心
+        view.findViewById(R.id.rl_person_items1).setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+              startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
+                return false;
+            }
+        });;
+
 
         /**
          * 沉浸式状态栏(像ios那样的状态栏与应用统一颜色样式)android.4.4支持
@@ -259,9 +270,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
             startActivity(intent6);
             break;
-        case R.id.rl_person_items1:// 工具箱--更多
+     /*   case R.id.rl_person_items1:// 工具箱--更多
 //             startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
-            break;
+            break;*/
         case R.id.rl_person_items2:// 我的成长--LV
             break;
         case R.id.rl_person_items3:// 推荐给好友

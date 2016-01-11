@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,6 @@ import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
-import com.meijialife.simi.adapter.ImgAdapter;
 import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
 import com.meijialife.simi.bean.CalendarMark;
@@ -53,13 +53,15 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CollapseCalendarView;
 import com.meijialife.simi.ui.CollapseCalendarView.OnDateSelect;
-import com.meijialife.simi.ui.MyGallery;
+import com.meijialife.simi.ui.ImageCycleView;
+import com.meijialife.simi.ui.ImageCycleView.ImageCycleViewListener;
 import com.meijialife.simi.ui.calendar.CalendarManager;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
-import com.meijialife.simi.zxing.code.MipcaActivityCapture;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.zbar.lib.CaptureActivity;
 
 /**
  * 首页
@@ -78,7 +80,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private ListAdapter adapter;
     private ArrayList<Cards> cardlist;// 卡片数据
     private ArrayList<CardExtra> cardExtrasList;
-    private Cards[] cards;
 
     private TextView tv_tips;// 没有数据时的提示
     private ImageView iv_no_card;// 没有数据时提示 图片
@@ -91,35 +92,23 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private UserInfo userInfo;
     private ArrayList<FindBean> findBeanList;
     
-    private TextView tv_ad_des;//广告说明
-    private ImageView iv_ad_icon;//广告图片
-    private TextView  tv_ad_goto_type;//跳转方式
-    private TextView  tv_ad_goto_url;//跳转url
-    private TextView tv_ad_share;//分享
     TextView tv_service_type_ids;//服务大类集合
     
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
-    private LinearLayout ll_ad;//显示广告位控件
-    
-    private MyGallery gallery = null;
-    private LinearLayout ll_focus_indicator_container = null;
-    private ArrayList<Integer> imgList;
-    private ArrayList<ImageView> portImg;
-    private int preSelImgIndex = 0;
-    private ImgAdapter imgAdapter;
+  
     private String title_name = "发现";
-    
     private boolean card_flag = false;
     private boolean ad_flag = false;
     
     //获取当前位置经纬度
     private LocationClient locationClient = null;
     private static final int UPDATE_TIME = 5000;
-    private static int LOCATION_COUTNS = 0;
     private String longitude ="";//经度
     private String latitude ="";//纬度
     
+    //广告轮播控件
+    private ImageCycleView mAdView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -167,16 +156,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         v.findViewById(R.id.btn_rili).setOnClickListener(this);
         v.findViewById(R.id.btn_saoma).setOnClickListener(this);
         
-        imgAdapter = new ImgAdapter(getActivity());
-        
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
     
-        tv_ad_des = (TextView) v.findViewById(R.id.tv_ad_des);
-        tv_ad_goto_type = (TextView) v.findViewById(R.id.tv_goto_type);
-        tv_ad_goto_url = (TextView) v.findViewById(R.id.tv_goto_url);
-        iv_ad_icon = (ImageView) v.findViewById(R.id.iv_ad_icon);
-        tv_ad_share = (TextView)v.findViewById(R.id.tv_share);
         tv_service_type_ids = (TextView)v.findViewById(R.id.tv_service_type_ids);
         layout_mask = v.findViewById(R.id.layout_mask);
         userInfo = DBHelper.getUserInfo(getActivity());
@@ -220,63 +202,51 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         layout_mask.setVisibility(View.GONE);
     }
 
+    
+    private ImageCycleViewListener mAdCycleViewListener = new ImageCycleViewListener() {
+        @Override
+        public void onImageClick(FindBean info, int position, View view) {
+            String goto_type = info.getGoto_type().trim();
+            String goto_url = info.getGoto_url().trim();
+            String service_type_ids = info.getService_type_ids().trim();
+            if(goto_type.equals("h5")){
+                Intent intent = new Intent(getActivity(),WebViewsFindActivity.class);
+                intent.putExtra("url",goto_url);
+                intent.putExtra("title_name","");
+                intent.putExtra("service_type_ids", "");
+                startActivity(intent);
+            }else if (goto_type.equals("app")) {
+               Intent intent = new Intent(getActivity(),Find2DetailActivity.class);
+               intent.putExtra("service_type_ids", service_type_ids);
+               intent.putExtra("title_name",title_name);
+               startActivity(intent);
+            }else if (goto_type.equals("h5+list")) {
+                Intent intent = new Intent(getActivity(),WebViewsFindActivity.class);
+                intent.putExtra("url",goto_url);
+                intent.putExtra("title_name",title_name);
+                intent.putExtra("service_type_ids", service_type_ids);
+                startActivity(intent);
+            }
+        
+        }
+        @Override
+        public void displayImage(String imageURL, ImageView imageView) {
+            ImageLoader.getInstance().displayImage(imageURL, imageView);// 使用ImageLoader对图片进行加装！
+        }
+     
+    };
+    @SuppressWarnings("static-access")
     private void initListView(View v) {
         listview = (ListView) v.findViewById(R.id.listview);
         tv_tips = (TextView) v.findViewById(R.id.tv_tips);
         iv_no_card = (ImageView) v.findViewById(R.id.iv_no_card);
         
-        LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
+        //广告位轮播的另一种方式
+        RelativeLayout ll = (RelativeLayout) v.inflate(getActivity(), R.layout.activity_ad_cycle, null);
         listview.addHeaderView(ll);
+        mAdView = (ImageCycleView)ll.findViewById(R.id.ad_view);
 
-        gallery = (MyGallery) ll.findViewById(R.id.gallery);
-        ll_focus_indicator_container = (LinearLayout) ll.findViewById(R.id.ll_focus_indicator_container);
-
-        gallery.setAdapter(imgAdapter);
-        gallery.setFocusable(true);
-        gallery.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv_gotoType =(TextView)view.findViewById(R.id.tv_goto_type);
-                TextView tv_gotoUrl =(TextView)view.findViewById(R.id.tv_goto_url);
-                TextView tv_service_type_ids =(TextView)view.findViewById(R.id.tv_service_type_ids);
-                
-                String goto_type = tv_gotoType.getText().toString().trim();
-                String goto_url = tv_gotoUrl.getText().toString().trim();
-                String service_type_ids = tv_service_type_ids.getText().toString().trim();
-                if(goto_type.equals("h5")){
-                    Intent intent = new Intent(getActivity(),WebViewsFindActivity.class);
-                    intent.putExtra("url",goto_url);
-                    intent.putExtra("title_name","");
-                    intent.putExtra("service_type_ids", "");
-                    startActivity(intent);
-                }else if (goto_type.equals("app")) {
-                   Intent intent = new Intent(getActivity(),Find2DetailActivity.class);
-                   intent.putExtra("service_type_ids", service_type_ids);
-                   intent.putExtra("title_name",title_name);
-                   startActivity(intent);
-                }else if (goto_type.equals("h5+list")) {
-                    Intent intent = new Intent(getActivity(),WebViewsFindActivity.class);
-                    intent.putExtra("url",goto_url);
-                    intent.putExtra("title_name",title_name);
-                    intent.putExtra("service_type_ids", service_type_ids);
-                    startActivity(intent);
-                }
-            }
-        });
-       /* gallery.setOnItemSelectedListener(new OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                    int selIndex, long arg3) {
-                selIndex = selIndex % findBeanList.size();
-                // 修改上一次选中项的背景
-                portImg.get(preSelImgIndex).setImageResource(R.drawable.ic_focus);
-                // 修改当前选中项的背景
-                portImg.get(selIndex).setImageResource(R.drawable.ic_focus_select);
-                preSelImgIndex = selIndex;
-            }
-
-            public void onNothingSelected(AdapRterView<?> arg0) {
-            }
-        });*/
+        
         getAdListByChannelId("0");//首页广告位显示
         /*
          * ArrayList<String> list = new ArrayList<String>(); for (int i = 0; i < 4; i++) { list.add("今日无安排" + i); }
@@ -302,8 +272,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     public void onResume() {
         super.onResume();
         LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
-        gallery = (MyGallery) ll.findViewById(R.id.gallery);
+//        gallery = (MyGallery) ll.findViewById(R.id.gallery);
         initLocation();//启动gps定位
+        mAdView.startImageCycle();
         
         getTotalByMonth();
         getCardListData(today_date, card_from);
@@ -314,11 +285,12 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public void onStop() {
         super.onStop();
-        gallery.destroy();
+//        gallery.destroy();
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
             locationClient = null;
         } 
+        mAdView.pushImageCycle();
     }
 
     public void isShowDefaultCard(boolean card_flag,boolean ad_flag){
@@ -559,13 +531,11 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                                 Gson gson = new Gson();
                                 findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
                                 }.getType());
-                                imgAdapter.setData(findBeanList);
+                                mAdView.setImageResources(findBeanList, mAdCycleViewListener);
                                 isShowDefaultCard(card_flag,true);
                             } else {
-                                imgAdapter.setData(new ArrayList<FindBean>());
                                 isShowDefaultCard(card_flag,false);
                             }
-                            InitFocusIndicatorContainer();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -604,8 +574,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             tv_tips.setVisibility(View.GONE);
             iv_no_card.setVisibility(View.GONE);
         }
-      
-        
     }*/
     
     
@@ -652,7 +620,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             break;
         case R.id.btn_saoma:
             Intent intents = new Intent();
-            intents.setClass(getActivity(), MipcaActivityCapture.class);
+            intents.setClass(getActivity(), CaptureActivity.class);
             intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
             break;
@@ -826,29 +794,13 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public void onDestroy() {
         super.onDestroy();
-        gallery.destroy();
+//        gallery.destroy();
         //关闭定位
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
             locationClient = null;
         } 
-    }
-    
-    private void InitFocusIndicatorContainer() {
-        portImg = new ArrayList<ImageView>();
-        for (int i = 0; i < findBeanList.size(); i++) {
-            ImageView localImageView = new ImageView(getActivity());
-            localImageView.setId(i);
-            ImageView.ScaleType localScaleType = ImageView.ScaleType.FIT_XY;
-            localImageView.setScaleType(localScaleType);
-            LinearLayout.LayoutParams localLayoutParams = new LinearLayout.LayoutParams(
-                    24, 24);
-            localImageView.setLayoutParams(localLayoutParams);
-            localImageView.setPadding(5, 5, 5, 5);
-            localImageView.setImageResource(R.drawable.ic_focus);
-            portImg.add(localImageView);
-            this.ll_focus_indicator_container.addView(localImageView);
-        }
-    }
+        mAdView.pushImageCycle();
 
+    }
 }

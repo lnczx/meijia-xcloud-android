@@ -58,5 +58,13 @@
 	<dimen name="account_text_size">15sp</dimen>
 	<!--登录图标大小  -->
 	<dimen name="login_btn_size">40dp</dimen>
+	<!--发现中动态标题-->
+	<dimen name="rdo1">0dp</dimen>
+    <dimen name="rdo2">100dp</dimen>
+    <dimen name="rdo3">200dp</dimen>
+    <dimen name="rdo4">300dp</dimen>
+    <dimen name="rdo5">400dp</dimen>
+    <dimen name="rdo6">500dp</dimen>
+	
 	 
 </resources>

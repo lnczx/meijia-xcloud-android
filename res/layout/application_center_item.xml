@@ -20,7 +20,6 @@
             android:layout_height="40dp"  
             android:layout_centerHorizontal="true"  
             android:contentDescription="@string/app_name" 
-            android:src="@drawable/ic_launcher"
             />  
   
         <TextView  

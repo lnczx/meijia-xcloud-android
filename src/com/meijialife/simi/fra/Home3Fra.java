@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,7 +51,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
-import com.meijialife.simi.zxing.code.MipcaActivityCapture;
+import com.zbar.lib.CaptureActivity;
 
 /**
  * @description：好友---消息
@@ -187,6 +188,9 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
                 if (checkedId == rb_feed.getId()) {
                     Constants.checkedIndex = 0;
                     line_1.setVisibility(View.VISIBLE);
+                    rb_feed.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                    rb_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+                    rb_friend.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
                     layout_dynamic.setVisibility(View.VISIBLE);
                     layout_msg.setVisibility(View.GONE);
                     layout_friend.setVisibility(View.GONE);
@@ -196,6 +200,9 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
                 if (checkedId == rb_friend.getId()) {
                     Constants.checkedIndex = 1;
                     line_2.setVisibility(View.VISIBLE);
+                    rb_friend.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                    rb_feed.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+                    rb_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
                     layout_msg.setVisibility(View.GONE);
                     layout_dynamic.setVisibility(View.GONE);
                     layout_friend.setVisibility(View.VISIBLE);
@@ -388,8 +395,9 @@ public class Home3Fra extends BaseFragment implements OnItemClickListener, OnCli
             startActivity(new Intent(getActivity(), FindSecretaryActivity.class));
             break;
         case R.id.rl_rq:// 扫一扫加好友
+            
             Intent intents = new Intent();
-            intents.setClass(getActivity(), MipcaActivityCapture.class);
+            intents.setClass(getActivity(), CaptureActivity.class);
             intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
             break;

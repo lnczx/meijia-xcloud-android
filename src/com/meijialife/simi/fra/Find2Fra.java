@@ -11,19 +11,25 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -38,12 +44,20 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
+import com.meijialife.simi.activity.MyOrderActivity;
+import com.meijialife.simi.activity.MyWalletActivity;
+import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
+import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.Find2Adapter;
+import com.meijialife.simi.adapter.FindAllAdapter;
 import com.meijialife.simi.bean.ChanelBean;
 import com.meijialife.simi.bean.FindBean;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.SyncHorizontalScrollView;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -54,6 +68,7 @@ import com.meijialife.simi.utils.UIUtils;
  * @author： kerryg
  * @date:2015年11月13日
  */
+@SuppressLint("ResourceAsColor")
 public class Find2Fra extends BaseFragment {
 
     private MainActivity activity;
@@ -70,18 +85,35 @@ public class Find2Fra extends BaseFragment {
     private ImageView iv_nav_left;
     private ImageView iv_nav_right;
     private int indicatorWidth;
-    public  ArrayList<String> tabTitle ;// 标题
+    public ArrayList<String> tabTitle;// 标题
     private LayoutInflater mInflater;
     private int currentIndicatorLeft = 0;
-    
+
     private ArrayList<FindBean> findBeanList;
     private ArrayList<ChanelBean> chanelBeanList;
-    private String  title_id = "1";
-    private String  title_name="发现";
+    private String title_id = "1";
+    private String title_name = "发现";
+
+    private RadioGroup myRadioGroup;
+    private int _id = 1000;
+    private LinearLayout layout, titleLayout;
+    private TextView textView;
+    private ImageView mImageView;
+    private float mCurrentCheckedRadioLeft;// 当前被选中的RadioButton距离左侧的距离
+    private HorizontalScrollView mHorizontalScrollView;// 上面的水平滚动控件
+    private View v = null;
+    
+    private ArrayList<RadioButton> buttonList;
+    private LinearLayout find_other_list;
+    private LinearLayout find_all_list;
+    private GridView gv_application1;
+    private FindAllAdapter appToolsAdapter1;
+    private User user;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.find_list, null);
+        v = inflater.inflate(R.layout.find_list, null);
         findViewById(v);
         init(v);
         setListener();
@@ -93,6 +125,7 @@ public class Find2Fra extends BaseFragment {
         /**
          * 标题滑动
          */
+        user = DBHelper.getUser(getActivity());
         rl_nav = (RelativeLayout) v.findViewById(R.id.rl_nav);
         mHsv = (SyncHorizontalScrollView) v.findViewById(R.id.mHsv);
         rg_nav_content = (RadioGroup) v.findViewById(R.id.rg_nav_content);
@@ -100,8 +133,20 @@ public class Find2Fra extends BaseFragment {
         iv_nav_left = (ImageView) v.findViewById(R.id.iv_nav_left);
         iv_nav_right = (ImageView) v.findViewById(R.id.iv_nav_right);
         
-        chanelBeanList = new ArrayList<ChanelBean>();
+        buttonList = new ArrayList<RadioButton>();
+        titleLayout = (LinearLayout) v.findViewById(R.id.title_lay);
+        layout = (LinearLayout) v.findViewById(R.id.lay);
+        mImageView = (ImageView) v.findViewById(R.id.img1);
+        mHorizontalScrollView = (HorizontalScrollView) v.findViewById(R.id.horizontalScrollView);
 
+        find_all_list = (LinearLayout)v.findViewById(R.id.find_all_list);
+        find_other_list = (LinearLayout)v.findViewById(R.id.find_other_list);
+        gv_application1 = (GridView) v.findViewById(R.id.gv_application1);
+        appToolsAdapter1 = new FindAllAdapter(getActivity());
+        gv_application1.setAdapter(appToolsAdapter1);
+        
+        setOnClick();
+        chanelBeanList = new ArrayList<ChanelBean>();
         /**
          * 搜索+列表展现
          */
@@ -111,26 +156,66 @@ public class Find2Fra extends BaseFragment {
         listview.setAdapter(adapter);
         getChanelList();
     }
+    private void setOnClick(){
+        gv_application1.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FindBean findBean = findBeanList.get(position);
+              
+                String title_name = findBean.getTitle().trim();
+                String goto_type = findBean.getGoto_type().trim();
+                String goto_url = findBean.getGoto_url().trim();
+                String service_type_ids = findBean.getService_type_ids().toString().trim();
+                if (goto_type.equals("h5")) {
+                    Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
+                    intent.putExtra("url", goto_url);
+                    intent.putExtra("title_name", "");
+                    intent.putExtra("service_type_ids", "");
+                    startActivity(intent);
+                } else if (goto_type.equals("app")) {
+                    Intent intent = new Intent(getActivity(), Find2DetailActivity.class);
+                    intent.putExtra("service_type_ids", service_type_ids);
+                    intent.putExtra("title_name", title_name);
+                    startActivity(intent);
+                } else if (goto_type.equals("h5+list")) {
+                    Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
+                    intent.putExtra("url", goto_url);
+                    intent.putExtra("title_name", title_name);
+                    intent.putExtra("service_type_ids", service_type_ids);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+
     /*
      * 初始化适配器
      */
     public void init(View v) {
         //获取屏幕宽度
-      
-            DisplayMetrics dm = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-            indicatorWidth = dm.widthPixels / 4;
-            
-            LayoutParams cursor_Params = (LayoutParams) iv_nav_indicator.getLayoutParams();
-            cursor_Params.width = indicatorWidth;// 初始化滑动下标的宽
-            iv_nav_indicator.setLayoutParams(cursor_Params);
-            mHsv.setSomeParam(rl_nav, iv_nav_left, iv_nav_right, getActivity());
-            mInflater = LayoutInflater.from(getActivity());
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        indicatorWidth = dm.widthPixels / 4;
+        
+       /* 获得屏幕宽度的另一种方法
+        * DisplayMetrics dm1 = getResources().getDisplayMetrics();
+            dm1.heightPixels;
+        */
+        LayoutParams cursor_Params = (LayoutParams) iv_nav_indicator.getLayoutParams();
+        cursor_Params.width = indicatorWidth;// 初始化滑动下标的宽
+        iv_nav_indicator.setLayoutParams(cursor_Params);
+
+        mHsv.setSomeParam(rl_nav, iv_nav_left, iv_nav_right, getActivity());
+        // 获取布局填充器
+        // mInflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        mInflater = LayoutInflater.from(getActivity());
         
     }
+
     private void setListener() {
         rg_nav_content.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
+            @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton rb = (RadioButton)rg_nav_content.getChildAt((checkedId));
                 if (rb != null) {
@@ -154,29 +239,29 @@ public class Find2Fra extends BaseFragment {
         listview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
-                TextView tv_gotoType =(TextView)view.findViewById(R.id.tv_goto_type);
-                TextView tv_gotoUrl =(TextView)view.findViewById(R.id.tv_goto_url);
-                TextView tv_service_type_ids =(TextView)view.findViewById(R.id.tv_service_type_ids);
-                
+
+                TextView tv_gotoType = (TextView) view.findViewById(R.id.tv_goto_type);
+                TextView tv_gotoUrl = (TextView) view.findViewById(R.id.tv_goto_url);
+                TextView tv_service_type_ids = (TextView) view.findViewById(R.id.tv_service_type_ids);
+
                 String goto_type = tv_gotoType.getText().toString().trim();
                 String goto_url = tv_gotoUrl.getText().toString().trim();
                 String service_type_ids = tv_service_type_ids.getText().toString().trim();
-                if(goto_type.equals("h5")){
-                    Intent intent = new Intent(getActivity(),WebViewsFindActivity.class);
-                    intent.putExtra("url",goto_url);
-                    intent.putExtra("title_name","");
+                if (goto_type.equals("h5")) {
+                    Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
+                    intent.putExtra("url", goto_url);
+                    intent.putExtra("title_name", "");
                     intent.putExtra("service_type_ids", "");
                     startActivity(intent);
-                }else if (goto_type.equals("app")) {
-                   Intent intent = new Intent(getActivity(),Find2DetailActivity.class);
-                   intent.putExtra("service_type_ids", service_type_ids);
-                   intent.putExtra("title_name",title_name);
-                   startActivity(intent);
-                }else if (goto_type.equals("h5+list")) {
-                    Intent intent = new Intent(getActivity(),WebViewsFindActivity.class);
-                    intent.putExtra("url",goto_url);
-                    intent.putExtra("title_name",title_name);
+                } else if (goto_type.equals("app")) {
+                    Intent intent = new Intent(getActivity(), Find2DetailActivity.class);
+                    intent.putExtra("service_type_ids", service_type_ids);
+                    intent.putExtra("title_name", title_name);
+                    startActivity(intent);
+                } else if (goto_type.equals("h5+list")) {
+                    Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
+                    intent.putExtra("url", goto_url);
+                    intent.putExtra("title_name", title_name);
                     intent.putExtra("service_type_ids", service_type_ids);
                     startActivity(intent);
                 }
@@ -191,19 +276,71 @@ public class Find2Fra extends BaseFragment {
         });
 
     }
-	private void initNavigationHSV(ArrayList<ChanelBean> chanelBeanList) {
-        rg_nav_content.removeAllViews();
-        for (Iterator iterator = chanelBeanList.iterator(); iterator.hasNext();) {
-            ChanelBean chanelBean = (ChanelBean) iterator.next();
-            RadioButton rb = (RadioButton) mInflater.inflate(R.layout.nav_radiogroup_item, null);
-            int id = new Integer(chanelBean.getChannel_id()).intValue();
-            rb.setId((id-1));
-            rb.setText(chanelBean.getName());
-            rb.setLayoutParams(new LayoutParams(indicatorWidth, LayoutParams.MATCH_PARENT));
-            rg_nav_content.addView(rb);
+
+    private void initGroup(ArrayList<ChanelBean> titleList) {
+
+        myRadioGroup = new RadioGroup(getActivity());
+        myRadioGroup.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        myRadioGroup.setOrientation(LinearLayout.HORIZONTAL);
+        layout.addView(myRadioGroup);
+        for (int i = 0; i < titleList.size(); i++) {
+            ChanelBean chanelBean = titleList.get(i);
+            RadioButton radio = (RadioButton) mInflater.inflate(R.layout.nav_radiogroup_item, null);
+            radio.setId(_id + i);
+            radio.setText(chanelBean.getName());
+            radio.setTag(chanelBean);
+            if (i == 0) {
+                radio.setChecked(true);
+                int itemWidth = (int) radio.getPaint().measureText(chanelBean.getName());
+                mImageView.setLayoutParams(new LinearLayout.LayoutParams(itemWidth + radio.getPaddingLeft() + radio.getPaddingRight(), 4));
+            }
+            myRadioGroup.addView(radio);
+            buttonList.add(radio);
         }
-        rg_nav_content.check(0);//默认选中第一个RadioButton
+        myRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+            /*    
+                if (checkedId==5) {//全部
+                    find_all_list.setVisibility(View.VISIBLE);
+                    find_other_list.setVisibility(View.GONE);
+                }else {
+                    find_all_list.setVisibility(View.GONE);
+                    find_other_list.setVisibility(View.VISIBLE);
+                }*/
+                for (Iterator iterator = buttonList.iterator(); iterator.hasNext();) {
+                    RadioButton button = (RadioButton) iterator.next();
+                    int buttonId =button.getId();
+                    if(checkedId==buttonId){
+                        int radioButtonId = group.getCheckedRadioButtonId();
+                        // 根据ID获取RadioButton的实例
+                        RadioButton rb = (RadioButton) v.findViewById(radioButtonId);
+                        rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                        ChanelBean chanelBean = (ChanelBean) rb.getTag();
+                        AnimationSet animationSet = new AnimationSet(true);
+                        TranslateAnimation translateAnimation;
+                        translateAnimation = new TranslateAnimation(mCurrentCheckedRadioLeft, rb.getLeft(), 0f, 0f);
+                        animationSet.addAnimation(translateAnimation);
+                        animationSet.setFillBefore(true);
+                        animationSet.setFillAfter(true);
+                        animationSet.setDuration(300);
+
+                        mImageView.startAnimation(animationSet);// 开始上面蓝色横条图片的动画切换
+                        mCurrentCheckedRadioLeft = rb.getLeft();// 更新当前蓝色横条距离左边的距离
+                        mHorizontalScrollView.smoothScrollTo((int) mCurrentCheckedRadioLeft - (int) getResources().getDimension(R.dimen.rdo2), 0);
+                        mImageView.setLayoutParams(new LinearLayout.LayoutParams(rb.getRight() - rb.getLeft(), 4));
+                        getFind2List(chanelBean.getChannel_id());
+                    }else {
+                        RadioButton rb = (RadioButton)group.findViewById(buttonId);  
+                        rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+                    }
+                }
+            }
+        });
+
     }
+
     public Find2Fra() {
         super();
     }
@@ -212,10 +349,11 @@ public class Find2Fra extends BaseFragment {
         super();
         this.activity = activity;
     }
+
     /**
      * 获得频道中广告信息接口（图片+文字）
      */
-    public void getFind2List(String channel_id) {
+    public void getFind2List(final String channel_id) {
         if (!NetworkUtils.isNetworkConnected(activity)) {
             Toast.makeText(activity, getString(R.string.net_not_open), 0).show();
             return;
@@ -231,6 +369,7 @@ public class Find2Fra extends BaseFragment {
                 dismissDialog();
                 Toast.makeText(activity, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -247,9 +386,25 @@ public class Find2Fra extends BaseFragment {
                                 Gson gson = new Gson();
                                 findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
                                 }.getType());
-                                adapter.setData(findBeanList);
+                                if(channel_id.equals("5")){
+                                    find_all_list.setVisibility(View.VISIBLE);
+                                    find_other_list.setVisibility(View.GONE);
+                                    appToolsAdapter1.setData(findBeanList);
+                                }else {
+                                    find_all_list.setVisibility(View.GONE);
+                                    find_other_list.setVisibility(View.VISIBLE);
+                                    adapter.setData(findBeanList);
+                                }
                             } else {
-                                adapter.setData(new ArrayList<FindBean>());
+                                if(channel_id.equals("5")){
+                                    find_all_list.setVisibility(View.VISIBLE);
+                                    find_other_list.setVisibility(View.GONE);
+                                    appToolsAdapter1.setData(new ArrayList<FindBean>());
+                                }else {
+                                    find_all_list.setVisibility(View.GONE);
+                                    find_other_list.setVisibility(View.VISIBLE);
+                                    adapter.setData(new ArrayList<FindBean>());
+                                }
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -274,6 +429,12 @@ public class Find2Fra extends BaseFragment {
             }
         });
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        buttonList =null;
+    }
+
     /**
      * 获得频道列表接口
      */
@@ -292,6 +453,7 @@ public class Find2Fra extends BaseFragment {
                 dismissDialog();
                 Toast.makeText(activity, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -308,10 +470,10 @@ public class Find2Fra extends BaseFragment {
                                 Gson gson = new Gson();
                                 chanelBeanList = gson.fromJson(data, new TypeToken<ArrayList<ChanelBean>>() {
                                 }.getType());
-                            }else {
+                            } else {
                                 chanelBeanList = new ArrayList<ChanelBean>();
                             }
-                            initNavigationHSV(chanelBeanList);
+                            initGroup(chanelBeanList);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -326,7 +488,7 @@ public class Find2Fra extends BaseFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){//在Fragment中使用系统资源必须增加判断
+                    if (isAdded()) {// 在Fragment中使用系统资源必须增加判断
                         errorMsg = getString(R.string.servers_error);
                     }
                 }
@@ -337,5 +499,5 @@ public class Find2Fra extends BaseFragment {
             }
         });
     }
-    
+
 }
