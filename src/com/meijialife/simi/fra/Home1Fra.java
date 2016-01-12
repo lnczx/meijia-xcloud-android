@@ -12,13 +12,18 @@ import net.tsz.afinal.http.AjaxParams;
 import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -55,6 +60,7 @@ import com.meijialife.simi.ui.CollapseCalendarView;
 import com.meijialife.simi.ui.CollapseCalendarView.OnDateSelect;
 import com.meijialife.simi.ui.ImageCycleView;
 import com.meijialife.simi.ui.ImageCycleView.ImageCycleViewListener;
+import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.ui.calendar.CalendarManager;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -106,6 +112,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private static final int UPDATE_TIME = 5000;
     private String longitude ="";//经度
     private String latitude ="";//纬度
+    private String addString ="";//返回地址
     
     //广告轮播控件
     private ImageCycleView mAdView;
@@ -116,7 +123,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         // if(this.getResources().getConfiguration().orientation ==Configuration.ORIENTATION_LANDSCAPE){
         // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // }
-        
         initLocation();
         init(v);
         initCalendar(v);
@@ -135,6 +141,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
         option.setProdName("Secretary"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
         option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
+        option.setIsNeedAddress(true);//设置返回城市
         locationClient.setLocOption(option);
         locationClient.start();
         
@@ -146,11 +153,12 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 }
                 latitude =  location.getLatitude()+"";//纬度
                 longitude = location.getLongitude()+"";//经度
+                addString = location.getAddrStr();
             }
         });
     }
-    
-    private void init(View v) {
+    @SuppressLint("ResourceAsColor")
+	private void init(View v) {
         v.findViewById(R.id.btn_chakan).setOnClickListener(this);
         v.findViewById(R.id.ibtn_person).setOnClickListener(this);
         v.findViewById(R.id.btn_rili).setOnClickListener(this);
@@ -273,9 +281,10 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         super.onResume();
         LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
 //        gallery = (MyGallery) ll.findViewById(R.id.gallery);
-        initLocation();//启动gps定位
+        if(locationClient != null && !locationClient.isStarted()){
+            locationClient.start();
+        }
         mAdView.startImageCycle();
-        
         getTotalByMonth();
         getCardListData(today_date, card_from);
         getAdListByChannelId("0");
@@ -288,7 +297,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
 //        gallery.destroy();
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
-            locationClient = null;
         } 
         mAdView.pushImageCycle();
     }

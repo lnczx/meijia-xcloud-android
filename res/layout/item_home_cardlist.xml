@@ -123,7 +123,7 @@
                     android:id="@+id/tv_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2015年7月15日 18:00"
+                    android:text=""
                     android:textColor="#8a8989" />
 
                 <TextView
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="地址：东三环中路65号"
+                    android:text=""
                     android:textColor="#8a8989" />
 
                 <TextView
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="费用：已支付200元团购"
+                    android:text=""
                     android:textColor="#8a8989" />
             </LinearLayout>
         </LinearLayout>
@@ -149,7 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="推荐本店的水煮鱼，麻辣小龙虾"
+            android:text=""
             android:textColor="#8a8989" />
     </LinearLayout>
 

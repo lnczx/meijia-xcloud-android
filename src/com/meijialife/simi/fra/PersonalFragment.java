@@ -19,6 +19,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -58,6 +60,7 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.utils.BlurUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -104,11 +107,11 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         layoutInflater = inflater;
         v = inflater.inflate(R.layout.personal_fragment, null, false);
         init(inflater, v);
-
+        
         return v;
     }
-
-    private void init(LayoutInflater inflater, View view) {
+    @SuppressLint("ResourceAsColor")
+	private void init(LayoutInflater inflater, View view) {
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
 
@@ -155,17 +158,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
               startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
                 return false;
             }
-        });;
-
-
-        /**
-         * 沉浸式状态栏(像ios那样的状态栏与应用统一颜色样式)android.4.4支持
-         */
-    /*    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
-//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
-        }*/
-        
+        });
         ll_rq.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +187,28 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         // inflater = LayoutInflater.from(getActivity());
 
     }
+    private SystemBarTintManager mTintManager;
+    @SuppressLint("ResourceAsColor")
+	private void initWindow(){
+        /**
+         * 沉浸式状态栏(像ios那样的状态栏与应用统一颜色样式)android.4.4支持
+         */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
+//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
+            mTintManager = new SystemBarTintManager(getActivity());
+            mTintManager.setStatusBarTintEnabled(true);
+//            mTintManager.setNavigationBarTintEnabled(true);
+            mTintManager.setTintColor(R.color.simi_color_red);
+            mTintManager.setStatusBarTintColor(R.color.simi_color_red);
+        }
+    }
+    private void clearWindow(){
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
     /**
      * 设置背景颜色模糊
      * @param id
@@ -219,21 +234,12 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-  /*      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
-//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
-        }
-*/
         getUserData();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-    /*    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }*/
         dismissDialog();
 
     }
@@ -339,7 +345,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         PersonalFragment.showMask();
         CustomShareBoard shareBoard = new CustomShareBoard(getActivity());
         shareBoard.setOnDismissListener(new OnDismissListener() {
-            
             @Override
             public void onDismiss() {
                 PersonalFragment.GoneMask(); 

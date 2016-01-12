@@ -122,6 +122,7 @@ public class PublishDynamicActivity  extends Activity{
         option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
         option.setProdName("Secretary"); //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
         option.setScanSpan(UPDATE_TIME);    //设置定时定位的时间间隔。单位毫秒
+        option.setIsNeedAddress(true);
         locationClient.setLocOption(option);
         locationClient.start();
         
@@ -264,6 +265,9 @@ public class PublishDynamicActivity  extends Activity{
             }
         });
 //        initLocation();
+        if(locationClient!=null && !locationClient.isStarted()){
+            locationClient.start();
+        }
     }
     @Override
     protected void onDestroy() {
@@ -279,7 +283,7 @@ public class PublishDynamicActivity  extends Activity{
         super.onStop();
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
-            locationClient = null;
+//            locationClient = null;
         } 
     }
     /**

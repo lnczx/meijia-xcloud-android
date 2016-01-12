@@ -44,13 +44,8 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
-import com.meijialife.simi.activity.MyOrderActivity;
-import com.meijialife.simi.activity.MyWalletActivity;
-import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
-import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.Find2Adapter;
 import com.meijialife.simi.adapter.FindAllAdapter;
@@ -386,7 +381,7 @@ public class Find2Fra extends BaseFragment {
                                 Gson gson = new Gson();
                                 findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
                                 }.getType());
-                                if(channel_id.equals("5")){
+                                if(channel_id.equals("99")){//99=全部
                                     find_all_list.setVisibility(View.VISIBLE);
                                     find_other_list.setVisibility(View.GONE);
                                     appToolsAdapter1.setData(findBeanList);
@@ -396,7 +391,7 @@ public class Find2Fra extends BaseFragment {
                                     adapter.setData(findBeanList);
                                 }
                             } else {
-                                if(channel_id.equals("5")){
+                                if(channel_id.equals("99")){//99=全部
                                     find_all_list.setVisibility(View.VISIBLE);
                                     find_other_list.setVisibility(View.GONE);
                                     appToolsAdapter1.setData(new ArrayList<FindBean>());

@@ -3,7 +3,6 @@ package com.meijialife.simi.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalHttp;
@@ -12,13 +11,16 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +31,9 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.AppToolsAdapter;
 import com.meijialife.simi.bean.AppToolsData;
-import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -63,7 +65,7 @@ public class ApplicationsCenterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         initView();
     }
-
+  
     private void initView() {
         setTitleName("应用中心");
         requestBackBtn();

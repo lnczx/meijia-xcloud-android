@@ -15,8 +15,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="4.7dp"
-            android:paddingTop="6.7dp" >
+            android:paddingBottom="1dp"
+            android:paddingTop="1dp" >
 
             <com.meijialife.simi.ui.calendar.DayView
                 android:id="@+id/tvDayView"

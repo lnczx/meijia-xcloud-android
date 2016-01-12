@@ -30,6 +30,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -93,7 +94,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     protected static final String TAG = "MainActivity";
 
     private TextView tv_header;
-    private LinearLayout mBt1, mBt2, mBt3, mBt4, mBt5;
+    private LinearLayout mBt1, mBt2, mBt3, mBt4;
+    private FrameLayout mBt5;
     private FragmentManager mFM = null;
     private int currentTabIndex; // 1=首页 2=发现 3=秘友 4=我的
 
@@ -247,7 +249,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         mBt2 = (LinearLayout) findViewById(R.id.tab_bt_2);
         mBt3 = (LinearLayout) findViewById(R.id.tab_bt_3);
         mBt4 = (LinearLayout) findViewById(R.id.tab_bt_4);
-        mBt5 = (LinearLayout) findViewById(R.id.tab_bt_5);
+        mBt5 = (FrameLayout) findViewById(R.id.tab_bt_5);
+//        mBt5 = (LinearLayout) findViewById(R.id.tab_bt_5);
         unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
 
         mBt1.setOnClickListener(this);

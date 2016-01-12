@@ -6,6 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/simi_color_red"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
          >
 
         <LinearLayout
@@ -124,7 +126,7 @@
     <LinearLayout
         android:id="@+id/days"
         android:layout_width="match_parent"
-        android:layout_height="33.3dp"
+        android:layout_height="26dp"
         android:background="@android:color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal" >

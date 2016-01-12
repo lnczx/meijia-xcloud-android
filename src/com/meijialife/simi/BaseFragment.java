@@ -1,6 +1,9 @@
 package com.meijialife.simi;
 
+import com.meijialife.simi.utils.StatusBarCompat;
+
 import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 
@@ -11,6 +14,7 @@ import android.support.v4.app.Fragment;
 public class BaseFragment extends Fragment{
 	
 	private ProgressDialog m_pDialog;
+
 	public void showDialog() {
 		if(m_pDialog == null){
 			m_pDialog = new ProgressDialog(getActivity());
@@ -35,6 +39,10 @@ public class BaseFragment extends Fragment{
         // TODO Auto-generated method stub
         super.onPause();
         dismissDialog();
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
  
 }

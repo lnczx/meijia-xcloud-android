@@ -3,7 +3,8 @@
     android:id="@+id/fl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white" 
+    >
 
     <FrameLayout
         android:id="@+id/rl_root"
@@ -20,7 +21,8 @@
                 android:id="@+id/rl_top"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:background="@drawable/bg_person_page" >
+                android:background="@drawable/bg_person_page"
+                 >
                 <!--
  沉侵栏方式属性设置
                	android:clipToPadding="true"

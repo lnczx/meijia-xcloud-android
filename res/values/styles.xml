@@ -3,6 +3,8 @@
 
     <!-- Base application theme, dependent on API level. This theme is replaced by AppBaseTheme from res/values-vXX/styles.xml on newer devices. -->
     <style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar">
+        <!-- <item name="android:fitsSystemWindows">true</item>
+        <item name="android:clipToPadding">true</item> -->
         <!-- Theme customizations available in newer API levels can go in res/values-vXX/styles.xml, while customizations related to backward-compatibility can go here. -->
     </style>
 
@@ -57,7 +59,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/simi_color_gray</item>
+        <item name="android:textColor">@color/text_chinaday</item>
     </style>
 
     <!-- 多张图片上传样式 -->

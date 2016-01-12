@@ -7,21 +7,21 @@
     android:orientation="vertical"
     android:visibility="gone"
      >
-<!-- 
-    <include
-        android:id="@+id/view_title_bar"
-        layout="@layout/layout_title_bar" /> -->
 
     <TextView
         android:id="@+id/tv_menu_type1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="工具与服务"
+        android:text=""
         android:padding="10dp"
         android:background="@color/activity_bg_color"
         android:visibility="gone"
          />
-
+  <View
+            android:id="@+id/top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cut_off_rule" />
     <GridView
         android:id="@+id/gv_application1"
         android:layout_width="match_parent"

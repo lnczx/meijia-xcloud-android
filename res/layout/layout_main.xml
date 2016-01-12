@@ -7,192 +7,19 @@
     <include
         android:id="@+id/view_title_bar"
         layout="@layout/layout_title_bar" />
-     
-    <RelativeLayout
-        android:id="@+id/tab_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="bottom" >
-
-        <LinearLayout
-            android:id="@+id/tab_item_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:id="@+id/tab_bt_1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="@dimen/bottom_bar_icon_width_size"
-                    android:layout_height="@dimen/bottom_bar_icon_height_size"
-                    android:src="@drawable/tab_index_bg_selector" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="首页"
-                    android:paddingTop="@dimen/bottom_padding_top_size"
-                    android:textColor="@color/tab_text_color_selector" 
-                    android:textSize="@dimen/bottom_bar_text_size"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tab_bt_2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="@dimen/bottom_bar_icon_width_size"
-                    android:layout_height="@dimen/bottom_bar_icon_height_size"
-                    android:src="@drawable/tab_search_bg_selector" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="发现"
-                    android:paddingTop="@dimen/bottom_padding_top_size"
-                    android:textColor="@color/tab_text_color_selector" 
-                    android:textSize="@dimen/bottom_bar_text_size"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tab_bt_5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/add" 
-                    android:layout_marginBottom="5dp"
-                    />
-                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="工作"
-                    android:textColor="@color/tab_text_color_selector" 
-                    android:textSize="@dimen/bottom_bar_text_size"
-                    android:layout_marginBottom="20dp"
-                    />
-                
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1" >
-
-                <LinearLayout
-                    android:id="@+id/tab_bt_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical" >
-
-                    <ImageView
-                        android:layout_width="@dimen/bottom_bar_icon_width_size"
-                        android:layout_height="@dimen/bottom_bar_icon_height_size"
-                        android:src="@drawable/tab_message_bg_selector" 
-                        
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="圈子"
-                        android:paddingTop="@dimen/bottom_padding_top_size"
-                        android:textColor="@color/tab_text_color_selector"
-                        android:textSize="@dimen/bottom_bar_text_size"
-                         />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/unread_msg_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="1dp"
-                    android:background="@drawable/em_unread_count_bg"
-                    android:gravity="center"
-                    android:text="7"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/tab_bt_4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="@dimen/bottom_bar_icon_width_size"
-                    android:layout_height="@dimen/bottom_bar_icon_height_size"
-                    android:src="@drawable/tab_profile_bg_selector" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="我的"
-                    android:paddingTop="@dimen/bottom_padding_top_size"
-                    android:textColor="@color/tab_text_color_selector"
-                    android:textSize="@dimen/bottom_bar_text_size"
-                     />
-            </LinearLayout>
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_divider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_main_bt_divider"
-            android:visibility="gone"
-             />
-    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/tab_container"
-        android:layout_below="@id/view_title_bar"
         android:orientation="vertical" >
     </LinearLayout>
 
-      <View
+    <include
+        android:id="@+id/tab_container"
+        layout="@layout/layout_main_bottom" />
+
+    <View
         android:id="@+id/layout_mask"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -204,8 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:background="@drawable/guide" 
-        android:visibility="gone"
-        />
-    
+        android:background="@drawable/guide"
+        android:visibility="gone" />
+
 </RelativeLayout>
