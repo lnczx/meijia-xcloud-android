@@ -1,10 +1,10 @@
 package com.meijialife.simi;
 
-import com.meijialife.simi.utils.StatusBarCompat;
-
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.WindowManager;
 
 
 /**
@@ -43,6 +43,9 @@ public class BaseFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
+        }*/
     }
  
 }

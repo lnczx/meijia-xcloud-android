@@ -1,14 +1,17 @@
 package com.meijialife.simi;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.meijialife.simi.ui.SystemBarTintManager;
 import com.umeng.analytics.MobclickAgent;
 
 
@@ -22,15 +25,19 @@ public class BaseActivity extends Activity{
 	private ImageView title_btn_right;
 	private ImageView title_btn_left;
 	
+	@TargetApi(Build.VERSION_CODES.KITKAT)
 	@SuppressLint("ResourceAsColor")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//解决home键之后点击app图标重新启动app的问题
-	/*	if (!isTaskRoot()) { 
+		/*if (!isTaskRoot()) { 
 		    finish(); 
 		    return; 
 		    } */
+		/* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+	            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
+	        }*/
 		initTitle();
 	}
 	

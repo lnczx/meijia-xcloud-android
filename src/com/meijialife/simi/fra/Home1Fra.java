@@ -13,17 +13,13 @@ import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -60,7 +56,6 @@ import com.meijialife.simi.ui.CollapseCalendarView;
 import com.meijialife.simi.ui.CollapseCalendarView.OnDateSelect;
 import com.meijialife.simi.ui.ImageCycleView;
 import com.meijialife.simi.ui.ImageCycleView.ImageCycleViewListener;
-import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.ui.calendar.CalendarManager;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -336,12 +331,12 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         map.put("page","1");
         AjaxParams param = new AjaxParams(map);
 
-        showDialog();
+//        showDialog();
         new FinalHttp().get(Constants.URL_GET_CARD_LIST, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
+//                dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
@@ -349,7 +344,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
+//                dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -437,12 +432,12 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         map.put("month", month);
         AjaxParams param = new AjaxParams(map);
 
-        showDialog();
+//        showDialog();
         new FinalHttp().get(Constants.URL_GET_TOTAL_BY_MONTH, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
+//                dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
@@ -450,7 +445,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
+//                dismissDialog();
                 LogOut.i("========", "onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
@@ -515,19 +510,19 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         Map<String, String> map = new HashMap<String, String>();
         map.put("channel_id", channel_id);
         AjaxParams param = new AjaxParams(map);
-        showDialog();
+//        showDialog();
         new FinalHttp().get(Constants.URL_GET_ADS_LIST, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
+//                dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
+//                dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -683,12 +678,12 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         map.put("friend_id", friend_id);
         AjaxParams param = new AjaxParams(map);
 
-        showDialog();
+//        showDialog();
         new FinalHttp().get(Constants.URL_GET_ADD_FRIEND, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
+//                dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
@@ -696,7 +691,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
+//                dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -748,19 +743,19 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", userInfo.getId());
         AjaxParams param = new AjaxParams(map);
-        showDialog();
+//        showDialog();
         new FinalHttp().get(Constants.URL_GET_USER_INFO, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
+//                dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
+//                dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
