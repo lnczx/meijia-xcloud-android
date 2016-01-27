@@ -112,6 +112,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
 
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
+    private String feedId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,13 +122,14 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
         initImageLoader(this);
         init();
         initView();
-        getCommentList();
+       
 
     }
 
     private void init() {
-        friendDynamic = (FriendDynamicData) getIntent().getSerializableExtra("friendDynamic");
-        getDynamicDetail();
+        feedId = getIntent().getStringExtra("feedId");
+        getDynamicDetail(feedId);
+        getCommentList(feedId);
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
     }
@@ -152,7 +154,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
         // 动态=内容+名字+时间+图片
         tv_content = (TextView) findViewById(R.id.tv_content);
         iv_more = (NineGridlayout) findViewById(R.id.iv_more);
-        dynamicImaDatas = friendDynamic.getFeed_imgs();
+//        dynamicImaDatas = friendDynamic.getFeed_imgs();
         tv_name = (TextView) findViewById(R.id.tv_name);
         tv_time = (TextView) findViewById(R.id.tv_time);
         iv_icon = (RoundImageView) findViewById(R.id.iv_icon);
@@ -197,6 +199,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
 
     @SuppressLint("NewApi")
     private void showData() {
+        dynamicImaDatas = friendDynamic.getFeed_imgs();
         int size = friendDynamic.getZan_top10().size();
         if (size > 0) {
             gridAdapter.setData(friendDynamic.getZan_top10());
@@ -286,14 +289,13 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.btn_send: // 评论
-            postComment();
+            postComment(feedId);
             break;
         case R.id.tv_zan: // 赞
-            postZan(friendDynamic);
+            postZan();
             break;
         case R.id.tv_share: // 分享
             ShareConfig.getInstance().init(this);
-            ;
             postShare();
             break;
         default:
@@ -319,7 +321,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        getDynamicDetail();
+        getDynamicDetail(feedId);
     }
 
     /**
@@ -327,7 +329,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
      * 
      * @param date
      */
-    private void getDynamicDetail() {
+    private void getDynamicDetail(String feed_id) {
         String user_id = DBHelper.getUser(this).getId();
 
         if (!NetworkUtils.isNetworkConnected(this)) {
@@ -335,7 +337,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("fid", friendDynamic.getFid());
+        map.put("fid", feed_id);
         map.put("user_id", user_id);
         AjaxParams param = new AjaxParams(map);
         showDialog();
@@ -394,7 +396,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
     /**
      * 获取评论列表
      */
-    private void getCommentList() {
+    private void getCommentList(String feedId) {
         showDialog();
         String user_id = DBHelper.getUser(this).getId();
 
@@ -405,7 +407,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
-        map.put("fid", friendDynamic.getFid());
+        map.put("fid", feedId);
         map.put("page", "0");
         AjaxParams param = new AjaxParams(map);
 
@@ -470,7 +472,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
     /**
      * 发送评论接口
      */
-    private void postComment() {
+    private void postComment(final String feedId) {
         String comment = et_comment.getText().toString();
         if (StringUtils.isEmpty(comment.trim())) {
             Toast.makeText(this, "还没有输入评论内容哦~", Toast.LENGTH_SHORT).show();
@@ -485,7 +487,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("fid", friendDynamic.getFid());
+        map.put("fid", feedId);
         map.put("user_id", user_id);
         map.put("comment", comment);
         AjaxParams param = new AjaxParams(map);
@@ -516,7 +518,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
                             // 评论成功，收起键盘
                             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                            getCommentList();
+                            getCommentList(feedId);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(DynamicDetailsActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -547,7 +549,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
     /**
      * 点赞接口
      */
-    private void postZan(final FriendDynamicData friendDynamicData) {
+    private void postZan() {
 
         String user_id = DBHelper.getUser(this).getId();
 
@@ -557,7 +559,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("fid", friendDynamicData.getFid());
+        map.put("fid", feedId);
         map.put("user_id", user_id);
         AjaxParams param = new AjaxParams(map);
         showDialog();
@@ -582,7 +584,7 @@ public class DynamicDetailsActivity extends BaseActivity implements OnClickListe
                         int status = obj.getInt("status");
                         String msg = obj.getString("msg");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            getDynamicDetail();
+                            getDynamicDetail(feedId);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(DynamicDetailsActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

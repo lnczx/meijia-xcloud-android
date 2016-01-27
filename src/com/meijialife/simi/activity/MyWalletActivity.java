@@ -2,6 +2,7 @@ package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalHttp;
@@ -21,14 +22,22 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.adapter.MyOrderAdapter;
 import com.meijialife.simi.adapter.MyWalletAdapter;
+import com.meijialife.simi.bean.MyOrder;
 import com.meijialife.simi.bean.MyWalletData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -41,10 +50,13 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
 
     private Button btn_recharge;// 充值
 
-    private ListView listview;
     private MyWalletAdapter adapter;
     
     private ArrayList<MyWalletData> myWalletDataList;
+    private ArrayList<MyWalletData> totalWalletDataList;
+    //布局控件定义
+    private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,19 +74,74 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
         btn_recharge = (Button) findViewById(R.id.btn_recharge);
         btn_recharge.setOnClickListener(this);
 
-        listview = (ListView) findViewById(R.id.listview);
         TextView  tv_money = (TextView) findViewById(R.id.tv_money);
+     /*   listview = (ListView) findViewById(R.id.listview);
         adapter = new MyWalletAdapter(this);
-        listview.setAdapter(adapter);
+        listview.setAdapter(adapter);*/
         
+        initWalletView();
         UserInfo userInfo = DBHelper.getUserInfo(MyWalletActivity.this);
         if(null!=userInfo){
             tv_money.setText(userInfo.getRest_money());
         }
-        getMyWalletList();
         
     }
-
+    /**
+     * 初始化钱包列表
+     */
+    private void initWalletView(){
+        totalWalletDataList = new ArrayList<MyWalletData>();
+        mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.pull_refresh_wallet_list);
+        adapter = new MyWalletAdapter(this);
+        mPullRefreshListView.setAdapter(adapter);
+        mPullRefreshListView.setMode(Mode.BOTH);
+        initIndicator();
+        getMyWalletList(page);
+        mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                page = 1;
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                getMyWalletList(page);
+                adapter.notifyDataSetChanged(); 
+            }
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                if(myWalletDataList!=null && myWalletDataList.size()>=10){
+                    page = page+1;
+                    getMyWalletList(page);
+                    adapter.notifyDataSetChanged(); 
+                }else {
+                    Toast.makeText(MyWalletActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                    mPullRefreshListView.onRefreshComplete(); 
+                }
+            }
+        });
+    }
+    /**
+     * 设置下拉刷新提示
+     */
+    private void initIndicator()  
+    {  
+        ILoadingLayout startLabels = mPullRefreshListView  
+                .getLoadingLayoutProxy(true, false);  
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
+  
+        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(  
+                false, true);  
+        endLabels.setPullLabel("上拉加载");
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -89,9 +156,9 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        getMyWalletList();
+        getMyWalletList(page);
     }
-    public void getMyWalletList(){
+    public void getMyWalletList(int page){
         //判断是否有网络
         if (!NetworkUtils.isNetworkConnected(MyWalletActivity.this)) {
             Toast.makeText(MyWalletActivity.this, getString(R.string.net_not_open), 0).show();
@@ -100,7 +167,7 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
         User user = DBHelper.getUser(MyWalletActivity.this);
         Map<String,String> map = new HashMap<String,String>();
         map.put("user_id",user.getId());
-        map.put("page","1");
+        map.put("page",""+page);
         AjaxParams params = new AjaxParams(map);
         showDialog();
         new FinalHttp().get(Constants.URL_GET_WALLET_LIST, params, new AjaxCallBack<Object>() {
@@ -128,7 +195,8 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
                                 myWalletDataList = gson.fromJson(data, new TypeToken<ArrayList<MyWalletData>>() {
                                 }.getType());
                                 //给适配器赋值
-                                adapter.setData(myWalletDataList);
+                                showData(myWalletDataList);
+//                                adapter.setData(myWalletDataList);
                             } 
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -139,22 +207,54 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
                         } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
                             errorMsg = msg;
                         } else {
+                            mPullRefreshListView.onRefreshComplete();
                             errorMsg = getString(R.string.servers_error);
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    mPullRefreshListView.onRefreshComplete();
                     errorMsg = getString(R.string.servers_error);
 
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    mPullRefreshListView.onRefreshComplete();
                     UIUtils.showToast(MyWalletActivity.this, errorMsg);
                 }
             }
         });
     }
-    
-    
+    /**
+     * 处理数据加载的方法
+     * @param list
+     */
+    private void showData(List<MyWalletData> myWalletDataList){
+        if(myWalletDataList!=null && myWalletDataList.size()>0){
+            if(page==1){
+                totalWalletDataList.clear();
+                for (MyWalletData myWalletData : myWalletDataList) {
+                    totalWalletDataList.add(myWalletData);
+                }
+            }
+            if(page>=2){
+                for (MyWalletData myWalletData : myWalletDataList) {
+                    totalWalletDataList.add(myWalletData);
+                }
+            }
+            //给适配器赋值
+            adapter.setData(totalWalletDataList);
+        }else {
+            adapter.setData(new ArrayList<MyWalletData>() );
+        }
+        mPullRefreshListView.onRefreshComplete();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        page = 1;
+        totalWalletDataList = new ArrayList<MyWalletData>();
+        myWalletDataList = new ArrayList<MyWalletData>();
+    }
     
 }

@@ -68,7 +68,7 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <ListView
+      <!--   <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -78,7 +78,25 @@
             android:dividerHeight="10dp"
             android:fadingEdge="none"
             android:overScrollMode="never" >
-        </ListView>
+        </ListView> -->
+        
+           <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/pull_refresh_discount_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="#19000000"
+            android:dividerHeight="10dp"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true"
+            ptr:ptrAnimationStyle="flip"
+            ptr:ptrListViewExtrasEnabled="false"
+            ptr:ptrScrollingWhileRefreshingEnabled="true" >
+        </com.handmark.pulltorefresh.library.PullToRefreshListView>
     </LinearLayout>
 
 </LinearLayout>

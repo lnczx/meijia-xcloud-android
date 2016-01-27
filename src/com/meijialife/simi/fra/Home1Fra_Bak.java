@@ -1,4 +1,4 @@
-package com.meijialife.simi.fra;
+/*package com.meijialife.simi.fra;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.easemob.chat.EMConversation.EMConversationType;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -45,8 +45,6 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.CardDetailsActivity;
-import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
@@ -72,17 +70,15 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.simi.easemob.EMConstant;
-import com.simi.easemob.ui.ChatActivity;
 import com.zbar.lib.CaptureActivity;
 
-/**
+*//**
  * 首页
  * 
  * @author RUI
  * 
- */
-public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpdateListener {
+ *//*
+public class Home1Fra_Bak extends BaseFragment implements OnClickListener, onCardUpdateListener {
 
     public String today_date;
     private CollapseCalendarView calendarView;// 日历View
@@ -114,23 +110,23 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private boolean card_flag = false;
     private boolean ad_flag = false;
     
-    /**
+    *//**
      * 获取当前位置经纬度
-     */
+     *//*
     private LocationClient locationClient = null;
     private static final int UPDATE_TIME = 5000;
     private String longitude ="";//经度
     private String latitude ="";//纬度
     private String addString ="";//返回地址
     
-    /**
+    *//**
      * 广告轮播控件
-     */
+     *//*
     private ImageCycleView mAdView;
     
-    /**
+    *//**
      * 用户消息
-     */
+     *//*
     private List<UserMsg> userMsgs;
     private ArrayList<UserMsg> totalUserMsgList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
@@ -140,17 +136,20 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.index_1, null);
+        // if(this.getResources().getConfiguration().orientation ==Configuration.ORIENTATION_LANDSCAPE){
+        // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        // }
         initLocation();
         init(v);
         initCalendar(v);
         initUserMsgView(v);
-//      initListView(v);
+//        initListView(v);
        
         return v;
     }
-    /**
+    *//**
      * 获取用户当前位置的经纬度
-     */
+     *//*
     private void initLocation(){
         locationClient = new LocationClient(getActivity());
         LocationClientOption option = new LocationClientOption();
@@ -162,6 +161,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         option.setIsNeedAddress(true);//设置返回城市
         locationClient.setLocOption(option);
         locationClient.start();
+        
         locationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation location) {
@@ -189,15 +189,17 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         userInfo = DBHelper.getUserInfo(getActivity());
     }
 
-    /**
+    *//**
      * 初始化日历
      * 
      * @param v
-     */
+     *//*
     private void initCalendar(View v) {
         today_date = LocalDate.now().toString();
+
         calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now()
                 .plusYears(1));
+
         calendarView = (CollapseCalendarView) v.findViewById(R.id.layout_calendar);
         calendarView.init(calendarManager, getActivity(), this);
 
@@ -209,8 +211,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 if(findBeanList!=null && findBeanList.size()>0){
                     ad_flag = true;
                 }
-                userMsgs.clear();
-                totalUserMsgList.clear();
 //                getCardListData(today_date, card_from);
                 getUserMsgListData(today_date,page);
                 //如果广告和卡片有一个有值，则不显示
@@ -264,24 +264,21 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @SuppressWarnings("static-access")
     private void initListView(View v) {
         
-//      listview = (ListView) v.findViewById(R.id.listview);
+//        listview = (ListView) v.findViewById(R.id.listview);
         tv_tips = (TextView) v.findViewById(R.id.tv_tips);
         iv_no_card = (ImageView) v.findViewById(R.id.iv_no_card);
         //广告位轮播的另一种方式
- /*       RelativeLayout ll = (RelativeLayout) v.inflate(getActivity(), R.layout.activity_ad_cycle, null);
-        listview.addHeaderView(ll);
-        mAdView = (ImageCycleView)ll.findViewById(R.id.ad_view);
-*/
+        RelativeLayout ll = (RelativeLayout) v.inflate(getActivity(), R.layout.activity_ad_cycle, null);
+//        listview.addHeaderView(ll);
+//        mAdView = (ImageCycleView)ll.findViewById(R.id.ad_view);
+
         
 //        getAdListByChannelId("0");//首页广告位显示
         
-        /*
          * ArrayList<String> list = new ArrayList<String>(); for (int i = 0; i < 4; i++) { list.add("今日无安排" + i); }
-         */
-        
-        /*
-        adapter = new ListAdapter(getActivity(), this);
-        listview.setAdapter(adapter);
+         
+//        adapter = new ListAdapter(getActivity(), this);
+//        listview.setAdapter(adapter);
         listview.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -294,7 +291,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                     startActivity(intent);
                 }
             }
-        });*/
+        });
     }
     
     private void initUserMsgView(View v){
@@ -335,55 +332,18 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                UserMsg userMsg =userMsgs.get(position);
-                String category = userMsg.getCategory().trim();
-                String goto_url = userMsg.getGoto_url().trim();
-                String params = userMsg.getParams().trim();
-                String action = userMsg.getAction().trim();
-                if(category.equals("h5")){
-                    Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-                    intent.putExtra("url",goto_url);
-                    startActivity(intent);
-                }else if (category.equals("app")) {
-                    if(action.equals("card")){
-                        Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
-                        intent.putExtra("card_id", params);
-                        startActivity(intent);
-                    }else if (action.equals("feed")) {
-                        Intent intent = new Intent(getActivity(), DynamicDetailsActivity.class);
-                        intent.putExtra("feedId", params);
-                        startActivity(intent);
-                    }else if (action.equals("checkin")) {
-                        
-                    }else if (action.equals("friends")) {
-                        
-                    }else if (action.equals("im")) {
-                        Intent intent = new Intent(getActivity(), ChatActivity.class);
-                      /*  if(conversation.isGroup()){
-                            if(conversation.getType() == EMConversationType.ChatRoom){
-                                // it's group chat
-                                intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_CHATROOM);
-                            }else{
-                                intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_GROUP);
-                            }
-                            
-                        }*/
-                        intent.putExtra(EMConstant.EXTRA_USER_ID, params);
-                        startActivity(intent);
-                        
-                    }else if (action.equals("leave")) {
-                        
-                    }else if (action.equals("leave_pass")) {
-                        
-                    }
-                  
-                }
+                CompanyData companyData = myCompanyDataList.get(position);
+                Intent intent = new Intent(CompanyListActivity.this,StaffListActivity.class);
+                intent.putExtra("company_id",companyData.getCompany_id());
+                intent.putExtra("company_name",companyData.getCompany_name());
+                intent.putExtra("flag",getIntent().getIntExtra("flag",0));
+                startActivity(intent);               
             }
         });
     }
-    /**
+    *//**
      * 设置下拉刷新提示
-     */
+     *//*
     private void initIndicator()  
     {  
         ILoadingLayout startLabels = mPullRefreshListView  
@@ -403,6 +363,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     public void onResume() {
         super.onResume();
         LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
+//        gallery = (MyGallery) ll.findViewById(R.id.gallery);
         if(locationClient != null && !locationClient.isStarted()){
             locationClient.start();
         }
@@ -418,6 +379,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public void onStop() {
         super.onStop();
+//        gallery.destroy();
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
         } 
@@ -434,13 +396,13 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         }
     }
     
-    /**
+    *//**
      * 获取卡片数据
      * 
      * @param date
      * @param card_from
      *            0 = 所有卡片 1 = 我发布的 2 = 我参与的,默认为0
-     */
+     *//*
     public void getCardListData(String date, int card_from) {
 
         String user_id = DBHelper.getUser(getActivity()).getId();
@@ -492,10 +454,10 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                                    cardExtra = gson.fromJson(cards2.getCard_extra(),CardExtra.class);
                                    cardExtrasList.add(cardExtra);
                                 }
-                               /* JsonArray array = new JsonParser().parse(data).getAsJsonArray();
+                                JsonArray array = new JsonParser().parse(data).getAsJsonArray();
                                 for (final JsonElement elem : array) {
                                     cardlist.add(new Gson().fromJson(elem, Cards.class));
-                                }*/
+                                }
                                 adapter.setData(cardlist,cardExtrasList);
                                 isShowDefaultCard(true,ad_flag);
                             } else {
@@ -527,11 +489,11 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         });
 
     }
-    /**
+    *//**
      * 获得用户消息列表接口
      * @param date
      * @param card_from
-     */
+     *//*
     public void getUserMsgListData(String date, int page) {
         
         String user_id = DBHelper.getUser(getActivity()).getId();
@@ -604,14 +566,14 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         
     }
 
-    /**
+    *//**
      * 按月份查看卡片日期分布接口（更新日历圆点标签）
      * 
      * @param year
      *            年份，格式为 YYYY
      * @param month
      *            月份，格式为 MM
-     */
+     *//*
     public void getTotalByMonth() {
 
         String date = calendarManager.getHeaderText();
@@ -702,10 +664,10 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         });
 
     }
-    /**
+    *//**
      * 根据渠道获取广告位
      * @param channel_id
-     */
+     *//*
     public void getAdListByChannelId(String channel_id) {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
@@ -767,7 +729,38 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         });
     }
 
+    private void showAdView(ArrayList<FindBean> findBeanList){
+        if(findBeanList!=null && findBeanList.size()>0){
+            ll_ad.setVisibility(View.VISIBLE);
+            FindBean findBean =findBeanList.get(0);
+            tv_ad_des.setText(findBean.getTitle());
+            String url = findBean.getImg_url();
+            finalBitmap.display(iv_ad_icon, url, defDrawable.getBitmap(), defDrawable.getBitmap());
+            tv_tips.setVisibility(View.GONE);
+            iv_no_card.setVisibility(View.GONE);
+        }else {
+            ll_ad.setVisibility(View.GONE);
+            tv_tips.setVisibility(View.GONE);
+            iv_no_card.setVisibility(View.GONE);
+        }
+    }
     
+    
+    // /**
+    // * 日历当天是否有卡片
+    // 
+    // public static boolean isMark(String date){
+    // if(calendarMarks == null){
+    // return false;
+    // }
+    // for(int i = 0; i < calendarMarks.size(); i++){
+    // if(calendarMarks.get(i).getService_date().equals(date)){
+    // return true;
+    // }
+    // }
+    // return false;
+    // }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -779,6 +772,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             }
 //            getCardListData(today_date, card_from);
             getUserMsgListData(today_date,page);
+         
             break;
         case R.id.ibtn_person: // 侧边栏
             MainActivity.slideMenu();
@@ -832,11 +826,11 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-    /**
+    *//**
      * 首页扫描加好友
      * 
      * @param friend_id
-     */
+     *//*
     public void addFriend(final String friend_id) {
 
         String user_id = DBHelper.getUser(getActivity()).getId();
@@ -905,9 +899,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
 //        getCardListData(today_date, card_from);
         //如果广告和卡片有一个有值，则不显示
     }
-    /**
+    *//**
      * 获取用户详情
-     */
+     *//*
     private void getUserInfo() {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
@@ -972,22 +966,20 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        gallery.destroy();
         //关闭定位
         if (locationClient != null && locationClient.isStarted()) {
             locationClient.stop();
             locationClient = null;
         } 
-        page = 1;
-        userMsgs =null;
-        totalUserMsgList = null;
 //        mAdView.pushImageCycle();
 
     }
     
-    /**
+    *//**
      * 处理数据加载的方法
      * @param list
-     */
+     *//*
     private void showData(List<UserMsg> userMsgs){
         if(userMsgs!=null && userMsgs.size()>0){
             if(page==1){
@@ -997,9 +989,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 totalUserMsgList.add(userMsg);
             }
             //给适配器赋值
-//            userMsgAdapter.setData(totalUserMsgList);
+            userMsgAdapter.setData(totalUserMsgList);
         }
-        userMsgAdapter.setData(totalUserMsgList);
         mPullRefreshListView.onRefreshComplete();
     }
 }
+*/

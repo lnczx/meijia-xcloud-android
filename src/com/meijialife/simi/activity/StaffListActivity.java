@@ -2,6 +2,7 @@ package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
@@ -37,12 +38,20 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.adapter.CompanyListAdapter;
 import com.meijialife.simi.adapter.ContactsAdapter;
+import com.meijialife.simi.bean.CompanyData;
 import com.meijialife.simi.bean.CompanyDetail;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -84,6 +93,12 @@ public class StaffListActivity extends Activity implements OnClickListener {
     private LinearLayout ll_rq;
     private ImageView iv_rq_left;
     private LayoutInflater layoutInflater;
+    
+    private ArrayList<Friend> myFriendList;
+    private ArrayList<Friend> totalFriendList;
+    private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    private int page = 1;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +110,6 @@ public class StaffListActivity extends Activity implements OnClickListener {
 
     @SuppressLint("UseSparseArrays")
     private void initView() {
-        /**
-         * 初始化变量
-         */
-        adapter = new ContactsAdapter(this);
         /**
          * 获取传递参数
          */
@@ -131,12 +142,47 @@ public class StaffListActivity extends Activity implements OnClickListener {
         iv_rq_left.setOnClickListener(this);
         ll_rq.setOnClickListener(this);
 
-        listview = (ListView) findViewById(R.id.listview);
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listview.setAdapter(adapter);
-        listview.setItemsCanFocus(false);
-
-        listview.setOnItemClickListener(new OnItemClickListener() {
+        initStaffView();
+    }
+    
+    
+    private void initStaffView(){
+        totalFriendList = new ArrayList<Friend>();
+        myFriendList = new ArrayList<Friend>();
+        mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.pull_refresh_staff_list);
+        adapter = new ContactsAdapter(this);
+        mPullRefreshListView.setAdapter(adapter);
+        mPullRefreshListView.setMode(Mode.BOTH);
+        initIndicator();
+        getStaffList(Constants.finalContactList,page);
+        mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                page = 1;
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                getStaffList(Constants.finalContactList,page);
+                adapter.notifyDataSetChanged(); 
+            }
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                if(myFriendList!=null && myFriendList.size()>=10){
+                    page = page+1;
+                    getStaffList(Constants.finalContactList,page);
+                    adapter.notifyDataSetChanged(); 
+                }else {
+                    Toast.makeText(StaffListActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                    mPullRefreshListView.onRefreshComplete(); 
+                }
+            }
+        });
+        mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 cb = (CheckBox) view.findViewById(R.id.cb_check_box);
@@ -152,10 +198,44 @@ public class StaffListActivity extends Activity implements OnClickListener {
                     cb.setChecked(false);
                     CharSequence num = tv_temp.getText();
                     Constants.finalContactList.remove(num.toString());
-                }
+                }           
             }
         });
-        getStaffList(Constants.finalContactList);
+    }
+    /**
+     * 设置下拉刷新提示
+     */
+    private void initIndicator()  
+    {  
+        ILoadingLayout startLabels = mPullRefreshListView  
+                .getLoadingLayoutProxy(true, false);  
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
+  
+        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(  
+                false, true);  
+        endLabels.setPullLabel("上拉加载");
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
+    }
+    
+    /**
+     * 处理数据加载的方法
+     * @param list
+     */
+    private void showData(ArrayList<Friend> myFriendList,ArrayList<String> contactList,int flag){
+        if(myFriendList!=null && myFriendList.size()>0){
+            if(page==1){
+                totalFriendList.clear();
+            }
+            for (Friend friend : myFriendList) {
+                totalFriendList.add(friend);
+            }
+            //给适配器赋值
+            adapter.setData(totalFriendList,contactList,flag);
+        }
+        mPullRefreshListView.onRefreshComplete();
     }
 
     private void popRqCode() {
@@ -242,7 +322,7 @@ public class StaffListActivity extends Activity implements OnClickListener {
     /**
      * 获得企业员工列表接口
      */
-    public void getStaffList(final ArrayList<String> staffList) {
+    public void getStaffList(final ArrayList<String> staffList,int page) {
 
         String user_id = DBHelper.getUser(StaffListActivity.this).getId();
 
@@ -253,6 +333,7 @@ public class StaffListActivity extends Activity implements OnClickListener {
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
         map.put("company_id", company_id);
+        map.put("page", page+"");
         AjaxParams param = new AjaxParams(map);
         showDialog();
         new FinalHttp().get(Constants.URL_GET_STAFF_LIST, param, new AjaxCallBack<Object>() {
@@ -277,12 +358,11 @@ public class StaffListActivity extends Activity implements OnClickListener {
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                friendList = gson.fromJson(data, new TypeToken<ArrayList<Friend>>() {
+                                myFriendList = gson.fromJson(data, new TypeToken<ArrayList<Friend>>() {
                                 }.getType());
-                                adapter.setData(friendList, staffList, flag);
-                            } else {
-                                adapter.setData(new ArrayList<Friend>(), staffList, flag);
-                            }
+//                                adapter.setData(friendList, staffList, flag);
+                                showData(myFriendList,staffList,flag);
+                            } 
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -341,7 +421,12 @@ public class StaffListActivity extends Activity implements OnClickListener {
             break;
         }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        page = 1;
+        
+    }
     /**
      * 进度条使用
      */

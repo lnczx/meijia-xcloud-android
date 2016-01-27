@@ -29,12 +29,18 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.ContactsAdapter;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -65,6 +71,11 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
     private TextView tv_has_company;//显示是否拥有企业
     private int flag =1;//1=来自卡片页面0=来自企业通讯录
     private ArrayList<String> mobileList;
+    
+    private ArrayList<Friend> totalFriendList;
+    //布局控件定义
+    private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    private int page = 1;
     
     @SuppressLint("UseSparseArrays")
 	public void onCreate(Bundle savedInstanceState) {
@@ -117,15 +128,45 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
         
         header_tv_name.setText("选择接收人");
         title_btn_left.setVisibility(View.VISIBLE);
-        listview = (ListView) findViewById(R.id.lv_list_view);
+    
+        initContactView();
+    }
+    private void initContactView(){
+        totalFriendList = new ArrayList<Friend>();
+        mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.pull_refresh_contact_list);
         adapter = new ContactsAdapter(this);
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listview.setAdapter(adapter);
-        listview.setItemsCanFocus(false);
-        
-      
-
-        listview.setOnItemClickListener(new OnItemClickListener() {
+        mPullRefreshListView.setAdapter(adapter);
+        mPullRefreshListView.setMode(Mode.BOTH);
+        initIndicator();
+        getFriendList(Constants.finalContactList,page);
+        mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                page = 1;
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                getFriendList(Constants.finalContactList,page);
+                adapter.notifyDataSetChanged(); 
+            }
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                if(friendList!=null && friendList.size()>=10){
+                    page = page+1;
+                    getFriendList(Constants.finalContactList,page);
+                    adapter.notifyDataSetChanged(); 
+                }else {
+                    Toast.makeText(ContactChooseActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                    mPullRefreshListView.onRefreshComplete(); 
+                }
+            }
+        });
+        mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 cb = (CheckBox) view.findViewById(R.id.cb_check_box);
@@ -172,10 +213,24 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
                 });
             }
         });
-        getFriendList(Constants.finalContactList);
     }
-    
-    
+    /**
+     * 设置下拉刷新提示
+     */
+    private void initIndicator()  
+    {  
+        ILoadingLayout startLabels = mPullRefreshListView  
+                .getLoadingLayoutProxy(true, false);  
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
+  
+        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(  
+                false, true);  
+        endLabels.setPullLabel("上拉加载");
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
+    }
     /**
      * 处理singleTask下不能接受Intent传值
      */
@@ -271,7 +326,7 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
      * 
      * @param isShowDlg
      */
-    public void getFriendList(final ArrayList<String> myFriendList) {
+    public void getFriendList(final ArrayList<String> myFriendList,int page) {
         String user_id = DBHelper.getUser(ContactChooseActivity.this).getId();
 
         if (!NetworkUtils.isNetworkConnected(ContactChooseActivity.this)) {
@@ -281,7 +336,7 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
-        map.put("page", "1");
+        map.put("page", ""+page);
         AjaxParams param = new AjaxParams(map);
 
         showDialog();
@@ -309,10 +364,11 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
                                 Gson gson = new Gson();
                                 friendList = gson.fromJson(data, new TypeToken<ArrayList<Friend>>() {
                                 }.getType());
+//                                adapter.setData(friendList,myFriendList,flag);
+                                showData(friendList,myFriendList,flag);
+                            }/* else {
                                 adapter.setData(friendList,myFriendList,flag);
-                            } else {
-                                adapter.setData(friendList,myFriendList,flag);
-                            }
+                            }*/
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -454,9 +510,25 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
             str = str.substring(0,str.lastIndexOf(","));
         }
         tv_contacts_list.setText(str);
-        getFriendList(Constants.finalContactList);
+        getFriendList(Constants.finalContactList,page);
     }
-
+    /**
+     * 处理数据加载的方法
+     * @param list
+     */
+    private void showData(ArrayList<Friend> friendList,ArrayList<String>contactList,int flag){
+        if(friendList!=null && friendList.size()>0){
+            if(page==1){
+                totalFriendList.clear();
+            }
+            for (Friend friend : friendList) {
+                totalFriendList.add(friend);
+            }
+            //给适配器赋值
+            adapter.setData(totalFriendList,contactList,flag);
+        }
+        mPullRefreshListView.onRefreshComplete();
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -466,6 +538,9 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        page =1;
+        friendList = null;
+        totalFriendList = null;
     }
 
     @Override

@@ -177,7 +177,7 @@ public class FriendDynamicAdapter extends BaseAdapter {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(context, DynamicDetailsActivity.class);
-                intent.putExtra("friendDynamic", friendDynamicDatas.get(pos));
+                intent.putExtra("feedId", friendDynamicDatas.get(pos).getFid());
                 context.startActivity(intent);
             }
         });

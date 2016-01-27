@@ -112,7 +112,9 @@ public class Constants {
     //关于好友的接口
     public static final String URL_GET_COMPANY_DETAIL =ROOT_URL +"company/get_detail.json";
     
-    
+    //关于用户消息接口
+    /**用户消息列表接口**/
+    public static final String URL_GET_USER_MSG_LIST = ROOT_URL + "user/get_msg.json";
     
     
     

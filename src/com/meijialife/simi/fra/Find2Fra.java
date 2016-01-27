@@ -3,6 +3,7 @@ package com.meijialife.simi.fra;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalHttp;
@@ -40,20 +41,30 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
+import com.meijialife.simi.activity.StaffListActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
+import com.meijialife.simi.adapter.CompanyListAdapter;
 import com.meijialife.simi.adapter.Find2Adapter;
 import com.meijialife.simi.adapter.FindAllAdapter;
 import com.meijialife.simi.bean.ChanelBean;
+import com.meijialife.simi.bean.CompanyData;
 import com.meijialife.simi.bean.FindBean;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.SyncHorizontalScrollView;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -68,7 +79,7 @@ public class Find2Fra extends BaseFragment {
 
     private MainActivity activity;
     private ListView listview;
-    private Find2Adapter adapter;// 服务商适配器
+    private Find2Adapter findAdapter;// 服务商适配器
     private RelativeLayout rl_total_search;// 搜索框
     /**
      * 左右滑动控件声明
@@ -104,6 +115,11 @@ public class Find2Fra extends BaseFragment {
     private GridView gv_application1;
     private FindAllAdapter appToolsAdapter1;
     private User user;
+    
+    private ArrayList<FindBean> myFindBeanList;
+    private ArrayList<FindBean> totalFindBeanList;
+    private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    private int page = 1;
 
 
     @Override
@@ -112,7 +128,7 @@ public class Find2Fra extends BaseFragment {
         findViewById(v);
         init(v);
         setListener();
-        getFind2List(title_id);
+//        getFind2List(title_id,page);
         return v;
     }
 
@@ -146,16 +162,80 @@ public class Find2Fra extends BaseFragment {
          * 搜索+列表展现
          */
         rl_total_search = (RelativeLayout) v.findViewById(R.id.rl_total_search);
-        listview = (ListView) v.findViewById(R.id.find_list_view);
+      /*  listview = (ListView) v.findViewById(R.id.find_list_view);
         adapter = new Find2Adapter(activity);
-        listview.setAdapter(adapter);
+        listview.setAdapter(adapter);*/
+        
+        initFindBeanView(v);
         getChanelList();
+    }
+    private void initFindBeanView(final View v){
+        totalFindBeanList = new ArrayList<FindBean>();
+        myFindBeanList = new ArrayList<FindBean>();
+        mPullRefreshListView = (PullToRefreshListView)v.findViewById(R.id.pull_refresh_finds_list);
+        findAdapter = new Find2Adapter(activity);
+        mPullRefreshListView.setAdapter(findAdapter);
+        mPullRefreshListView.setMode(Mode.BOTH);
+        initIndicator();
+        getFind2List(title_id,page);
+        mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                page = 1;
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                int radioButtonId = myRadioGroup.getCheckedRadioButtonId();
+                RadioButton rb = (RadioButton)v.findViewById(radioButtonId);
+                rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                ChanelBean chanelBean = (ChanelBean) rb.getTag();
+                getFind2List(chanelBean.getChannel_id(),page);
+//                findAdapter.notifyDataSetChanged(); 
+            }
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                if(myFindBeanList!=null && myFindBeanList.size()>=10){
+                    page = page+1;
+                    int radioButtonId = myRadioGroup.getCheckedRadioButtonId();
+                    RadioButton rb = (RadioButton)v.findViewById(radioButtonId);
+                    rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+                    ChanelBean chanelBean = (ChanelBean) rb.getTag();
+                    getFind2List(chanelBean.getChannel_id(),page);
+//                    findAdapter.notifyDataSetChanged(); 
+                }else {
+                    Toast.makeText(activity,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                    mPullRefreshListView.onRefreshComplete(); 
+                }
+            }
+        });
+    }
+    /**
+     * 设置下拉刷新提示
+     */
+    private void initIndicator()  
+    {  
+        ILoadingLayout startLabels = mPullRefreshListView  
+                .getLoadingLayoutProxy(true, false);  
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
+  
+        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(  
+                false, true);  
+        endLabels.setPullLabel("上拉加载");
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
     }
     private void setOnClick(){
         gv_application1.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FindBean findBean = findBeanList.get(position);
+                FindBean findBean = myFindBeanList.get(position);
               
                 String title_name = findBean.getTitle().trim();
                 String goto_type = findBean.getGoto_type().trim();
@@ -226,12 +306,12 @@ public class Find2Fra extends BaseFragment {
                     mHsv.smoothScrollTo((checkedId > 1 ? ((RadioButton) rg_nav_content.getChildAt(checkedId)).getLeft() : 0)
                             - ((RadioButton) rg_nav_content.getChildAt(2)).getLeft(), 0);
                     title_name = rb.getText().toString().trim();
-                    getFind2List((checkedId+1)+"");
+                    getFind2List((checkedId+1)+"",page);
                 }
             }
         });
 
-        listview.setOnItemClickListener(new OnItemClickListener() {
+        mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -325,7 +405,7 @@ public class Find2Fra extends BaseFragment {
                         mCurrentCheckedRadioLeft = rb.getLeft();// 更新当前蓝色横条距离左边的距离
                         mHorizontalScrollView.smoothScrollTo((int) mCurrentCheckedRadioLeft - (int) getResources().getDimension(R.dimen.rdo2), 0);
                         mImageView.setLayoutParams(new LinearLayout.LayoutParams(rb.getRight() - rb.getLeft(), 4));
-                        getFind2List(chanelBean.getChannel_id());
+                        getFind2List(chanelBean.getChannel_id(),page);
                     }else {
                         RadioButton rb = (RadioButton)group.findViewById(buttonId);  
                         rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
@@ -348,13 +428,14 @@ public class Find2Fra extends BaseFragment {
     /**
      * 获得频道中广告信息接口（图片+文字）
      */
-    public void getFind2List(final String channel_id) {
+    public void getFind2List(final String channel_id,int page) {
         if (!NetworkUtils.isNetworkConnected(activity)) {
             Toast.makeText(activity, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
         map.put("channel_id", channel_id);
+        map.put("page", ""+page);
         AjaxParams param = new AjaxParams(map);
         showDialog();
         new FinalHttp().get(Constants.URL_GET_ADS_LIST, param, new AjaxCallBack<Object>() {
@@ -364,7 +445,6 @@ public class Find2Fra extends BaseFragment {
                 dismissDialog();
                 Toast.makeText(activity, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -379,16 +459,17 @@ public class Find2Fra extends BaseFragment {
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
+                                myFindBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
                                 }.getType());
                                 if(channel_id.equals("99")){//99=全部
                                     find_all_list.setVisibility(View.VISIBLE);
                                     find_other_list.setVisibility(View.GONE);
-                                    appToolsAdapter1.setData(findBeanList);
+                                    appToolsAdapter1.setData(myFindBeanList);
                                 }else {
                                     find_all_list.setVisibility(View.GONE);
                                     find_other_list.setVisibility(View.VISIBLE);
-                                    adapter.setData(findBeanList);
+//                                    adapter.setData(findBeanList);
+                                    showData(myFindBeanList);
                                 }
                             } else {
                                 if(channel_id.equals("99")){//99=全部
@@ -398,7 +479,8 @@ public class Find2Fra extends BaseFragment {
                                 }else {
                                     find_all_list.setVisibility(View.GONE);
                                     find_other_list.setVisibility(View.VISIBLE);
-                                    adapter.setData(new ArrayList<FindBean>());
+//                                    adapter.setData(new ArrayList<FindBean>());
+                                    showData(new ArrayList<FindBean>());
                                 }
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -428,6 +510,9 @@ public class Find2Fra extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         buttonList =null;
+        page = 1;
+        myFindBeanList = null;
+        totalFindBeanList = null;
     }
 
     /**
@@ -494,5 +579,21 @@ public class Find2Fra extends BaseFragment {
             }
         });
     }
-
+    /**
+     * 处理数据加载的方法
+     * @param list
+     */
+    private void showData(List<FindBean> myFindBeanList){
+        if(myFindBeanList!=null && myFindBeanList.size()>0){
+            if(page==1){
+                totalFindBeanList.clear();
+            }
+            for (FindBean findBean : myFindBeanList) {
+                totalFindBeanList.add(findBean);
+            }
+            //给适配器赋值
+            findAdapter.setData(totalFindBeanList);
+        }
+        mPullRefreshListView.onRefreshComplete();
+    }
 }
