@@ -41,6 +41,8 @@ public class Constants {
     public static final String URL_GET_ADS_LIST = ROOT_URL + "op/get_ads.json";
     /**获得应用列表接口**/
     public static final String URL_GET_APP_TOOLS = ROOT_URL + "op/get_appTools.json";
+    /**获得导航列表接口**/
+    public static final String URL_GET_APP_INDEXS = ROOT_URL + "op/get_appIndexList.json";
     
     
     /** app更新接口 **/
@@ -116,6 +118,8 @@ public class Constants {
     /**用户消息列表接口**/
     public static final String URL_GET_USER_MSG_LIST = ROOT_URL + "user/get_msg.json";
     
+    //app帮助类接口
+    public static final String URL_GET_APP_HELP_DATA = ROOT_URL + "op/get_appHelp.json";
     
     
     /**服务人员搜索**/

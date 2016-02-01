@@ -5,23 +5,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -49,10 +56,13 @@ import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.FriendAdapter;
 import com.meijialife.simi.adapter.FriendDynamicAdapter;
 import com.meijialife.simi.adapter.FriendDynamicAdapter.onDynamicUpdateListener;
+import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.FriendDynamicData;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.SelectableRoundedImageView;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -122,7 +132,8 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         // }
 
         View v = inflater.inflate(R.layout.index_3, null);
-      
+        vs= (RelativeLayout)getActivity().getLayoutInflater()
+                .inflate(R.layout.index_3, null);
         init(v);// 初始化
         initTab(v);
 
@@ -160,6 +171,11 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         rl_find.setOnClickListener(this);
         rl_rq.setOnClickListener(this);
         rl_company_contacts.setOnClickListener(this);
+        
+        //请求帮助接口
+        finalBitmap = FinalBitmap.create(getActivity());
+        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
+        getAppHelp();
     }
     
     
@@ -746,4 +762,142 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         totalFriendList = new ArrayList<Friend>();
     }
 
+    
+
+    private PopupWindow popupWindow;
+    private TextView mDone;
+    private ImageView tip_iv_icon;
+    private SelectableRoundedImageView selectableRoundedImageView;
+    private TextView tip_tv_title;
+    private TextView tip_tv_content;
+    private TextView tip_tv_more;
+    private AppHelpData appHelpData;
+    private BitmapDrawable defDrawable;
+    private FinalBitmap finalBitmap;
+    private View vs;
+    /**
+     * 弹出窗口
+     */
+    private void popWindow(final AppHelpData appHelpData) {
+        View view = (LinearLayout)getActivity().getLayoutInflater()
+                .inflate(R.layout.layout_tip_activity, null);
+        if (null == popupWindow || !popupWindow.isShowing()) {
+           /* popupWindow = new PopupWindow(view);
+            popupWindow.setWidth(450);
+            popupWindow.setHeight(650);*/
+            popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            popupWindow.setFocusable(false);
+            popupWindow.setTouchable(true);
+        }
+        mDone = (TextView)view.findViewById(R.id.tip_tv_done);
+        tip_tv_title = (TextView)view.findViewById(R.id.tip_tv_title);
+        tip_tv_content = (TextView)view.findViewById(R.id.tip_tv_content);
+        tip_tv_more = (TextView)view.findViewById(R.id.tip_tv_more);
+//        selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
+        tip_iv_icon = (ImageView)view.findViewById(R.id.tip_iv_icon);
+        tip_tv_title.setText(appHelpData.getTitle());
+        tip_tv_content.setText(appHelpData.getContent());
+//        finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
+        finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
+        popupWindow.setFocusable(true);  
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式
+        popupWindow.showAtLocation(vs, Gravity.CENTER, 0, 0);
+        backgroundAlpha(0.5f);
+        mDone.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != popupWindow && popupWindow.isShowing()) {
+                    backgroundAlpha(1f);
+                    popupWindow.dismiss();
+                }
+            }
+        });
+       tip_tv_more.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String goto_url = appHelpData.getGoto_url();
+            String action = appHelpData.getAction().trim();
+            Intent intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent.putExtra("url",goto_url);
+            startActivity(intent);
+            backgroundAlpha(1f);
+            popupWindow.dismiss();
+        }            
+    });
+    }
+    /**
+    * 设置添加屏幕的背景透明度
+    * @param bgAlpha
+    */
+    public void backgroundAlpha(float bgAlpha)
+    {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = bgAlpha; //0.0-1.0
+            getActivity().getWindow().setAttributes(lp);
+    }
+    /*
+     * 帮助接口
+     */
+    
+    private void getAppHelp() {
+        String user_id = DBHelper.getUser(getActivity()).getId();
+        if (!NetworkUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        User user = DBHelper.getUser(getActivity());
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("action","sns");
+        map.put("user_id",""+user.getId());
+        AjaxParams param = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if(StringUtils.isNotEmpty(data)){
+                                Gson gson = new Gson();
+                                appHelpData = gson.fromJson(data, AppHelpData.class); 
+                                popWindow(appHelpData);
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if(!StringUtils.isEmpty(errorMsg.trim())){
+                    UIUtils.showToast(getActivity(), errorMsg);
+                }
+            }
+        });
+    }
+    
 }

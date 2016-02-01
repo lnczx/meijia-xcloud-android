@@ -115,9 +115,9 @@ public class Find2DetailActivity extends BaseActivity {
         mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Partner partner = partnerList.get(position);
+                Partner partner = totalPartnerList.get(position);
                 Intent intent = new Intent(Find2DetailActivity.this,PartnerActivity.class);
-                intent.putExtra("Partner",partnerList.get(position));
+                intent.putExtra("Partner",totalPartnerList.get(position));
                 startActivity(intent);                
             }
         });

@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/activity_bg_color"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/layout_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_title_bar"
+        android:fillViewport="true"
+        android:scrollbars="none" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" >
+                
+                
+                
+                <RelativeLayout
+                    android:id="@+id/leave_layout_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/leave_iv_type_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_plus_beizu" />
+
+                    <TextView
+                        android:id="@+id/leave_tv_type_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@id/leave_iv_type_icon"
+                        android:text="请假类型"
+                        android:textColor="#676767" />
+
+                    <ImageView
+                        android:id="@+id/leave_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_plus_arrowright" />
+
+                    <TextView
+                        android:id="@+id/tv_type_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/leave_arrow"
+                        android:gravity="right"
+                        android:ellipsize="end"
+                        android:ems="6"
+                        android:singleLine="true"
+                        android:textColor="@color/red_text_color" />
+                </RelativeLayout>
+
+              
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#e1e1e1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:id="@+id/layout_select_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_main_plus_page"
+                        android:gravity="center_vertical"
+                        android:padding="8dp" >
+
+                        <TextView
+                            android:id="@+id/tv_start_time_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:text="开始时间"
+                            android:textColor="@color/simi_color_gray" />
+
+                        <TextView
+                            android:id="@+id/tv_meeting_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/tv_start_time_icon"
+                            android:text="点击选择时间"
+                            android:textColor="@color/red_text_color" />
+
+                        <ImageView
+                            android:id="@+id/iv_right_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_plus_arrowright"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+                    
+                     <RelativeLayout
+                        android:id="@+id/leave_ll_end_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_main_plus_page"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:padding="8dp" >
+
+                        <TextView
+                            android:id="@+id/leave_tv_end_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:text="结束时间"
+                            android:textColor="@color/simi_color_gray" />
+
+                        <TextView
+                            android:id="@+id/leave_tv_meeting_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/leave_tv_end_time"
+                            android:text="点击选择时间"
+                            android:textColor="@color/red_text_color" />
+
+                        <ImageView
+                            android:id="@+id/leave_iv_right_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_plus_arrowright"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout1"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                     android:layout_marginBottom="5dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#e1e1e1" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_message_tongzhi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="5dp" >
+
+                    <ImageView
+                        android:id="@+id/iv_xiaoxi_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_plus_dingjipiao" />
+
+                    <TextView
+                        android:id="@+id/tv_xiaoxi_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@id/iv_xiaoxi_icon"
+                        android:text="请假天数"
+                        android:textColor="#676767" />
+
+                    <ImageView
+                        android:id="@+id/iv_xiaoxi_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_plus_arrowright" />
+
+                    <TextView
+                        android:id="@+id/tv_xiaoxi_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/iv_xiaoxi_arrow"
+                        android:text=""
+                        android:textColor="@color/red_text_color" />
+                </RelativeLayout>
+                
+                  <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                      android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="#e1e1e1" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_meeting_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="5dp" >
+
+                    <ImageView
+                        android:id="@+id/iv_start_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_plus_duanxin" />
+
+                    <TextView
+                        android:id="@+id/tv_start_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@id/iv_start_icon"
+                        android:text="请假内容"
+                        android:textColor="#676767" />
+
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_plus_arrowright" />
+
+                    <TextView
+                        android:id="@+id/tv_beizu_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@id/arrow"
+                        android:gravity="right"
+                        android:ellipsize="end"
+                        android:ems="6"
+                        android:singleLine="true"
+                        android:textColor="@color/red_text_color" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_view3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout2"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                 android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                >
+
+                  <RelativeLayout
+                    android:id="@+id/layout_select_who"
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    android:gravity="center_vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_who_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="审批人:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_select_who_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/tv_who_title"
+                        android:textColor="#a4a4a4" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@id/tv_select_who_name"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/icon_plus_arrowright"
+                        android:textColor="@color/red_text_color" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_senser_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_view3"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="提示：秘书工作时间为7:00~19:00，请在此时间内设置秘书提醒时间"
+                android:textColor="@color/simi_color_red"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/layout_view4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/white"
+                android:paddingBottom="5dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:paddingTop="5dp" >
+
+                <Button
+                    android:id="@+id/bt_create_travel"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/login_btn_bg_selector"
+                    android:gravity="center"
+                    android:text="发起邀约"
+                    android:textColor="@android:color/white" >
+                </Button>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/view_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a2000000"
+        android:visibility="gone" />
+
+</RelativeLayout>

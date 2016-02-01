@@ -33,6 +33,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,11 +56,14 @@ import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
+import com.meijialife.simi.bean.AppHelpData;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.ui.SelectableRoundedImageView;
 import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.utils.BlurUtils;
 import com.meijialife.simi.utils.LogOut;
@@ -100,12 +104,15 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private LayoutInflater layoutInflater;
     private static View layout_mask;
     private RelativeLayout rl_top;
+    private FrameLayout vs;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layoutInflater = inflater;
         v = inflater.inflate(R.layout.personal_fragment, null, false);
+        vs= (FrameLayout)getActivity().getLayoutInflater()
+                .inflate(R.layout.personal_fragment, null);
         init(inflater, v);
         
         return v;
@@ -185,6 +192,11 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         ibtn_person.setOnClickListener(this);
 
         // inflater = LayoutInflater.from(getActivity());
+        
+        //请求帮助接口
+        finalBitmap = FinalBitmap.create(getActivity());
+        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
+        getAppHelp();
 
     }
     private SystemBarTintManager mTintManager;
@@ -647,6 +659,139 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             m_pDialog.dismiss();
             m_pDialog = null;
         }
+    }
+    
+    private PopupWindow popupWindows;
+    private TextView mDone;
+    private ImageView tip_iv_icon;
+    private SelectableRoundedImageView selectableRoundedImageView;
+    private TextView tip_tv_title;
+    private TextView tip_tv_content;
+    private TextView tip_tv_more;
+    private AppHelpData appHelpData;
+    /**
+     * 弹出窗口
+     */
+    private void popWindow(final AppHelpData appHelpData) {
+        View view = (LinearLayout)getActivity().getLayoutInflater()
+                .inflate(R.layout.layout_tip_activity, null);
+        if (null == popupWindows || !popupWindows.isShowing()) {
+          /*  popupWindows = new PopupWindow(view);
+            popupWindows.setWidth(450);
+            popupWindows.setHeight(650);*/
+            popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            popupWindows.setFocusable(false);
+            popupWindows.setTouchable(true);
+        }
+        mDone = (TextView)view.findViewById(R.id.tip_tv_done);
+        tip_tv_title = (TextView)view.findViewById(R.id.tip_tv_title);
+        tip_tv_content = (TextView)view.findViewById(R.id.tip_tv_content);
+        tip_tv_more = (TextView)view.findViewById(R.id.tip_tv_more);
+//        selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
+        tip_iv_icon = (ImageView)view.findViewById(R.id.tip_iv_icon);
+        tip_tv_title.setText(appHelpData.getTitle());
+        tip_tv_content.setText(appHelpData.getContent());
+//        finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
+        finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
+        popupWindow.setFocusable(true);  
+        popupWindow.setOutsideTouchable(true);
+        popupWindows.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式
+        popupWindows.showAtLocation(vs, Gravity.CENTER, 0, 0);
+        backgroundAlpha(0.5f);
+        mDone.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != popupWindows && popupWindows.isShowing()) {
+                    backgroundAlpha(1f);
+                    popupWindows.dismiss();
+                }
+            }
+        });
+       tip_tv_more.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String goto_url = appHelpData.getGoto_url();
+            String action = appHelpData.getAction().trim();
+            Intent intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent.putExtra("url",goto_url);
+            startActivity(intent);
+            backgroundAlpha(1f);
+            popupWindows.dismiss();
+        }            
+    });
+    }
+    /**
+    * 设置添加屏幕的背景透明度
+    * @param bgAlpha
+    */
+    public void backgroundAlpha(float bgAlpha)
+    {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = bgAlpha; //0.0-1.0
+            getActivity().getWindow().setAttributes(lp);
+    }
+    /*
+     * 帮助接口
+     */
+    
+    private void getAppHelp() {
+        String user_id = DBHelper.getUser(getActivity()).getId();
+        if (!NetworkUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        User user = DBHelper.getUser(getActivity());
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("action","mine");
+        map.put("user_id",""+user.getId());
+        AjaxParams param = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if(StringUtils.isNotEmpty(data)){
+                                Gson gson = new Gson();
+                                appHelpData = gson.fromJson(data, AppHelpData.class); 
+                                popWindow(appHelpData);
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if(!StringUtils.isEmpty(errorMsg.trim())){
+                    UIUtils.showToast(getActivity(), errorMsg);
+                }
+            }
+        });
     }
 
 }

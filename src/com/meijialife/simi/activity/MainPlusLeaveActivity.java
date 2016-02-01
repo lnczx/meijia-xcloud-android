@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
@@ -16,21 +15,16 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,14 +35,11 @@ import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.alerm.AlermUtils;
-import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.ContactBean;
-import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.SelectableRoundedImageView;
 import com.meijialife.simi.ui.ToggleButton;
 import com.meijialife.simi.ui.ToggleButton.OnToggleChanged;
 import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
@@ -57,16 +48,16 @@ import com.meijialife.simi.ui.wheelview.WheelView;
 import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
-import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+
 /**
- * 事务提醒
- * @author windows7
- *
+ * 请假
+ * 
+ * @author yejiu
+ * 
  */
-public class MainPlusAffairActivity extends BaseActivity implements OnClickListener , ItemScroListener {
-  
+public class MainPlusLeaveActivity extends BaseActivity implements OnClickListener, ItemScroListener {
     
     private PopupWindow mTimePopup;
     private TextView tv_date, tv_chufa_time;
@@ -100,12 +91,11 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private int mHour = 0;
     private int mMinute = 0;
 
-    private Date chooseDate;//用户选择的时间
+    private Date chooseDate; 
     private String finalTime;
     private String uploadtime;
     private ContactBean contactBean;
     private String mJson;
-    private ToggleButton slipBtn_mishuchuli, slipBtn_fatongzhi;
     private String is_senior;
     private TextView tv_beizu_content;
 
@@ -121,16 +111,13 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private UserInfo userInfo;
     private RelativeLayout layout_select_who;
     private boolean isUsersenior;
-    private View v;
+  
     
-    private AppHelpData appHelpData;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.layout_main_plus_affair);
+        setContentView(R.layout.layout_main_plus_leave);
         super.onCreate(savedInstanceState);
-        v= (RelativeLayout)getLayoutInflater()
-                .inflate(R.layout.layout_main_plus_affair, null);
         userInfo = DBHelper.getUserInfo(this);
         
         card = (Cards) getIntent().getSerializableExtra("cards");
@@ -141,19 +128,17 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private void initView(Cards card) {
         requestBackBtn();
         requestRightBtn();
-        setTitleName("事务提醒");
-     
+        setTitleName("面试邀约");
+
         findViewById(R.id.layout_select_time).setOnClickListener(this);
-        findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);
         findViewById(R.id.layout_meeting_content).setOnClickListener(this);
         findViewById(R.id.layout_message_tongzhi).setOnClickListener(this);
-        layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
+   layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
         layout_select_who.setOnClickListener(this);
 
         bt_create_travel = (Button) findViewById(R.id.bt_create_travel);
         bt_create_travel.setOnClickListener(this);
 
-        
         tv_select_name = (TextView) findViewById(R.id.tv_select_name);
         tv_select_number = (TextView) findViewById(R.id.tv_select_number);
         tv_xiaoxi_content = (TextView) findViewById(R.id.tv_xiaoxi_content);
@@ -161,11 +146,8 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         tv_beizu_content = (TextView) findViewById(R.id.tv_beizu_content);
         tv_senser_tip = (TextView) findViewById(R.id.tv_senser_tip);
         tv_select_who_name = (TextView) findViewById(R.id.tv_select_who_name);
-
         view_mask = (View) findViewById(R.id.view_mask);
-        
-        slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
-        slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
+
         
         ArrayList<String> list = new ArrayList<String>();
         String userName = userInfo.getName();
@@ -182,15 +164,14 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
-        isUsersenior = StringUtils.isEquals(user_type, "1");
-        
+       isUsersenior = StringUtils.isEquals(user_type, "1");
         if (isUsersenior) {
             layout_select_who.setVisibility(View.VISIBLE);
         }else{
             layout_select_who.setVisibility(View.GONE);
         }
 
-        slipBtn_mishuchuli.setOnToggleChanged(new OnToggleChanged() {
+        /*slipBtn_mishuchuli.setOnToggleChanged(new OnToggleChanged() {
             @Override
             public void onToggle(boolean on) {
                 if (on) {
@@ -198,7 +179,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                         if (chooseDate == null) {
                             slipBtn_mishuchuli.setToggleOff();
                             SET_SEC_DO = NO_SEC_DO;
-                            UIUtils.showToast(MainPlusAffairActivity.this, "请选择时间");
+                            UIUtils.showToast(MainPlusLeaveActivity.this, "请选择时间");
                             return;
                         }
                         
@@ -219,35 +200,25 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                             slipBtn_mishuchuli.setToggleOff();
                             SET_SEC_DO = NO_SEC_DO;
                             tv_senser_tip.setVisibility(View.VISIBLE);
-                            UIUtils.showActionDialog(MainPlusAffairActivity.this, "提醒", "秘书工作时间为7:00～19:00，请在此时间内设置秘书提醒时间，0:01—15:00可以设置当天11:00之后的提醒；15:01至0:00可以设置次日7:00之后的提醒。","确定", null, null, null);
+                            UIUtils.showActionDialog(MainPlusLeaveActivity.this, "提醒", "秘书工作时间为7:00～19:00，请在此时间内设置秘书提醒时间，0:01—15:00可以设置当天11:00之后的提醒；15:01至0:00可以设置次日7:00之后的提醒。","确定", null, null, null);
                         }
                         
                     } else {
                         slipBtn_mishuchuli.setToggleOff();
                         SET_SEC_DO = NO_SEC_DO;
                         tv_senser_tip.setVisibility(View.GONE);
-                        startActivity(new Intent(MainPlusAffairActivity.this, FindSecretaryActivity.class));
-                        Toast.makeText(MainPlusAffairActivity.this, "你没有购买秘书卡", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainPlusLeaveActivity.this, FindSecretaryActivity.class));
+                        Toast.makeText(MainPlusLeaveActivity.this, "你没有购买秘书卡", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     tv_senser_tip.setVisibility(View.GONE);
                 }
             }
-        });
-        slipBtn_fatongzhi.setOnToggleChanged(new OnToggleChanged() {
-            @Override
-            public void onToggle(boolean on) {
-                if (on) {
-                    SET_SEND = NEED_SEND;
-                } else {
-                    SET_SEND = NO_SEND;
-                }
-            }
-        });
+        });*/
         if (null != card) {
             isUpdate = true;
 
-            Constants.CARD_ADD_AFFAIR_CONTENT = card.getService_content();
+            Constants.CARD_ADD_NOTIFICATION_CONTENT = card.getService_content();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             long Service_time = Long.valueOf(card.getService_time()) * 1000;
 
@@ -289,49 +260,16 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                 reminItems[9] = "提前2天";
                 tv_xiaoxi_content.setText(reminItems[remindAlerm]);
 
-                // 处理秘书处理
-                int sec_do = Integer.valueOf(card.getSet_sec_do());
-                LogOut.debug("是否需要秘书处理:" + sec_do);
-
-                if (sec_do == 1) {// 有秘书
-                    slipBtn_mishuchuli.setToggleOn();
-                    SET_SEC_DO = NEED_SEC_DO;
-                } else if (sec_do == 0) {// 无秘书
-                    slipBtn_mishuchuli.setToggleOff();
-                    SET_SEC_DO = NO_SEC_DO;
-                }
-
-                // 立即给相关人员发送消息
-                int now_send = Integer.valueOf(card.getSet_now_send());
-                LogOut.debug("是否通知所有人:" + now_send);
-
-                if (now_send == 1) {// 发送
-                    slipBtn_fatongzhi.setToggleOn();
-                    SET_SEND = NEED_SEND;
-                } else if (now_send == 0) {// 不发送
-                    slipBtn_fatongzhi.setToggleOff();
-                    SET_SEND = NO_SEND;
-                }
-
             }
         }
-
-        //请求帮助接口
-        finalBitmap = FinalBitmap.create(this);
-        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
-        getAppHelp();
-     }
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.layout_select_phonenumber:// 选择通讯录
-            Intent intent = new Intent(MainPlusAffairActivity.this, ContactChooseActivity.class);
-            startActivityForResult(intent, GET_CONTACT);
-            break;
         case R.id.layout_meeting_content:
-            Intent intent2 = new Intent(MainPlusAffairActivity.this, MainPlusContentActivity.class);
-            intent2.putExtra(Constants.MAIN_PLUS_FLAG, Constants.AFFAIR);
+            Intent intent2 = new Intent(MainPlusLeaveActivity.this, MainPlusContentActivity.class);
+            intent2.putExtra(Constants.MAIN_PLUS_FLAG, Constants.NOTIFICATION);
             startActivity(intent2);
             break;
         case R.id.layout_message_tongzhi:
@@ -341,13 +279,12 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             showDateWindow();
             break;
         case R.id.bt_create_travel:
-            createCard(isUpdate);
+            createMeetingCard(isUpdate);
             break;
         case R.id.layout_select_who:
-            Intent mintent = new Intent(MainPlusAffairActivity.this, CreateForWhoActivity.class);
+            Intent mintent = new Intent(MainPlusLeaveActivity.this, CreateForWhoActivity.class);
             startActivityForResult(mintent, GET_USER);
             break;
-
 
         default:
             break;
@@ -392,14 +329,12 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         numericWheelAdapter1.setLabel("年");
         year.setViewAdapter(numericWheelAdapter1);
         year.setCyclic(false);// 是否可循环滑动
-        year.setItemScrolistener(this);
 
         month = (WheelView) view.findViewById(R.id.month);
         NumericWheelAdapter numericWheelAdapter2 = new NumericWheelAdapter(this, 1, 12, "%02d");
         numericWheelAdapter2.setLabel("月");
         month.setViewAdapter(numericWheelAdapter2);
         month.setCyclic(false);
-        month.setItemScrolistener(this);
 
         day = (WheelView) view.findViewById(R.id.day);
         initDay(norYear, curMonth);
@@ -460,9 +395,9 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
 //              if (mYear < year || mMonth < month || mDay < day || mhour < hour || mMinu < minute) {
               if(chooseDate.getTime() < currentDate.getTime()){
-                    UIUtils.showToast(MainPlusAffairActivity.this, "您只能选择未来时间进行提醒哦！");
+                    UIUtils.showToast(MainPlusLeaveActivity.this, "您只能选择未来时间进行提醒哦！");
                 }else{
-                    String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu) ;
+                    String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu);
                     finalTime = date + " " + cultime;
 
                     tv_meeting_time.setText(finalTime);
@@ -567,7 +502,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         items[8] = "提前1天";
         items[9] = "提前2天";
 
-
         arryadapter = new ArrayWheelAdapter<>(this, items);
         remind.setViewAdapter(arryadapter);
         remind.setCyclic(false);// 是否可循环滑动
@@ -626,7 +560,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                                         name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
                                     }
                                 }
-                                
                                 sb.append(name+",");
                                 str = sb.toString();
                                 str = str.substring(0,str.lastIndexOf(","));
@@ -652,8 +585,12 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         }
     }
 
-     
-    private void createCard(boolean update) {
+    /**
+     * 发起会议
+     * 
+     * @param isUpdate2
+     */
+    private void createMeetingCard(boolean update) {
         showDialog();
 
         if (!isUpdate) {// 如果不是更新的
@@ -675,14 +612,17 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                 mJson = new Gson().toJson(arrayList);
                 LogOut.debug("json:" + mJson);
             } else {
-                UIUtils.showToast(MainPlusAffairActivity.this, "请选择参会人员");
+                UIUtils.showToast(MainPlusLeaveActivity.this, "请选择参会人员");
                 dismissDialog();
                 return;
             }
 
         }
 
-        String c_id = DBHelper.getUser(MainPlusAffairActivity.this).getId();
+       
+
+        String c_id = userInfo.getId();
+
         String mtime = " " + finalTime + "";
 
         String meetingtime = tv_meeting_time.getText().toString();
@@ -711,27 +651,27 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             fdate = mdate;
 
         }
-        
-        if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
-            UIUtils.showToast(MainPlusAffairActivity.this, "请选择为谁创建");
-        }
 
+        if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
+            UIUtils.showToast(MainPlusLeaveActivity.this, "请选择为谁创建");
+        }
         if (StringUtils.isEmpty(mtime)) {
-            UIUtils.showToast(MainPlusAffairActivity.this, "请选择提醒时间");
+            UIUtils.showToast(MainPlusLeaveActivity.this, "请选择邀约时间");
             dismissDialog();
             return;
         }
+       
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("card_id", update ? card.getCard_id() : "0");
-        map.put("card_type", "3");
+        map.put("card_type", "4");
         map.put("create_user_id", c_id + "");
-        map.put("user_id", isUsersenior?for_userid:c_id);
+        map.put("user_id",  isUsersenior?for_userid:c_id);
         map.put("attends", mJson);
         map.put("service_time", uploadtime);
-        map.put("service_content", Constants.CARD_ADD_AFFAIR_CONTENT);
-        map.put("set_remind", remindAlerm+"");
-             map.put("set_now_send", SET_SEND +"");
+        map.put("service_content", Constants.CARD_ADD_NOTIFICATION_CONTENT);
+        map.put("set_remind", remindAlerm + "");
+        map.put("set_now_send", SET_SEND +"");
         map.put("set_sec_do", SET_SEC_DO + "");
 
         AjaxParams param = new AjaxParams(map);
@@ -758,26 +698,28 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) {
-                            Toast.makeText(MainPlusAffairActivity.this, "创建成功了", Toast.LENGTH_SHORT).show();
-                            MainPlusAffairActivity.this.finish();
-                            
-                          //初始化本地提醒闹钟
-                            AlermUtils.initAlerm(MainPlusAffairActivity.this, remindAlerm, fdate, "事务提醒", Constants.CARD_ADD_AFFAIR_CONTENT);
+                            Toast.makeText(MainPlusLeaveActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
+                            Constants.CARD_ADD_NOTIFICATION_CONTENT="";
+                            MainPlusLeaveActivity.this.finish();
+
+                            // 初始化本地提醒闹钟
+                            AlermUtils.initAlerm(MainPlusLeaveActivity.this, remindAlerm, fdate, "邀约通知",
+                                    Constants.CARD_ADD_NOTIFICATION_CONTENT);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            Toast.makeText(MainPlusAffairActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainPlusLeaveActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            Toast.makeText(MainPlusAffairActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainPlusLeaveActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            Toast.makeText(MainPlusAffairActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainPlusLeaveActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            Toast.makeText(MainPlusAffairActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainPlusLeaveActivity.this, msg, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(MainPlusAffairActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainPlusLeaveActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(MainPlusAffairActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainPlusLeaveActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -788,7 +730,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tv_beizu_content.setText(Constants.CARD_ADD_AFFAIR_CONTENT);
+                tv_beizu_content.setText(Constants.CARD_ADD_NOTIFICATION_CONTENT);
             }
         });
         super.onResume();
@@ -797,7 +739,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Constants.CARD_ADD_AFFAIR_CONTENT="";
+        Constants.CARD_ADD_NOTIFICATION_CONTENT="";
         Constants.finalContactList = new ArrayList<String>();
     }
 
@@ -815,161 +757,5 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         
         initDay(mYear, mMonth);
     }
-    
-    
-    
-    private PopupWindow popupWindow;
-    private TextView mDone;
-    private ImageView tip_iv_icon;
-    private SelectableRoundedImageView selectableRoundedImageView;
-    private TextView tip_tv_title;
-    private TextView tip_tv_content;
-    private TextView tip_tv_more;
-    private BitmapDrawable defDrawable;
-    private FinalBitmap finalBitmap;
-    /**
-     * 弹出窗口
-     */
-    private void popWindow(final AppHelpData appHelpData) {
-        View view = (LinearLayout)getLayoutInflater()
-                .inflate(R.layout.layout_tip_activity, null);
-        if (null == popupWindow || !popupWindow.isShowing()) {
-            popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-//            popupWindow = new PopupWindow(view);
-           /* popupWindow.setWidth(450);
-            popupWindow.setHeight(650);*/
-            popupWindow.setFocusable(false);
-            popupWindow.setTouchable(true);
-        }
-        mDone = (TextView)view.findViewById(R.id.tip_tv_done);
-        tip_tv_title = (TextView)view.findViewById(R.id.tip_tv_title);
-        tip_tv_content = (TextView)view.findViewById(R.id.tip_tv_content);
-        tip_tv_more = (TextView)view.findViewById(R.id.tip_tv_more);
-//        selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_iv_icon = (ImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_tv_title.setText(appHelpData.getTitle());
-        tip_tv_content.setText(appHelpData.getContent());
-//        finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        popupWindow.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式
-      
-        int[] location = new int[2];  
-        view.getLocationOnScreen(location);
-        popupWindow.setFocusable(true);  
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.showAtLocation(v, Gravity.CENTER_HORIZONTAL|Gravity.CENTER, 0, 0);
-        backgroundAlpha(0.5f);
-        mDone.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != popupWindow && popupWindow.isShowing()) {
-                    backgroundAlpha(1f);
-                    popupWindow.dismiss();
-                }
-            }
-        });
-       tip_tv_more.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String goto_url = appHelpData.getGoto_url();
-            String action = appHelpData.getAction().trim();
-            Intent intent = new Intent(MainPlusAffairActivity.this,WebViewsActivity.class);
-            intent.putExtra("url",goto_url);
-            startActivity(intent);
-            backgroundAlpha(1f);
-            popupWindow.dismiss();
-            
-          /*  if(category.equals("h5")){
-                Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-                intent.putExtra("url",goto_url);
-                startActivity(intent);
-            }else if (category.equals("app")) {
-                if(action.equals("card")){
-                    Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
-                    intent.putExtra("card_id", params);
-                    startActivity(intent);
-                }else if (action.equals("feed")) {
-                    Intent intent = new Intent(getActivity(), DynamicDetailsActivity.class);
-                    intent.putExtra("feedId", params);
-                    startActivity(intent);
-                }
-            }*/
-        }            
-    });
-    }
-    /**
-    * 设置添加屏幕的背景透明度
-    * @param bgAlpha
-    */
-    public void backgroundAlpha(float bgAlpha)
-    {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-            lp.alpha = bgAlpha; //0.0-1.0
-            getWindow().setAttributes(lp);
-    }
-    /*
-     * 帮助接口
-     */
-    
-    private void getAppHelp() {
-        String user_id = DBHelper.getUser(this).getId();
-        if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
-            return;
-        }
-        User user = DBHelper.getUser(MainPlusAffairActivity.this);
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("action","alarm");
-        map.put("user_id",""+user.getId());
-        AjaxParams param = new AjaxParams(map);
-        showDialog();
-        new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
-                Toast.makeText(MainPlusAffairActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                dismissDialog();
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if(StringUtils.isNotEmpty(data)){
-                                Gson gson = new Gson();
-                                appHelpData = gson.fromJson(data, AppHelpData.class); 
-                                popWindow(appHelpData);
-                            }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
-                }
-                // 操作失败，显示错误信息
-                if(!StringUtils.isEmpty(errorMsg.trim())){
-                    UIUtils.showToast(MainPlusAffairActivity.this, errorMsg);
-                }
-            }
-        });
-    }
-    
 
 }
