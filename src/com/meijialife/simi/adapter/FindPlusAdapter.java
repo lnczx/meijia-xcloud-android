@@ -72,12 +72,15 @@ public class FindPlusAdapter extends BaseAdapter {
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
-		holder.iv_plus_name.setText(findPlusDatas.get(position).getTitle());
-		//获得头像的url
-        String url = findPlusDatas.get(position).getIcon_url();
-        //将默认头像摄者为秘书头像
-        finalBitmap.display(holder.iv_plus_icon, url, defDrawable.getBitmap(), defDrawable.getBitmap());
-		return convertView;
+		holder.iv_plus_name.setText(findPlusDatas.get(position).getName());
+		if(position == findPlusDatas.size()-1){
+		    holder.iv_plus_icon.setImageResource(R.drawable.iconfont_yingyongzhongxin);
+		}else {
+            String url = findPlusDatas.get(position).getLogo();//获得头像的url
+            //将默认头像摄者为秘书头像
+            finalBitmap.display(holder.iv_plus_icon, url, defDrawable.getBitmap(), defDrawable.getBitmap());
+		}
+        return convertView;
 	}
 	class Holder {
 		ImageView iv_plus_icon;

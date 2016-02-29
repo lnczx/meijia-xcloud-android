@@ -12,19 +12,19 @@ public class FindPlusData implements Serializable {
 
     private String app_type;//应用类型xcloud/timechicken/simi
     
-    private Long serial_no;//序号
+    private Long no;//序号
     
-    private String title;//导航标题
+    private String name;//导航标题
     
-    private String category;//操作类型 app/h5
+    private String open_type;//操作类型 app/h5
     
     private String action ;//动作标识
     
     private String params ;//操作相关参数
     
-    private String goto_url;//跳转路径
+    private String url;//跳转路径
     
-    private String icon_url;//图标
+    private String logo;//图标
 
     public Long getId() {
         return id;
@@ -42,28 +42,28 @@ public class FindPlusData implements Serializable {
         this.app_type = app_type;
     }
 
-    public Long getSerial_no() {
-        return serial_no;
+    public Long getNo() {
+        return no;
     }
 
-    public void setSerial_no(Long serial_no) {
-        this.serial_no = serial_no;
+    public void setNo(Long no) {
+        this.no = no;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getOpen_type() {
+        return open_type;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setOpen_type(String open_type) {
+        this.open_type = open_type;
     }
 
     public String getAction() {
@@ -82,27 +82,19 @@ public class FindPlusData implements Serializable {
         this.params = params;
     }
 
-    public String getGoto_url() {
-        return goto_url;
+    public String getUrl() {
+        return url;
     }
 
-    public void setGoto_url(String goto_url) {
-        this.goto_url = goto_url;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getIcon_url() {
-        return icon_url;
+    public String getLogo() {
+        return logo;
     }
 
-    public void setIcon_url(String icon_url) {
-        this.icon_url = icon_url;
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
-    
-
-
-
-
-
-
-
 }

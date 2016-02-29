@@ -917,6 +917,14 @@
            	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
            >
         </activity>
+        <!-- 加号中应用中心 -->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusApplicationActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
     </application>
 
 </manifest>

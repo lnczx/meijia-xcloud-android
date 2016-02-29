@@ -89,8 +89,8 @@ public class MainPlusActivity extends Activity implements OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FindPlusData findPlusData =mFindPlusDatas.get(position);
-                String category = findPlusData.getCategory().trim();
-                String goto_url = findPlusData.getGoto_url().trim();
+                String category = findPlusData.getOpen_type().trim();
+                String goto_url = findPlusData.getUrl().trim();
                 String params = findPlusData.getParams().trim();
                 String action = findPlusData.getAction().trim();
                 if(category.equals("h5")){
@@ -150,6 +150,9 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                         
                     }else if (action.equals("punch_sign")) {//打卡签到
                         
+                    }else if (action.equals("application_center")) {//应用中心
+                        Intent intent = new Intent(MainPlusActivity.this, MainPlusApplicationActivity.class);
+                        startActivity(intent);
                     }
                   
                 }
@@ -198,9 +201,10 @@ public class MainPlusActivity extends Activity implements OnClickListener {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-
+        User user = DBHelper.getUser(this);
         Map<String, String> map = new HashMap<String, String>();
         map.put("app_type", "xcloud");
+        map.put("user_id", user.getId());
         AjaxParams param = new AjaxParams(map);
 
         new FinalHttp().get(Constants.URL_GET_APP_INDEXS, param, new AjaxCallBack<Object>() {
@@ -224,6 +228,16 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                                 Gson gson = new Gson();
                                 mFindPlusDatas = gson.fromJson(data, new TypeToken<ArrayList<FindPlusData>>() {
                                 }.getType());
+                                
+                                //前端静态增加应用中心
+                                FindPlusData findPlusData = new FindPlusData();
+                                findPlusData.setName("应用中心");
+                                findPlusData.setOpen_type("app");
+                                findPlusData.setUrl("");
+                                findPlusData.setParams("");
+                                findPlusData.setAction("application_center");
+                                mFindPlusDatas.add(findPlusData);
+                                
                                 mFindPlusAdapter.setData(mFindPlusDatas);
                             } else {
                                 mFindPlusDatas = new ArrayList<FindPlusData>();
@@ -385,5 +399,10 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                 }
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getFindPlusIcon();
     }
 }

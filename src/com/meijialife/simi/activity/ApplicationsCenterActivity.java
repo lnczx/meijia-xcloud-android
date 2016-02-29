@@ -11,13 +11,9 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -33,7 +29,6 @@ import com.meijialife.simi.adapter.AppToolsAdapter;
 import com.meijialife.simi.bean.AppToolsData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;

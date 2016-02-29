@@ -43,6 +43,8 @@ public class Constants {
     public static final String URL_GET_APP_TOOLS = ROOT_URL + "op/get_appTools.json";
     /**获得导航列表接口**/
     public static final String URL_GET_APP_INDEXS = ROOT_URL + "op/get_appIndexList.json";
+    /**新增应用显示配置接口**/
+    public static final String URL_GET_USER_APP_TOOLS = ROOT_URL + "op/user_app_tools.json";
     
     
     /** app更新接口 **/
