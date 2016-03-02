@@ -14,6 +14,7 @@
         android:drawableTop="@drawable/icon_plus_callmishu"
         android:gravity="center_horizontal"
         android:text="直接找秘书"
+        android:paddingBottom="8dp"
         android:textColor="#333333"
         android:textSize="@dimen/main_plus_text_size" />
 
@@ -35,6 +36,7 @@
         android:layout_height="wrap_content"
    		android:layout_above="@id/iv_plus_close"
         android:layout_below="@id/tv_call_mishu"
+        android:verticalSpacing="1dp"
         android:background="@color/title_background_color"
         android:numColumns="4"
         android:stretchMode="columnWidth" >

@@ -45,6 +45,10 @@ public class Constants {
     public static final String URL_GET_APP_INDEXS = ROOT_URL + "op/get_appIndexList.json";
     /**新增应用显示配置接口**/
     public static final String URL_GET_USER_APP_TOOLS = ROOT_URL + "op/user_app_tools.json";
+    /**企业-员工考勤记录列表接口**/
+    public static final String URL_GET_CHECKIN_LISTS = ROOT_URL + "company/get_checkins.json";
+    /**企业-员工考勤记录接口**/
+    public static final String URL_POST_CHECKIN = ROOT_URL + "company/checkin.json";
     
     
     /** app更新接口 **/
@@ -317,6 +321,9 @@ public class Constants {
      public static int checkedIndex = 0;
      //动态标题
      public static String FEED_TITLE ="";
+     /**加号签到h5链接**/
+     public static String PLUS_SIGN_URL = "http://123.57.173.36/simi-h5/show/checkin-index.html?user_id=";
+
 
      
      

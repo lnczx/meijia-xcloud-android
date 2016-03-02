@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.mapapi.search.core.PoiInfo;
@@ -61,6 +62,7 @@ public class AutoCompleteTextViewAdapter extends BaseAdapter implements Filterab
 			holder = new ViewHolder();
 			holder.tv_name = (TextView) view.findViewById(R.id.item_name);
 			holder.tv_address = (TextView) view.findViewById(R.id.item_address);
+			holder.m_ll_checked = (LinearLayout) view.findViewById(R.id.m_ll_checked);
 			
 			view.setTag(holder);
 		}else{
@@ -69,9 +71,14 @@ public class AutoCompleteTextViewAdapter extends BaseAdapter implements Filterab
 		}
 		
 		PoiInfo pi = mList.get(position);
+		if(position == selectedItem){
+		    holder.m_ll_checked.setVisibility(View.VISIBLE);
+		}else {
+            holder.m_ll_checked.setVisibility(View.GONE);
+        }
 		
 		holder.tv_name.setText(pi.name);
-		holder.tv_address.setText("地址:"+pi.address);
+		holder.tv_address.setText(pi.address);
 		
 		return view;
 	}
@@ -79,6 +86,7 @@ public class AutoCompleteTextViewAdapter extends BaseAdapter implements Filterab
 	static class ViewHolder{
 		public TextView tv_name;
 		public TextView tv_address;
+		public LinearLayout m_ll_checked;
 	}
 
 	@Override
@@ -143,6 +151,12 @@ public class AutoCompleteTextViewAdapter extends BaseAdapter implements Filterab
                 notifyDataSetInvalidated();
             }
 		}
-		
 	}
+	
+	private int selectedItem;
+
+    public void setSelectedItem(int selectedItem) {
+        this.selectedItem = selectedItem;
+    }
+	
 }

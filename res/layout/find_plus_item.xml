@@ -8,14 +8,15 @@
     <RelativeLayout  
         android:layout_width="fill_parent"  
         android:layout_height="fill_parent"  
-        android:padding="10dp" 
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
         android:background="@color/bg_gv"
         >  
   
         <ImageView  
             android:id="@+id/iv_plus_icon"  
-            android:layout_width="60dp"  
-            android:layout_height="60dp"  
+            android:layout_width="55dp"  
+            android:layout_height="55dp"  
             android:layout_centerHorizontal="true" 
             android:contentDescription="@string/app_name" 
             />  
@@ -29,7 +30,7 @@
             android:layout_marginTop="5.0dip"  
             android:maxLines="1"  
             android:textColor="@color/simi_color_black"
-            android:textSize="14.0sp" 
+            android:textSize="12.0sp" 
             android:text=""
             />  
     </RelativeLayout>

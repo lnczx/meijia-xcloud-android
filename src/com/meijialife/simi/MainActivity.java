@@ -67,7 +67,6 @@ import com.meijialife.simi.fra.Find2Fra;
 import com.meijialife.simi.fra.Home1Fra;
 import com.meijialife.simi.fra.Home3Fra;
 import com.meijialife.simi.fra.PersonalFragment;
-import com.meijialife.simi.fra.PersonalPageFragment;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
@@ -346,7 +345,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             break;
         case R.id.item_0: // 个人信息
             intent = new Intent(this, AccountInfoActivity.class);
-            intent.putExtra("user", PersonalPageFragment.user);
+            intent.putExtra("user", PersonalFragment.user);
             startActivity(intent);
             break;
         case R.id.item_1: // 我的钱包

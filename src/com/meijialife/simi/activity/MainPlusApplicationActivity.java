@@ -15,7 +15,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -63,13 +62,10 @@ public class MainPlusApplicationActivity extends BaseActivity implements ListIte
     
     private short is_flag=0;//0=工作工具；1=成长赚钱
     
-    public static Activity activity;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_plus_center);
         super.onCreate(savedInstanceState);
-        activity = this;
         initView();
     }
 
@@ -84,7 +80,6 @@ public class MainPlusApplicationActivity extends BaseActivity implements ListIte
         d_menu_total_List = new ArrayList<AppToolsData>();
         
         mainPlusAppAdapter1 = new MainPlusAppAdapter(this,this);
-        
         //按钮标题
         mButtonTool = (Button)findViewById(R.id.m_btn_tools);
         mButtonMoney = (Button)findViewById(R.id.m_btn_money);

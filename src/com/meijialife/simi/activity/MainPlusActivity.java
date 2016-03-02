@@ -149,7 +149,8 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                     }else if (action.equals("leave_pass")) {//请假审批
                         
                     }else if (action.equals("punch_sign")) {//打卡签到
-                        
+                        Intent intent = new Intent(MainPlusActivity.this, MainPlusSignInActivity.class);
+                        startActivity(intent);
                     }else if (action.equals("application_center")) {//应用中心
                         Intent intent = new Intent(MainPlusActivity.this, MainPlusApplicationActivity.class);
                         startActivity(intent);

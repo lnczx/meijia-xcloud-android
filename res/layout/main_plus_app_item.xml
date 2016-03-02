@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="0.0dip"
+    android:layout_margin="10dip"
     android:background="@color/simi_color_white"
     android:orientation="vertical" >
 
@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/m_center_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_weight="2"
@@ -33,10 +33,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_application_icon"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="5.0dip"
+                android:layout_marginTop="10.0dip"
                 android:maxLines="1"
                 android:text=""
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <RelativeLayout
@@ -49,11 +49,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5.0dip"
+                    android:layout_marginTop="3.0dip"
                     android:maxLines="1"
                     android:text=""
                     android:textColor="@color/simi_color_dark_gray"
-                    android:textSize="14.0sp" />
+                    android:textSize="12.0sp" />
 
                 <TextView
                     android:id="@+id/m_center_add"
@@ -62,11 +62,12 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/app_center_add"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="2dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="3dp"
                     android:text="添加" 
+                    android:textSize="12sp"
                     />
                 <TextView
                     android:id="@+id/m_center_default_add"
@@ -75,8 +76,11 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
                     android:text="已添加"
+                    android:paddingBottom="3dp"
+                     android:paddingTop="3dp"
                     android:textColor="@color/simi_color_dark_gray"
                     android:visibility="gone"
+                    android:textSize="12sp"
                      />
             </RelativeLayout>
 
@@ -86,11 +90,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_application_icon"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="5.0dip"
                 android:maxLines="1"
                 android:text=""
                 android:textColor="@color/simi_color_dark_gray"
-                android:textSize="14.0sp" />
+                android:textSize="12.0sp" />
         </LinearLayout>
     </LinearLayout>
 

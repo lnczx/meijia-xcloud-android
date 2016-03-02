@@ -20,13 +20,14 @@ import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -138,7 +139,7 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
         requestBackBtn();
         requestRightBtn();
         setTitleName("会议安排");
-
+        
         findViewById(R.id.layout_select_time).setOnClickListener(this);
         findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);
         findViewById(R.id.layout_meeting_content).setOnClickListener(this);

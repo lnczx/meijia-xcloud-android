@@ -1,4 +1,5 @@
 package com.meijialife.simi.fra;
+/*package com.meijialife.simi.fra;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,12 +61,12 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
-/**
+*//**
  * 我的---暂时不使用
  * 
  * @author RUI
  * 
- */
+ *//*
 public class PersonalPageFragment extends Fragment implements OnClickListener, onCardUpdateListener  {
     
     private LayoutInflater inflater;
@@ -80,13 +81,13 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
     public static int card_from = 1;// 1 = 我发布的 2 = 我参与的
     private int current_pageIndex = MY_SEND;
     
-    /** 我发布的list控件**/
+    *//** 我发布的list控件**//*
     private ListView listview_1;
     private ListAdapter adapter_1;
     private ArrayList<Cards> cardlist_1;//卡片数据
     private TextView tv_tips_1;//没有数据时的提示
     
-    /** 我参与的list控件**/
+    *//** 我参与的list控件**//*
     private ListView listview_2;
     private ListAdapter adapter_2;
     private ArrayList<Cards> cardlist_2;//卡片数据
@@ -156,9 +157,9 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
         ll_rq = (LinearLayout)music_popunwindwow.findViewById(R.id.ll_rq);
         iv_rq_left = (ImageView)music_popunwindwow.findViewById(R.id.iv_rq_left);
       
-        /**
+        *//**
          * 沉浸式状态栏(像ios那样的状态栏与应用统一颜色样式)android.4.4支持
-         */
+         *//*
         getActivity().getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //透明状态栏 
         getActivity().getWindow().addFlags( 
@@ -344,9 +345,9 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
         current_pageIndex = pos;
     }
     
-    /**
+    *//**
      * 获取个人信息数据
-     */
+     *//*
     private void getUserData() {
         String user_id = DBHelper.getUser(getActivity()).getId();
 
@@ -440,10 +441,10 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
         
     }
     
-    /**
+    *//**
      * 获取卡片数据
      * @param card_from 0 = 所有卡片  1 = 我发布的 2 = 我参与的,默认为0
-     */
+     *//*
     private void getCardListData(final int card_from) {
 
         String user_id = DBHelper.getUser(getActivity()).getId();
@@ -533,10 +534,10 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
         });
     }
     
-    /**
+    *//**
      * 获取卡片数据
      * @param card_from 0 = 所有卡片  1 = 我发布的 2 = 我参与的,默认为0
-     */
+     *//*
     private void getMyRqCode() {
 
         String user_id = DBHelper.getUser(getActivity()).getId();
@@ -627,3 +628,4 @@ public class PersonalPageFragment extends Fragment implements OnClickListener, o
 }
 
 
+*/

@@ -35,12 +35,11 @@ import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
- * 加号中应用中心
+ * 加号--应用中心---适配器
  *
  */
 public class MainPlusAppAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
-	
 	private ArrayList<AppToolsData> appToolsDatas;
 	
 	private FinalBitmap finalBitmap;
@@ -90,7 +89,6 @@ public class MainPlusAppAdapter extends BaseAdapter {
 			holder.m_center_title = (TextView) convertView.findViewById(R.id.m_center_title);
 			holder.m_center_describe = (TextView) convertView.findViewById(R.id.m_center_describe);
 			holder.m_center_provider = (TextView) convertView.findViewById(R.id.m_center_provider);
-//			holder.m_center_add = (Button)convertView.findViewById(R.id.m_center_add);
 			holder.m_center_add = (TextView)convertView.findViewById(R.id.m_center_add);
 			holder.m_center_default_add = (TextView)convertView.findViewById(R.id.m_center_default_add);
 			convertView.setTag(holder);
@@ -108,7 +106,6 @@ public class MainPlusAppAdapter extends BaseAdapter {
         Short status = appToolsData.getStatus();
         Short is_default = appToolsData.getIs_default();
         Short is_del = appToolsData.getIs_del();
-        
         /**
          * 判断逻辑：
          * 1.status = null  is_default =0不是默认 添加
@@ -236,7 +233,6 @@ public class MainPlusAppAdapter extends BaseAdapter {
 		TextView  m_center_title;
 		TextView  m_center_describe;
 		TextView  m_center_provider;
-//		Button  m_center_add;
 		TextView  m_center_add;
 		TextView  m_center_default_add;
 	}
