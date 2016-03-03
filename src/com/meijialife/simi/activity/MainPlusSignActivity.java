@@ -55,6 +55,7 @@ import com.baidu.mapapi.search.poi.PoiDetailSearchOption;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.poi.PoiSortType;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.AutoCompleteTextViewAdapter;
@@ -72,8 +73,7 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
     
     private TextView title;         //标题
     private ImageView btn_left;     //返回
-    private TextView btn_ok;  //确定
-//    private RelativeLayout btn_ok;  //确定
+    private TextView btn_ok;        //确定
     private EditText et_addr;       //详细地址
 
 	/** 百度地图相关 **/
@@ -109,11 +109,10 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_plus_sign_activity);
-		
+
 		initView();
 		initBaidu();
 		initAutoText();
-		
 	}
 	
 	private void initView(){
@@ -123,12 +122,9 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	    title.setText("添加地址");
 	    
 	    companyId = getIntent().getStringExtra("companyId");
-	    
 	    btn_left = (ImageView) findViewById(R.id.title_btn_left);
-//	    btn_ok = (RelativeLayout) findViewById(R.id.title_btn_edit_layout);
-	    btn_ok = (TextView) findViewById(R.id.m_tv_ok);
-	    
-	    et_addr = (EditText) findViewById(R.id.et_addr);
+	    btn_ok = (TextView) findViewById(R.id.m_tv_ok);//签到确定
+	    et_addr = (EditText) findViewById(R.id.et_addr);//详细地址暂时不用
 	    
 	    btn_left.setVisibility(View.VISIBLE);
 	    btn_ok.setVisibility(View.VISIBLE);
@@ -144,11 +140,9 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 		mPoiSearch = PoiSearch.newInstance();
 		mPoiSearch.setOnGetPoiSearchResultListener(this);
 		
-		
 		mMapView = (MapView) findViewById(R.id.bmapView);
 		mMapView.showZoomControls(false);//不显示放大缩小控件
 		mBaiduMap = mMapView.getMap();
-		
 		
 		mPoiSearch2 = PoiSearch.newInstance();
 		mPoiSearch2.setOnGetPoiSearchResultListener(new OnGetPoiSearchResultListener() {
@@ -308,7 +302,6 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 				.pageNum(load_Index));
 		
 	}
-
 	/**
 	 * 百度Poi搜索结果
 	 */
@@ -344,10 +337,9 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
         nearbySearchOption.keyword("大厦");
         nearbySearchOption.radius(1000);// 检索半径，单位是米
         nearbySearchOption.pageNum(page);
+        nearbySearchOption.sortType(PoiSortType.distance_from_near_to_far);
         mPoiSearch2.searchNearby(nearbySearchOption);// 发起附近检索请求
     }
-	
-	
 
 	/**
 	 * 点击地图覆盖层上的Poi后搜索出来的详细信息
@@ -359,7 +351,6 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 			Toast.makeText(MainPlusSignActivity.this, result.getName() + ": " + result.getAddress(), Toast.LENGTH_SHORT).show();
 		}
 	}
-
 	/**
 	 * 显示Poi搜索出来的地址，地图覆盖层
 	 * @author baojiarui
@@ -406,7 +397,6 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 				mBaiduMap.animateMapStatus(u);
 			}
 		}
-
 		public void onReceivePoi(BDLocation poiLocation) {
 			
 		}
@@ -424,7 +414,6 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	        .direction(100).latitude(location.getLatitude())
 	        .longitude(location.getLongitude()).build();
 	        mBaiduMap.setMyLocationData(locData);
-	        
 	        //周边搜索
 	        nearbySearch(load_Index,location.getLatitude(),location.getLongitude());
 	        
@@ -437,7 +426,6 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	        }
 	    }
 	}
-	
 	/**
 	 * 在地图中显示用户选择的位置
 	 * 
@@ -445,14 +433,12 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	 */
 	public void updateUserOverlay(LatLng ll) {
 		clearOverlay(null);
-		
 		// add marker overlay
 		OverlayOptions ooA = new MarkerOptions().position(ll).icon(bdA).zIndex(9).draggable(true);
 		mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
 
 		MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
 		mBaiduMap.setMapStatus(u);
-
 	}
 	
 	/**
@@ -490,7 +476,6 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-        
         if(userPoiInfo == null){
             Toast.makeText(this, "请选择签到位置", 0).show();
             return;

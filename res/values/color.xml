@@ -74,4 +74,12 @@
     <color name="line">#ffd3dde6</color>
     <!--发现-->
  	<color name="find_fav_red_color">#e8374a</color>
+ 	
+ 	<!-- 卡片列表标题颜色 -->
+ 	<color name="card_shi_wu">#56abe4</color>
+ 	<color name="card_tong_zhi">#f4c600</color>
+ 	<color name="card_hui_yi">#11cd6e</color>
+ 	<color name="card_mian_shi">#00bb9c</color>
+ 	<color name="card_chai_lv">#56abe4</color>
+ 	
 </resources>

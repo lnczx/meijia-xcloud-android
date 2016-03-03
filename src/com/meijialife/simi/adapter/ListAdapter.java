@@ -364,7 +364,8 @@ public class ListAdapter extends BaseAdapter {
 
     private View ininView(final int position) {
         ViewHolder vh = new ViewHolder();
-        View v = LayoutInflater.from(context).inflate(R.layout.item_home_cardlist, null);
+        //原来卡片列表样式item_home_cardlist.xml
+        View v = LayoutInflater.from(context).inflate(R.layout.home_cardlist, null);
         vh.iv_icon = (ImageView) v.findViewById(R.id.iv_icon);
         vh.iv_image = (ImageView) v.findViewById(R.id.iv_image);
         vh.iv_weather_image = (ImageView)v.findViewById(R.id.iv_weather_image);
@@ -404,7 +405,7 @@ public class ListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CardDetailsActivity.class);
-                intent.putExtra("Cards", list.get(position));
+                intent.putExtra("card_id", list.get(position).getCard_id());
                 context.startActivity(intent);
             }
         });
