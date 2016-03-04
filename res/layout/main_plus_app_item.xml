@@ -79,7 +79,6 @@
                     android:paddingBottom="3dp"
                      android:paddingTop="3dp"
                     android:textColor="@color/simi_color_dark_gray"
-                    android:visibility="gone"
                     android:textSize="12sp"
                      />
             </RelativeLayout>

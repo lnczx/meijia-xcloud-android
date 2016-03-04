@@ -103,24 +103,20 @@ public class MainPlusAppAdapter extends BaseAdapter {
         holder.m_center_title.setText(appToolsData.getName());
         holder.m_center_provider.setText("提供者:"+appToolsData.getApp_provider());
         holder.m_center_describe.setText(appToolsData.getApp_describe());
-        Short status = appToolsData.getStatus();
+        String status = appToolsData.getStatus();
         Short is_default = appToolsData.getIs_default();
         Short is_del = appToolsData.getIs_del();
         /**
          * 判断逻辑：
-         * 1.status = null  is_default =0不是默认 添加
+           1.status = null  is_default =0不是默认 添加
            2.status = null  is_default =1  是默认 is_del = 0 取消 is_del = 1 已添加
-           3.status != null status = 0 添加  status =1 取消
+           3.status != null 
+             status = 0 添加
+             status =1  is_del = 0 取消 is_del = 1 已添加 
          */
         if(status==null){
             if(is_default==1){
-                holder.m_center_default_add.setVisibility(View.GONE);
-                holder.m_center_add.setVisibility(View.VISIBLE);
-                holder.m_center_add.setText("添加");
-                holder.m_center_add.setTextColor(Color.parseColor("#E8374A"));
-                holder.m_center_add.setSelected(true);
-            }else {
-                if(is_default==0){
+                if(is_del==0){
                     holder.m_center_default_add.setVisibility(View.GONE);
                     holder.m_center_add.setVisibility(View.VISIBLE);
                     holder.m_center_add.setText("取消");
@@ -130,9 +126,15 @@ public class MainPlusAppAdapter extends BaseAdapter {
                     holder.m_center_default_add.setVisibility(View.VISIBLE);
                     holder.m_center_add.setVisibility(View.GONE);
                 }
+            }else {
+                holder.m_center_default_add.setVisibility(View.GONE);
+                holder.m_center_add.setVisibility(View.VISIBLE);
+                holder.m_center_add.setText("添加");
+                holder.m_center_add.setTextColor(Color.parseColor("#E8374A"));
+                holder.m_center_add.setSelected(true);
             }
         }else {
-           if(status==1){
+           if(status=="1"){
                if(is_del==0){
                    holder.m_center_default_add.setVisibility(View.GONE);
                    holder.m_center_add.setVisibility(View.VISIBLE);
@@ -143,7 +145,7 @@ public class MainPlusAppAdapter extends BaseAdapter {
                    holder.m_center_default_add.setVisibility(View.VISIBLE);
                    holder.m_center_add.setVisibility(View.GONE);
                }
-           }else if(status==0) {
+           }else if(status=="0") {
                holder.m_center_default_add.setVisibility(View.GONE);
                holder.m_center_add.setVisibility(View.VISIBLE);
                holder.m_center_add.setText("添加");
@@ -156,11 +158,11 @@ public class MainPlusAppAdapter extends BaseAdapter {
             public void onClick(View v) {
                 AppToolsData appToolsData = appToolsDatas.get(position);
                 String t_id = appToolsData.getT_id();
-                short status = appToolsData.getStatus();
+                String status = appToolsData.getStatus();
                 short temp_status = 0;
-                if(status==1){
+                if(status=="1"){
                     temp_status = 0;
-                }else if (status==0) {
+                }else if (status=="0") {
                     temp_status = 1;
                 }
                 addApp(t_id, temp_status);

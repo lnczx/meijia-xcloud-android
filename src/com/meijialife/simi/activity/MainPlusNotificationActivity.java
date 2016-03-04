@@ -146,7 +146,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);
         findViewById(R.id.layout_meeting_content).setOnClickListener(this);
         findViewById(R.id.layout_message_tongzhi).setOnClickListener(this);
-   layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
+        layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
         layout_select_who.setOnClickListener(this);
 
         bt_create_travel = (Button) findViewById(R.id.bt_create_travel);

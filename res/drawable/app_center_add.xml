@@ -3,6 +3,5 @@
 
     <item android:drawable="@drawable/app_add_normal" android:state_selected="false"/>
     <item android:drawable="@drawable/app_add_click"  android:state_selected="true"/>
-  <!--   <item android:drawable="@drawable/app_add_click" /> -->
 
 </selector>

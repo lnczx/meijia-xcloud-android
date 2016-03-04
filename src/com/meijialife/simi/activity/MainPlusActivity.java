@@ -102,31 +102,26 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                         Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
                         intent.putExtra("cardType","3");
                         startActivity(intent);
-//                        startActivity(new Intent(MainPlusActivity.this, MainPlusAffairActivity.class));
                         MainPlusActivity.this.finish();
                     }else if(action.equals("meeting")){//会议安排=1
                         Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
                         intent.putExtra("cardType","1");
                         startActivity(intent);
-//                      startActivity(new Intent(MainPlusActivity.this, MainPlusMeettingActivity.class));
                         MainPlusActivity.this.finish();
                     }else if(action.equals("notice")){//通知公告=2
                         Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
                         intent.putExtra("cardType","2");
                         startActivity(intent);
-//                        startActivity(new Intent(MainPlusActivity.this, MainPlusMorningActivity.class));
                         MainPlusActivity.this.finish();
                     }else if(action.equals("interview")){//面试邀约=4
                         Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
                         intent.putExtra("cardType","4");
                         startActivity(intent);
-//                        startActivity(new Intent(MainPlusActivity.this, MainPlusNotificationActivity.class));
                         MainPlusActivity.this.finish();
                     }else if(action.equals("trip")){//差旅规划
                         Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
                         intent.putExtra("cardType","5");
                         startActivity(intent);
-//                        startActivity(new Intent(MainPlusActivity.this, MainPlusTravelActivity.class));
                         MainPlusActivity.this.finish();
                     }else if(action.equals("punch_dynamic")){
                         Intent intent = new Intent(MainPlusActivity.this,PublishDynamicActivity.class);
@@ -168,6 +163,9 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                         startActivity(intent);
                     }else if (action.equals("application_center")) {//应用中心
                         Intent intent = new Intent(MainPlusActivity.this, MainPlusApplicationActivity.class);
+                        startActivity(intent);
+                    }else if (action.equals("water")) {//送水
+                        Intent intent = new Intent(MainPlusActivity.this, MainPlusWaterActivity.class);
                         startActivity(intent);
                     }
                   

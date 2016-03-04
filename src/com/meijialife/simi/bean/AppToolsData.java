@@ -30,7 +30,7 @@ public class AppToolsData implements Serializable{
     
     private Long add_time;//时间戳
     
-    private short status;//应用状态 0=off,1=on
+    private String status;//应用状态 0=off,1=on
     
     private short is_default;//0=不默认 1=默认
     
@@ -115,10 +115,11 @@ public class AppToolsData implements Serializable{
     public void setApp_describe(String app_describe) {
         this.app_describe = app_describe;
     }
-    public short getStatus() {
+  
+    public String getStatus() {
         return status;
     }
-    public void setStatus(short status) {
+    public void setStatus(String status) {
         this.status = status;
     }
     public short getIs_default() {

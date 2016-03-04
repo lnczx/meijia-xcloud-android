@@ -42,7 +42,7 @@ public class AddressActivity extends BaseActivity implements OnClickListener, On
     private AddressListAdapter adapter;
     private ArrayList<AddressData> addressList;
     
-    private int flag = 0;// 1= 支付页面进入（执行事件） 0 = 其他页面进入（不执行事件）
+    private int flag = 0;// 1= 支付页面进入（执行事件） 0 = 其他页面进入（不执行事件）99=送水下单进入
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,13 @@ public class AddressActivity extends BaseActivity implements OnClickListener, On
 	        intent.putExtra("addressData",addressData);
 	        setResult(RESULT_OK, intent);
 	        finish();
-	    }
+	    }else if (flag==99) {
+	        Intent intent = new Intent();
+            intent.putExtra("addr_id",addressData.getId());
+            intent.putExtra("addr_name",addressData.getName()+""+addressData.getAddr());
+            setResult(RESULT_OK, intent);
+            finish();
+        }
 	}
 	/**
      * 获取地址列表

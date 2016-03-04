@@ -12,7 +12,6 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -29,28 +28,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.a.a.c;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.adapter.DiscountCardAdapter;
 import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
 import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
-import com.meijialife.simi.bean.MyDiscountCard;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
+/**
+ * @description：应用中心卡片列表
+ * @author： kerryg
+ * @date:2016年3月3日 
+ */
 public class CardListActivity extends Activity implements onCardUpdateListener{
     
 
@@ -69,13 +70,10 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
     //创建卡片
     private TextView mTvCreate;
     private LinearLayout mLlCreate;
-    
     private HashMap<String,String> mCardTitleColor;
     private String mCardType;
     
-    
     //下拉刷新
-    private ArrayList<Cards> myCardList;
     private ArrayList<Cards> totalCardList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
     private int page = 1;
@@ -139,7 +137,7 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
                         "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(myCardList!=null && myCardList.size()>=10){
+                if(cardlist!=null && cardlist.size()>=10){
                     page = page+1;
                     getCardListData(page,mToday, mCardType);
                     adapter.notifyDataSetChanged(); 
@@ -243,35 +241,35 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         case "1"://会议安排
             mCardTitle.setText("会议安排");
 //            mTvCreate.setText("会议安排");
-            mTvCreate.setTextColor(getResources().getColor(R.color.card_hui_yi));
+            mLlCreate.setBackgroundColor(getResources().getColor(R.color.card_hui_yi));
             mLlCard.setBackgroundColor(getResources().getColor(R.color.card_hui_yi));
             mRlCard.setBackgroundColor(getResources().getColor(R.color.card_hui_yi));
             break;
         case "2"://通知公告
             mCardTitle.setText("通知公告");
 //            mTvCreate.setText("通知公告");
-            mTvCreate.setTextColor(getResources().getColor(R.color.card_tong_zhi));
+            mLlCreate.setBackgroundColor(getResources().getColor(R.color.card_tong_zhi));
             mLlCard.setBackgroundColor(getResources().getColor(R.color.card_tong_zhi));
             mRlCard.setBackgroundColor(getResources().getColor(R.color.card_tong_zhi));
             break;
         case "3"://事务提醒
             mCardTitle.setText("事务提醒");
 //            mTvCreate.setText("事务提醒");
-            mTvCreate.setTextColor(getResources().getColor(R.color.card_shi_wu));
+            mLlCreate.setBackgroundColor(getResources().getColor(R.color.card_shi_wu));
             mLlCard.setBackgroundColor(getResources().getColor(R.color.card_shi_wu));
             mRlCard.setBackgroundColor(getResources().getColor(R.color.card_shi_wu));
             break;
         case "4"://面试邀约
             mCardTitle.setText("面试邀约");
 //            mTvCreate.setText("面试邀约");
-            mTvCreate.setTextColor(getResources().getColor(R.color.card_mian_shi));
+            mLlCreate.setBackgroundColor(getResources().getColor(R.color.card_mian_shi));
             mLlCard.setBackgroundColor(getResources().getColor(R.color.card_mian_shi));
             mRlCard.setBackgroundColor(getResources().getColor(R.color.card_mian_shi));
             break;
         case "5"://差旅规划
             mCardTitle.setText("差旅规划");
 //            mTvCreate.setText("差旅规划");
-            mTvCreate.setTextColor(getResources().getColor(R.color.card_chai_lv));
+            mLlCreate.setBackgroundColor(getResources().getColor(R.color.card_chai_lv));
             mLlCard.setBackgroundColor(getResources().getColor(R.color.card_chai_lv));
             mRlCard.setBackgroundColor(getResources().getColor(R.color.card_chai_lv));
             break;
@@ -311,7 +309,7 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("service_date", date);
+        map.put("service_date", "");
         map.put("user_id", user_id + "");
         map.put("card_from", "0" );
         map.put("card_type", card_type);
@@ -415,7 +413,7 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         super.onDestroy();
         page =1;
         totalCardList = new ArrayList<Cards>();
-        myCardList = new ArrayList<Cards>();
+        cardlist = new ArrayList<Cards>();
         cardExtrasList = new ArrayList<CardExtra>();
         
     }

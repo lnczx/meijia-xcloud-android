@@ -125,9 +125,21 @@ public class Constants {
     public static final String URL_GET_USER_MSG_LIST = ROOT_URL + "user/get_msg.json";
     
     //app帮助类接口
+    /**送水列表接口**/
+    public static final String URL_GET_WATER_LIST = ROOT_URL + "order/get_list_water.json";
+    /**送水签收接口**/
+    public static final String URL_POST_WATER_DONE = ROOT_URL + "order/post_done_water.json";
+    /**送水下单接口**/
+    public static final String URL_POST_ADD_WATER = ROOT_URL + "order/post_add_water.json";
+    /**送水水产品口**/
+    public static final String URL_GET_SERVICE_PRICE_LIST = ROOT_URL + "partner/get_default_service_price_list.json";
+    
+    
+    
+    
+    //加号中应用接口
     public static final String URL_GET_APP_HELP_DATA = ROOT_URL + "op/get_appHelp.json";
-    
-    
+
     /**服务人员搜索**/
     public static final String URL_GET_PARTNER_LIST_BY_KW =ROOT_URL +"partner/search.json";
     /**获得热搜列表**/
@@ -190,6 +202,7 @@ public class Constants {
     public static final String AFFAIR = "affair"; 
     public static final String NOTIFICATION = "notification"; 
     public static final String TRAVEL = "travel";//旅行
+    public static final String REMARK = "remark";//旅行
 
     //应用中心菜单类别
     public static final String MENU_TYPE_T = "t";//t=工具与服务
@@ -203,6 +216,11 @@ public class Constants {
     public static  String ADDRESS_NAME_CONTENT = ""; 
     public static  String DISCOUNT_CARD_CONTENT = ""; 
     public static  String REAL_PAY_CONTENT = ""; 
+    public static  String WATER_ADD_REMARK = "";
+    public static  String WATER_ADD_ADDRESS = "";
+    public static  String WATER_BAND_NAME = "";
+    public static  String WATER_BAND_MONEY = "";
+
 
    
     /**封面相册常量**/

@@ -6,6 +6,7 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="D:/workspace/work/android/meijia-simi/meijia-lib-easeui/libs/easemobchat_2.2.3.jar"/>
 	<classpathentry kind="src" path="/EaseUI"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Android Private Dependency"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

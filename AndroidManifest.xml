@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meijialife.simi"
-    android:versionCode="19"
-    android:versionName="2.0.0" >
+    android:versionCode="20"
+    android:versionName="2.0.1" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -941,8 +941,33 @@
            	 android:windowSoftInputMode="adjustPan"
            >
         </activity>
+        <!--加号卡片列表-->
         <activity
             android:name="com.meijialife.simi.activity.CardListActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--加号送水-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusWaterActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--加号送水下单-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusWaterOrderActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--送水水产品-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusWaterBandActivity"
              android:configChanges="orientation"
              android:screenOrientation="portrait"
            	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"

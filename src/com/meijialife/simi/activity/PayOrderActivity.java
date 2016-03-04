@@ -65,6 +65,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     public static final int FROM_MYORDER = 1;// 來自订单中的支付跳转
     public static final int FROM_FIND = 2;// 来自发现中的支付跳转
     public static final int FROM_MYORDER_DETAIL = 3;// 来自订单详情中的支付跳转
+    public static final int FROM_WATER_ORDER = 99;// 来自送水详情中的支付跳转
     /**
      * 支付类型
      */

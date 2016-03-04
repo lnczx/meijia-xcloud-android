@@ -52,7 +52,12 @@ public class MainPlusContentActivity extends BaseActivity implements OnClickList
             setTitleName("邀约通知");
             content = Constants.CARD_ADD_NOTIFICATION_CONTENT;
             remindContent ="邀约内容";
+        }else if (StringUtils.isEquals(flag, Constants.REMARK)) {
+            setTitleName("备注");
+            content = Constants.WATER_ADD_REMARK;
+            remindContent ="备注";
         }
+
 
         findViewById(R.id.tv_submit).setOnClickListener(this);
         tv_input_content = (EditText) findViewById(R.id.tv_input_content);
@@ -84,6 +89,8 @@ public class MainPlusContentActivity extends BaseActivity implements OnClickList
                 Constants.CARD_ADD_AFFAIR_CONTENT = message;
             } else if (StringUtils.isEquals(flag, Constants.NOTIFICATION)) {
                 Constants.CARD_ADD_NOTIFICATION_CONTENT = message;
+            }else if (StringUtils.isEquals(flag, Constants.REMARK)) {
+                Constants.WATER_ADD_REMARK = message;
             }
             //点击提交收回键盘
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
