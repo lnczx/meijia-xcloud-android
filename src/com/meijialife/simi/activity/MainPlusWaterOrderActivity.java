@@ -160,14 +160,13 @@ public class MainPlusWaterOrderActivity extends BaseActivity implements OnClickL
                         if (status == Constants.STATUS_SUCCESS) {
                             Toast.makeText(MainPlusWaterOrderActivity.this, "下单成功了", Toast.LENGTH_SHORT).show();
                             MainPlusWaterOrderActivity.this.finish();
-                           /* Gson gson = new Gson();
+                            Gson gson = new Gson();
                             WaterData waterData = new WaterData();
                             waterData = gson.fromJson(data, WaterData.class);
                             Intent intent = new Intent(MainPlusWaterOrderActivity.this,PayOrderActivity.class);
-                            intent.putExtra("flag","99");
+                            intent.putExtra("flag",99);
                             intent.putExtra("waterData",waterData);
-                            startActivity(intent);*/
-                        
+                            startActivity(intent);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(MainPlusWaterOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

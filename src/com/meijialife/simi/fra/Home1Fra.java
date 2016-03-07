@@ -52,6 +52,8 @@ import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
+import com.meijialife.simi.activity.MainPlusWaterActivity;
+import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.ListAdapter;
@@ -65,6 +67,7 @@ import com.meijialife.simi.bean.FindBean;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.bean.UserMsg;
+import com.meijialife.simi.bean.WaterData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CollapseCalendarView;
 import com.meijialife.simi.ui.CollapseCalendarView.OnDateSelect;
@@ -386,6 +389,11 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                         
                     }else if (action.equals("leave_pass")) {
                         
+                    }else if(action.equals("water")){
+                        Intent intent = new Intent(getActivity(),OrderDetailsActivity.class);
+                        intent.putExtra("orderId", params);
+                        intent.putExtra("orderType", 99);
+                        startActivity(intent);
                     }
                   
                 }

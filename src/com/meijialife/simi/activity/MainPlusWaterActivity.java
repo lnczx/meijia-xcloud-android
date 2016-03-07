@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -143,6 +145,17 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
                 }
             }
         });
+        
+        mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                WaterData waterData = totalWaterList.get(position);
+                Intent intent = new Intent(MainPlusWaterActivity.this,OrderDetailsActivity.class);
+                intent.putExtra("orderId", waterData.getOrder_id());
+                intent.putExtra("orderType", 99);
+                startActivity(intent);
+            }
+        });
     }
     /**
      * 设置下拉刷新提示
@@ -181,6 +194,9 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
         mTv2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MainPlusWaterActivity.this,WebViewsActivity.class);
+                intent.putExtra("url",Constants.WATER_ORDER_H5);
+                startActivity(intent);
                 
             }
         });

@@ -70,8 +70,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="199元"
+                        android:text=""
                         android:textColor="@color/simi_color_gray" 
+                        android:visibility="gone"
                         />
                 </LinearLayout>
 
@@ -87,7 +88,7 @@
 		            android:paddingLeft="8dp"
 		            android:paddingRight="8dp"
 		            android:background="@drawable/btn_buy"
-                    android:text="已支付"
+                    android:text=""
                     android:clickable="true"
                      />
             </RelativeLayout>
@@ -113,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="2015-11-18" />
+                    android:text="" />
             </RelativeLayout>
              
              <RelativeLayout
@@ -137,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="北京" />
+                    android:text="" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -162,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="北京 -上海 2015xxxxxx 航班号：CXJK600" />
+                    android:text="" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -186,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="1500元" />
+                    android:text="" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -210,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="线上支付" />
+                    android:text="" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -234,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="xxxx" />
+                    android:text="" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

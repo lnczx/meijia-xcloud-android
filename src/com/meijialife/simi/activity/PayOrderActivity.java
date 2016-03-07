@@ -40,6 +40,7 @@ import com.meijialife.simi.bean.ServiceOrder;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
+import com.meijialife.simi.bean.WaterData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -81,6 +82,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private MyOrder myOrder;
     private AddressData addressData;
     private MyDiscountCard myDiscountCard;
+    private WaterData waterData;//送水订单
     /**
      * 全局基本变量定义
      */
@@ -93,6 +95,8 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private String orderPay;// 订单实际支付金额
     private Long order_service_type_id;// 订单服务类型
     private String card_id; // 会员卡类型
+    
+    private int order_flag =0;//0=我的订单，1=订单详情，2=送水订单
     /**
      * 布局变量定义
      */
@@ -132,12 +136,19 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             myOrderDetail = (MyOrderDetail) getIntent().getSerializableExtra("myOrderDetail");
             orderId = myOrderDetail.getOrder_id() + "";
             orderPay = myOrderDetail.getOrder_pay();
+            order_flag=0;
         } else if (flag == FROM_MYORDER) {
             myOrder = (MyOrder) getIntent().getSerializableExtra("myOrder");
             orderId = myOrder.getOrder_id() + "";
             orderPay = myOrder.getOrder_pay();
+            order_flag=1;
+        }else if (flag==FROM_WATER_ORDER) {
+            waterData = (WaterData) getIntent().getSerializableExtra("waterData");
+            orderId = waterData.getOrder_id() + "";
+            orderPay = waterData.getOrder_pay();
+            order_flag=2;
+            
         }
-
         findViewById(R.id.recharge_ll_wxpay).setOnClickListener(this);
         findViewById(R.id.recharge_ll_alipay).setOnClickListener(this);
         findViewById(R.id.btn_topay).setOnClickListener(this);
@@ -181,11 +192,21 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             tvRealPay.setText(Constants.REAL_PAY_CONTENT);
             tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
         } else if (flag == FROM_MYORDER) {
+            
             tv_pay_name.setText(myOrder.getService_type_name());
             tv_pay_money.setText(myOrder.getOrder_pay() + "元");
             Constants.REAL_PAY_CONTENT = myOrder.getOrder_pay() + "元";
             Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
             order_service_type_id = myOrder.getService_type_id();
+
+            tvRealPay.setText(Constants.REAL_PAY_CONTENT);
+            tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
+
+        }else if (flag == FROM_WATER_ORDER) {
+            tv_pay_name.setText(waterData.getService_type_name());
+            tv_pay_money.setText(waterData.getOrder_pay() + "元");
+            Constants.REAL_PAY_CONTENT = waterData.getOrder_pay() + "元";
+            Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
 
             tvRealPay.setText(Constants.REAL_PAY_CONTENT);
             tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
@@ -243,7 +264,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             Double orderPays = Double.valueOf(orderPay);
             Double value = Double.valueOf(myDiscountCard.getValue());
             // 1.如果优惠券和订单服务类型一致，则判断金额
-            if (order_service_type_id.longValue() == myDiscountCard.getService_type_id().longValue()) {
+//            if (order_service_type_id.longValue() == myDiscountCard.getService_type_id().longValue()) {
                 // 2.判断优惠券是否满足最大金额消费使用
                 if (orderPays > value) {// 如果订单金额>maxValue则可以使用优惠券
                     Constants.REAL_PAY_CONTENT = (orderPays - value) + "元";
@@ -252,10 +273,10 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     Toast.makeText(PayOrderActivity.this, "订单满" + myDiscountCard.getMax_value() + "元才能使用优惠券", Toast.LENGTH_SHORT).show();
                     return;
                 }
-            } else {
+           /* } else {
                 Toast.makeText(PayOrderActivity.this, "服务类型不一致，不能使用优惠券", Toast.LENGTH_SHORT).show();
                 return;
-            }
+            }*/
             break;
         default:
             break;
@@ -297,17 +318,29 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 }
             } else if (flag == FROM_MYORDER) {// 来自于订单页面支付(待支付支付)
                 if (iv_order_select_alipay.isSelected()) {// 支付宝支付秘书服务
-                    postExistedOrderBuyFromMyOrderList(PAY_TYPE_ALIPAY, myOrder);
+//                    postExistedOrderBuyFromMyOrderList(PAY_TYPE_ALIPAY, myOrder);
+                    postOrder(PAY_TYPE_ALIPAY, order_flag); 
                 } else if (iv_order_select_weixin.isSelected()) {// 微信支付秘书服务
-                    postExistedOrderBuyFromMyOrderList(PAY_TYPE_WXPAY, myOrder);
+//                    postExistedOrderBuyFromMyOrderList(PAY_TYPE_WXPAY, myOrder);
+                    postOrder(PAY_TYPE_WXPAY, order_flag); 
                 } else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
                 }
             } else if (flag == FROM_MYORDER_DETAIL) {// 来自于订单页面支付(待支付支付)
                 if (iv_order_select_alipay.isSelected()) {// 支付宝支付秘书服务
-                    postExistedOrderBuyFromMyOrderDetail(PAY_TYPE_ALIPAY, myOrderDetail);
+//                    postExistedOrderBuyFromMyOrderDetail(PAY_TYPE_ALIPAY, myOrderDetail);
+                    postOrder(PAY_TYPE_ALIPAY, order_flag); 
                 } else if (iv_order_select_weixin.isSelected()) {// 微信支付秘书服务
-                    postExistedOrderBuyFromMyOrderDetail(PAY_TYPE_WXPAY, myOrderDetail);
+//                    postExistedOrderBuyFromMyOrderDetail(PAY_TYPE_WXPAY, myOrderDetail);
+                    postOrder(PAY_TYPE_WXPAY, order_flag);
+                } else {
+                    Toast.makeText(this, "请选择支付方式", 0).show();
+                }
+            } else if (flag == FROM_WATER_ORDER) {// 来自送水于订单页面支付(待支付支付)
+                if (iv_order_select_alipay.isSelected()) {// 支付宝支付秘书服务
+                    postOrder(PAY_TYPE_ALIPAY, order_flag);//rder_flag=送水支付
+                } else if (iv_order_select_weixin.isSelected()) {// 微信支付秘书服务
+                    postOrder(PAY_TYPE_WXPAY, order_flag);//order_flag=送水支付
                 } else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
                 }
@@ -461,8 +494,86 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             new PayWithAlipay(PayOrderActivity.this, PayOrderActivity.this, guanjiaCallback, mobile, ConsAli.PAY_TO_MS_CARD, /*"0.01"*/order_pay,
                     order_no).pay();
         } else if (payType == PAY_TYPE_WXPAY) {
-            new WxPay(PayOrderActivity.this, PayOrderActivity.this,/* ConsAli.PAY_TO_MS_CARD */0, order_no, "秘书服务购买", /*"0.01"*/  order_pay );
+            new WxPay(PayOrderActivity.this, PayOrderActivity.this,/* ConsAli.PAY_TO_MS_CARD */0, order_no, "服务购买",/* "0.01"*/  order_pay );
         }
+    }
+    /**
+     * 订单支付接口
+     * @param payType
+     * @param orderFlag 0=myOrder ,1=orderDetail,2=waterData
+     */
+    private void postOrder(final int payType, int orderFlag) {
+
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        if (is_addr == 1 && Long.valueOf(addr_id) <= 0) {
+            Toast.makeText(this, "请选择服务方式", 0).show();
+            return;
+        }
+        
+        UserInfo userInfo = DBHelper.getUserInfo(this);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", userInfo.getUser_id());
+        if(0==orderFlag){//我的订单 myOrder
+            map.put("order_id", myOrder.getOrder_id() + "");
+            map.put("order_no", myOrder.getOrder_no());
+        }else if (1==orderFlag) {//订单详情支付 myOrderDetail
+            map.put("order_id", myOrderDetail.getOrder_id() + "");
+            map.put("order_no", myOrderDetail.getOrder_no());
+        }else if (2==orderFlag) {//送水订单 waterData
+            map.put("order_id", waterData.getOrder_id() + "");
+            map.put("order_no", waterData.getOrder_no());
+        }
+        map.put("pay_type", "" + payType);
+        if (Long.valueOf(user_coupon_id) > 0) {
+            map.put("user_coupon_id", user_coupon_id);
+        }
+        if (is_addr == 1) {
+            map.put("addr_id", addr_id);
+        }
+
+        AjaxParams param = new AjaxParams(map);
+
+        new FinalHttp().post(Constants.URL_POST_EXISTED_PARTNER_SERVICE_BUY, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                disDialog();
+                Toast.makeText(PayOrderActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                disDialog();
+                LogOut.i("========", "onSuccess：" + t);
+                JSONObject json;
+                try {
+                    json = new JSONObject(t.toString());
+                    int status = Integer.parseInt(json.getString("status"));
+                    String msg = json.getString("msg");
+                    if (status == Constants.STATUS_SUCCESS) { // 正确
+                        parseSeniorBuyJson(json, payType);
+                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                        Toast.makeText(PayOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                        Toast.makeText(PayOrderActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
+                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                        Toast.makeText(PayOrderActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
+                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                        Toast.makeText(PayOrderActivity.this, msg, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(PayOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    Toast.makeText(PayOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     /**
@@ -526,9 +637,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     } else {
                         Toast.makeText(PayOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                     }
-
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     Toast.makeText(PayOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                 }
@@ -640,13 +749,11 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 disDialog();
-                LogOut.i("========", "onSuccess：" + t);
                 JSONObject json;
                 try {
                     json = new JSONObject(t.toString());
                     int status = Integer.parseInt(json.getString("status"));
                     String msg = json.getString("msg");
-
                     if (status == Constants.STATUS_SUCCESS) { // 正确
                         parseSeniorOnlineJson(activty, context, json);
                     } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -660,9 +767,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     } else {
                         Toast.makeText(context, context.getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                     }
-
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     Toast.makeText(context, context.getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                 }
@@ -753,7 +858,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             card_order_no = obj.getString("card_order_no");
             card_pay = obj.getString("card_pay");
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             Toast.makeText(this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
         }
@@ -806,7 +910,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     json = new JSONObject(t.toString());
                     int status = Integer.parseInt(json.getString("status"));
                     String msg = json.getString("msg");
-
                     if (status == Constants.STATUS_SUCCESS) { // 正确
                         parseCardOnlineJson(activity, context, json);
                     } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误

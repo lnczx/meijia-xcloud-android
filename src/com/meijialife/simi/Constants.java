@@ -133,6 +133,18 @@ public class Constants {
     public static final String URL_POST_ADD_WATER = ROOT_URL + "order/post_add_water.json";
     /**送水水产品口**/
     public static final String URL_GET_SERVICE_PRICE_LIST = ROOT_URL + "partner/get_default_service_price_list.json";
+    /**送水订单详情接口**/
+    public static final String URL_GET_DETAIL_WATER = ROOT_URL + "order/get_detail_water.json";
+    /**送水订单状态**/
+    public static final int WATER_ORDER_CLOSE = 0; // 已关闭
+    public static final int WATER_ORDER_NOT_PAY = 1; // 未支付
+    public static final int WATER_ORDER_HAS_PAY = 2; // 已支付
+    public static final int WATER_ORDER_PAYING = 3; // 处理中
+    //智能配置h5链接
+    public static final String WATER_ORDER_H5 = "http://123.57.173.36/simi-h5/show/water-set.html"; // 处理中
+    
+
+    
     
     
     
@@ -182,6 +194,7 @@ public class Constants {
     public static final int ORDER_NOT_PAY = 1; // 未支付
     public static final int ORDER_HAS_PAY = 2; // 已支付
 
+    
     
     
     /*** 网络返回状态码 ***/

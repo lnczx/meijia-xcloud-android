@@ -38,9 +38,21 @@ public class WaterData implements Serializable {
     private String order_money;//商品总价
     
     private String order_pay;//支付金额
+    
+    private int  order_status;//订单状态值  0 =  已关闭  1= 待支付  2= 已支付  3= 处理中
+
 
     
     
+
+    public int getOrder_status() {
+        return order_status;
+    }
+
+    public void setOrder_status(int order_status) {
+        this.order_status = order_status;
+    }
+
     public String getOrder_money() {
         return order_money;
     }
