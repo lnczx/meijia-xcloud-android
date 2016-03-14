@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meijialife.simi"
-    android:versionCode="20"
-    android:versionName="2.0.1" >
+    android:versionCode="22"
+    android:versionName="2.1.0" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -968,6 +968,134 @@
         <!--送水水产品-->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWaterBandActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--废品回收订单列表-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusWasterActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--废品回收下单-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusWasterOrderActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--废品类型列表-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusWasterTypeActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--保洁类列表-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusCleanActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--保洁类下单-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusCleanOrderActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--保洁类型-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusCleanTypeActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--团建列表-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusTeamActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--团建下单-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusTeamOrderActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--团建类型列表-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusTeamTypeActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--请假列表-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusLeaveListActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--请假下单-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusLeaveActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--请假类型列表-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusLeaveTypeActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--请假详情-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusLeaveDetailActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--快递列表-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusExpressActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--快递下单  -->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusExpressOrderActivity"
+             android:configChanges="orientation"
+             android:screenOrientation="portrait"
+           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+           >
+        </activity>
+        <!--汽车牌照提醒  -->
+        <activity
+            android:name="com.meijialife.simi.activity.CarAlertActivity"
              android:configChanges="orientation"
              android:screenOrientation="portrait"
            	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"

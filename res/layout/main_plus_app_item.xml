@@ -68,6 +68,8 @@
                     android:paddingTop="3dp"
                     android:text="添加" 
                     android:textSize="12sp"
+                    android:clickable="true"
+                    android:focusable="true"
                     />
                 <TextView
                     android:id="@+id/m_center_default_add"
@@ -77,9 +79,11 @@
                     android:layout_marginRight="20dp"
                     android:text="已添加"
                     android:paddingBottom="3dp"
-                     android:paddingTop="3dp"
+                    android:paddingTop="3dp"
                     android:textColor="@color/simi_color_dark_gray"
                     android:textSize="12sp"
+                    android:visibility="gone"
+                    android:clickable="true"
                      />
             </RelativeLayout>
 

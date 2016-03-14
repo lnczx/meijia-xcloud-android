@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import net.tsz.afinal.FinalHttp;
@@ -24,9 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +33,6 @@ import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.alerm.AlermUtils;
-import com.meijialife.simi.bean.CardAttend;
-import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.ContactBean;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -44,22 +40,20 @@ import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
 import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
 import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
+
 /**
- * 请假
- * 
- * @author yejiu
- * 
+ * @description：请假
+ * @author： kerryg
+ * @date:2016年3月9日 
  */
 public class MainPlusLeaveActivity extends BaseActivity implements OnClickListener, ItemScroListener {
     
     private PopupWindow mTimePopup;
-    private TextView tv_date, tv_chufa_time;
-    private String start_city_id;
-    private String end_city_id;
     private WheelView remind;
     private ArrayWheelAdapter<String> arryadapter;
     public static final int NEED_SEC_DO = 1;
@@ -69,11 +63,10 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
     public static final int NO_SEND = 0;
     private int SET_SEND = NO_SEND;
 
-    private RelativeLayout select_phonenumber;
-    private TextView tv_select_name;
     private TextView tv_select_number, tv_xiaoxi_content, tv_meeting_time;
     public static final int GET_CONTACT = 1001;
     public static final int GET_USER = 1002;
+    public static final int GET_TYPE = 1003;
     private View view_mask;
 
     private WheelView year;
@@ -81,34 +74,41 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
     private WheelView day;
     private WheelView hour;
     private WheelView minute;
-    private int mYear = 2015;
+    private int mYear = 2016;
     private int mMonth = 0;
     private int mDay = 1;
 
     private int mHour = 0;
     private int mMinute = 0;
 
-    private Date chooseDate; 
+    private Date chooseDate;
+    private Date currentDate;
     private String finalTime;
-    private String uploadtime;
-    private ContactBean contactBean;
     private String mJson;
-    private String is_senior;
-    private TextView tv_beizu_content;
 
-    private int remindAlerm = 1;// 提醒设置 0 = 不提醒 1 = 按时提醒 2 = 5分钟 3 = 15分钟 4 = 提前30分钟 5 = 提前一个小时 6 = 提前2小时 7 = 提前6小时 8 = 提前一天 9 = 提前两天
-    private Button bt_create_travel;
 
-    private boolean isUpdate = false;
-    private Cards card;
-    private Date fdate;
-    private TextView tv_senser_tip;
-    private TextView tv_select_who_name;
     private String for_userid = "";
     private UserInfo userInfo;
-    private RelativeLayout layout_select_who;
-    private boolean isUsersenior;
   
+    
+    private TextView leave_type_content;//假期类型
+    private TextView leave_start_day;//开始日期
+    private TextView leave_end_day;//结束日期
+    private TextView leave_days;//请假天数
+    private TextView leave_content;//请假内容
+    private TextView leave_select_who_name;//请假内容
+    private TextView leave_num;//审批人数
+    
+    private String mCompanyId;
+    private String mUserId;
+    private String mLeaveType;
+    private String mLeaveTypeId;
+    private String mStartDate;
+    private String mEndDate;
+    private String mRemarks;
+    private String mTotalDays;
+    
+    private int flag=0;//0=开始日期，1=结束日期
     
 
     @Override
@@ -117,170 +117,74 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         super.onCreate(savedInstanceState);
         userInfo = DBHelper.getUserInfo(this);
         
-        card = (Cards) getIntent().getSerializableExtra("cards");
-        initView(card);
+        initView();
 
     }
 
-    private void initView(Cards card) {
+    private void initView() {
         requestBackBtn();
-        requestRightBtn();
-        setTitleName("面试邀约");
+        setTitleName("请假");
+        
+        findView();
 
-        findViewById(R.id.layout_select_time).setOnClickListener(this);
-        findViewById(R.id.layout_meeting_content).setOnClickListener(this);
-        findViewById(R.id.layout_message_tongzhi).setOnClickListener(this);
-        layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
-        layout_select_who.setOnClickListener(this);
+    }
+    
+    private void findView(){
+        leave_type_content = (TextView)findViewById(R.id.leave_type_content);
+        leave_start_day = (TextView)findViewById(R.id.leave_start_day);
+        leave_end_day = (TextView)findViewById(R.id.leave_end_day);
+        leave_days =  (TextView)findViewById(R.id.leave_total_days);
+        leave_content = (TextView)findViewById(R.id.tv_beizu_content);
+        leave_select_who_name =  (TextView)findViewById(R.id.leave_select_who_name);
+        leave_num =  (TextView)findViewById(R.id.leave_num);
 
-        bt_create_travel = (Button) findViewById(R.id.bt_create_travel);
-        bt_create_travel.setOnClickListener(this);
-
-        tv_select_name = (TextView) findViewById(R.id.tv_select_name);
-        tv_select_number = (TextView) findViewById(R.id.tv_select_number);
-        tv_xiaoxi_content = (TextView) findViewById(R.id.tv_xiaoxi_content);
-        tv_meeting_time = (TextView) findViewById(R.id.tv_meeting_time);
-        tv_beizu_content = (TextView) findViewById(R.id.tv_beizu_content);
-        tv_senser_tip = (TextView) findViewById(R.id.tv_senser_tip);
-        tv_select_who_name = (TextView) findViewById(R.id.tv_select_who_name);
         view_mask = (View) findViewById(R.id.view_mask);
 
         
-        ArrayList<String> list = new ArrayList<String>();
-        String userName = userInfo.getName();
-        String mobile = userInfo.getMobile();
-        if(!StringUtils.isEmpty(mobile)){
-            if(StringUtils.isEmpty(userName)){
-                userName = mobile;
-            }
-            list.add(userName+"\n"+mobile+"\n"+userInfo.getId());
-            Constants.finalContactList = list;
-            tv_select_name.setText("已选择：" +userName);
-            tv_select_number.setText(Constants.finalContactList.size() + "位");            
-        }
-        
-        is_senior = userInfo.getIs_senior();
-        String user_type = userInfo.getUser_type();
-       isUsersenior = StringUtils.isEquals(user_type, "1");
-        if (isUsersenior) {
-            layout_select_who.setVisibility(View.VISIBLE);
-        }else{
-            layout_select_who.setVisibility(View.GONE);
-        }
-
-        /*slipBtn_mishuchuli.setOnToggleChanged(new OnToggleChanged() {
-            @Override
-            public void onToggle(boolean on) {
-                if (on) {
-                    if (StringUtils.isEquals(is_senior, "1")) {// 有秘书
-                        if (chooseDate == null) {
-                            slipBtn_mishuchuli.setToggleOff();
-                            SET_SEC_DO = NO_SEC_DO;
-                            UIUtils.showToast(MainPlusLeaveActivity.this, "请选择时间");
-                            return;
-                        }
-                        
-                        //0:00-15:00
-                        if(DateUtils.isTime15Before(chooseDate) && DateUtils.isOperatingTimeIn(chooseDate)){
-                            slipBtn_mishuchuli.setToggleOn();
-                            SET_SEC_DO = NEED_SEC_DO;
-                            tv_senser_tip.setVisibility(View.GONE);
-                        } 
-                        //15:01-0:00
-                        else if(DateUtils.isTime15Later(chooseDate) && DateUtils.isOperatingTimeIn(chooseDate)){
-                            slipBtn_mishuchuli.setToggleOn();
-                            SET_SEC_DO = NEED_SEC_DO;
-                            tv_senser_tip.setVisibility(View.GONE);
-                        } 
-                        //选择时间不对的情况走else
-                        else{
-                            slipBtn_mishuchuli.setToggleOff();
-                            SET_SEC_DO = NO_SEC_DO;
-                            tv_senser_tip.setVisibility(View.VISIBLE);
-                            UIUtils.showActionDialog(MainPlusLeaveActivity.this, "提醒", "秘书工作时间为7:00～19:00，请在此时间内设置秘书提醒时间，0:01—15:00可以设置当天11:00之后的提醒；15:01至0:00可以设置次日7:00之后的提醒。","确定", null, null, null);
-                        }
-                        
-                    } else {
-                        slipBtn_mishuchuli.setToggleOff();
-                        SET_SEC_DO = NO_SEC_DO;
-                        tv_senser_tip.setVisibility(View.GONE);
-                        startActivity(new Intent(MainPlusLeaveActivity.this, FindSecretaryActivity.class));
-                        Toast.makeText(MainPlusLeaveActivity.this, "你没有购买秘书卡", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    tv_senser_tip.setVisibility(View.GONE);
-                }
-            }
-        });*/
-        if (null != card) {
-            isUpdate = true;
-
-            Constants.CARD_ADD_NOTIFICATION_CONTENT = card.getService_content();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            long Service_time = Long.valueOf(card.getService_time()) * 1000;
-
-            tv_meeting_time.setText(format.format(Service_time));
-            ArrayList<CardAttend> attends = card.getAttends();
-            String name = null;
-            ArrayList<ContactBean> arrayList = new ArrayList<>();
-            if (attends.size() > 0) {
-                for (int i = 0; i < attends.size(); i++) {
-                    contactBean = new ContactBean();
-                    contactBean.setMobile(attends.get(i).getMobile());
-                    contactBean.setName(attends.get(i).getName());
-                    arrayList.add(contactBean);
-                    if (name != null) {
-                        name += "," + attends.get(i).getName();
-                    } else {
-                        name = attends.get(i).getName();
-                    }
-                }
-                tv_select_name.setText(name);
-                tv_select_number.setText(attends.size() + "位");
-
-                mJson = new Gson().toJson(arrayList);
-                bt_create_travel.setText("更新");
-
-                // 处理提醒任务
-                int set_remind = Integer.valueOf(card.getSet_remind());
-                remindAlerm = set_remind;
-                String[] reminItems = new String[10];
-                reminItems[0] = "不提醒";
-                reminItems[1] = "按时提醒";
-                reminItems[2] = "提前5分钟";
-                reminItems[3] = "提前15分钟";
-                reminItems[4] = "提前30分钟";
-                reminItems[5] = "提前1小时";
-                reminItems[6] = "提前2小时";
-                reminItems[7] = "提前6小时";
-                reminItems[8] = "提前1天";
-                reminItems[9] = "提前2天";
-                tv_xiaoxi_content.setText(reminItems[remindAlerm]);
-
-            }
-        }
+        findViewById(R.id.layout_start_day).setOnClickListener(this);;
+        findViewById(R.id.layout_leave_type).setOnClickListener(this);;
+        findViewById(R.id.layout_end_day).setOnClickListener(this);;
+        findViewById(R.id.layout_select_who).setOnClickListener(this);;
+        findViewById(R.id.layout_leave_content).setOnClickListener(this);;
+        findViewById(R.id.bt_create_leave).setOnClickListener(this);;
     }
 
     @Override
     public void onClick(View v) {
+        Intent intent ;
         switch (v.getId()) {
-        case R.id.layout_meeting_content:
-            Intent intent2 = new Intent(MainPlusLeaveActivity.this, MainPlusContentActivity.class);
-            intent2.putExtra(Constants.MAIN_PLUS_FLAG, Constants.NOTIFICATION);
-            startActivity(intent2);
+        case R.id.layout_leave_content:
+            intent = new Intent(MainPlusLeaveActivity.this, MainPlusContentActivity.class);
+            intent.putExtra(Constants.MAIN_PLUS_FLAG, Constants.LEAVE);
+            startActivity(intent);
             break;
-        case R.id.layout_message_tongzhi:
-            showRemindWindow();
+        case R.id.layout_leave_type:
+            intent = new Intent(MainPlusLeaveActivity.this, MainPlusLeaveTypeActivity.class);
+            startActivityForResult(intent, GET_TYPE);
             break;
-        case R.id.layout_select_time:
+        case R.id.layout_end_day:
+            flag = 1;
             showDateWindow();
             break;
-        case R.id.bt_create_travel:
-            createMeetingCard(isUpdate);
+        case R.id.layout_start_day:
+            flag = 0;
+            showDateWindow();
+            break;
+        case R.id.bt_create_leave:
+            postLeave();
             break;
         case R.id.layout_select_who:
-            Intent mintent = new Intent(MainPlusLeaveActivity.this, CreateForWhoActivity.class);
-            startActivityForResult(mintent, GET_USER);
+            if (userInfo.getHas_company() == 0) {
+                Intent intent1 = new Intent(this, WebViewActivity.class);
+                intent1.putExtra("title", "企业通讯录");
+                intent1.putExtra("url", Constants.HAS_COMPANY);
+                startActivity(intent1);
+            } else {
+                intent = new Intent(MainPlusLeaveActivity.this,CompanyListActivity.class);
+                intent.putExtra("flag",1);
+                startActivity(intent);
+            }
+            
             break;
 
         default:
@@ -295,9 +199,13 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
     public void showDateWindow() {
         view_mask.setVisibility(View.VISIBLE);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.item_popup_fulldatapick, null, false);
-
-        InitDataPick(v);
+        View v = inflater.inflate(R.layout.item_popup_datapick, null, false);
+        
+        if(flag==0){
+            InitStartDataPick(v);
+        }else if (flag==1) {
+            InitEndDataPick(v);
+        }
 
         mTimePopup = new PopupWindow(v, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         mTimePopup.setOutsideTouchable(true);
@@ -314,7 +222,7 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         });
     }
 
-    private View InitDataPick(View view) {
+    private View InitStartDataPick(View view) {
         Calendar c = Calendar.getInstance();
         int norYear = c.get(Calendar.YEAR);
         int curMonth = c.get(Calendar.MONTH) + 1;// 通过Calendar算出的月数要+1
@@ -337,67 +245,35 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         initDay(norYear, curMonth);
         day.setCyclic(false);
 
-        hour = (WheelView) view.findViewById(R.id.hour);
-        NumericWheelAdapter hourAdpter = new NumericWheelAdapter(this, 0, 23, "%02d");
-        hourAdpter.setLabel("时");
-        hour.setViewAdapter(hourAdpter);
-        hour.setCyclic(false);// 是否可循环滑动
-        // hour.addScrollingListener(scrollListener);
-
-        minute = (WheelView) view.findViewById(R.id.minute);
-        NumericWheelAdapter minuteAdater = new NumericWheelAdapter(this, 0, 59, "%02d");
-        minuteAdater.setLabel("分");
-        minute.setViewAdapter(minuteAdater);
-        minute.setCyclic(false);
-
         year.setVisibleItems(7);// 设置显示行数
         month.setVisibleItems(7);
         day.setVisibleItems(7);
-        hour.setVisibleItems(7);// 设置显示行数
-        minute.setVisibleItems(7);
+      
 
-        hour.setCurrentItem( Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        minute.setCurrentItem(Calendar.getInstance().get(Calendar.MINUTE));
-        year.setCurrentItem(norYear - 2015);
+        year.setCurrentItem(norYear - 2016);
         month.setCurrentItem(curMonth - 1);
         day.setCurrentItem(curDate - 1);
-
         TextView bt = (TextView) view.findViewById(R.id.tv_get_time);
         bt.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                int mYear = year.getCurrentItem() + 2015;
+                int mYear = year.getCurrentItem() + 2016;
                 int mMonth = month.getCurrentItem() + 1;
                 int mDay = day.getCurrentItem() + 1;
-                int mhour = hour.getCurrentItem();
-                int mMinu = minute.getCurrentItem();
                 String date = mYear + "-" + mMonth + "-" + mDay;
-                String time = mhour + ":" + mMinu ;
-
-//              Calendar cal = Calendar.getInstance();
-//              int day = cal.get(Calendar.DATE); // 日
-//              int month = cal.get(Calendar.MONTH) + 1;// 月
-//              int year = cal.get(Calendar.YEAR); // 年
-//              int hour = cal.get(Calendar.HOUR_OF_DAY);
-//              int minute = cal.get(Calendar.MINUTE);
-              
-              Date currentDate = new Date();;
-              try {
-                  chooseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date + " " + time);
+             try {
+              String currentDateString = DateUtils.getStringByPattern(new Date().getTime(), "yyyy-MM-dd"); 
+                  currentDate = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateString);
+                  chooseDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
               } catch (ParseException e) {
-                  // TODO Auto-generated catch block
                   e.printStackTrace();
               }
-
-//              if (mYear < year || mMonth < month || mDay < day || mhour < hour || mMinu < minute) {
               if(chooseDate.getTime() < currentDate.getTime()){
-                    UIUtils.showToast(MainPlusLeaveActivity.this, "您只能选择未来时间进行提醒哦！");
+                    UIUtils.showToast(MainPlusLeaveActivity.this, "您只能选择未来时间进行请假哦！");
                 }else{
-                    String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu);
-                    finalTime = date + " " + cultime;
-
-                    tv_meeting_time.setText(finalTime);
+                    finalTime = date ;
+                     leave_start_day.setText(finalTime);
                     if (null != mTimePopup) {
                         mTimePopup.dismiss();
                     }
@@ -416,6 +292,105 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         return view;
     }
 
+    
+    /**
+     * 
+     * @param view
+     * @return
+     */
+    private View InitEndDataPick(View view) {
+        Calendar c = Calendar.getInstance();
+        int norYear = c.get(Calendar.YEAR);
+        int curMonth = c.get(Calendar.MONTH) + 1;// 通过Calendar算出的月数要+1
+        int curDate = c.get(Calendar.DATE);
+
+        year = (WheelView) view.findViewById(R.id.year);
+
+        NumericWheelAdapter numericWheelAdapter1 = new NumericWheelAdapter(this, norYear, 2065);
+        numericWheelAdapter1.setLabel("年");
+        year.setViewAdapter(numericWheelAdapter1);
+        year.setCyclic(false);// 是否可循环滑动
+
+        month = (WheelView) view.findViewById(R.id.month);
+        NumericWheelAdapter numericWheelAdapter2 = new NumericWheelAdapter(this, 1, 12, "%02d");
+        numericWheelAdapter2.setLabel("月");
+        month.setViewAdapter(numericWheelAdapter2);
+        month.setCyclic(false);
+
+        day = (WheelView) view.findViewById(R.id.day);
+        initDay(norYear, curMonth);
+        day.setCyclic(false);
+
+        year.setVisibleItems(7);// 设置显示行数
+        month.setVisibleItems(7);
+        day.setVisibleItems(7);
+      
+
+        year.setCurrentItem(norYear - 2016);
+        month.setCurrentItem(curMonth - 1);
+        day.setCurrentItem(curDate - 1);
+        TextView bt = (TextView) view.findViewById(R.id.tv_get_time);
+        bt.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                int mYear = year.getCurrentItem() + 2016;
+                int mMonth = month.getCurrentItem() + 1;
+                int mDay = day.getCurrentItem() + 1;
+                String date = mYear + "-" + mMonth + "-" + mDay;
+             try {
+              String currentDateString = DateUtils.getStringByPattern(new Date().getTime(), "yyyy-MM-dd"); 
+                  currentDate = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateString);
+                  chooseDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+              } catch (ParseException e) {
+                  e.printStackTrace();
+              }
+             
+             String startDate = leave_start_day.getText().toString().trim();
+             if(!StringUtils.isEmpty(startDate) && !StringUtils.isEquals(startDate,"点击选择开始时间" )){
+                 if(chooseDate.getTime() < currentDate.getTime()){
+                     UIUtils.showToast(MainPlusLeaveActivity.this, "您只能选择未来时间进行请假哦！");
+                 }else{
+                    Date start = new Date();
+                    Date end = new Date();
+                  try {
+                    start = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+                    end = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if(start.getTime()>=end.getTime()){
+                        UIUtils.showToast(MainPlusLeaveActivity.this, "结束日期必须大于开始日期！");
+                    }else {
+                        Long endSecond =(end.getTime()/86400000);
+                        Long startSecond = start.getTime()/86400000;
+                        int totalDays = (endSecond.intValue()-startSecond.intValue());
+                        leave_end_day.setText(date);
+                        leave_days.setText((totalDays+1)+"天");
+                        if (null != mTimePopup) {
+                            mTimePopup.dismiss();
+                        }
+                    }
+                 }
+             }else {
+                 UIUtils.showToast(MainPlusLeaveActivity.this, "开始日期不能为空！");
+             }
+             
+            }
+        });
+        TextView cancel = (TextView) view.findViewById(R.id.tv_cancel);
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mTimePopup) {
+                    mTimePopup.dismiss();
+                }
+            }
+        });
+        return view;
+    }
+
+    
     /**
      * 
      * @param year
@@ -461,120 +436,17 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         day.setViewAdapter(numericWheelAdapter);
     }
 
-    public void showRemindWindow() {
-        view_mask.setVisibility(View.VISIBLE);
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.item_popup_remind, null, false);
-
-        // v.findViewById(id);
-        InitTimeRemind(v);
-
-        mTimePopup = new PopupWindow(v, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        mTimePopup.setOutsideTouchable(true);
-        mTimePopup.setBackgroundDrawable(new BitmapDrawable());
-        mTimePopup.setAnimationStyle(R.style.PostBarShareAnim);
-
-        mTimePopup.showAtLocation(view_mask, Gravity.BOTTOM, 0, 0);
-
-        mTimePopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                view_mask.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private View InitTimeRemind(View view) {
-
-        remind = (WheelView) view.findViewById(R.id.remind);
-        String[] items = new String[10];
-        items[0] = "不提醒";
-        items[1] = "按时提醒";
-        items[2] = "提前5分钟";
-        items[3] = "提前15分钟";
-        items[4] = "提前30分钟";
-        items[5] = "提前1小时";
-        items[6] = "提前2小时";
-        items[7] = "提前6小时";
-        items[8] = "提前1天";
-        items[9] = "提前2天";
-
-        arryadapter = new ArrayWheelAdapter<>(this, items);
-        remind.setViewAdapter(arryadapter);
-        remind.setCyclic(false);// 是否可循环滑动
-        remind.setVisibleItems(items.length);// 设置显示行数
-        remind.setCurrentItem(1);
-        arryadapter.setTextColor(getResources().getColor(R.color.simi_color_black));
-        TextView bt = (TextView) view.findViewById(R.id.tv_get_time);
-        bt.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int currentItem = remind.getCurrentItem();
-                remindAlerm = currentItem;
-                String itemText = (String) arryadapter.getItemText(currentItem);
-                tv_xiaoxi_content.setText(itemText);
-                if (null != mTimePopup) {
-                    mTimePopup.dismiss();
-                }
-                // Toast.makeText(MainPlusTrevelActivity.this, time, 1).show();
-            }
-        });
-        TextView cancel = (TextView) view.findViewById(R.id.tv_cancel);
-        cancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mTimePopup) {
-                    mTimePopup.dismiss();
-                }
-            }
-        });
-        return view;
-    }
+  
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-            case GET_CONTACT:
-                if (Constants.finalContactList != null && Constants.finalContactList.size() > 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String name = null;
-                            String str = null;
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < Constants.finalContactList.size(); i++) {
-                                String bean = Constants.finalContactList.get(i).toString();
-                                if (name != null) {
-                                    name = bean.substring(0, bean.indexOf("\n"));
-                                    if(name.equals("")||name.length()<=0){
-                                        name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
-                                    }
-                                } else {
-                                    name = bean.substring(0, bean.indexOf("\n"));
-                                    if(name.equals("")||name.length()<=0){
-                                        name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
-                                    }
-                                }
-                                sb.append(name+",");
-                                str = sb.toString();
-                                str = str.substring(0,str.lastIndexOf(","));
-                            }
-                            tv_select_name.setText("已选择：" + str);
-                            tv_select_number.setText(Constants.finalContactList.size() + "位");
-                        }
-                    });
-                }else {
-                    tv_select_name.setText("已选择：" + "");
-                    tv_select_number.setText(0+ "位");
-                }
-                break;
-            case GET_USER:
-                for_userid = data.getExtras().getString("for_userid");
-                String for_name = data.getExtras().getString("for_name");
-
-                tv_select_who_name.setText(for_name);
+            case GET_TYPE:
+                mLeaveType = data.getExtras().getString("leaveTypeName");
+                mLeaveTypeId = data.getExtras().getString("leaveTypeId");
+                Constants.LEAVE_TYPE_NAME = mLeaveType ;
                 break;
             default:
                 break;
@@ -587,92 +459,52 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
      * 
      * @param isUpdate2
      */
-    private void createMeetingCard(boolean update) {
-        showDialog();
+    private void postLeave() {
 
-        if (!isUpdate) {// 如果不是更新的
-            if (null != Constants.finalContactList && Constants.finalContactList.size() > 0) {
-
-                ArrayList<ContactBean> arrayList = new ArrayList<>();
-                for (int i = 0; i < Constants.finalContactList.size(); i++) {
-                    contactBean = new ContactBean();
-                    String bean = Constants.finalContactList.get(i).toString();
-                    String name = bean.substring(0, bean.indexOf("\n"));
-                    String number = bean.substring(bean.indexOf("\n") + 1, bean.lastIndexOf("\n"));
-                    String user_id = bean.substring(bean.lastIndexOf("\n")+1,bean.length());
-                    contactBean.setMobile(number);
-                    contactBean.setName(name);
-                    contactBean.setUser_id(user_id);
-                    arrayList.add(contactBean);
-
-                }
-                mJson = new Gson().toJson(arrayList);
-                LogOut.debug("json:" + mJson);
-            } else {
-                UIUtils.showToast(MainPlusLeaveActivity.this, "请选择参会人员");
-                dismissDialog();
-                return;
-            }
-
-        }
-
-       
-
-        String c_id = userInfo.getId();
-
-        String mtime = " " + finalTime + "";
-
-        String meetingtime = tv_meeting_time.getText().toString();
-        if (StringUtils.isEmpty(finalTime) && StringUtils.isNotEmpty(meetingtime) && isUpdate) {// 如果时间不为空，并且是更新过来的。则采用现有的时间。
-            uploadtime = card.getService_time();
-
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
-            long Service_time = Long.valueOf(uploadtime) * 1000;
-            try {
-                fdate = format.parse(format.format(Service_time));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            Date mdate = null;
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                mdate = format.parse(mtime);
-                uploadtime = mdate.getTime() / 1000 + "";
-                LogOut.debug("cultime:" + uploadtime);
-            } catch (ParseException e1) {
-                e1.printStackTrace();
-            }
-
-            fdate = mdate;
-
-        }
-
-        if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
-            UIUtils.showToast(MainPlusLeaveActivity.this, "请选择为谁创建");
-        }
-        if (StringUtils.isEmpty(mtime)) {
-            UIUtils.showToast(MainPlusLeaveActivity.this, "请选择邀约时间");
-            dismissDialog();
+        mStartDate = leave_start_day.getText().toString().trim();
+        mEndDate = leave_end_day.getText().toString().trim();
+        mLeaveType = leave_type_content.getText().toString().trim();
+        mRemarks = leave_content.getText().toString().trim();
+        mStartDate = leave_start_day.getText().toString().trim();
+        mEndDate = leave_end_day.getText().toString().trim();
+      
+        if(StringUtils.isEmpty(mLeaveType)){
+            Toast.makeText(MainPlusLeaveActivity.this, "请假类型不能为空",Toast.LENGTH_SHORT).show();
             return;
         }
-       
-
+        if(StringUtils.isEmpty(mStartDate) || StringUtils.isEquals(mStartDate, "点击选择开始时间")){
+            Toast.makeText(MainPlusLeaveActivity.this, "请选择开始时间",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(StringUtils.isEmpty(mEndDate) || StringUtils.isEquals(mEndDate, "点击选择结束时间")){
+            Toast.makeText(MainPlusLeaveActivity.this, "请选择结束时间",Toast.LENGTH_SHORT).show();
+            return;
+        }
+     
+        if(StringUtils.isEmpty(mRemarks)){
+            Toast.makeText(MainPlusLeaveActivity.this, "请假内容不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(contactBeanList==null || contactBeanList.size()<=0){
+            Toast.makeText(MainPlusLeaveActivity.this, "请选择审批人",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Gson gson = new Gson();
+        mJson = gson.toJson(contactBeanList);
+        
+        showDialog();
         Map<String, String> map = new HashMap<String, String>();
-        map.put("card_id", update ? card.getCard_id() : "0");
-        map.put("card_type", "4");
-        map.put("create_user_id", c_id + "");
-        map.put("user_id",  isUsersenior?for_userid:c_id);
-        map.put("attends", mJson);
-        map.put("service_time", uploadtime);
-        map.put("service_content", Constants.CARD_ADD_NOTIFICATION_CONTENT);
-        map.put("set_remind", remindAlerm + "");
-        map.put("set_now_send", SET_SEND +"");
-        map.put("set_sec_do", SET_SEC_DO + "");
+        map.put("company_id", userInfo.getCompany_id());
+        map.put("user_id", userInfo.getUser_id());
+        map.put("leave_type", mLeaveTypeId);
+        map.put("start_date", mStartDate);
+        map.put("end_date", mEndDate);
+        map.put("total_days", leave_days.getText().toString().trim());
+        map.put("remarks", mRemarks);
+        map.put("pass_users", mJson);
 
         AjaxParams param = new AjaxParams(map);
-        new FinalHttp().post(Constants.URL_GET_ADD_CARD, param, new AjaxCallBack<Object>() {
+        new FinalHttp().post(Constants.POST_LEAVE_ORDER_URL, param, new AjaxCallBack<Object>() {
 
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
@@ -686,8 +518,6 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 dismissDialog();
-                LogOut.debug("成功:" + t.toString());
-
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -695,13 +525,8 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) {
-                            Toast.makeText(MainPlusLeaveActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
-                            Constants.CARD_ADD_NOTIFICATION_CONTENT="";
+                            Toast.makeText(MainPlusLeaveActivity.this, "申请成功", Toast.LENGTH_SHORT).show();
                             MainPlusLeaveActivity.this.finish();
-
-                            // 初始化本地提醒闹钟
-                            AlermUtils.initAlerm(MainPlusLeaveActivity.this, remindAlerm, fdate, "邀约通知",
-                                    Constants.CARD_ADD_NOTIFICATION_CONTENT);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(MainPlusLeaveActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -722,12 +547,31 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         });
     };
 
+    private ArrayList<ContactBean> contactBeanList = new ArrayList<ContactBean>();
+    private String appMan ="";
+    
     @Override
     protected void onResume() {
+        appMan="";
+        HashMap<String,ContactBean> map = Constants.finalContacBeantMap;
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+              Object key = entry.getKey();
+              ContactBean val =(ContactBean) entry.getValue();
+              appMan=appMan+val.getName()+",";
+              contactBeanList.add(val);
+      }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tv_beizu_content.setText(Constants.CARD_ADD_NOTIFICATION_CONTENT);
+                leave_content.setText(Constants.LEAVE_TYPE_REMARK);
+                leave_type_content.setText(Constants.LEAVE_TYPE_NAME);
+                if(null !=contactBeanList && contactBeanList.size()>0){
+                    appMan = appMan.substring(0, appMan.lastIndexOf(","));
+                    leave_select_who_name.setText(appMan);
+                    leave_num.setText(contactBeanList.size()+"人");
+                }
             }
         });
         super.onResume();
@@ -736,8 +580,10 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Constants.CARD_ADD_NOTIFICATION_CONTENT="";
-        Constants.finalContactList = new ArrayList<String>();
+        Constants.LEAVE_TYPE_NAME="";
+        Constants.LEAVE_TYPE_REMARK="";
+        Constants.finalContactList.clear();
+        Constants.finalContacBeantMap.clear();;
     }
 
     @Override
@@ -751,7 +597,6 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
             index = maxIndex;
             day.setCurrentItem(index-1);
         }
-        
         initDay(mYear, mMonth);
     }
 

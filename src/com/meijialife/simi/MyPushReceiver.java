@@ -17,15 +17,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
+import com.meijialife.simi.activity.CarAlertActivity;
 import com.meijialife.simi.activity.CardAlertActivity;
 import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.LoginActivity;
-import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.ReceiverBean;
-import com.meijialife.simi.fra.Find2Fra;
-import com.meijialife.simi.fra.PersonalFragment;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 
@@ -41,6 +39,7 @@ public class MyPushReceiver extends BroadcastReceiver {
     private final String ACTION_SETCLOCK="setclock";
     private final String ACTION_ALARM="alarm";
     private final String ACTION_MSG="msg";
+    private final String ACTION_CAR_MSG="car-msg";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -94,7 +93,6 @@ public class MyPushReceiver extends BroadcastReceiver {
                         }
                         long remindTime = Long.parseLong(receiverBean.getRemind_time());
                         fdate = new Date(remindTime);
-                        LogOut.debug("格式化后的date为:" + fdate);
                         if (!receiverBean.getCard_id().equals("0")) {
                             AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content(),
                                     receiverBean.getCard_id());
@@ -108,6 +106,16 @@ public class MyPushReceiver extends BroadcastReceiver {
                         //先弹出通知，然后点击显示大屏
                         setNotification2(receiverBean);
                         AlermUtils.playAudio(context);
+                    }else if ( StringUtils.isEquals(receiverBean.getIs_show(), "false") &&
+                            StringUtils.isEquals(receiverBean.getAction(), ACTION_CAR_MSG)) {
+                       
+                        Intent intent1 = new Intent(mContext, CarAlertActivity.class);
+                        intent1.putExtra("bean",receiverBean);
+                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent1);
+                        //推送汽车拍照通知
+                       /* setNotification4(receiverBean);
+                        AlermUtils.playAudio(context);*/
                     }
                 }
             }
@@ -218,6 +226,29 @@ public class MyPushReceiver extends BroadcastReceiver {
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
         manager.notify(1, builder.build());
+    }
+    
+    private void setNotification4(ReceiverBean receiverBean) {
+        //NotificationManager状态通知的管理类，必须通过getSystemService()方法来获取
+        NotificationManager manager = (NotificationManager) mContext.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
+
+        //点击通知负责页面跳转
+//        Intent intent = new Intent(mContext, SplashActivity.class);
+        Intent intent = new Intent(mContext, CarAlertActivity.class);
+        intent.putExtra("bean",receiverBean);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //android3.0以后采用NotificationCompat构建
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+        builder.setContentTitle(receiverBean.getRemind_title());
+        builder.setContentText(receiverBean.getRemind_content());
+        builder.setSmallIcon(R.drawable.ic_launcher_logo);
+        builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
+        builder.setDefaults(Notification.DEFAULT_ALL);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
+        manager.notify(1, builder.build());
+
     }
     
 }

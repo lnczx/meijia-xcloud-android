@@ -89,7 +89,27 @@ public class UserInfo implements Serializable {
     /**是否为某个公司职员0=否 1=是**/
     private int has_company;
     
+    private String company_id;//所属公司Id
     
+    private String company_name;//公司名称
+    
+    
+    public String getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(String company_id) {
+        this.company_id = company_id;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
+    }
+
     public int getHas_company() {
         return has_company;
     }

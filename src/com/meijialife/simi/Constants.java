@@ -1,9 +1,12 @@
 package com.meijialife.simi;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.os.Environment;
+
+import com.meijialife.simi.bean.ContactBean;
 
 public class Constants {
 
@@ -101,7 +104,11 @@ public class Constants {
     public static final String URL_POST_EXCHANGE_DISCOUNT_CARD = ROOT_URL +"user/post_coupon.json";
     /**我的钱包接口（用户消费明细）**/
     public static final String URL_GET_WALLET_LIST = ROOT_URL +"user/get_detail_pay.json";
+    /**app启动时获取当前地理位置接口**/
+    public static final String URL_POST_TRAIL = ROOT_URL +"user/post_trail.json";
 
+  
+    
     //关于动态的接口
     /**动态点赞接口**/
     public static final String URL_POST_FEED_ZAN = ROOT_URL +"feed/post_zan.json";
@@ -142,11 +149,6 @@ public class Constants {
     public static final int WATER_ORDER_PAYING = 3; // 处理中
     //智能配置h5链接
     public static final String WATER_ORDER_H5 = "http://123.57.173.36/simi-h5/show/water-set.html"; // 处理中
-    
-
-    
-    
-    
     
     
     //加号中应用接口
@@ -193,8 +195,6 @@ public class Constants {
     /**订单状态**/
     public static final int ORDER_NOT_PAY = 1; // 未支付
     public static final int ORDER_HAS_PAY = 2; // 已支付
-
-    
     
     
     /*** 网络返回状态码 ***/
@@ -215,7 +215,8 @@ public class Constants {
     public static final String AFFAIR = "affair"; 
     public static final String NOTIFICATION = "notification"; 
     public static final String TRAVEL = "travel";//旅行
-    public static final String REMARK = "remark";//旅行
+    public static final String REMARK = "remark";//
+    public static final String LEAVE = "leave";//
 
     //应用中心菜单类别
     public static final String MENU_TYPE_T = "t";//t=工具与服务
@@ -233,6 +234,10 @@ public class Constants {
     public static  String WATER_ADD_ADDRESS = "";
     public static  String WATER_BAND_NAME = "";
     public static  String WATER_BAND_MONEY = "";
+    public static  String WATER_TYPE_NAME = "";
+    public static  String LEAVE_TYPE_REMARK = "";
+    public static  String LEAVE_TYPE_NAME= "";
+
 
 
    
@@ -298,6 +303,7 @@ public class Constants {
      public static final String URL_POST_EXISTED_PARTNER_SERVICE_BUY=ROOT_URL + "order/post_pay.json";
   
      
+     
      /** 会员充值在线支付成功同步接口 **/
      public static final String URL_POST_PUSH_BIND = ROOT_URL + "user/post_push_bind.json";
      public static final String URL_POST_SCORE_SHOP = ROOT_URL + "user/score_shop";
@@ -334,11 +340,14 @@ public class Constants {
      //绿植
      public static final String LV_ZHI = "http://123.57.173.36/simi-h5/show/order-green.html";
      //开店
-     public static final String KAI_DIAN = "http://123.57.173.36/simi-h5/show/store-my-index.html";
+     public static final String KAI_DIAN = "http://123.57.173.36/simi-h5/show/store-my-index.html?user_id=";
      
      
      /**保存卡片创建的联系人**/
      public static ArrayList<String> finalContactList = new ArrayList<String>();
+   
+     public static HashMap<String,ContactBean> finalContacBeantMap = new HashMap<String,ContactBean>();
+    
      /**分享跳转链接**/
      public static String SHARE_TARGET_URL = "http://123.57.173.36//simi-h5/show/card-share.html?card_id=";
      
@@ -355,7 +364,59 @@ public class Constants {
      /**加号签到h5链接**/
      public static String PLUS_SIGN_URL = "http://123.57.173.36/simi-h5/show/checkin-index.html?user_id=";
 
+     //废品回收
+     /**废品回收图片链接**/
+     public static final String WASTER_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-caolv.png";
+     /**废品回收订单列表接口**/
+     public static final String URL_GET_LIST_WASTER = ROOT_URL + "order/get_list_green.json";
+     /**废品回收H5链接**/
+     public static final String H5_WASTER_URL = "http://123.57.173.36/simi-h5/show/recycle-price.html";
+     /**废品回收下单接口**/
+     public static final String POST_WASTER_ORDER_URL = ROOT_URL + "order/post_add_green.json";
+     
+     //保洁订单
+     /**保洁订单列表**/
+     public static final String GET_CLEAN_ORDER_URL = ROOT_URL + "order/get_list_clean.json";
+     /**保洁图片链接**/
+     public static final String CLEAN_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-qianlan.png";
+     /**保洁H5链接**/
+     public static final String H5_CLEAN_URL = "http://123.57.173.36/simi-h5/show/clean-set.html";
+     /**保洁下单接口**/
+     public static final String POST_CLEAN_ORDER_URL = ROOT_URL + "order/post_add_clean.json";
+     /**保洁订单详情**/
+     public static final String URL_GET_DETAIL_CLEAN = ROOT_URL + "order/get_detail_clean.json";
 
      
+     //团建
+     /**团建图片链接**/
+     public static final String TEAM_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-chenghuang.png";
+     /**团建订单列表**/
+     public static final String GET_TEAM_ORDER_URL = ROOT_URL + "order/get_list_team.json";
+     /**团建H5链接**/
+     public static final String H5_TEAM_URL = "http://123.57.173.36/simi-h5/show/teamwork-set.html";
+     /**团队建设下单接口**/
+     public static final String POST_ADD_TEAM = ROOT_URL + "order/post_add_team.json";
+     /**团队建设订单详情**/
+     public static final String URL_GET_DETAIL_TEAM = ROOT_URL + "order/get_detail_team.json";
+    
+     //请假
+     /**请假订单列表**/
+     public static final String GET_LEAVE_ORDER_URL = ROOT_URL + "user/leave_list.json";
+     /**请假下单接口**/
+     public static final String POST_LEAVE_ORDER_URL = ROOT_URL + "user/post_leave.json";
+     /**请假详情接口**/
+     public static final String GET_LEAVE_DETAIL_URL = ROOT_URL + "user/leave_detail.json";
+     /**请假审批接口**/
+     public static final String POSE_LEAVE_PASS_URL = ROOT_URL + "user/leave_pass.json";
+     /**请假撤销接口**/
+     public static final String POSE_LEAVE_CANCEL_URL = ROOT_URL + "user/leave_cancel.json";
      
+     //快递
+     /**快递订单列表**/
+     public static final String GET_LIST_EXPRESS_URL = ROOT_URL + "record/get_list_express.json";
+     /**快递H5链接**/
+     public static final String H5_EXPRESS_URL = "http://m.kuaidi100.com/courier/search.jsp";
+     /**快递下单接口**/
+     public static final String POST_ADD_EXPRESS_URL = ROOT_URL + "record/post_add_express.json";
+
 }

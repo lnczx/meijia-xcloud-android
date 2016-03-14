@@ -1,6 +1,5 @@
 package com.meijialife.simi.activity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.UserInfo;
-import com.meijialife.simi.bean.WaterBand;
 import com.meijialife.simi.bean.WaterData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.ToggleButton;
@@ -60,7 +57,7 @@ public class MainPlusWaterOrderActivity extends BaseActivity implements OnClickL
     private String mServiceAddrId;
     private String mServiceAddrName;
     
-    private int mWaterNum;
+    private int mWaterNum=1;
     private String waterBandName;
     private String waterBandMoney;
     private String waterBandId ;

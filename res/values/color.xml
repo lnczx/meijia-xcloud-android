@@ -16,6 +16,10 @@
     <color name="simi_color_white">#FFFFFF</color>
     <!-- 统一黑色 -->
     <color name="simi_color_black">#000000</color>
+    <!-- 统一蓝色 -->
+    <color name="simi_color_blue">#56abe4</color>
+    <!-- 统一黄色 -->
+    <color name="simi_color_yellow">#fc993f</color>
 
     <!-- 标题背景颜色 -->
     <color name="title_background_color">#ffffff</color>
@@ -82,5 +86,10 @@
  	<color name="card_mian_shi">#00bb9c</color>
  	<color name="card_chai_lv">#56abe4</color>
  	<color name="plus_song_shui">#56abe4</color>
+ 	<color name="plus_song_feipin">#11cd6e</color>
+ 	<color name="plus_bao_jie">#56abe4</color>
+ 	<color name="plus_tuan_jian">#ea8010</color>
+ 	<color name="plus_qing_jia">#11cd6e</color>
+ 	<color name="plus_kuai_di">#00bb9c</color>
  	
 </resources>

@@ -31,10 +31,8 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp" >
                 
-                
-                
                 <RelativeLayout
-                    android:id="@+id/leave_layout_content"
+                    android:id="@+id/layout_leave_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -68,7 +66,7 @@
                         android:background="@drawable/icon_plus_arrowright" />
 
                     <TextView
-                        android:id="@+id/tv_type_content"
+                        android:id="@+id/leave_type_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -95,7 +93,7 @@
                     android:orientation="vertical" >
 
                     <RelativeLayout
-                        android:id="@+id/layout_select_time"
+                        android:id="@+id/layout_start_day"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_main_plus_page"
@@ -113,13 +111,13 @@
                             android:textColor="@color/simi_color_gray" />
 
                         <TextView
-                            android:id="@+id/tv_meeting_time"
+                            android:id="@+id/leave_start_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10dp"
                             android:layout_toRightOf="@id/tv_start_time_icon"
-                            android:text="点击选择时间"
+                            android:text="点击选择开始时间"
                             android:textColor="@color/red_text_color" />
 
                         <ImageView
@@ -133,7 +131,7 @@
                     </RelativeLayout>
                     
                      <RelativeLayout
-                        android:id="@+id/leave_ll_end_time"
+                        android:id="@+id/layout_end_day"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_main_plus_page"
@@ -152,13 +150,13 @@
                             android:textColor="@color/simi_color_gray" />
 
                         <TextView
-                            android:id="@+id/leave_tv_meeting_time"
+                            android:id="@+id/leave_end_day"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10dp"
                             android:layout_toRightOf="@id/leave_tv_end_time"
-                            android:text="点击选择时间"
+                            android:text="点击选择结束时间"
                             android:textColor="@color/red_text_color" />
 
                         <ImageView
@@ -205,7 +203,7 @@
                         android:background="@drawable/icon_plus_dingjipiao" />
 
                     <TextView
-                        android:id="@+id/tv_xiaoxi_title"
+                        android:id="@+id/leave_days"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -223,7 +221,7 @@
                         android:background="@drawable/icon_plus_arrowright" />
 
                     <TextView
-                        android:id="@+id/tv_xiaoxi_content"
+                        android:id="@+id/leave_total_days"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -241,7 +239,7 @@
                     android:background="#e1e1e1" />
 
                 <RelativeLayout
-                    android:id="@+id/layout_meeting_content"
+                    android:id="@+id/layout_leave_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -255,7 +253,7 @@
                         android:background="@drawable/icon_plus_duanxin" />
 
                     <TextView
-                        android:id="@+id/tv_start_title"
+                        android:id="@+id/leave_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -314,14 +312,15 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_select_who_name"
+                        android:id="@+id/leave_select_who_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@id/tv_who_title"
                         android:textColor="#a4a4a4" />
-
+                    
                     <TextView
+                        android:id="@+id/leave_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -357,13 +356,13 @@
                 android:paddingTop="5dp" >
 
                 <Button
-                    android:id="@+id/bt_create_travel"
+                    android:id="@+id/bt_create_leave"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/login_btn_bg_selector"
                     android:gravity="center"
-                    android:text="发起邀约"
+                    android:text="申请"
                     android:textColor="@android:color/white" >
                 </Button>
             </LinearLayout>

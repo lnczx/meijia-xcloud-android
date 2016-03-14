@@ -153,10 +153,9 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                         }*/
                         intent.putExtra(EMConstant.EXTRA_USER_ID, params);
                         startActivity(intent);
-                        
-                    }else if (action.equals("leave")) {//请假申请
-                        
                     }else if (action.equals("leave_pass")) {//请假审批
+                        Intent intent = new Intent(MainPlusActivity.this, MainPlusLeaveListActivity.class);
+                        startActivity(intent);
                         
                     }else if (action.equals("punch_sign")) {//打卡签到
                         Intent intent = new Intent(MainPlusActivity.this, MainPlusSignInActivity.class);
@@ -166,6 +165,18 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                         startActivity(intent);
                     }else if (action.equals("water")) {//送水
                         Intent intent = new Intent(MainPlusActivity.this, MainPlusWaterActivity.class);
+                        startActivity(intent);
+                    }else if (action.equals("recycle")) {//废品回收
+                        Intent intent = new Intent(MainPlusActivity.this, MainPlusWasterActivity.class);
+                        startActivity(intent);
+                    }else if (action.equals("clean")) {//保洁
+                        Intent intent = new Intent(MainPlusActivity.this, MainPlusCleanActivity.class);
+                        startActivity(intent);
+                    }else if (action.equals("teamwork")) {//团建
+                        Intent intent = new Intent(MainPlusActivity.this, MainPlusTeamActivity.class);
+                        startActivity(intent);
+                    }else if (action.equals("express")) {//快递
+                        Intent intent = new Intent(MainPlusActivity.this, MainPlusExpressActivity.class);
                         startActivity(intent);
                     }
                   

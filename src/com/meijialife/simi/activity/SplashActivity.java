@@ -11,23 +11,27 @@ import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
-import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
@@ -37,7 +41,6 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.CalendarUtils;
-import com.meijialife.simi.utils.GetContactsRunnable;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -48,12 +51,25 @@ public class SplashActivity extends Activity {
 
     private static final int sleepTime = 2000;
     public static String clientid;
+    
+    /**
+     * 获取当前位置经纬度
+     */
+    private LocationClient locationClient = null;
+    private static final int UPDATE_TIME = 5000;
+    private String longitude = "";// 经度
+    private String latitude = "";// 纬度
+    private String addString = "";// 返回地址
+    private String poiName = "";// 地理位置信息
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_splash);
 
+        initLocation();
+        
         AlphaAnimation aa = new AlphaAnimation(0.8f, 1.0f);
         aa.setDuration(2000);
         findViewById(R.id.iv_welcome).startAnimation(aa);
@@ -72,8 +88,6 @@ public class SplashActivity extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    
-                    
                     initEasemob();
                     updateCalendarMark();
                 }
@@ -85,6 +99,41 @@ public class SplashActivity extends Activity {
         // initCellsDb();
          getCitys(getCityAddtime());
          
+    }
+    /**
+     * 获取用户当前位置的经纬度
+     */
+    private void initLocation() {
+        sp = getApplicationContext().getSharedPreferences("Secretary",MODE_PRIVATE);
+        final Editor editor = sp.edit();
+        locationClient = new LocationClient(this);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true); // 是否打开GPS
+        option.setCoorType("bd09ll"); // 设置返回值的坐标类型。
+        option.setPriority(LocationClientOption.NetWorkFirst); // 设置定位优先级
+        option.setProdName("Secretary"); // 设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
+        option.setScanSpan(UPDATE_TIME); // 设置定时定位的时间间隔。单位毫秒
+        option.setIsNeedAddress(true);// 设置返回城市
+        option.setIsNeedLocationDescribe(true);
+        locationClient.setLocOption(option);
+        locationClient.start();
+        locationClient.registerLocationListener(new BDLocationListener() {
+            @Override
+            public void onReceiveLocation(BDLocation location) {
+                if (location == null) {
+                    return;
+                }
+                latitude = location.getLatitude() + "";// 纬度
+                longitude = location.getLongitude() + "";// 经度
+                addString = location.getAddrStr();
+                poiName = location.getLocationDescribe();
+                editor.putString("lng",longitude);
+                editor.putString("lat",latitude);
+                editor.putString("poi_name",poiName);
+                editor.putString("city",addString);
+                editor.commit();
+            }
+        });
     }
     
     /**
@@ -124,6 +173,64 @@ public class SplashActivity extends Activity {
                 }
             }
         }).start();
+    }
+    /**
+     * 获取当前地理位置
+     * @param useid
+     * @param clientid
+     */
+    private void post_trail() {
+        String user_id = DBHelper.getUser(SplashActivity.this).getId();
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user_id);
+        map.put("lat", sp.getString("lat",""));
+        map.put("lng", sp.getString("lng",""));
+        map.put("poi_name", sp.getString("poi_name",""));
+        map.put("city", sp.getString("city",""));
+        AjaxParams param = new AjaxParams(map);
+
+        new FinalHttp().post(Constants.URL_POST_TRAIL, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(SplashActivity.this,  getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                      
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg =  getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg =  getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg =  getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg =  getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg =  getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息|
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(SplashActivity.this, errorMsg);
+                }
+            }
+        });
     }
     /**
      * 获取用户详情接口
@@ -262,7 +369,6 @@ public class SplashActivity extends Activity {
                 }
             }
         });
-
     }
 
     /**
@@ -383,7 +489,6 @@ public class SplashActivity extends Activity {
     private void updateCalendarMark(){
         int year = CalendarUtils.getCurrentYear();
         int month = CalendarUtils.getCurrentMonth();
-        
         getTotalByMonth(year+"", month+"");
         
        /* for(int i = 0; i < 8; i++){
@@ -472,6 +577,15 @@ public class SplashActivity extends Activity {
 //                }
             }
         });
-
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 关闭定位
+        if (locationClient != null && locationClient.isStarted()) {
+            locationClient.stop();
+            locationClient = null;
+        }
     }
 }

@@ -339,7 +339,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.rl_person_money:// 兼职赚钱
 //            popWebView(Constants.MONEY_URL);
             intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url", Constants.KAI_DIAN);
+            intent.putExtra("url", Constants.KAI_DIAN+user.getId());
 //            intent.putExtra("url", Constants.MONEY_URL);
             startActivity(intent);
             break;

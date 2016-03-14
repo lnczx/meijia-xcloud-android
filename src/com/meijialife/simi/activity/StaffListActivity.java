@@ -49,7 +49,10 @@ import com.meijialife.simi.adapter.CompanyListAdapter;
 import com.meijialife.simi.adapter.ContactsAdapter;
 import com.meijialife.simi.bean.CompanyData;
 import com.meijialife.simi.bean.CompanyDetail;
+import com.meijialife.simi.bean.Contact;
+import com.meijialife.simi.bean.ContactBean;
 import com.meijialife.simi.bean.Friend;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -190,14 +193,27 @@ public class StaffListActivity extends Activity implements OnClickListener {
                 tv_mobile = (TextView) view.findViewById(R.id.item_tv_mobile);
                 tv_id = (TextView) view.findViewById(R.id.item_tv_id);
                 tv_temp = (TextView) view.findViewById(R.id.item_tv_temp);
+                UserInfo userInfo = DBHelper.getUserInfo(StaffListActivity.this);
+                if (StringUtils.isEquals(userInfo.getUser_id(),tv_id.getText().toString())) {
+                    UIUtils.showToast(StaffListActivity.this, "审批人不能选择自己！");
+                    return;
+                }
+                
                 if (cb.isChecked() == false) {
                     cb.setChecked(true);
                     CharSequence num = tv_temp.getText();
                     Constants.finalContactList.add(num.toString());
+                    
+                    ContactBean contactBean = new ContactBean(tv_mobile.getText().toString()
+                                ,tv_name.getText().toString()
+                                ,tv_id.getText().toString());
+                    Constants.finalContacBeantMap.put(tv_id.getText().toString(),
+                                contactBean);
                 } else {
                     cb.setChecked(false);
                     CharSequence num = tv_temp.getText();
                     Constants.finalContactList.remove(num.toString());
+                    Constants.finalContacBeantMap.remove(tv_id.getText().toString());
                 }           
             }
         });

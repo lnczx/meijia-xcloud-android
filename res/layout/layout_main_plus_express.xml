@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/activity_bg_color"
+   >
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/layout_title_bar" />
+    
+    <LinearLayout
+        android:id="@+id/layout_view4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:paddingBottom="10dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="5dp" >
+
+        <Button
+            android:id="@+id/bt_create_express"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/login_btn_bg_selector"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@android:color/white" >
+        </Button>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_title_bar"
+        android:layout_above="@id/layout_view4"
+        android:background="@color/simi_color_white"
+        android:fillViewport="true"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/cut_off_rule" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:padding="2dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:text="快递单号"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/m_express_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:hint="请输入信息!"
+                        android:maxLength="20"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/cut_off_rule" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:padding="2dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical"
+                        android:text="快递公司"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/m_express_company"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:hint="请输入信息!"
+                        android:maxLength="20"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/cut_off_rule" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:padding="2dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                     >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="收发件"
+                        android:textSize="16sp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                         />
+
+                    <RadioGroup
+                        android:id="@+id/m_express_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true" >
+
+                        <RadioButton
+                            android:id="@+id/express_type1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="收件" 
+                            android:textSize="14sp"
+                            android:textColor="@color/simi_color_gray"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/express_type2"
+                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="寄件" 
+                             android:textSize="14sp"
+                            android:textColor="@color/simi_color_gray"
+                            />
+                    </RadioGroup>
+                </RelativeLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/cut_off_rule" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:padding="2dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                     >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="付费方式"
+                        android:textSize="16sp"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="8dp"
+                        
+                         />
+
+                    <RadioGroup
+                        android:id="@+id/pay_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true" >
+
+                        <RadioButton
+                            android:id="@+id/type1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="他费"
+                             android:textSize="14sp"
+                            android:textColor="@color/simi_color_gray"
+                             />
+
+                        <RadioButton
+                            android:id="@+id/type2"
+                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="自费"
+                             android:textSize="14sp"
+                            android:textColor="@color/simi_color_gray" 
+                            />
+                    </RadioGroup>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/cut_off_rule" />
+
+            <include
+                android:id="@+id/expree_other"
+                layout="@layout/express_other" />
+        </LinearLayout>
+    </ScrollView>
+
+    
+
+</RelativeLayout>

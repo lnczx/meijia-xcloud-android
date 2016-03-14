@@ -1,6 +1,8 @@
 package com.meijialife.simi.bean;
 
-public class ReceiverBean {
+import java.io.Serializable;
+
+public class ReceiverBean implements Serializable{
 
     private String is_show;
     private String action;
@@ -10,6 +12,67 @@ public class ReceiverBean {
     private String remind_time;
     private String remind_title;
     private String remind_content;
+    
+    private String car_no;//车牌号
+    private String car_color;
+    private String mobile;
+    private String ocx_time;
+    private String order_money;
+    private String order_type;//
+    private String rest_money;
+    private String cap_img;
+    
+    
+    
+    
+    public String getOrder_type() {
+        return order_type;
+    }
+    public void setOrder_type(String order_type) {
+        this.order_type = order_type;
+    }
+    public String getOrder_money() {
+        return order_money;
+    }
+    public void setOrder_money(String order_money) {
+        this.order_money = order_money;
+    }
+    public String getRest_money() {
+        return rest_money;
+    }
+    public void setRest_money(String rest_money) {
+        this.rest_money = rest_money;
+    }
+    public String getCap_img() {
+        return cap_img;
+    }
+    public void setCap_img(String cap_img) {
+        this.cap_img = cap_img;
+    }
+    public String getOcx_time() {
+        return ocx_time;
+    }
+    public void setOcx_time(String ocx_time) {
+        this.ocx_time = ocx_time;
+    }
+    public String getCar_no() {
+        return car_no;
+    }
+    public void setCar_no(String car_no) {
+        this.car_no = car_no;
+    }
+    public String getCar_color() {
+        return car_color;
+    }
+    public void setCar_color(String car_color) {
+        this.car_color = car_color;
+    }
+    public String getMobile() {
+        return mobile;
+    }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
     public String getIs_show() {
         return is_show;
     }
