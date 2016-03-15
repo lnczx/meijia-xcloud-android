@@ -52,7 +52,6 @@ import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
-import com.meijialife.simi.activity.MainPlusLeaveDetailActivity;
 import com.meijialife.simi.activity.MainPlusLeaveListActivity;
 import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
@@ -399,6 +398,11 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                         Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
                         intent.putExtra("orderId", params);
                         intent.putExtra("orderType", 3);
+                        startActivity(intent);
+                    }else if (action.equals("express")) {
+                        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
+                        intent.putExtra("orderId", params);
+                        intent.putExtra("orderType", 4);
                         startActivity(intent);
                     }
 

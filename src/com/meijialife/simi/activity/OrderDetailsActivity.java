@@ -24,6 +24,7 @@ import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.CleanData;
+import com.meijialife.simi.bean.ExpressData;
 import com.meijialife.simi.bean.MyOrderDetail;
 import com.meijialife.simi.bean.TeamData;
 import com.meijialife.simi.bean.User;
@@ -47,6 +48,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
     private WaterData waterData;
     private CleanData cleanData;
     private TeamData teamData;
+    private ExpressData expressData;
     private FinalBitmap finalBitmap;
 
     // 布局控件定义
@@ -65,7 +67,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
     
     private String orderStatus;
     private int orderStatusId;//订单状态Id
-    private int orderType=1;//订单类型99=送水订单详情；1=其他订单详情;2=保洁类订单详情3=团建类订单详情
+    private int orderType=1;//订单类型 99=送水订单详情1=其他订单详情;2=保洁类订单详情3=团建类订单详情4=快递类订单详情
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,8 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
             getOrderDetailClean();
         }else if (orderType==3) {
             getOrderDetailTeam();
+        }else if(orderType==4){
+            getOrderDetailExpress();
         }
     }
 
@@ -363,6 +367,70 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         });
     }
     /**
+     * 快递类订单详情接口
+     */
+    public void getOrderDetailExpress() {
+        // 判断是否有网络
+        if (!NetworkUtils.isNetworkConnected(OrderDetailsActivity.this)) {
+            Toast.makeText(OrderDetailsActivity.this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user.getId());
+        map.put("id", "" + order_id);
+        AjaxParams params = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().get(Constants.GET_DETAIL_EXPRESS_URL, params, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(OrderDetailsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                //将json字符串转为订单详情对象
+                                expressData = gson.fromJson(data, ExpressData.class);
+                                //展示详情
+                                showOrderDetailExpress(expressData);
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                    
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(OrderDetailsActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+    /**
      * 根据接口返回的值，赋值展示订单详情
      * @param myOrderDetail
      */
@@ -472,6 +540,37 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         mOrderPayType.setText("");
         tv_city_name.setText(teamData.getCity_name());
         finalBitmap.display(mHeadImage, Constants.TEAM_ICON_URL, defaultBitmap.getBitmap(), defaultBitmap.getBitmap());
+        /* mOrderStatus.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cleanData.getOrder_status() ==Constants.WATER_ORDER_NOT_PAY){
+                    mOrderStatus.setClickable(true);
+                    Intent intent = new Intent(OrderDetailsActivity.this,PayOrderActivity.class);
+                    intent.putExtra("flag",PayOrderActivity.FROM_WATER_ORDER);
+                    intent.putExtra("waterData",waterData);
+                    startActivity(intent);
+                }else {
+                    mOrderStatus.setClickable(false);
+                }
+            }
+        });*/
+    }
+    /***
+     * 显示快递类型订单详情
+     * @param expressData
+     */
+    public void showOrderDetailExpress(final ExpressData expressData) {
+//        orderStatus = expressData.getOrder_status_name();
+        mOrderNo.setText(expressData.getExpress_no());
+        mContent.setText("");
+        mOrderName.setText(expressData.getExpress_name());
+        mOrderDate.setText(expressData.getAdd_time_str().trim());
+        mOrderStatus.setText("");
+        mOrderMoney.setText("");
+        mRemarks.setText("");
+        mOrderPayType.setText("");
+        tv_city_name.setText("");
+        finalBitmap.display(mHeadImage, Constants.EXPRESS_ICON_URL, defaultBitmap.getBitmap(), defaultBitmap.getBitmap());
         /* mOrderStatus.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

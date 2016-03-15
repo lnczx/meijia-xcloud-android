@@ -11,31 +11,32 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewDebug.FlagToString;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.CompanyListAdapter;
-import com.meijialife.simi.adapter.SecretaryAdapter;
 import com.meijialife.simi.bean.CompanyData;
-import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.AddPopWindow;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -46,7 +47,7 @@ import com.meijialife.simi.utils.UIUtils;
  * @author： kerryg
  * @date:2015年12月5日 
  */
-public class CompanyListActivity extends BaseActivity {
+public class CompanyListActivity extends BaseActivity implements OnClickListener{
     
     
     private CompanyListAdapter companyListAdapter;
@@ -56,6 +57,9 @@ public class CompanyListActivity extends BaseActivity {
     private ArrayList<CompanyData> totalCompanyeList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
     private int page = 1;
+    
+    private RelativeLayout m_rl_friend_add;//弹出popWindow
+    private ImageView m_iv_friend_add;//弹出popWindow
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,9 @@ public class CompanyListActivity extends BaseActivity {
         totalCompanyeList = new ArrayList<CompanyData>();
         myCompanyDataList = new ArrayList<CompanyData>();
         mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.pull_refresh_company_list);
+        findViewById(R.id.m_rl_friend_add).setVisibility(View.VISIBLE);
+        findViewById(R.id.m_rl_friend_add).setOnClickListener(this);
+        m_iv_friend_add=(ImageView) findViewById(R.id.m_iv_friend_add);
         companyListAdapter = new CompanyListAdapter(this);
         mPullRefreshListView.setAdapter(companyListAdapter);
         mPullRefreshListView.setMode(Mode.BOTH);
@@ -225,5 +232,19 @@ public class CompanyListActivity extends BaseActivity {
             companyListAdapter.setData(totalCompanyeList);
         }
         mPullRefreshListView.onRefreshComplete();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.m_rl_friend_add:
+            AddPopWindow addPopWindow = new AddPopWindow(CompanyListActivity.this);  
+            addPopWindow.showPopupWindow(m_iv_friend_add);  
+            break;
+
+        default:
+            break;
+        }
+        
     }
 }

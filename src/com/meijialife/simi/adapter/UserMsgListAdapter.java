@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.CityData;
 import com.meijialife.simi.bean.UserMsg;
 
 

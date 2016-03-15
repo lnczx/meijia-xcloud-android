@@ -80,5 +80,24 @@
             android:gravity="center"
             android:textSize="15sp" />
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/m_rl_friend_add"
+        android:layout_width="@dimen/title_bar_height"
+        android:layout_height="@dimen/title_bar_height"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_vertical"
+        android:focusable="true"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/m_iv_friend_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/company_jiahao"
+            android:gravity="center"
+            android:layout_marginRight="20dp"
+             />
+    </RelativeLayout>
 
 </RelativeLayout>

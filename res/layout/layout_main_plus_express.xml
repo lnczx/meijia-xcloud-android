@@ -125,6 +125,7 @@
                         android:gravity="center_vertical"
                         android:hint="请输入信息!"
                         android:maxLength="20"
+                        android:inputType="number"
                         android:textSize="14sp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -228,7 +229,7 @@
                             android:id="@+id/type1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="他费"
+                            android:text="公费"
                              android:textSize="14sp"
                             android:textColor="@color/simi_color_gray"
                              />

@@ -299,7 +299,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
             break;
         case 1:// 会议安排
-            iv_icon.setBackground(getResources().getDrawable(R.drawable.icon_plus_2));
+            finalBitmap.display(iv_icon,card.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             iv_image.setBackground(getResources().getDrawable(R.drawable.card_default_huiyi));
             tv_1.setText("时间：" + time);
             tv_1.setVisibility(View.VISIBLE);
@@ -309,7 +309,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_3.setVisibility(View.VISIBLE);
             break;
         case 2:// 通知公告
-            iv_icon.setBackground(getResources().getDrawable(R.drawable.icon_plus_5));
+            finalBitmap.display(iv_icon,card.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             iv_image.setBackground(getResources().getDrawable(R.drawable.card_default_mishu));
             tv_1.setText("时间：" + date);
             tv_1.setVisibility(View.VISIBLE);
@@ -317,7 +317,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_2.setVisibility(View.VISIBLE);
             break;
         case 3:// 事务提醒
-            iv_icon.setBackground(getResources().getDrawable(R.drawable.icon_plus_3));
+            finalBitmap.display(iv_icon,card.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             iv_image.setBackground(getResources().getDrawable(R.drawable.card_default_shiwu));
             tv_1.setText("时间：" + date);
             tv_1.setVisibility(View.VISIBLE);
@@ -325,7 +325,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_2.setVisibility(View.VISIBLE);
             break;
         case 4:// 面试邀约
-            iv_icon.setBackground(getResources().getDrawable(R.drawable.icon_plus_4));
+            finalBitmap.display(iv_icon,card.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             iv_image.setBackground(getResources().getDrawable(R.drawable.card_default_yaoyue));
             tv_1.setText("时间：" + date);
             tv_1.setVisibility(View.VISIBLE);
@@ -333,7 +333,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_2.setVisibility(View.VISIBLE);
             break;
         case 5:// 差旅规划
-            iv_icon.setBackground(getResources().getDrawable(R.drawable.icon_plus_1));
+            finalBitmap.display(iv_icon,card.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             iv_image.setBackground(getResources().getDrawable(R.drawable.card_default_chailv));
             String ticket_from_city_name ="";
             String ticket_to_city_name ="";

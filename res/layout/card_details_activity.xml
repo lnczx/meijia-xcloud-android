@@ -19,9 +19,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:focusable="true"
-            android:scaleType="centerInside"
             android:paddingLeft="20dp"
-        	android:paddingRight="90dp"	
+            android:paddingRight="90dp"
+            android:scaleType="centerInside"
             android:src="@drawable/title_left_back"
             android:visibility="gone" />
 
@@ -50,13 +50,13 @@
             android:focusable="true"
             android:scaleType="centerInside"
             android:visibility="gone" />
-		
-         <RelativeLayout
+
+        <RelativeLayout
             android:id="@+id/btn_edit_layout"
             android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_alignParentRight="true" >
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical" >
 
             <TextView
                 android:id="@+id/tv_edit"
@@ -67,13 +67,13 @@
                 android:textColor="@color/simi_color_red"
                 android:textSize="15sp" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/btn_cancel_layout"
             android:layout_width="55dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_toLeftOf="@id/btn_edit_layout"
-             >
+            android:layout_toLeftOf="@id/btn_edit_layout" >
 
             <TextView
                 android:id="@+id/tv_cancel"
@@ -84,8 +84,6 @@
                 android:textColor="@color/simi_color_red"
                 android:textSize="15sp" />
         </RelativeLayout>
-
-       
     </RelativeLayout>
 
     <RelativeLayout
@@ -151,12 +149,17 @@
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp" >
 
-                    <ImageView
+                    <com.meijialife.simi.ui.RoundImageView
                         android:id="@+id/iv_icon"
-                        android:layout_width="@dimen/card_icon_size"
-                        android:layout_height="@dimen/card_icon_size"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/card_icon_margin_left"
+                        android:src="@drawable/ic_defult_touxiang"
+                        imagecontrol:border_inside_color="@color/simi_color_white"
+                        imagecontrol:border_outside_color="@color/simi_color_white"
+                        imagecontrol:border_thickness_in="1dp"
+                        imagecontrol:border_thickness_out="1dp"
+                         android:layout_marginLeft="@dimen/card_icon_margin_left" 
                          />
 
                     <LinearLayout
@@ -170,9 +173,8 @@
                         <TextView
                             android:id="@+id/tv_title"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" 
-                            android:textColor="@color/black"
-                            />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black" />
                     </LinearLayout>
 
                     <RelativeLayout
@@ -257,22 +259,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp" >
-   					<TextView
+
+                    <TextView
                         android:id="@+id/tv_date_str"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7天前"
                         android:layout_alignParentLeft="true"
                         android:gravity="center"
                         android:padding="5dp"
+                        android:text="7天前"
                         android:textColor="#a4a4a4" />
-   					
-   					<LinearLayout
-   					    android:layout_width="wrap_content"
-   					    android:layout_height="wrap_content"
-   					    android:layout_alignParentRight="true"
-   					    android:gravity="center"
-   					    >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center" >
+
                         <TextView
                             android:id="@+id/tv_zan"
                             android:layout_width="wrap_content"
@@ -287,13 +290,12 @@
                             android:id="@+id/tv_share"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_marginLeft="25dp"
                             android:drawableLeft="@drawable/common_icon_share"
                             android:drawablePadding="5dp"
+                            android:gravity="center"
                             android:textColor="#676767" />
-                 </LinearLayout>
-                 
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <View
@@ -314,8 +316,8 @@
                         android:id="@+id/sec_icon"
                         android:layout_width="@dimen/card_icon_size"
                         android:layout_height="@dimen/card_icon_size"
-                        android:layout_marginLeft="10dp"
                         android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
                         android:background="@drawable/ic_launcher"
                         android:src="@drawable/ic_defult_touxiang"
                         imagecontrol:border_inside_color="@color/simi_color_white"

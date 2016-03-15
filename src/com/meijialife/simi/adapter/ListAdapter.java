@@ -44,6 +44,7 @@ import com.meijialife.simi.bean.WeatherIndex;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.fra.Home1Fra;
 import com.meijialife.simi.ui.CustomShareBoard;
+import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -144,6 +145,7 @@ public class ListAdapter extends BaseAdapter {
 
     @SuppressLint("NewApi")
 	private void bindView(ViewHolder vh, int position) {
+        Cards cards = list.get(position);
         String title = list.get(position).getCard_type_name();
         String timeStr = list.get(position).getAdd_time_str();
         String remark = list.get(position).getService_content();
@@ -199,7 +201,7 @@ public class ListAdapter extends BaseAdapter {
         case 1://会议安排
             vh.iv_image.setVisibility(View.VISIBLE);
             vh.iv_weather_image.setVisibility(View.GONE);
-            vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_2));
+            finalBitmap.display(vh.iv_icon,cards.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_huiyi));
             vh.tv_1.setText("时间：" + date);
             vh.tv_1.setVisibility(View.VISIBLE);
@@ -217,7 +219,7 @@ public class ListAdapter extends BaseAdapter {
         case 2://通知公告
             vh.iv_image.setVisibility(View.VISIBLE);
             vh.iv_weather_image.setVisibility(View.GONE);
-            vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_5));
+            finalBitmap.display(vh.iv_icon,cards.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_mishu));
             vh.tv_1.setText("时间：" + date);
             vh.tv_1.setVisibility(View.VISIBLE);
@@ -235,7 +237,8 @@ public class ListAdapter extends BaseAdapter {
         case 3://事务提醒
             vh.iv_image.setVisibility(View.VISIBLE);
             vh.iv_weather_image.setVisibility(View.GONE);
-            vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_3));
+            finalBitmap.display(vh.iv_icon,cards.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
+//            vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_3));
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_shiwu));
             vh.tv_1.setText("时间：" + date);
             vh.tv_1.setVisibility(View.VISIBLE);
@@ -252,7 +255,7 @@ public class ListAdapter extends BaseAdapter {
         case 4://面试邀约
             vh.iv_image.setVisibility(View.VISIBLE);
             vh.iv_weather_image.setVisibility(View.GONE);
-            vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_4));
+            finalBitmap.display(vh.iv_icon,cards.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_yaoyue));
             vh.tv_1.setText("时间：" + date);
             vh.tv_1.setVisibility(View.VISIBLE);
@@ -267,7 +270,7 @@ public class ListAdapter extends BaseAdapter {
             vh.iv_image.setVisibility(View.VISIBLE);
             break;
         case 5://差旅规划
-            vh.iv_icon.setBackground(context.getResources().getDrawable(R.drawable.icon_plus_1));
+            finalBitmap.display(vh.iv_icon,cards.getHead_img_create_user(), defDrawable.getBitmap(),defDrawable.getBitmap());
             vh.iv_image.setBackground(context.getResources().getDrawable(R.drawable.card_default_chailv));
             vh.iv_image.setVisibility(View.VISIBLE);
             vh.iv_weather_image.setVisibility(View.GONE);
@@ -366,7 +369,8 @@ public class ListAdapter extends BaseAdapter {
         ViewHolder vh = new ViewHolder();
         //原来卡片列表样式item_home_cardlist.xml
         View v = LayoutInflater.from(context).inflate(R.layout.home_cardlist, null);
-        vh.iv_icon = (ImageView) v.findViewById(R.id.iv_icon);
+        vh.iv_icon = (RoundImageView) v.findViewById(R.id.iv_icon);
+//        vh.iv_icon = (ImageView) v.findViewById(R.id.iv_icon);
         vh.iv_image = (ImageView) v.findViewById(R.id.iv_image);
         vh.iv_weather_image = (ImageView)v.findViewById(R.id.iv_weather_image);
         vh.tv_title = (TextView) v.findViewById(R.id.tv_title);
@@ -429,7 +433,8 @@ public class ListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        private ImageView iv_icon;
+//        private ImageView iv_icon;
+        private RoundImageView iv_icon;
         private ImageView iv_image;
         private ImageView iv_weather_image;
         private TextView tv_title;

@@ -36,6 +36,15 @@ public class Cards implements Serializable{
     private String add_time_str;
     private String status;
     private String card_extra;
+    private String head_img_create_user;
+    
+    
+    public String getHead_img_create_user() {
+        return head_img_create_user;
+    }
+    public void setHead_img_create_user(String head_img_create_user) {
+        this.head_img_create_user = head_img_create_user;
+    }
     public String getTitle() {
         return title;
     }

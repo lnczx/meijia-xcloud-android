@@ -134,7 +134,7 @@ public class MainPlusAppAdapter extends BaseAdapter {
                 holder.m_center_add.setSelected(true);
             }
         }else {
-           if(status=="1"){
+           if(StringUtils.isEquals(status,"1")){
                if(is_del==0){
                    holder.m_center_default_add.setVisibility(View.GONE);
                    holder.m_center_add.setVisibility(View.VISIBLE);
@@ -145,7 +145,7 @@ public class MainPlusAppAdapter extends BaseAdapter {
                    holder.m_center_default_add.setVisibility(View.VISIBLE);
                    holder.m_center_add.setVisibility(View.GONE);
                }
-           }else if(status=="0") {
+           }else if(StringUtils.isEquals(status,"0")) {
                holder.m_center_default_add.setVisibility(View.GONE);
                holder.m_center_add.setVisibility(View.VISIBLE);
                holder.m_center_add.setText("添加");
@@ -158,14 +158,13 @@ public class MainPlusAppAdapter extends BaseAdapter {
             public void onClick(View v) {
                 AppToolsData appToolsData = appToolsDatas.get(position);
                 String t_id = appToolsData.getT_id();
-                String status = appToolsData.getStatus();
-                short temp_status = 0;
-                if(status=="1"){
-                    temp_status = 0;
-                }else if (status=="0") {
-                    temp_status = 1;
+                boolean flag =v.isSelected();
+                //0=off,1=on
+                if(flag){
+                    addApp(t_id, "1");
+                }else if (!flag) {
+                    addApp(t_id, "0");
                 }
-                addApp(t_id, temp_status);
             }
         });
         return convertView;
@@ -175,7 +174,7 @@ public class MainPlusAppAdapter extends BaseAdapter {
 	/**
      * 新增应用显示配置接口
      */
-    private void addApp(String t_id,short status) {
+    private void addApp(String t_id,String status) {
 
         if (!NetworkUtils.isNetworkConnected(contexts)) {
             Toast.makeText(contexts, contexts.getString(R.string.net_not_open), 0).show();
@@ -185,7 +184,7 @@ public class MainPlusAppAdapter extends BaseAdapter {
         Map<String, String> map = new HashMap<String, String>();
         map.put("t_id", t_id);
         map.put("user_id", user.getId());
-        map.put("status", status+"");
+        map.put("status", status);
         AjaxParams param = new AjaxParams(map);
 
         new FinalHttp().post(Constants.URL_GET_USER_APP_TOOLS, param, new AjaxCallBack<Object>() {

@@ -20,11 +20,18 @@ public class CardExtra implements Serializable {
     private String ticket_from_city_id;//出发城市Id
     private String ticket_to_city_name;//到达城市
     private String ticket_to_city_id;//到达城市Id
+    private String meeting_id;//会议室Id
     
  
     
     public String getReal_temp() {
         return real_temp;
+    }
+    public String getMeeting_id() {
+        return meeting_id;
+    }
+    public void setMeeting_id(String meeting_id) {
+        this.meeting_id = meeting_id;
     }
     public void setReal_temp(String real_temp) {
         this.real_temp = real_temp;

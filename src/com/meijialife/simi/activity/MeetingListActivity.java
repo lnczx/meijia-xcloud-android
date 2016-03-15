@@ -11,13 +11,9 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -34,26 +30,29 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.adapter.MainPlusExpressAdapter;
-import com.meijialife.simi.bean.ExpressData;
+import com.meijialife.simi.adapter.MainPlusCleanAdapter;
+import com.meijialife.simi.adapter.MeetingListAdapter;
+import com.meijialife.simi.bean.CleanData;
+import com.meijialife.simi.bean.MeetingData;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.inter.ListItemClickHelp;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
- * @description：应用中心---快递
+ * @description：会议室列表
  * @author： kerryg
  * @date:2016年3月3日 
  */
-public class MainPlusExpressActivity extends Activity implements ListItemClickHelp {
+public class MeetingListActivity extends BaseActivity  {
     
 
-    private MainPlusExpressAdapter mainPlusExpressAdapter;
+    private MeetingListAdapter adapter;
     
     private ImageView mCardBack;
     private TextView mCardTitle;
@@ -68,53 +67,37 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
     private String mCardType;
     
     //下拉刷新
-    private ArrayList<ExpressData> myExpressList;
-    private ArrayList<ExpressData> totalExpressList;
+    private ArrayList<MeetingData> myMeetingList;
+    private ArrayList<MeetingData> totalMeetingList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
     private int page = 1;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.express_list_activity);
+        setContentView(R.layout.meeting_list_activity);
         super.onCreate(savedInstanceState);
-        
         initView();
         
     }
     
     private void initView(){
-        //标题+返回(控件)
-        mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
-        mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
-        //标题背景
-        mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
-        mRlCard = (RelativeLayout)findViewById(R.id.view_card_title_bar);
-        mLlBottom = (LinearLayout)findViewById(R.id.m_ll_bottom);
-        //新建(控件)
-        mTv1 = (TextView)findViewById(R.id.m_tv1);
-        mTv2 = (TextView)findViewById(R.id.m_tv2);
-      
-        mTv1.setText("快递登记");
-        mTv2.setText("叫快递");
-       
-        setOnClick();//设置点击事件
-        setCardTitleColor();//设置标题颜色
-        setTitleBarColor();//设置沉浸栏样式
+        requestBackBtn();
+        setTitleName("会议室列表");
         
-        initWaterView();
+        initMeetingView();
        
     }
     /**
      * 初始化布局
      */
-    private void initWaterView(){
-        totalExpressList = new ArrayList<ExpressData>();
-        mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.m_water_list);
-        mainPlusExpressAdapter = new MainPlusExpressAdapter(MainPlusExpressActivity.this);
-        mPullRefreshListView.setAdapter(mainPlusExpressAdapter);
+    private void initMeetingView(){
+        totalMeetingList = new ArrayList<MeetingData>();
+        mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.m_meeting_list);
+        adapter = new MeetingListAdapter(MeetingListActivity.this);
+        mPullRefreshListView.setAdapter(adapter);
         mPullRefreshListView.setMode(Mode.BOTH);
         initIndicator();
-        getExpressListData(page);
+        getMeetingListData(page);
         mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -123,8 +106,8 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
                         "MM_dd HH:mm");
                 page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                getExpressListData(page);
-                mainPlusExpressAdapter.notifyDataSetChanged(); 
+                getMeetingListData(page);
+                adapter.notifyDataSetChanged(); 
             }
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -132,12 +115,12 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
                         "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(myExpressList!=null && myExpressList.size()>=10){
+                if(myMeetingList!=null && myMeetingList.size()>=10){
                     page = page+1;
-                    getExpressListData(page);
-                    mainPlusExpressAdapter.notifyDataSetChanged(); 
+                    getMeetingListData(page);
+                    adapter.notifyDataSetChanged(); 
                 }else {
-                    Toast.makeText(MainPlusExpressActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MeetingListActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
                     mPullRefreshListView.onRefreshComplete(); 
                 }
             }
@@ -146,11 +129,11 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
         mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ExpressData expressData = totalExpressList.get(position);
-                Intent intent = new Intent(MainPlusExpressActivity.this,OrderDetailsActivity.class);
-                intent.putExtra("orderId", expressData.getId());
-                intent.putExtra("orderType", 4);
-                startActivity(intent);
+                MeetingData meetingData = totalMeetingList.get(position);
+                Intent intent = new Intent();
+                intent.putExtra("meetingData",meetingData);
+                setResult(RESULT_OK,intent);
+                MeetingListActivity.this.finish();
             }
         });
     }
@@ -171,82 +154,31 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
         endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
         endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
     }
-    /*
-     * 设置点击事件
-     */
-    private void setOnClick(){
-        
-        mCardBack.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        mTv1.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainPlusExpressActivity.this,MainPlusExpressOrderActivity.class));
-            }
-        });
-        mTv2.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainPlusExpressActivity.this,WebViewsActivity.class);
-                intent.putExtra("url",Constants.H5_EXPRESS_URL);
-                startActivity(intent);
-                
-            }
-        });
-    }
+ 
+
     /**
-     * 设置沉浸栏样式
-     */
-    private void setTitleBarColor(){
-        /**
-         * 沉浸栏方式实现(android4.4以上)
-         */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {// 4.4以上
-            // 透明状态栏
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            getWindow().addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
-    
-    /**
-     * 设置标题颜色
-     * @param cardType
-     */
-    private void setCardTitleColor(){
-      mCardTitle.setText("快递");
-      mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_kuai_di));
-      mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_kuai_di));
-      mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_kuai_di));
-        
-    }
-    /**
-     * 快递订单列表接口
+     * 会议室列表接口
      * @param page
      */
-    public void getExpressListData(int page) {
-        String user_id = DBHelper.getUser(this).getId();
+    public void getMeetingListData(int page) {
+        UserInfo  userInfo = DBHelper.getUserInfo(this);
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id+"");
+        map.put("user_id", userInfo.getUser_id()+"");
+        map.put("company_id", userInfo.getCompany_id());
+        map.put("setting_type","meeting-room");
         map.put("page",page+"");
         AjaxParams param = new AjaxParams(map);
 //        showDialog();
-        new FinalHttp().get(Constants.GET_LIST_EXPRESS_URL, param, new AjaxCallBack<Object>() {
+        new FinalHttp().get(Constants.URL_GET_COMPANY_SETTING, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
 //                dismissDialog();
-                Toast.makeText(MainPlusExpressActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MeetingListActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -263,12 +195,12 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data.trim())) {
                                 Gson gson = new Gson();
-                                myExpressList = new ArrayList<ExpressData>();
-                                myExpressList = gson.fromJson(data, new TypeToken<ArrayList<ExpressData>>() {
+                                myMeetingList = new ArrayList<MeetingData>();
+                                myMeetingList = gson.fromJson(data, new TypeToken<ArrayList<MeetingData>>() {
                                 }.getType());
-                                showData(myExpressList);
+                                showData(myMeetingList);
                             } else {
-                                mainPlusExpressAdapter.setData(new ArrayList<ExpressData>());
+                                adapter.setData(new ArrayList<MeetingData>());
                                 mPullRefreshListView.onRefreshComplete();
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -290,7 +222,7 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
                     mPullRefreshListView.onRefreshComplete();
-                    UIUtils.showToast(MainPlusExpressActivity.this, errorMsg);
+                    UIUtils.showToast(MeetingListActivity.this, errorMsg);
                 }
             }
         });
@@ -300,39 +232,33 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
      * 处理数据加载的方法
      * @param list
      */
-    private void showData(List<ExpressData> myExpressList){
+    private void showData(List<MeetingData> myMeetingList){
         if(page==1){
-            totalExpressList.clear();
-            for (ExpressData expressData : myExpressList) {
-                totalExpressList.add(expressData);
+            totalMeetingList.clear();
+            for (MeetingData meeting : myMeetingList) {
+                totalMeetingList.add(meeting);
             }
         }
         if(page>=2){
-            for (ExpressData expressData : myExpressList) {
-                totalExpressList.add(expressData);
+            for (MeetingData meeting : myMeetingList) {
+                totalMeetingList.add(meeting);
             }
         }
         //给适配器赋值
-        mainPlusExpressAdapter.setData(totalExpressList);
+        adapter.setData(totalMeetingList);
         mPullRefreshListView.onRefreshComplete();
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         page =1;
-        totalExpressList = new ArrayList<ExpressData>();
-        myExpressList = new ArrayList<ExpressData>();
+        totalMeetingList = new ArrayList<MeetingData>();
+        myMeetingList = new ArrayList<MeetingData>();
         
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        getExpressListData(page);
+        getMeetingListData(page);
     }
-
-    @Override
-    public void onClick() {
-        getExpressListData(page);
-    }
-
 }

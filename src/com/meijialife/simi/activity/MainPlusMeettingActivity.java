@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -43,8 +44,10 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.CardAttend;
+import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.ContactBean;
+import com.meijialife.simi.bean.MeetingData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -84,6 +87,7 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
     private TextView tv_select_number, tv_xiaoxi_content, tv_meeting_time;
     public static final int GET_CONTACT = 1001;
     public static final int GET_USER = 1002;
+    public static final int GET_MEETING = 1003;
     private View view_mask;
 
     private WheelView year;
@@ -120,6 +124,8 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
     private UserInfo userInfo;
     private RelativeLayout layout_select_who;
     private boolean isUsersenior;
+    private String  meetingName ="";//会议室名称
+    private String  meetingId ="";//会议室Id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +149,7 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
         findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);
         findViewById(R.id.layout_meeting_content).setOnClickListener(this);
         findViewById(R.id.layout_message_tongzhi).setOnClickListener(this);
+        findViewById(R.id.m_btn_meetings).setOnClickListener(this);
         layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
         layout_select_who.setOnClickListener(this);
 
@@ -247,6 +254,7 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
             long Service_time = Long.valueOf(card.getService_time()) * 1000;
 
             tv_meeting_time.setText(format.format(Service_time));
+            Constants.CARD_ADD_MEETING_SETTING = card.getService_addr();
             tv_meeting_location.setText(card.getService_addr());
             ArrayList<CardAttend> attends = card.getAttends();
             String name = null;
@@ -319,16 +327,16 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
         case R.id.layout_select_phonenumber:// 选择通讯录
-            Intent intent = new Intent(MainPlusMeettingActivity.this, ContactChooseActivity.class);
+            intent = new Intent(MainPlusMeettingActivity.this, ContactChooseActivity.class);
             startActivityForResult(intent, GET_CONTACT);
-
             break;
         case R.id.layout_meeting_content:
-            Intent intent2 = new Intent(MainPlusMeettingActivity.this, MainPlusContentActivity.class);
-            intent2.putExtra(Constants.MAIN_PLUS_FLAG, Constants.MEETTING);
-            startActivity(intent2);
+            intent = new Intent(MainPlusMeettingActivity.this, MainPlusContentActivity.class);
+            intent.putExtra(Constants.MAIN_PLUS_FLAG, Constants.MEETTING);
+            startActivity(intent);
             break;
         case R.id.layout_message_tongzhi:
             showRemindWindow();
@@ -340,10 +348,13 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
             createMeetingCard(isUpdate);
             break;
         case R.id.layout_select_who:
-            Intent mintent = new Intent(MainPlusMeettingActivity.this, CreateForWhoActivity.class);
-            startActivityForResult(mintent, GET_USER);
+            intent = new Intent(MainPlusMeettingActivity.this, CreateForWhoActivity.class);
+            startActivityForResult(intent, GET_USER);
             break;
-
+        case R.id.m_btn_meetings:
+             intent = new Intent(MainPlusMeettingActivity.this, MeetingListActivity.class);
+            startActivityForResult(intent, GET_MEETING);
+            break;
         default:
             break;
         }
@@ -637,15 +648,18 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
             case GET_USER:
                 for_userid = data.getExtras().getString("for_userid");
                 String for_name = data.getExtras().getString("for_name");
-
                 tv_select_who_name.setText(for_name);
+                break;
+            case GET_MEETING:
+               MeetingData meetingData = (MeetingData)data.getSerializableExtra("meetingData");
+                Constants.CARD_ADD_MEETING_SETTING =meetingData.getName();
+                meetingId = meetingData.getSetting_id();
                 break;
             default:
                 break;
             }
         }
     }
-
     /**
      * 发起会议
      * 
@@ -738,7 +752,10 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
         map.put("set_remind", remindAlerm + "");
         map.put("set_now_send", SET_SEND + "");
         map.put("set_sec_do", SET_SEC_DO + "");
-
+        Gson gson = new Gson();
+        CardExtra cardExtra = new CardExtra();
+        cardExtra.setMeeting_id(meetingId);
+        map.put("card_extra", gson.toJson(cardExtra));
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().post(Constants.URL_GET_ADD_CARD, param, new AjaxCallBack<Object>() {
 
@@ -789,22 +806,38 @@ public class MainPlusMeettingActivity extends BaseActivity implements OnClickLis
         });
     };
 
-    @Override
+/*    @Override
     protected void onResume() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 tv_huiyi_content.setText(Constants.CARD_ADD_MEETING_CONTENT);
+                tv_meeting_location.setText(Constants.CARD_ADD_MEETING_SETTING);
             }
         });
         super.onResume();
 
+    }
+    */
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv_huiyi_content.setText(Constants.CARD_ADD_MEETING_CONTENT);
+                if(!StringUtils.isEmpty(Constants.CARD_ADD_MEETING_SETTING)){
+                    tv_meeting_location.setText(Constants.CARD_ADD_MEETING_SETTING);
+                }
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Constants.CARD_ADD_MEETING_CONTENT = "";
+        Constants.CARD_ADD_MEETING_SETTING ="";
         Constants.finalContactList = new ArrayList<String>();
     }
 

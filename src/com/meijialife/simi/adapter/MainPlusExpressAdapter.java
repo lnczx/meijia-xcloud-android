@@ -16,11 +16,10 @@ import android.widget.TextView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.ExpressData;
-import com.meijialife.simi.bean.TeamData;
 import com.meijialife.simi.inter.ListItemClickHelp;
 
 /**
- * 加号--团建---适配器
+ * 加号--快递---适配器
  *
  */
 public class MainPlusExpressAdapter extends BaseAdapter {
@@ -81,7 +80,7 @@ public class MainPlusExpressAdapter extends BaseAdapter {
 		}
 		
 		final ExpressData expressData = expressDatas.get(position);
-        finalBitmap.display(holder.m_team_icon, Constants.TEAM_ICON_URL, defDrawable.getBitmap(), defDrawable.getBitmap());
+        finalBitmap.display(holder.m_team_icon, Constants.EXPRESS_ICON_URL, defDrawable.getBitmap(), defDrawable.getBitmap());
         holder.m_team_title.setText(expressData.getExpress_name());
         holder.m_team_time.setText("下单时间:"+expressData.getAdd_time_str());
         holder.m_team_status.setText(expressData.getFrom_name());

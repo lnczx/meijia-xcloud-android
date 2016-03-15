@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,9 +70,12 @@ public class MainPlusExpressOrderActivity extends BaseActivity implements OnClic
     private String mToName;
     private String mToTel;
     private String mRemarks;
+    private String payType;//支付方式
+    private String expressType;//收发件方式
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.layout_main_plus_express);
         super.onCreate(savedInstanceState);
         userInfo = DBHelper.getUserInfo(this);
@@ -102,10 +106,34 @@ public class MainPlusExpressOrderActivity extends BaseActivity implements OnClic
         mButtonPay1 = (RadioButton)findViewById(R.id.type1);
         mButtonPay2 = (RadioButton)findViewById(R.id.type2);
         
-        
-        
-        
+        mPayType.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId==mButtonPay1.getId()){
+                    mButtonPay1.setChecked(true);
+                    payType = "0";//收件
+                }
+                if(checkedId==mButtonPay2.getId()){
+                    mButtonPay2.setChecked(true);
+                    payType = "1";//寄件
+                }
+            }
+        });
+        mExpressType.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId==mButtonExpress1.getId()){
+                    mButtonExpress1.setChecked(true);
+                    expressType = "0";//公费
+                }
+                if(checkedId==mButtonExpress2.getId()){
+                    mButtonExpress2.setChecked(true);
+                    expressType ="1";//自费
+                }
+            }
+        });
         findViewById(R.id.m_rl_remark).setOnClickListener(this);
+        findViewById(R.id.bt_create_express).setOnClickListener(this);
         
         
         
@@ -136,8 +164,8 @@ public class MainPlusExpressOrderActivity extends BaseActivity implements OnClic
         map.put("user_id", user.getId()+"");
         map.put("express_no",mNo);
         map.put("express_id",mCompany);//活动类型：0 = 不限 1=年会 2 = 拓展培训 3 = 聚会沙龙 4 = 度假休闲 5 = 其他、员工生日、 度假休闲、拓展培训、聚会沙龙、其他
-        map.put("express_type", "");
-        map.put("pay_type", "");
+        map.put("express_type",expressType);
+        map.put("pay_type", payType);
         map.put("from_addr", mFromAddr);
         map.put("from_name", mFromName);
         map.put("from_tel",mFromTel);

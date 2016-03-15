@@ -185,15 +185,19 @@
                             android:singleLine="true"
                             android:textColor="@color/red_text_color"
                             android:textSize="14sp" />
-
-                        <ImageView
-                            android:id="@+id/iv_mudi_right_icon"
+						
+                        <Button
+                            android:id="@+id/m_btn_meetings"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="会议室"
+                            android:textSize="14sp"
+                            android:textColor="@color/simi_color_gray"
+                            android:background="@drawable/bg_main_plus_page"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:background="@drawable/icon_plus_arrowright"
-                            android:visibility="gone" />
+                            />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

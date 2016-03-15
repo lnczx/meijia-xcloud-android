@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
@@ -23,13 +24,18 @@
         android:layout_marginTop="6dp"
          >
 
-        <ImageView
+         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon"
-            android:layout_width="@dimen/card_icon_size"
-            android:layout_height="@dimen/card_icon_size"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
+            android:src="@drawable/iconfont_tongxunbu"
+            imagecontrol:border_inside_color="@color/simi_color_white"
+            imagecontrol:border_outside_color="@color/simi_color_white"
+            imagecontrol:border_thickness_in="1dp"
+            imagecontrol:border_thickness_out="1dp"
             android:layout_marginLeft="@dimen/card_icon_margin_left"
-            android:background="@drawable/icon_main_item_chifan" />
+             />
 
         <LinearLayout
             android:layout_width="wrap_content"

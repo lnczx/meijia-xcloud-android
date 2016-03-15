@@ -162,6 +162,10 @@ public class Constants {
     public static final String URL_GET_COMPANY_LIST =ROOT_URL +"company/get_by_user.json";
     /**获得企业员工列表**/
     public static final String URL_GET_STAFF_LIST = ROOT_URL +"company/get_staffs.json";
+    /**设置默认企业**/
+    public static final String URL_POST_SET_DEFAULT = ROOT_URL +"company/set_default.json";
+    /**用户-公司配置信息接口**/
+    public static final String URL_GET_COMPANY_SETTING = ROOT_URL +"company/get_company_setting.json";
     
     /** 添加通讯录好友接口 **/
     public static final String URL_POST_FRIEND = ROOT_URL + "user/post_friend.json";
@@ -224,6 +228,7 @@ public class Constants {
     
     public static  String CARD_ADD_TREAVEL_CONTENT = "";
     public static  String CARD_ADD_MEETING_CONTENT = "";
+    public static  String CARD_ADD_MEETING_SETTING = "";
     public static  String CARD_ADD_MORNING_CONTENT = "";
     public static  String CARD_ADD_AFFAIR_CONTENT = "";
     public static  String CARD_ADD_NOTIFICATION_CONTENT = "";
@@ -368,11 +373,11 @@ public class Constants {
      /**废品回收图片链接**/
      public static final String WASTER_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-caolv.png";
      /**废品回收订单列表接口**/
-     public static final String URL_GET_LIST_WASTER = ROOT_URL + "order/get_list_green.json";
+     public static final String URL_GET_LIST_WASTER = ROOT_URL + "order/get_list_recycle.json";
      /**废品回收H5链接**/
      public static final String H5_WASTER_URL = "http://123.57.173.36/simi-h5/show/recycle-price.html";
      /**废品回收下单接口**/
-     public static final String POST_WASTER_ORDER_URL = ROOT_URL + "order/post_add_green.json";
+     public static final String POST_WASTER_ORDER_URL = ROOT_URL + "order/ post_add_recycle.json";
      
      //保洁订单
      /**保洁订单列表**/
@@ -418,5 +423,9 @@ public class Constants {
      public static final String H5_EXPRESS_URL = "http://m.kuaidi100.com/courier/search.jsp";
      /**快递下单接口**/
      public static final String POST_ADD_EXPRESS_URL = ROOT_URL + "record/post_add_express.json";
-
+     /**快递详情**/
+     public static final String GET_DETAIL_EXPRESS_URL = ROOT_URL + "record/get_detail_express.json";
+     /**快递图片链接**/
+     public static final String EXPRESS_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-molv.png";
+     
 }
