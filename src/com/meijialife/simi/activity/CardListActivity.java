@@ -66,6 +66,7 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
     private TextView mCardTitle;
     private LinearLayout mLlCard;
     private RelativeLayout mRlCard;
+    private LinearLayout mAffairCardTitle;
     
     //创建卡片
     private TextView mTvCreate;
@@ -101,6 +102,7 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         //标题+返回(控件)
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
+        mAffairCardTitle = (LinearLayout)findViewById(R.id.m_affair_card_title);
        
         setOnClick();//设置点击事件
         setCardTitleColor(mCardType);//设置标题颜色
@@ -211,6 +213,42 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
                 default:
                     break;
                 }                
+            }
+        });
+        
+        mAffairCardTitle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent ;
+                switch (mCardType) {
+                case "1"://会议安排
+                    intent = new Intent(CardListActivity.this, WebViewsActivity.class);
+                    intent.putExtra("url", Constants.CARD_MEETING_HELP_URL);
+                    startActivity(intent);
+                    break;
+                case "2"://通知公告
+                    intent = new Intent(CardListActivity.this, WebViewsActivity.class);
+                    intent.putExtra("url", Constants.CARD_NOTICE_HELP_URL);
+                    startActivity(intent);
+                    break;
+                case "3"://事务提醒
+                    intent = new Intent(CardListActivity.this, WebViewsActivity.class);
+                    intent.putExtra("url", Constants.CARD_ALARM_HELP_URL);
+                    startActivity(intent);
+                    break;
+                case "4"://面试邀约
+                    intent = new Intent(CardListActivity.this, WebViewsActivity.class);
+                    intent.putExtra("url", Constants.CARD_INTERVIEW_HELP_URL);
+                    startActivity(intent);
+                    break;
+                case "5"://差旅规划
+                    intent = new Intent(CardListActivity.this, WebViewsActivity.class);
+                    intent.putExtra("url", Constants.CARD_TRIP_HELP_URL);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+                }   
             }
         });
     }

@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
@@ -15,14 +14,11 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -37,7 +33,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -58,7 +53,6 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
-import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.Find2Adapter;
 import com.meijialife.simi.adapter.FindAllAdapter;
@@ -67,8 +61,8 @@ import com.meijialife.simi.bean.ChanelBean;
 import com.meijialife.simi.bean.FindBean;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.SelectableRoundedImageView;
 import com.meijialife.simi.ui.SyncHorizontalScrollView;
+import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -175,10 +169,7 @@ public class Find2Fra extends BaseFragment {
         listview.setAdapter(adapter);*/
         
         //请求帮助接口
-        finalBitmap = FinalBitmap.create(getActivity());
-        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
         getAppHelp();
-        
         initFindBeanView(v);
         getChanelList();
     }
@@ -612,77 +603,9 @@ public class Find2Fra extends BaseFragment {
     
     
 
-    private PopupWindow popupWindow;
-    private TextView mDone;
-    private ImageView tip_iv_icon;
-    private SelectableRoundedImageView selectableRoundedImageView;
-    private TextView tip_tv_title;
-    private TextView tip_tv_content;
-    private TextView tip_tv_more;
+ 
     private AppHelpData appHelpData;
-    private BitmapDrawable defDrawable;
-    private FinalBitmap finalBitmap;
-    /**
-     * 弹出窗口
-     */
-    private void popWindow(final AppHelpData appHelpData) {
-        View view = (LinearLayout)getActivity().getLayoutInflater()
-                .inflate(R.layout.layout_tip_activity, null);
-        if (null == popupWindow || !popupWindow.isShowing()) {
-            popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-            /*popupWindow = new PopupWindow(view);
-            popupWindow.setWidth(450);
-            popupWindow.setHeight(650);*/
-            popupWindow.setFocusable(false);
-            popupWindow.setTouchable(true);
-        }
-        mDone = (TextView)view.findViewById(R.id.tip_tv_done);
-        tip_tv_title = (TextView)view.findViewById(R.id.tip_tv_title);
-        tip_tv_content = (TextView)view.findViewById(R.id.tip_tv_content);
-        tip_tv_more = (TextView)view.findViewById(R.id.tip_tv_more);
-//        selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_iv_icon = (ImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_tv_title.setText(appHelpData.getTitle());
-        tip_tv_content.setText(appHelpData.getContent());
-//        finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        popupWindow.setFocusable(true);  
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式
-        popupWindow.showAtLocation(vs, Gravity.CENTER, 0, 0);
-        backgroundAlpha(0.5f);
-        mDone.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != popupWindow && popupWindow.isShowing()) {
-                    backgroundAlpha(1f);
-                    popupWindow.dismiss();
-                }
-            }
-        });
-       tip_tv_more.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String goto_url = appHelpData.getGoto_url();
-            String action = appHelpData.getAction().trim();
-            Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url",goto_url);
-            startActivity(intent);
-            backgroundAlpha(1f);
-            popupWindow.dismiss();
-        }            
-    });
-    }
-    /**
-    * 设置添加屏幕的背景透明度
-    * @param bgAlpha
-    */
-    public void backgroundAlpha(float bgAlpha)
-    {
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-            lp.alpha = bgAlpha; //0.0-1.0
-            getActivity().getWindow().setAttributes(lp);
-    }
+  
     /*
      * 帮助接口
      */
@@ -693,6 +616,7 @@ public class Find2Fra extends BaseFragment {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
         }
+        final String action ="discover";
         User user = DBHelper.getUser(getActivity());
         Map<String, String> map = new HashMap<String, String>();
         map.put("action","discover");
@@ -721,7 +645,8 @@ public class Find2Fra extends BaseFragment {
                             if(StringUtils.isNotEmpty(data)){
                                 Gson gson = new Gson();
                                 appHelpData = gson.fromJson(data, AppHelpData.class); 
-                                popWindow(appHelpData);
+                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(),appHelpData,action);  
+                                addPopWindow.showPopupWindow(v); 
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

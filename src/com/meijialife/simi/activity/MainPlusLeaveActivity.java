@@ -141,12 +141,12 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         view_mask = (View) findViewById(R.id.view_mask);
 
         
-        findViewById(R.id.layout_start_day).setOnClickListener(this);;
-        findViewById(R.id.layout_leave_type).setOnClickListener(this);;
-        findViewById(R.id.layout_end_day).setOnClickListener(this);;
-        findViewById(R.id.layout_select_who).setOnClickListener(this);;
-        findViewById(R.id.layout_leave_content).setOnClickListener(this);;
-        findViewById(R.id.bt_create_leave).setOnClickListener(this);;
+        findViewById(R.id.layout_start_day).setOnClickListener(this);
+        findViewById(R.id.layout_leave_type).setOnClickListener(this);
+        findViewById(R.id.layout_end_day).setOnClickListener(this);
+        findViewById(R.id.layout_select_who).setOnClickListener(this);
+        findViewById(R.id.layout_leave_content).setOnClickListener(this);
+        findViewById(R.id.bt_create_leave).setOnClickListener(this);
     }
 
     @Override

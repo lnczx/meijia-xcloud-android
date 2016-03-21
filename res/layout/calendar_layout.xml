@@ -5,16 +5,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/simi_color_red"
-         >
+        android:background="@color/simi_color_red" >
 
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="46.7dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal" 
-            >
+            android:orientation="horizontal" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -27,7 +25,9 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:textSize="20sp" 
+                    android:visibility="gone"
+                    />
 
                 <!-- 隐藏上一月按钮 by garry 2015-12-23 -->
 
@@ -62,22 +62,82 @@
                     android:id="@+id/ibtn_person"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:layout_marginLeft="15dp"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/main_menu" 
-                    android:visibility="gone"
-                    /> 
-                 <ImageButton
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/main_menu"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+                        <TextView
+                            android:id="@+id/m_calendar_month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/simi_color_white"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left|center_vertical"
+                        android:gravity="left"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="1dp"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="3dp"
+                         >
+
+                        <TextView
+                            android:id="@+id/m_calendar_week"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|bottom"
+                            android:gravity="left|bottom"
+                            android:layout_marginTop="10dp"
+                            android:text=""
+                            android:textColor="@color/simi_color_white"
+                            android:textSize="9sp" />
+
+                        <TextView
+                            android:id="@+id/m_calendar_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:layout_gravity="left|top"
+                            android:text=""
+                            android:layout_marginBottom="10dp"
+                            android:textColor="@color/simi_color_white"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageButton
                     android:id="@+id/btn_saoma"
                     android:layout_width="@dimen/bottom_bar_icon_width_size"
                     android:layout_height="@dimen/bottom_bar_icon_height_size"
-                    android:layout_marginLeft="15dp"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:background="@drawable/iconfont_saoma"
-                    android:padding="20dp" 
-                    android:visibility="visible"
-                    />
+                    android:padding="20dp"
+                    android:visibility="visible" />
                 <!-- 查看自己发布的按钮 -->
+
                 <ImageButton
                     android:id="@+id/btn_chakan"
                     android:layout_width="22dp"
@@ -86,25 +146,28 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:background="@drawable/iconfont_chakan"
-                    android:visibility="gone"
-                     />
+                    android:visibility="gone" />
                 <!-- 收缩日历按钮 -->
-               <!--  <ImageButton
+                <!--
+                     <ImageButton
                     android:id="@+id/btn_rili"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
                     android:layout_toLeftOf="@id/btn_chakan"
-                    android:background="@drawable/icon_rili" /> -->
+                    android:background="@drawable/icon_rili" />
+                -->
+
                 <ImageButton
                     android:id="@+id/btn_rili"
                     android:layout_width="@dimen/bottom_bar_icon_width_size"
                     android:layout_height="@dimen/bottom_bar_icon_height_size"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                   	android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/icon_rili" />
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/icon_rili"
+                    android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -179,15 +242,17 @@
         <include layout="@layout/week_layout" />
     </LinearLayout>
 
-    <RelativeLayout 
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="12dp"
-        android:background="@android:color/transparent">
-        <ImageView 
+        android:background="@android:color/transparent" >
+
+        <ImageView
             android:id="@+id/bottom"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/rili_arrow_down"/>
+            android:background="@drawable/rili_arrow_down" />
     </RelativeLayout>
+
 </merge>

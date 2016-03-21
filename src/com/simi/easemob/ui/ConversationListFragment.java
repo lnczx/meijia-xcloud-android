@@ -83,7 +83,6 @@ public class ConversationListFragment extends EaseConversationListFragment{
                          ((MainActivity)activity).change2Contacts();
                      }
                 }
-                
             }
         });
         

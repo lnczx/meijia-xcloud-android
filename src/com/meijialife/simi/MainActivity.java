@@ -327,6 +327,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             break;
         case R.id.tab_bt_3: // 圈子
             currentTabIndex = 3;
+            Constants.checkedIndex=0;
             change2Contacts();
             break;
         case R.id.tab_bt_4: // 我的

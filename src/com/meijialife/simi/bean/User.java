@@ -2,6 +2,7 @@ package com.meijialife.simi.bean;
 
 import java.io.Serializable;
 
+import android.R.integer;
 import net.tsz.afinal.annotation.sqlite.Table;
 
 /**
@@ -65,6 +66,17 @@ public class User implements Serializable {
     public String channel_id;
     public String app_user_id;
     public String client_id;
+    
+    private int  is_new_user;//是否首次登录 0 = 否  1= 是
+    
+
+    public int getIs_new_user() {
+        return is_new_user;
+    }
+
+    public void setIs_new_user(int is_new_user) {
+        this.is_new_user = is_new_user;
+    }
 
     public String getId() {
         return id;

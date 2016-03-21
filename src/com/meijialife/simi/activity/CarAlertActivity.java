@@ -1,21 +1,11 @@
 package com.meijialife.simi.activity;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -23,19 +13,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.CardExtra;
-import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.ReceiverBean;
-import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.utils.LogOut;
-import com.meijialife.simi.utils.NetworkUtils;
-import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.UIUtils;
 
 @SuppressLint("SimpleDateFormat")
 public class CarAlertActivity extends Activity {
@@ -73,16 +53,10 @@ public class CarAlertActivity extends Activity {
     
 	private void findView(){
         
-      /*  mAlertTitle = getIntent().getStringExtra("title");
-        mAlertText = getIntent().getStringExtra("text");
-        mCardId = getIntent().getStringExtra("card_id");
-        mAlertDate = (Date) getIntent().getSerializableExtra("date");*/
+    
         
         bean = (ReceiverBean)getIntent().getSerializableExtra("bean");
         
-     /*   mAlert_time = new SimpleDateFormat("HH:mm").format(mAlertDate);
-        mAlert_date = new SimpleDateFormat("yyyy-MM-dd").format(mAlertDate);*/
-
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.ad_loading);
         mCarBand = (TextView)findViewById(R.id.card_band);
@@ -108,16 +82,11 @@ public class CarAlertActivity extends Activity {
         mUserType.setText(bean.getOrder_type());
         finalBitmap.display(mCarIcon,bean.getCap_img(),defDrawable.getBitmap(), defDrawable.getBitmap());
 
-      /*  bt_alert_done.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
+     
         bt_car_confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-               
+               CarAlertActivity.this.finish();
             }
         });
     }

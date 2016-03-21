@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-     <View
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
         android:background="@color/cut_off_rule" />
-     <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/rl_company_contacts"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -35,13 +37,15 @@
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/iv_icon_4"
             android:text="企业/团队通讯录" />
-         <ImageView
+
+        <ImageView
             android:id="@+id/iv_arrow"
             android:layout_width="10dp"
             android:layout_height="13dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
+
         <TextView
             android:id="@+id/tv_has_company"
             android:layout_width="wrap_content"
@@ -49,12 +53,16 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/iv_arrow"
-            android:text="立即创建" 
+            android:text="立即创建"
             android:textColor="@color/text_normal"
             android:textSize="12sp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/cut_off_rule" />
 
     <RelativeLayout
         android:id="@+id/rl_add"
@@ -91,8 +99,13 @@
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
     </RelativeLayout>
-    
-     <RelativeLayout
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/cut_off_rule" />
+
+    <RelativeLayout
         android:id="@+id/rl_rq"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -126,7 +139,46 @@
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
     </RelativeLayout>
-    
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/cut_off_rule" />
+
+    <RelativeLayout
+        android:id="@+id/rl_apply"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_list_item_bg"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <com.meijialife.simi.ui.RoundImageView
+            android:id="@+id/iv_icon_5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/iconfont_haoyoushenqing"
+            imagecontrol:border_inside_color="@color/simi_color_white"
+            imagecontrol:border_outside_color="@color/simi_color_white"
+            imagecontrol:border_thickness_in="1dp"
+            imagecontrol:border_thickness_out="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/iv_icon_5"
+            android:text="好友申请" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
@@ -139,9 +191,8 @@
         android:layout_height="50dp"
         android:background="@drawable/btn_list_item_bg"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin" 
-        android:visibility="gone"
-        >
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone" >
 
         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon_2"
@@ -178,7 +229,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="4dp"
         android:text="我的好友" />
-<!-- 
+    <!--
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
@@ -186,24 +237,25 @@
         android:divider="@color/cut_off_rule"
         android:dividerHeight="0.5dp"
          >
-    </ListView> -->
-    
-     <com.handmark.pulltorefresh.library.PullToRefreshListView
-           xmlns:ptr="http://schemas.android.com/apk/res-auto"
-           android:id="@+id/pull_refresh_lists"
-           android:layout_width="fill_parent"
-           android:layout_height="fill_parent"
-           android:cacheColorHint="#00000000"
-           android:divider="#19000000"
-           android:dividerHeight="2dp"
-           android:fadingEdge="none"
-           android:fastScrollEnabled="false"
-           android:footerDividersEnabled="false"
-           android:headerDividersEnabled="false"
-           android:smoothScrollbar="true"
-           ptr:ptrAnimationStyle="flip"
-           ptr:ptrListViewExtrasEnabled="false"
-           ptr:ptrScrollingWhileRefreshingEnabled="true" >
-       </com.handmark.pulltorefresh.library.PullToRefreshListView>
+    </ListView>
+    -->
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/pull_refresh_lists"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="#19000000"
+        android:dividerHeight="0.1dp"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true"
+        ptr:ptrAnimationStyle="flip"
+        ptr:ptrListViewExtrasEnabled="false"
+        ptr:ptrScrollingWhileRefreshingEnabled="true" >
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
 </LinearLayout>

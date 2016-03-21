@@ -6,5 +6,6 @@
     <com.meijialife.simi.ui.ImageCycleView
         android:id="@+id/ad_view"
         android:layout_width="fill_parent"
-        android:layout_height="150dp" />
+        android:layout_height="150dp"
+        />
 </RelativeLayout>

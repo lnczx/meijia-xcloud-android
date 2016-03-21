@@ -14,29 +14,21 @@ import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -48,12 +40,8 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.CardDetailsActivity;
-import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
-import com.meijialife.simi.activity.MainPlusLeaveListActivity;
-import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.ListAdapter;
@@ -72,7 +60,8 @@ import com.meijialife.simi.ui.CollapseCalendarView;
 import com.meijialife.simi.ui.CollapseCalendarView.OnDateSelect;
 import com.meijialife.simi.ui.ImageCycleView;
 import com.meijialife.simi.ui.ImageCycleView.ImageCycleViewListener;
-import com.meijialife.simi.ui.SelectableRoundedImageView;
+import com.meijialife.simi.ui.RouteUtil;
+import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.ui.calendar.CalendarManager;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
@@ -80,8 +69,6 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.simi.easemob.EMConstant;
-import com.simi.easemob.ui.ChatActivity;
 import com.zbar.lib.CaptureActivity;
 
 /**
@@ -123,15 +110,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     private boolean ad_flag = false;
 
     /**
-     * 获取当前位置经纬度
-     */
-    private LocationClient locationClient = null;
-    private static final int UPDATE_TIME = 5000;
-    private String longitude = "";// 经度
-    private String latitude = "";// 纬度
-    private String addString = "";// 返回地址
-
-    /**
      * 广告轮播控件
      */
     private ImageCycleView mAdView;
@@ -148,7 +126,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.index_1, null);
-        initLocation();
         init(v);
         initCalendar(v);
         initUserMsgView(v);
@@ -157,32 +134,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         return v;
     }
 
-    /**
-     * 获取用户当前位置的经纬度
-     */
-    private void initLocation() {
-        locationClient = new LocationClient(getActivity());
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true); // 是否打开GPS
-        option.setCoorType("bd09ll"); // 设置返回值的坐标类型。
-        option.setPriority(LocationClientOption.NetWorkFirst); // 设置定位优先级
-        option.setProdName("Secretary"); // 设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
-        option.setScanSpan(UPDATE_TIME); // 设置定时定位的时间间隔。单位毫秒
-        option.setIsNeedAddress(true);// 设置返回城市
-        locationClient.setLocOption(option);
-        locationClient.start();
-        locationClient.registerLocationListener(new BDLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation location) {
-                if (location == null) {
-                    return;
-                }
-                latitude = location.getLatitude() + "";// 纬度
-                longitude = location.getLongitude() + "";// 经度
-                addString = location.getAddrStr();
-            }
-        });
-    }
+   
 
     @SuppressLint("ResourceAsColor")
     private void init(View v) {
@@ -342,12 +294,16 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                UserMsg userMsg = userMsgs.get(position);
+                UserMsg userMsg = totalUserMsgList.get(position);
                 String category = userMsg.getCategory().trim();
                 String goto_url = userMsg.getGoto_url().trim();
                 String params = userMsg.getParams().trim();
                 String action = userMsg.getAction().trim();
-                if (category.equals("h5")) {
+                
+                RouteUtil routeUtil  = new RouteUtil(getActivity());
+                routeUtil.Routing(category, action, goto_url, params);
+                
+               /* if (category.equals("h5")) {
                     Intent intent = new Intent(getActivity(), WebViewsActivity.class);
                     intent.putExtra("url", goto_url);
                     startActivity(intent);
@@ -362,17 +318,14 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                         startActivity(intent);
                     } else if (action.equals("checkin")) {
 
-                    } else if (action.equals("friends")) {
-
                     } else if (action.equals("im")) {
                         Intent intent = new Intent(getActivity(), ChatActivity.class);
-                        /*
+                        
                          * if(conversation.isGroup()){ if(conversation.getType() == EMConversationType.ChatRoom){ // it's group chat
                          * intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_CHATROOM); }else{
                          * intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_GROUP); }
-                         * 
                          * }
-                         */
+                         
                         intent.putExtra(EMConstant.EXTRA_USER_ID, params);
                         startActivity(intent);
 
@@ -404,9 +357,17 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                         intent.putExtra("orderId", params);
                         intent.putExtra("orderType", 4);
                         startActivity(intent);
-                    }
-
+                    }else if (action.equals("expy")) {
+                        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
+                        intent.putExtra("orderId", params);
+                        intent.putExtra("orderType", 1);
+                        startActivity(intent);
+                }else if (action.equals("friends")) {
+                    MainActivity activity = (MainActivity) getActivity();
+                    activity.change2Contacts();
+                    Constants.checkedIndex=3;
                 }
+                }*/
             }
         });
     }
@@ -430,9 +391,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     public void onResume() {
         super.onResume();
         LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
-        if (locationClient != null && !locationClient.isStarted()) {
-            locationClient.start();
-        }
+       
         getUserMsgListData(today_date, page);
 
         // mAdView.startImageCycle();//广告轮播
@@ -446,9 +405,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public void onStop() {
         super.onStop();
-        if (locationClient != null && locationClient.isStarted()) {
-            locationClient.stop();
-        }
         // mAdView.pushImageCycle();
     }
 
@@ -463,8 +419,8 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     }
 
     /**
+     * 暂时不用
      * 获取卡片数据
-     * 
      * @param date
      * @param card_from
      *            0 = 所有卡片 1 = 我发布的 2 = 我参与的,默认为0
@@ -482,8 +438,8 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         map.put("service_date", date);
         map.put("user_id", user_id + "");
         map.put("card_from", "" + card_from);
-        map.put("lat", latitude);
-        map.put("lng", longitude);
+//        map.put("lat", latitude);
+//        map.put("lng", longitude);
         map.put("page", "1");
         AjaxParams param = new AjaxParams(map);
 
@@ -1005,22 +961,14 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             }
         });
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // 关闭定位
-        if (locationClient != null && locationClient.isStarted()) {
-            locationClient.stop();
-            locationClient = null;
-        }
         page = 1;
         userMsgs = null;
         totalUserMsgList = null;
         // mAdView.pushImageCycle();
-
     }
-
     /**
      * 处理数据加载的方法
      * 
@@ -1040,78 +988,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         userMsgAdapter.setData(totalUserMsgList);
         mPullRefreshListView.onRefreshComplete();
     }
-
-    private PopupWindow popupWindow;
-    private TextView mDone;
-    private ImageView tip_iv_icon;
-    private SelectableRoundedImageView selectableRoundedImageView;
-    private TextView tip_tv_title;
-    private TextView tip_tv_content;
-    private TextView tip_tv_more;
     private AppHelpData appHelpData;
-
-    /**
-     * 弹出窗口
-     */
-    private void popWindow(final AppHelpData appHelpData) {
-        View view = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.layout_tip_activity, null);
-        if (null == popupWindow || !popupWindow.isShowing()) {
-            popupWindow = new PopupWindow(view, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            /*
-             * popupWindow = new PopupWindow(view); popupWindow.setWidth(450); popupWindow.setHeight(650);
-             */
-            popupWindow.setFocusable(false);
-            popupWindow.setTouchable(true);
-        }
-        mDone = (TextView) view.findViewById(R.id.tip_tv_done);
-        tip_tv_title = (TextView) view.findViewById(R.id.tip_tv_title);
-        tip_tv_content = (TextView) view.findViewById(R.id.tip_tv_content);
-        tip_tv_more = (TextView) view.findViewById(R.id.tip_tv_more);
-        // selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_iv_icon = (ImageView) view.findViewById(R.id.tip_iv_icon);
-        tip_tv_title.setText(appHelpData.getTitle());
-        tip_tv_content.setText(appHelpData.getContent());
-        // finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setAnimationStyle(R.style.PopupAnimation); // 设置 popupWindow动画样式
-        popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-        backgroundAlpha(0.5f);
-        mDone.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != popupWindow && popupWindow.isShowing()) {
-                    backgroundAlpha(1f);
-                    popupWindow.dismiss();
-                }
-            }
-        });
-        tip_tv_more.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String goto_url = appHelpData.getGoto_url();
-                String action = appHelpData.getAction().trim();
-                Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-                intent.putExtra("url", goto_url);
-                startActivity(intent);
-                backgroundAlpha(1f);
-                popupWindow.dismiss();
-            }
-        });
-    }
-
-    /**
-     * 设置添加屏幕的背景透明度
-     * 
-     * @param bgAlpha
-     */
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = bgAlpha; // 0.0-1.0
-        getActivity().getWindow().setAttributes(lp);
-    }
-
     /*
      * 帮助接口
      */
@@ -1122,6 +999,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
         }
+        final String action = "index";
         User user = DBHelper.getUser(getActivity());
         Map<String, String> map = new HashMap<String, String>();
         map.put("action", "index");
@@ -1151,7 +1029,8 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 appHelpData = gson.fromJson(data, AppHelpData.class);
-                                popWindow(appHelpData);
+                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(),appHelpData,action);  
+                                addPopWindow.showPopupWindow(v); 
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

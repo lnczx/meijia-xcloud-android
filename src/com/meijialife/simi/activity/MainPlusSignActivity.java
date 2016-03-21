@@ -104,6 +104,7 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	private PoiInfo userPoiInfo;//用户选择的地址
 	
 	private String companyId;
+	private String checkinet;//链接的wifi名称或者运营商信息
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,8 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	    title.setText("添加地址");
 	    
 	    companyId = getIntent().getStringExtra("companyId");
+	    checkinet = getIntent().getStringExtra("checkinet");
+	    
 	    btn_left = (ImageView) findViewById(R.id.title_btn_left);
 	    btn_ok = (TextView) findViewById(R.id.m_tv_ok);//签到确定
 	    et_addr = (EditText) findViewById(R.id.et_addr);//详细地址暂时不用
@@ -488,6 +491,7 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
         map.put("poi_lat", userPoiInfo.location.latitude+"");
         map.put("poi_lng", userPoiInfo.location.longitude+"");
         map.put("checkin_type","0");
+        map.put("checkin_net",checkinet);//链接的wifi名称或者运营商信息
        
         AjaxParams param = new AjaxParams(map);
         showDialog();

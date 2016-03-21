@@ -21,22 +21,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.AccountInfoActivity;
-import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
-import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.UserIndexData;
@@ -89,6 +87,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
     private TextView tv_card_num;   //卡片数量
     private TextView tv_coupon_num;   //优惠券数量
     private TextView tv_friend_num; //好友数量
+    private RelativeLayout rl_top;//好友主页背景
     
     private UserIndexData user;
     
@@ -117,7 +116,11 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
         
         finalBitmap = FinalBitmap.create(FriendPageActivity.this);
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
-
+        
+        //设置好友主页背景
+        rl_top = (RelativeLayout)findViewById(R.id.rl_top);
+        finalBitmap.display(rl_top,Constants.FRIEND_ICON_URL);
+        
         iv_top_head = (RoundImageView) findViewById(R.id.iv_top_head);
         btn_my_send = (Button) findViewById(R.id.btn_my_send);
         btn_my_in = (Button) findViewById(R.id.btn_my_in);

@@ -18,6 +18,7 @@
         android:layout_marginTop="55dp"
         />
    	 <TextView
+   	       android:id="@+id/m_rq_title"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="我的二维码名片"

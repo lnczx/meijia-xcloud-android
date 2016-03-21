@@ -65,6 +65,7 @@ import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SelectableRoundedImageView;
 import com.meijialife.simi.ui.SystemBarTintManager;
+import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.BlurUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -124,8 +125,10 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
         iv_top_head = (RoundImageView) view.findViewById(R.id.iv_top_head);
         rl_top = (RelativeLayout)view.findViewById(R.id.rl_top);
-//        setBackground(R.drawable.bg_person_page);
-        
+        finalBitmap.display(rl_top,Constants.PERSON_ICON_URL);
+
+        //将本地图片设为背景       
+        //setBackground(R.drawable.bg_person_page);
         layout_mask = v.findViewById(R.id.layout_mask);
         tv_top_nickname = (TextView) view.findViewById(R.id.tv_top_nickname);
         tv_city = (TextView) view.findViewById(R.id.tv_city);
@@ -660,7 +663,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             m_pDialog = null;
         }
     }
-    
+    /**
+     * 暂时不适用
+     */
     private PopupWindow popupWindows;
     private TextView mDone;
     private ImageView tip_iv_icon;
@@ -741,8 +746,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             return;
         }
         User user = DBHelper.getUser(getActivity());
+        final String action = "mine";
         Map<String, String> map = new HashMap<String, String>();
-        map.put("action","mine");
+        map.put("action",action);
         map.put("user_id",""+user.getId());
         AjaxParams param = new AjaxParams(map);
         showDialog();
@@ -768,7 +774,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                             if(StringUtils.isNotEmpty(data)){
                                 Gson gson = new Gson();
                                 appHelpData = gson.fromJson(data, AppHelpData.class); 
-                                popWindow(appHelpData);
+//                                popWindow(appHelpData);
+                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(),appHelpData,action);  
+                                addPopWindow.showPopupWindow(vs);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

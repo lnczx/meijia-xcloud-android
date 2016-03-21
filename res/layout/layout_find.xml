@@ -41,5 +41,12 @@
         android:numColumns="4"
         android:stretchMode="columnWidth" >
     </GridView> 
-
+	<View
+	    android:id="@+id/m_plus_view"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/simi_color_gray"
+	    android:alpha="0.5"
+	    android:visibility="gone"
+	    />
 </RelativeLayout>

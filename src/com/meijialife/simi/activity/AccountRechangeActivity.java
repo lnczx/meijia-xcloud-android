@@ -58,7 +58,7 @@ public class AccountRechangeActivity extends BaseActivity {
     private void initView() {
         setTitleName("充值");
         requestBackBtn();
-
+        Constants.USER_CHARGE_TYPE=99;
         tv_money = (TextView) findViewById(R.id.tv_money);
         listview = (ListView) findViewById(R.id.listview);
         tv_charge = (TextView)findViewById(R.id.tv_charge);

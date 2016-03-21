@@ -34,7 +34,6 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.CompanyListsAdapter;
 import com.meijialife.simi.bean.CompanyData;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.AddPopWindow;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;

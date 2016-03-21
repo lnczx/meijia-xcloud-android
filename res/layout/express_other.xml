@@ -364,7 +364,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/iv_mishu_icon"
-            android:text="服务商贴心服务"
+            android:text="@string/function_card"
             android:textColor="@color/red_text_color" />
 
         <com.meijialife.simi.ui.ToggleButton

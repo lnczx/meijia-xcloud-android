@@ -4,10 +4,24 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <ImageView
         android:id="@+id/iv_welcome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitCenter"
         android:background="@drawable/splash_bg"
          />
+    <ImageView
+        android:id="@+id/iv_welcome2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="130dp"
+        android:scaleType="fitXY"
+         />
+    
+   </FrameLayout>
 </RelativeLayout>

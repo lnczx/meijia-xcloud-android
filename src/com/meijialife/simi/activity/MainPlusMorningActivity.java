@@ -48,6 +48,7 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.SelectableRoundedImageView;
+import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.ui.ToggleButton;
 import com.meijialife.simi.ui.ToggleButton.OnToggleChanged;
 import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
@@ -310,10 +311,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
 
             }
         }
-
         //请求帮助接口
-        finalBitmap = FinalBitmap.create(this);
-        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
         getAppHelp();
     }
 
@@ -808,79 +806,9 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
     }
     
     
-
-    private PopupWindow popupWindow;
-    private TextView mDone;
-    private ImageView tip_iv_icon;
-    private SelectableRoundedImageView selectableRoundedImageView;
-    private TextView tip_tv_title;
-    private TextView tip_tv_content;
-    private TextView tip_tv_more;
-    private BitmapDrawable defDrawable;
-    private FinalBitmap finalBitmap;
     private AppHelpData appHelpData;
     private View v;
-    /**
-     * 弹出窗口
-     */
-    private void popWindow(final AppHelpData appHelpData) {
-        View view = (LinearLayout)getLayoutInflater()
-                .inflate(R.layout.layout_tip_activity, null);
-        if (null == popupWindow || !popupWindow.isShowing()) {
-           /* popupWindow = new PopupWindow(view);
-            popupWindow.setWidth(450);
-            popupWindow.setHeight(650);*/
-            popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-            popupWindow.setFocusable(false);
-            popupWindow.setTouchable(true);
-        }
-        mDone = (TextView)view.findViewById(R.id.tip_tv_done);
-        tip_tv_title = (TextView)view.findViewById(R.id.tip_tv_title);
-        tip_tv_content = (TextView)view.findViewById(R.id.tip_tv_content);
-        tip_tv_more = (TextView)view.findViewById(R.id.tip_tv_more);
-//        selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_iv_icon = (ImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_tv_title.setText(appHelpData.getTitle());
-        tip_tv_content.setText(appHelpData.getContent());
-//        finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        popupWindow.setFocusable(true);  
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式
-        popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-        backgroundAlpha(0.5f);
-        mDone.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != popupWindow && popupWindow.isShowing()) {
-                    backgroundAlpha(1f);
-                    popupWindow.dismiss();
-                }
-            }
-        });
-       tip_tv_more.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String goto_url = appHelpData.getGoto_url();
-            String action = appHelpData.getAction().trim();
-            Intent intent = new Intent(MainPlusMorningActivity.this,WebViewsActivity.class);
-            intent.putExtra("url",goto_url);
-            startActivity(intent);
-            backgroundAlpha(1f);
-            popupWindow.dismiss();
-        }            
-    });
-    }
-    /**
-    * 设置添加屏幕的背景透明度
-    * @param bgAlpha
-    */
-    public void backgroundAlpha(float bgAlpha)
-    {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-            lp.alpha = bgAlpha; //0.0-1.0
-            getWindow().setAttributes(lp);
-    }
+
     /*
      * 帮助接口
      */
@@ -891,9 +819,10 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
+        final String action = "notice";
         User user = DBHelper.getUser(MainPlusMorningActivity.this);
         Map<String, String> map = new HashMap<String, String>();
-        map.put("action","notice");
+        map.put("action",action);
         map.put("user_id",""+user.getId());
         AjaxParams param = new AjaxParams(map);
         showDialog();
@@ -919,7 +848,8 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
                             if(StringUtils.isNotEmpty(data)){
                                 Gson gson = new Gson();
                                 appHelpData = gson.fromJson(data, AppHelpData.class); 
-                                popWindow(appHelpData);
+                                TipPopWindow addPopWindow = new TipPopWindow(MainPlusMorningActivity.this,appHelpData,action);  
+                                addPopWindow.showPopupWindow(v); 
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

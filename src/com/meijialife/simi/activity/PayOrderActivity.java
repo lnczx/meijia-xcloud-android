@@ -127,22 +127,26 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 card_value = getIntent().getStringExtra("card_value");
                 card_id = getIntent().getStringExtra("card_id");
             } else if (from == FROM_MISHU) {
+                Constants.USER_CHARGE_TYPE=1;
                 partnerDetail = (PartnerDetail) getIntent().getSerializableExtra("PartnerDetail");
                 servicePrices = (ServicePrices) getIntent().getSerializableExtra("servicePrices");
                 is_addr = servicePrices.getIs_addr();
                 orderPay = String.valueOf(servicePrices.getDis_price());
             }
         } else if (flag == FROM_MYORDER_DETAIL) {
+            Constants.USER_CHARGE_TYPE=1;
             myOrderDetail = (MyOrderDetail) getIntent().getSerializableExtra("myOrderDetail");
             orderId = myOrderDetail.getOrder_id() + "";
             orderPay = myOrderDetail.getOrder_pay();
             order_flag=0;
         } else if (flag == FROM_MYORDER) {
+            Constants.USER_CHARGE_TYPE=1;
             myOrder = (MyOrder) getIntent().getSerializableExtra("myOrder");
             orderId = myOrder.getOrder_id() + "";
             orderPay = myOrder.getOrder_pay();
             order_flag=1;
         }else if (flag==FROM_WATER_ORDER) {
+            Constants.USER_CHARGE_TYPE=1;
             waterData = (WaterData) getIntent().getSerializableExtra("waterData");
             orderId = waterData.getOrder_id() + "";
             orderPay = waterData.getOrder_pay();
@@ -361,12 +365,19 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             if (isSucceed) {
                 // 支付成功
                 String tradeNo = msg;
-                Toast.makeText(getApplication(), "支付成功！", 1).show();
-                // 支付成功跳转到订单详情页面
-                Intent intent = new Intent(PayOrderActivity.this,OrderDetailsActivity.class); 
-                intent.putExtra("orderId",orderId);
-                startActivity(intent);
-                PayOrderActivity.this.finish();
+                Toast.makeText(getApplication(), "操作成功！", 1).show();
+                if(Constants.USER_CHARGE_TYPE==99){
+                    // 支付成功跳转到订单详情页面
+                    Intent intent = new Intent(PayOrderActivity.this,MyWalletActivity.class); 
+                    String no = tradeNo;
+                    startActivity(intent);
+                }else {
+                    // 支付成功跳转到订单详情页面
+                    Intent intent = new Intent(PayOrderActivity.this,OrderDetailsActivity.class); 
+                    intent.putExtra("orderId",orderId);
+                    startActivity(intent);
+                }
+                    PayOrderActivity.this.finish();
                 // 管家卡在线支付同步接口
                 // postSeniorOnlinePay(activity, context, tradeNo);
             } else {
@@ -781,7 +792,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      * @param json
      */
     public static void parseSeniorOnlineJson(Activity activity, Context context, JSONObject json) {
-        Toast.makeText(context, "购买成功！", 1).show();
+        Toast.makeText(context, "操作成功！", 1).show();
         updateUserInfo(activity);
     }
 
@@ -938,10 +949,35 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      * 
      * @param json
      */
-    private static void parseCardOnlineJson(Activity activity, Context context, JSONObject json) {
+    public static void parseCardOnlineJson(Activity activity, Context context, JSONObject json) {
+        Toast.makeText(context, "操作成功！", 1).show();
+        updateUserInfo(activity);
+        if(Constants.USER_CHARGE_TYPE==99){
+            // 支付成功跳转到订单详情页面
+            Intent intent = new Intent(context,MyWalletActivity.class); 
+            context.startActivity(intent);
+        }else {
+            // 支付成功跳转到订单详情页面
+            Intent intent = new Intent(context,OrderDetailsActivity.class); 
+            intent.putExtra("orderId",orderId);
+            context.startActivity(intent);
+        }
+
+    }
+    public static void parseCardOnlineJson(Activity activity, Context context) {
         Toast.makeText(context, "购买成功！", 1).show();
         updateUserInfo(activity);
-
+        if(Constants.USER_CHARGE_TYPE==99){
+            // 支付成功跳转到订单详情页面
+            Intent intent = new Intent(context,MyWalletActivity.class); 
+            context.startActivity(intent);
+        }else {
+            // 支付成功跳转到订单详情页面
+            Intent intent = new Intent(context,OrderDetailsActivity.class); 
+            intent.putExtra("orderId",orderId);
+            context.startActivity(intent);
+        }
+        
     }
 
     /**
@@ -989,7 +1025,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                                 Gson gson = new Gson();
                                 UserInfo userInfo = gson.fromJson(data, UserInfo.class);
                                 DBHelper.updateUserInfo(activity, userInfo);
-                                activity.finish();
                             } else {
                                 // UIUtils.showToast(PayOrderActivity.this, "数据错误");
                             }

@@ -125,7 +125,7 @@ public class SecretaryServiceAdapter extends BaseAdapter {
                 }
             });
         
-        holder.ll_partner_service.setOnClickListener(new OnClickListener() {
+        /*holder.ll_partner_service.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 String detailUrl = mList.get(position).getDetail_url();
@@ -135,7 +135,7 @@ public class SecretaryServiceAdapter extends BaseAdapter {
                 context.startActivity(intent);
             }
         });
-
+*/
         return convertView;
     }
 

@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.Constants;
+import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.FindPlusAdapter;
 import com.meijialife.simi.bean.AppHelpData;
@@ -44,6 +45,7 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.publish.PublishDynamicActivity;
 import com.meijialife.simi.ui.SelectableRoundedImageView;
+import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -67,6 +69,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
 
     private void initView() {
 
+        mPlusView = (View)findViewById(R.id.m_plus_view);
         findViewById(R.id.tv_call_mishu).setOnClickListener(this);
        
         findViewById(R.id.iv_plus_close).setOnClickListener(this);
@@ -178,7 +181,10 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                     }else if (action.equals("express")) {//快递
                         Intent intent = new Intent(MainPlusActivity.this, MainPlusExpressActivity.class);
                         startActivity(intent);
-                    }
+                    }else if (action.equals("expy")) {//车辆速通
+                    Intent intent = new Intent(MainPlusActivity.this, MainPlusCarActivity.class);
+                    startActivity(intent);
+                }
                   
                 }
             }
@@ -198,7 +204,11 @@ public class MainPlusActivity extends Activity implements OnClickListener {
             }
             break;
         case R.id.iv_plus_close:
-            finish();
+            if(Constants.BACK_TYPE==1){//
+                startActivity(new Intent(MainPlusActivity.this,MainActivity.class));
+            }else {
+                finish();
+            }
             this.overridePendingTransition(R.anim.activity_close,0);  
             break;
         default:
@@ -304,6 +314,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     private FinalBitmap finalBitmap;
     private AppHelpData appHelpData;
     private View v;
+    private View mPlusView;//模糊层
     /**
      * 弹出窗口
      */
@@ -312,9 +323,6 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                 .inflate(R.layout.layout_tip_activity, null);
         if (null == popupWindow || !popupWindow.isShowing()) {
             popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-           /* popupWindow = new PopupWindow(view);
-            popupWindow.setWidth(450);
-            popupWindow.setHeight(650);*/
             popupWindow.setFocusable(false);
             popupWindow.setTouchable(true);
         }
@@ -322,23 +330,22 @@ public class MainPlusActivity extends Activity implements OnClickListener {
         tip_tv_title = (TextView)view.findViewById(R.id.tip_tv_title);
         tip_tv_content = (TextView)view.findViewById(R.id.tip_tv_content);
         tip_tv_more = (TextView)view.findViewById(R.id.tip_tv_more);
-//        selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
         tip_iv_icon = (ImageView)view.findViewById(R.id.tip_iv_icon);
       
         tip_tv_content.setText(appHelpData.getContent());
-//        finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
         finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
         popupWindow.setFocusable(true);  
         popupWindow.setOutsideTouchable(true);
         popupWindow.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式
         popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-        backgroundAlpha(0.8f);
+        mPlusView.setVisibility(View.VISIBLE);
         mDone.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != popupWindow && popupWindow.isShowing()) {
-                    backgroundAlpha(1f);
+                    mPlusView.setVisibility(View.GONE);
                     popupWindow.dismiss();
+                    postHelp("work");
                 }
             }
         });
@@ -350,21 +357,14 @@ public class MainPlusActivity extends Activity implements OnClickListener {
             Intent intent = new Intent(MainPlusActivity.this,WebViewsActivity.class);
             intent.putExtra("url",goto_url);
             startActivity(intent);
-            backgroundAlpha(1f);
+            mPlusView.setVisibility(View.GONE);
             popupWindow.dismiss();
+            postHelp("work");
         }            
     });
+       
     }
-    /**
-    * 设置添加屏幕的背景透明度
-    * @param bgAlpha
-    */
-    public void backgroundAlpha(float bgAlpha)
-    {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-            lp.alpha = bgAlpha; //0.0-1.0
-            getWindow().setAttributes(lp);
-    }
+ 
     /*
      * 帮助接口
      */
@@ -417,6 +417,62 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                     errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if(!StringUtils.isEmpty(errorMsg.trim())){
+                    UIUtils.showToast(MainPlusActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+    
+    /**
+     * 帮助-帮助点击记录接口
+     * @param action
+     */
+    private void postHelp(String action) {
+        String user_id = DBHelper.getUser(this).getId();
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(MainPlusActivity.this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        User user = DBHelper.getUser(this);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("action",action);
+        map.put("user_id",""+user.getId());
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().post(Constants.URL_POST_HELP, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(MainPlusActivity.this,getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg =getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg =getString(R.string.servers_error);
                 }
                 // 操作失败，显示错误信息
                 if(!StringUtils.isEmpty(errorMsg.trim())){

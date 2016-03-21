@@ -5,30 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
-import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -51,6 +44,7 @@ import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.ContactAddFriendsActivity;
 import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
+import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.FriendAdapter;
@@ -62,7 +56,7 @@ import com.meijialife.simi.bean.FriendDynamicData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.SelectableRoundedImageView;
+import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -88,6 +82,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
     private RelativeLayout rl_add; // 添加通讯录好友
     private RelativeLayout rl_find; // 寻找秘书和助理
     private RelativeLayout rl_rq; // 扫一扫加好友
+    private RelativeLayout rl_apply; // 扫一扫加好友
     private RelativeLayout rl_company_contacts;
     private TextView tv_has_company;// 显示理解创建
     private final static int SCANNIN_GREQUEST_CODES = 5;
@@ -103,6 +98,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
     private RadioButton rb_feed;//动态
     private RadioButton rb_friend;//好友
     private RadioButton rb_msg;//消息
+    private RadioButton rb_app;//申请
     private static View layout_mask;
     
     //布局控件定义
@@ -166,15 +162,14 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         rl_add = (RelativeLayout) v.findViewById(R.id.rl_add);
         rl_find = (RelativeLayout) v.findViewById(R.id.rl_find);
         rl_rq = (RelativeLayout) v.findViewById(R.id.rl_rq);
+        rl_apply = (RelativeLayout) v.findViewById(R.id.rl_apply);
         rl_company_contacts = (RelativeLayout) v.findViewById(R.id.rl_company_contacts);
         rl_add.setOnClickListener(this);
         rl_find.setOnClickListener(this);
         rl_rq.setOnClickListener(this);
         rl_company_contacts.setOnClickListener(this);
-        
+        rl_apply.setOnClickListener(this);
         //请求帮助接口
-        finalBitmap = FinalBitmap.create(getActivity());
-        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
         getAppHelp();
     }
     
@@ -223,6 +218,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             }
         });
     }
+   
     /**
      * 初始化好友动态列表
      * @param v
@@ -359,7 +355,6 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                         ((MainActivity) activity).change2IM();
                     }
                 }
-            
             }
         });
         radiogroup.getChildAt(Constants.checkedIndex).performClick();
@@ -440,6 +435,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             }
         });
     }
+   
   /**
    * 获取好友动态列表接口
    */
@@ -534,41 +530,40 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         friendAdapter.setData(totalFriendList);
         mPullRefreshFriendListView.onRefreshComplete();
     }
-
+  
 
     @Override
     public void onClick(View v) {
+        Intent intent ;
         switch (v.getId()) {
         case R.id.rl_add: // 添加通讯录好友
-            Intent intent = new Intent(getActivity(), ContactAddFriendsActivity.class);
+            intent = new Intent(getActivity(), ContactAddFriendsActivity.class);
             intent.putExtra("friendList", totalFriendList);
             startActivity(intent);
-            
-          /*  intent = new Intent(getActivity(), ContactSelectActivity.class);
-            startActivityForResult(intent, GET_CONTACTS);*/
             break;
         case R.id.rl_find: // 寻找秘书和助理
             startActivity(new Intent(getActivity(), FindSecretaryActivity.class));
             break;
         case R.id.rl_rq:// 扫一扫加好友
-            
-            Intent intents = new Intent();
-            intents.setClass(getActivity(), CaptureActivity.class);
-            intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
+            intent = new Intent();
+            intent.setClass(getActivity(), CaptureActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(intent, SCANNIN_GREQUEST_CODES);
             break;
         case R.id.rl_company_contacts:// 企业通讯录
             // 跳转到企业通讯录
             if (userInfo.getHas_company() == 0) {
-                Intent intent1 = new Intent(getActivity(), WebViewsActivity.class);
-//                Intent intent1 = new Intent(getActivity(), WebViewActivity.class);
-//                intent1.putExtra("title", "企业/团队通讯录");
-                intent1.putExtra("url", Constants.HAS_COMPANY);
-                startActivity(intent1);
+                intent = new Intent(getActivity(), WebViewsActivity.class);
+                intent.putExtra("url", Constants.HAS_COMPANY);
+                startActivity(intent);
             } else {
                 intent = new Intent(getActivity(),CompanyListActivity.class);
                 startActivity(intent);
             }
+            break;
+        case R.id.rl_apply:
+            intent = new Intent(getActivity(),FriendApplyActivity.class);
+            startActivity(intent);
             break;
         default:
             break;
@@ -764,78 +759,10 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
 
     
 
-    private PopupWindow popupWindow;
-    private TextView mDone;
-    private ImageView tip_iv_icon;
-    private SelectableRoundedImageView selectableRoundedImageView;
-    private TextView tip_tv_title;
-    private TextView tip_tv_content;
-    private TextView tip_tv_more;
+   
     private AppHelpData appHelpData;
-    private BitmapDrawable defDrawable;
-    private FinalBitmap finalBitmap;
     private View vs;
-    /**
-     * 弹出窗口
-     */
-    private void popWindow(final AppHelpData appHelpData) {
-        View view = (LinearLayout)getActivity().getLayoutInflater()
-                .inflate(R.layout.layout_tip_activity, null);
-        if (null == popupWindow || !popupWindow.isShowing()) {
-           /* popupWindow = new PopupWindow(view);
-            popupWindow.setWidth(450);
-            popupWindow.setHeight(650);*/
-            popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-            popupWindow.setFocusable(false);
-            popupWindow.setTouchable(true);
-        }
-        mDone = (TextView)view.findViewById(R.id.tip_tv_done);
-        tip_tv_title = (TextView)view.findViewById(R.id.tip_tv_title);
-        tip_tv_content = (TextView)view.findViewById(R.id.tip_tv_content);
-        tip_tv_more = (TextView)view.findViewById(R.id.tip_tv_more);
-//        selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_iv_icon = (ImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_tv_title.setText(appHelpData.getTitle());
-        tip_tv_content.setText(appHelpData.getContent());
-//        finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        popupWindow.setFocusable(true);  
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式
-        popupWindow.showAtLocation(vs, Gravity.CENTER, 0, 0);
-        backgroundAlpha(0.5f);
-        mDone.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != popupWindow && popupWindow.isShowing()) {
-                    backgroundAlpha(1f);
-                    popupWindow.dismiss();
-                }
-            }
-        });
-       tip_tv_more.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String goto_url = appHelpData.getGoto_url();
-            String action = appHelpData.getAction().trim();
-            Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url",goto_url);
-            startActivity(intent);
-            backgroundAlpha(1f);
-            popupWindow.dismiss();
-        }            
-    });
-    }
-    /**
-    * 设置添加屏幕的背景透明度
-    * @param bgAlpha
-    */
-    public void backgroundAlpha(float bgAlpha)
-    {
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-            lp.alpha = bgAlpha; //0.0-1.0
-            getActivity().getWindow().setAttributes(lp);
-    }
+   
     /*
      * 帮助接口
      */
@@ -846,9 +773,10 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
         }
+        final String action = "sns";
         User user = DBHelper.getUser(getActivity());
         Map<String, String> map = new HashMap<String, String>();
-        map.put("action","sns");
+        map.put("action",action);
         map.put("user_id",""+user.getId());
         AjaxParams param = new AjaxParams(map);
         showDialog();
@@ -874,7 +802,8 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                             if(StringUtils.isNotEmpty(data)){
                                 Gson gson = new Gson();
                                 appHelpData = gson.fromJson(data, AppHelpData.class); 
-                                popWindow(appHelpData);
+                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(),appHelpData,action);  
+                                addPopWindow.showPopupWindow(vs);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -899,5 +828,5 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             }
         });
     }
-    
+
 }

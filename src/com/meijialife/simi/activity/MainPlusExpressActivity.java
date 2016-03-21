@@ -60,7 +60,8 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
     private LinearLayout mLlCard;
     private RelativeLayout mRlCard;
     private LinearLayout mLlBottom;//布局底部控件
-    
+    private LinearLayout mAffairCardTitle;
+
     //创建卡片
     private TextView mTv1;
     private TextView mTv2;
@@ -86,6 +87,7 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
         //标题+返回(控件)
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
+        mAffairCardTitle = (LinearLayout)findViewById(R.id.m_affair_card_title);
         //标题背景
         mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
         mRlCard = (RelativeLayout)findViewById(R.id.view_card_title_bar);
@@ -195,6 +197,14 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
                 intent.putExtra("url",Constants.H5_EXPRESS_URL);
                 startActivity(intent);
                 
+            }
+        });
+        mAffairCardTitle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainPlusExpressActivity.this, WebViewsActivity.class);
+                intent.putExtra("url", Constants.CARD_EXPRESS_HELP_URL);
+                startActivity(intent);
             }
         });
     }

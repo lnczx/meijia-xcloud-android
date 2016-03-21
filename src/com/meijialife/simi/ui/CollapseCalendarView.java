@@ -35,6 +35,7 @@ import com.meijialife.simi.ui.calendar.Month;
 import com.meijialife.simi.ui.calendar.ResizeManager;
 import com.meijialife.simi.ui.calendar.Week;
 import com.meijialife.simi.ui.calendar.WeekView;
+import com.meijialife.simi.utils.CalendarUtils;
 
 /**
  * Created by Blaz Solar on 28/02/14.
@@ -68,6 +69,13 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
     private ImageButton mNext;
     @NonNull
     private LinearLayout mWeeksView;
+    
+    @NonNull
+    private TextView mCalendarYear;//当前年份
+    @NonNull
+    private TextView mCalendarMonth;//当前月份
+    @NonNull
+    private TextView mCalendarWeek;//当前星期
     
     private ImageView bottom;//底部提示箭头
 
@@ -346,6 +354,16 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
         mWeeksView = (LinearLayout) findViewById(R.id.weeks);
         bottom = (ImageView)findViewById(R.id.bottom);
 
+        
+        mCalendarYear = (TextView) findViewById(R.id.m_calendar_year);
+        mCalendarMonth = (TextView) findViewById(R.id.m_calendar_month);
+        mCalendarWeek = (TextView) findViewById(R.id.m_calendar_week);
+        
+        mCalendarYear.setText(CalendarUtils.getCurrentYear()+"年");
+        mCalendarMonth.setText(CalendarUtils.getCurrentMonth()+"月");
+        mCalendarWeek.setText(CalendarUtils.getWeeks());
+
+        
         mHeader = (LinearLayout) findViewById(R.id.header);
         mSelectionText = (TextView) findViewById(R.id.selection_title);
 
@@ -430,10 +448,12 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             mPrev.setEnabled(mManager.hasPrev());
             mNext.setEnabled(mManager.hasNext());
 
-            try {//add by andye ,2015.12.26
-                String titleDay=mManager.getHeaderText();
+            try {
+                //add by andye ,2015.12.26
+               /* String titleDay=mManager.getHeaderText();
                 String monthString=titleDay.replaceAll("年", ".").replaceAll("月", "");
-                mTitleView.setText(monthString);
+                mTitleView.setText(monthString);*/
+                mCalendarWeek.setText(mManager.getWeekOfMonth());
             } catch (Exception e) {
                 mTitleView.setText("");
                 e.printStackTrace();
@@ -463,9 +483,10 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             mNext.setEnabled(mManager.hasNext());
             
             try {//add by andye ,2015.12.26
-                String titleDay=mManager.getHeaderText();
+           /*     String titleDay=mManager.getHeaderText();
                 String monthString=titleDay.replaceAll("年", ".").replaceAll("月", "");
-                mTitleView.setText(monthString);
+                mTitleView.setText(monthString);*/
+                mCalendarWeek.setText(mManager.getWeekOfMonth());            
             } catch (Exception e) {
                 mTitleView.setText("");
                 e.printStackTrace();

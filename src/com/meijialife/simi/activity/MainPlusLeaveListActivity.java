@@ -68,6 +68,8 @@ public class MainPlusLeaveListActivity extends Activity{
     private LinearLayout mLlCard;
     private RelativeLayout mRlCard;
     private LinearLayout mLlBottom;//布局底部控件
+    private LinearLayout mAffairCardTitle;
+
     
     private int leave_from = 0;// 0=我发起的；1=我审批的
     //创建卡片
@@ -104,6 +106,8 @@ public class MainPlusLeaveListActivity extends Activity{
         //标题+返回(控件)
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
+        mAffairCardTitle = (LinearLayout) findViewById(R.id.m_affair_card_title);
+        
         //标题背景
         mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
         mRlCard = (RelativeLayout)findViewById(R.id.view_card_title_bar);
@@ -158,6 +162,14 @@ public class MainPlusLeaveListActivity extends Activity{
                 
             }
         });*/
+        mAffairCardTitle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainPlusLeaveListActivity.this, WebViewsActivity.class);
+                intent.putExtra("url", Constants.CARD_LAEVE_PASS_HELP_URL);
+                startActivity(intent);
+            }
+        });
     }
     /**
      * 设置标题颜色

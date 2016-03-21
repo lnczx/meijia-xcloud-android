@@ -57,4 +57,15 @@
      <!--二维码扫描  -->
 	<string name="scan_text">将二维码放入框内, 即可自动扫描</string>
 	
+	<!--应用中心-->
+	<!-- 事务提醒、通知公告、会议安排、面试邀约、差旅规划文字统一 -->
+	<string name="affair_card">交给秘书处理</string>
+	<!--快递、送水、保洁、废品回收、团建拓展 位子统一-->
+	<string name="function_card">智能贴心服务</string>
+	
+	
+	
+	
+	
+	
 </resources>

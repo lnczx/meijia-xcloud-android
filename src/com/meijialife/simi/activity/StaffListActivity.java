@@ -91,6 +91,7 @@ public class StaffListActivity extends Activity implements OnClickListener {
     private BitmapDrawable defDrawable;
 
     private ImageButton ibtn_rq;// 右侧显示个人二维码信息
+    private TextView mRqTitle;//二维码标题
     private PopupWindow mPopupWindow;
     private View music_popunwindwow;
     private LinearLayout ll_rq;
@@ -126,7 +127,9 @@ public class StaffListActivity extends Activity implements OnClickListener {
         ll_rq = (LinearLayout) music_popunwindwow.findViewById(R.id.ll_rq);
         iv_rq_left = (ImageView) music_popunwindwow.findViewById(R.id.iv_rq_left);
         ibtn_rq = (ImageButton) findViewById(R.id.ibtn_rq);
-
+        mRqTitle = (TextView)music_popunwindwow.findViewById(R.id.m_rq_title);
+        mRqTitle.setText("企业二维码名片");
+        
         title_btn_left = (ImageView) findViewById(R.id.title_btn_left);
         header_tv_name = (TextView) findViewById(R.id.header_tv_name);
         header_tv_name.setText(company_name);
@@ -302,7 +305,7 @@ public class StaffListActivity extends Activity implements OnClickListener {
                                 finalBitmap.display(music_popunwindwow.findViewById(R.id.iv_rq_code), rq_url, defDrawable.getBitmap(),
                                         defDrawable.getBitmap());
                             } else {
-                                Toast.makeText(StaffListActivity.this, "您的二维码还没有生成", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(StaffListActivity.this, "二维码还没有生成", Toast.LENGTH_SHORT).show();
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

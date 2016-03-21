@@ -25,7 +25,7 @@ public class MyApplication extends Application {
      * 当前用户nickname,为了苹果推送不是userid而是昵称
      */
     public static String currentUserNick = "";
-
+    
     @Override
     public void onCreate() {
         super.onCreate();

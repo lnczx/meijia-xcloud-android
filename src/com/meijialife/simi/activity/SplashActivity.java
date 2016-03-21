@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
@@ -18,10 +19,15 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -40,6 +46,7 @@ import com.meijialife.simi.bean.CityData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.utils.CalendarUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -51,29 +58,38 @@ public class SplashActivity extends Activity {
 
     private static final int sleepTime = 2000;
     public static String clientid;
-    
     /**
      * 获取当前位置经纬度
      */
     private LocationClient locationClient = null;
     private static final int UPDATE_TIME = 5000;
-    private String longitude = "";// 经度
-    private String latitude = "";// 纬度
-    private String addString = "";// 返回地址
-    private String poiName = "";// 地理位置信息
     private SharedPreferences sp;
+    
+    private FinalBitmap finalBitmap;
+    private BitmapDrawable defDrawable;
+    private ImageView mWelcome;
+    private ImageView mWelcome2;
+    private Handler handler;
+    private TimerTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_splash);
 
+        Timer timer = new Timer();
+
         initLocation();
-        
         AlphaAnimation aa = new AlphaAnimation(0.8f, 1.0f);
         aa.setDuration(2000);
         findViewById(R.id.iv_welcome).startAnimation(aa);
-        Timer timer = new Timer();
+        
+        //启动页动态广告
+        mWelcome =(ImageView) findViewById(R.id.iv_welcome);
+        mWelcome2 =(ImageView) findViewById(R.id.iv_welcome2);
+        initSplashAd();
+        timer.schedule(task, 2000);
+        //2s之后启动页进入首页
         TimerTask MyTask = new TimerTask() {
             @Override
             public void run() {
@@ -82,7 +98,6 @@ public class SplashActivity extends Activity {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     SplashActivity.this.finish();
                 } else {
-                    
                     try {
                         updateUserInfo();
                     } catch (Exception e) {
@@ -91,21 +106,63 @@ public class SplashActivity extends Activity {
                     initEasemob();
                     updateCalendarMark();
                 }
-
             }
         };
-        timer.schedule(MyTask, 2000);
-
+        timer.schedule(MyTask, 4000);
+        initRoute();
         // initCellsDb();
          getCitys(getCityAddtime());
          
+    }
+    /**
+     * 增加启动页动态广告
+     */
+    private void initSplashAd(){
+        finalBitmap = FinalBitmap.create(SplashActivity.this);
+        handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                switch(msg.what){
+                case 1:
+                    finalBitmap.display(mWelcome2,Constants.SPLASH_ICON_URL);
+                    break;
+                }
+                super.handleMessage(msg);
+            }
+        };
+        task =new TimerTask() {
+            @Override
+            public void run() {
+                //由于主线程安全，页面的更新需放到主线程中
+                Message msg =new Message();
+                msg.what=1;
+                handler.sendMessage(msg);
+            }
+        };
+    
+    
+    
+    
+    }
+    /**
+     * 初始化跳转路由
+     */
+    private void initRoute(){
+        Uri uri = getIntent().getData();
+        if(null !=uri){
+            String category= uri.getQueryParameter("category"); 
+            String action= uri.getQueryParameter("action");
+            String goto_url= uri.getQueryParameter("goto_url"); 
+            String params= uri.getQueryParameter("params");
+            RouteUtil routeUtil  = new RouteUtil(SplashActivity.this);
+            routeUtil.Routing(category, action, goto_url, params);
+        }
     }
     /**
      * 获取用户当前位置的经纬度
      */
     private void initLocation() {
         sp = getApplicationContext().getSharedPreferences("Secretary",MODE_PRIVATE);
-        final Editor editor = sp.edit();
         locationClient = new LocationClient(this);
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 是否打开GPS
@@ -123,15 +180,9 @@ public class SplashActivity extends Activity {
                 if (location == null) {
                     return;
                 }
-                latitude = location.getLatitude() + "";// 纬度
-                longitude = location.getLongitude() + "";// 经度
-                addString = location.getAddrStr();
-                poiName = location.getLocationDescribe();
-                editor.putString("lng",longitude);
-                editor.putString("lat",latitude);
-                editor.putString("poi_name",poiName);
-                editor.putString("city",addString);
-                editor.commit();
+                if(DBHelper.getUser(SplashActivity.this)!=null){
+                    post_trail(location);
+                }
             }
         });
     }
@@ -179,14 +230,14 @@ public class SplashActivity extends Activity {
      * @param useid
      * @param clientid
      */
-    private void post_trail() {
+    private void post_trail(BDLocation location) {
         String user_id = DBHelper.getUser(SplashActivity.this).getId();
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id);
-        map.put("lat", sp.getString("lat",""));
-        map.put("lng", sp.getString("lng",""));
-        map.put("poi_name", sp.getString("poi_name",""));
-        map.put("city", sp.getString("city",""));
+        map.put("lat", location.getLatitude()+"");
+        map.put("lng", location.getLongitude()+"");
+        map.put("poi_name", location.getProvince());
+        map.put("city", location.getCity());
         AjaxParams param = new AjaxParams(map);
 
         new FinalHttp().post(Constants.URL_POST_TRAIL, param, new AjaxCallBack<Object>() {
@@ -195,7 +246,6 @@ public class SplashActivity extends Activity {
                 super.onFailure(t, errorNo, strMsg);
                 Toast.makeText(SplashActivity.this,  getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -207,7 +257,10 @@ public class SplashActivity extends Activity {
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                      
+                            if (locationClient != null && locationClient.isStarted()) {
+                                locationClient.stop();
+                                locationClient = null;
+                            }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg =  getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -278,7 +331,6 @@ public class SplashActivity extends Activity {
                                 if (StringUtils.isEmpty(clientidFromWeb)||!StringUtils.isEquals(clientidFromWeb, clientid)) {
                                     bind_user(userInfo.getId(), clientid);
                                 }
-
                             } else {
                                 // UIUtils.showToast(SplashActivity.this, "数据错误");
                             }

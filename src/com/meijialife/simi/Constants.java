@@ -2,7 +2,6 @@ package com.meijialife.simi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import android.os.Environment;
 
@@ -16,7 +15,15 @@ public class Constants {
     public static final String SERVICE_ID = "1";
     public static final String SERVICE_NUMBER = "400-169-1615";
     public static final String DESCRIPTOR = "com.umeng.share";
+    
+    //登录图标URL
+    public static final String SPLASH_ICON_URL = "http://123.57.173.36/simi-h5/img/load-ad-update.jpg";
+    public static final String LOGO_ICON_URL = "http://123.57.173.36/simi-h5/img/login_logo_update.jpg";
+    public static final String PERSON_ICON_URL = "http://123.57.173.36/simi-h5/img/my_bg_update.jpg";
+    public static final String FRIEND_ICON_URL = "http://123.57.173.36/simi-h5/img/friend_bg_update.jpg";
 
+    
+    
     public final static String AlipayHOST = "http://182.92.160.194";
     
     // 主机地址
@@ -80,8 +87,15 @@ public class Constants {
     public static final String URL_GET_USER_INDEX = ROOT_URL + "user/get_user_index.json";
     /** 获取好友列表接口 **/
     public static final String URL_GET_FRIENDS = ROOT_URL + "user/get_friends.json";
+    /**好友申请列表接口**/
+    public static final String URL_GET_FRIEND_REQS = ROOT_URL + "/user/get_friend_reqs.json";
     /**获取好友动态列表接口**/
     public static final String URL_GET_FRIEND_DYNAMIC_LIST = ROOT_URL + "feed/get_list.json";
+    /**好友申请通过或拒绝接口**/
+    public static final String URL_POST_FRIEND_REQ = ROOT_URL + "user/post_friend_req.json";
+  
+    
+    
     /** 获取秘书列表接口 **/
     public static final String URL_GET_SEC = ROOT_URL + "sec/get_list.json";
     /** 秘书服务接口 **/
@@ -153,6 +167,10 @@ public class Constants {
     
     //加号中应用接口
     public static final String URL_GET_APP_HELP_DATA = ROOT_URL + "op/get_appHelp.json";
+    //帮助-帮助点击记录接口
+    public static final String URL_POST_HELP = ROOT_URL + "op/post_help.json";
+    //加号退出(第一次退到首页)，其他自然退出
+    public static int BACK_TYPE = 0;//0=退到首页，1=退到上一级
 
     /**服务人员搜索**/
     public static final String URL_GET_PARTNER_LIST_BY_KW =ROOT_URL +"partner/search.json";
@@ -243,7 +261,9 @@ public class Constants {
     public static  String LEAVE_TYPE_REMARK = "";
     public static  String LEAVE_TYPE_NAME= "";
 
-
+    
+    //充值类型 99=余额充值(充值后跳转到我的钱包)，1=其他(充值后跳转到订单详情)
+    public static  int USER_CHARGE_TYPE=1;
 
    
     /**封面相册常量**/
@@ -362,7 +382,7 @@ public class Constants {
      /**分享内容**/
      public static String SHARE_CONTENT ="有来自好友的分享，点击查看详情。云行政，极大降低企业运行成本，极速提升企业工作效率，快来试试吧！";
      
-     //checkdIndex标记用于切换=动态，好友，消息
+     //checkdIndex标记用于切换=动态，好友，消息，申请
      public static int checkedIndex = 0;
      //动态标题
      public static String FEED_TITLE ="";
@@ -427,5 +447,43 @@ public class Constants {
      public static final String GET_DETAIL_EXPRESS_URL = ROOT_URL + "record/get_detail_express.json";
      /**快递图片链接**/
      public static final String EXPRESS_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-molv.png";
+     //车辆速通
+     /**车辆速通列表接口**/
+     public static final String GET_CAR_ORDER_LIST_URL = ROOT_URL + "car/get_order_list.json";
+     /**车辆速通下单接口**/
+     public static final String POST_CAR_NO_URL = ROOT_URL + "/car/post_car_no.json";
+     /**用户车辆信息接口**/
+     public static final String GET_CAR_URL = ROOT_URL + "/car/get_car.json";
+     
+     //加号(卡片标题跳转链接)
+     /**事务提醒**/    
+     public static final String CARD_ALARM_HELP_URL ="http://123.57.173.36/simi-h5/show/help-alarm.html";
+     /**通知公告**/  
+     public static final String CARD_NOTICE_HELP_URL ="http://123.57.173.36/simi-h5/show/help-notice.html";
+     /**会议安排**/  
+     public static final String CARD_MEETING_HELP_URL ="http://123.57.173.36/simi-h5/show/help-meeting.html";
+     /**面试邀约**/  
+     public static final String CARD_INTERVIEW_HELP_URL ="http://123.57.173.36/simi-h5/show/help-interview.html";
+     /**差旅规划**/  
+     public static final String CARD_TRIP_HELP_URL ="http://123.57.173.36/simi-h5/show/help-trip.html";
+     /**请假申请**/  
+     public static final String CARD_LAEVE_PASS_HELP_URL ="http://123.57.173.36/simi-h5/show/help-leave-pass.html";
+     /**云考勤**/  
+     public static final String CARD_PUNCH_SIGN_HELP_URL ="http://123.57.173.36/simi-h5/show/help-punch-sign.html";
+     /**快递**/  
+     public static final String CARD_EXPRESS_HELP_URL ="http://123.57.173.36/simi-h5/show/help-express.html";
+     /**送水**/  
+     public static final String CARD_WATER_HELP_URL ="http://123.57.173.36/simi-h5/show/help-water.html";
+     /**保洁**/  
+     public static final String CARD_CLEAN_HELP_URL ="http://123.57.173.36/simi-h5/show/help-clean.html";
+     /**废品收购**/  
+     public static final String CARD_RECYCLE_HELP_URL ="http://123.57.173.36/simi-h5/show/help-recycle.html";
+     /**团建**/  
+     public static final String CARD_TEAMWORK_HELP_URL ="http://123.57.173.36/simi-h5/show/help-teamwork.html";
+     
+      
+
+     
+     
      
 }

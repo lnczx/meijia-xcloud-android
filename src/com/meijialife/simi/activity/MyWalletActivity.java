@@ -11,6 +11,7 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
+import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -49,6 +51,7 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
     private Button btn_recharge;// 充值
 
     private MyWalletAdapter adapter;
+    TextView  tv_money;
     
     private ArrayList<MyWalletData> myWalletDataList;
     private ArrayList<MyWalletData> totalWalletDataList;
@@ -72,11 +75,7 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
         btn_recharge = (Button) findViewById(R.id.btn_recharge);
         btn_recharge.setOnClickListener(this);
 
-        TextView  tv_money = (TextView) findViewById(R.id.tv_money);
-     /*   listview = (ListView) findViewById(R.id.listview);
-        adapter = new MyWalletAdapter(this);
-        listview.setAdapter(adapter);*/
-        
+        tv_money = (TextView) findViewById(R.id.tv_money);
         initWalletView();
         UserInfo userInfo = DBHelper.getUserInfo(MyWalletActivity.this);
         if(null!=userInfo){
@@ -145,6 +144,7 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
         switch (v.getId()) {
         case R.id.btn_recharge: // 充值
             startActivity(new Intent(MyWalletActivity.this, AccountRechangeActivity.class));
+            
             break;
 
         default:
@@ -154,8 +154,80 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        UserInfo userInfo = DBHelper.getUserInfo(MyWalletActivity.this);
+        if(null!=userInfo){
+            tv_money.setText(userInfo.getRest_money());
+        }
         getMyWalletList(page);
+//        updateUserInfo(MyWalletActivity.this);
     }
+    
+   /* private static void updateUserInfo(final Activity activity) {
+
+        if (!NetworkUtils.isNetworkConnected(activity)) {
+            Toast.makeText(activity, activity.getString(R.string.net_not_open), 0).show();
+            return;
+        }
+
+        User user = DBHelper.getUser(activity);
+        if (null == user) {
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user.getId());
+        AjaxParams param = new AjaxParams(map);
+
+        new FinalHttp().get(Constants.URL_GET_USER_INFO, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(activity, activity.getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                UserInfo userInfo = gson.fromJson(data, UserInfo.class);
+                                DBHelper.updateUserInfo(activity, userInfo);
+                            } else {
+                                // UIUtils.showToast(PayOrderActivity.this, "数据错误");
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = activity.getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = activity.getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = activity.getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = activity.getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = activity.getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息|
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(activity, errorMsg);
+                }
+            }
+        });
+
+    }*/
     public void getMyWalletList(int page){
         //判断是否有网络
         if (!NetworkUtils.isNetworkConnected(MyWalletActivity.this)) {
