@@ -68,7 +68,7 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 		rl_agree.setOnClickListener(this);
 		rl_feedback.setOnClickListener(this);
 		rl_about.setOnClickListener(this);
-		rl_update.setOnClickListener(this);
+//		rl_update.setOnClickListener(this);
 		rl_service.setOnClickListener(this);
 
 		tv_version_new = (TextView) findViewById(R.id.tv_version_new);

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.FindPlusData;
+import com.meijialife.simi.utils.FontHelper;
 
 /**
  * 秘书适配器

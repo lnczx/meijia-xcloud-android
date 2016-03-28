@@ -198,7 +198,7 @@ public class Constants {
     /** 地址删除接口 **/
     public static final String URL_POST_DEL_ADDRS = ROOT_URL + "user/post_del_addrs.json";
     /** 按月份获取卡片日期分布接口 **/
-    public static final String URL_GET_TOTAL_BY_MONTH = ROOT_URL + "card/total_by_month.json";
+    public static final String URL_GET_TOTAL_BY_MONTH = ROOT_URL + "user/msg/total_by_month.json";
     /** 获取提醒闹钟的卡片列表 **/
     public static final String URL_GET_REMINDS = ROOT_URL + "card/get_reminds.json";
     /** 秘书处理卡片接口 **/
@@ -273,6 +273,7 @@ public class Constants {
     public static String SCAN_RQ_TAG = "xcloud";
     public static String RQ_TAG_FRIEND = "xcloud://";//标识加好友扫描
     public static String RQ_TAG_OTHER = "xcloud-h5://";//标识其他类型扫描
+    public static String RQ_IN_APP = "http://www.51xingzheng.cn/d/open.html?";//app内部扫描标识
 
     /**企业注册H5页面**/
     public final static String HAS_COMPANY ="http://123.57.173.36/simi-h5/show/company-reg.html";
@@ -397,7 +398,7 @@ public class Constants {
      /**废品回收H5链接**/
      public static final String H5_WASTER_URL = "http://123.57.173.36/simi-h5/show/recycle-price.html";
      /**废品回收下单接口**/
-     public static final String POST_WASTER_ORDER_URL = ROOT_URL + "order/ post_add_recycle.json";
+     public static final String POST_WASTER_ORDER_URL = ROOT_URL + "order/post_add_recycle.json";
      
      //保洁订单
      /**保洁订单列表**/

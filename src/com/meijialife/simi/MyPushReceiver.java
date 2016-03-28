@@ -21,9 +21,11 @@ import com.meijialife.simi.activity.CarAlertActivity;
 import com.meijialife.simi.activity.CardAlertActivity;
 import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.NoticeActivity;
 import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.ReceiverBean;
+import com.meijialife.simi.utils.AndroidUtil;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 
@@ -36,11 +38,12 @@ public class MyPushReceiver extends BroadcastReceiver {
     private Context mContext;
     private ReceiverBean receiverBean;
     private Date fdate;
-    private final String ACTION_SETCLOCK="setclock";
-    private final String ACTION_ALARM="alarm";
-    private final String ACTION_MSG="msg";
+    private final String ACTION_SETCLOCK="s";
+    private final String ACTION_ALARM="a";
+    private final String ACTION_MSG="m";
     private final String ACTION_CAR_MSG="car-msg";
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onReceive(Context context, Intent intent) {
         this.mContext = context;
@@ -81,42 +84,99 @@ public class MyPushReceiver extends BroadcastReceiver {
                     e.printStackTrace();
                 }
                 if (null != receiverBean) {
-                    if (StringUtils.isEquals(receiverBean.getIs_show(), "true") && StringUtils.isEquals(receiverBean.getAction(), ACTION_MSG)) {
-                        //推送通知
-                        setNotification(receiverBean);
-                    } else if (StringUtils.isEquals(receiverBean.getAction(), ACTION_SETCLOCK)) {
-                        //设置闹钟
-                        if(StringUtils.isEquals(receiverBean.getIs_show(), "true")){
-                            setNotification3(receiverBean);
+                    if(!AndroidUtil.isRunningForeground(context)){ 
+                        /**
+                         * app处于后台 勾选理解提醒 声音+通知
+                         * 准点弹出大屏+声音
+                         */
+                        if (StringUtils.isEquals(receiverBean.getIs(), "true") && StringUtils.isEquals(receiverBean.getAc(), ACTION_MSG)) {
+                            //推送通知
+                            setNotification(receiverBean);
+                        } else if (StringUtils.isEquals(receiverBean.getAc(), ACTION_SETCLOCK)) {
+                            //is_show=true表示显示通知栏，=false不显示通知栏
+                            if(StringUtils.isEquals(receiverBean.getIs(), "true")){
+                                setNotification3(receiverBean);
+                                AlermUtils.playAudio(context);
+                            }
+                        }else if(StringUtils.isEquals(receiverBean.getAc(), ACTION_ALARM)){
+                          //push-alarm准点推送弹出大屏
+                          //is_show=true表示显示通知栏，=false不显示通知栏
+                           /* if(StringUtils.isEquals(receiverBean.getIs_show(), "true")){
+                                setNotification3(receiverBean);
+                                AlermUtils.playAudio(context);
+                            }*/
                             AlermUtils.playAudio(context);
-
+                            intent = new Intent(mContext, CardAlertActivity.class);
+                              long remindTime = Long.parseLong((receiverBean.getRe()*1000)+"");
+                              fdate = new Date(remindTime);
+                              intent.putExtra("title",receiverBean.getRt());
+                              intent.putExtra("text",receiverBean.getRc());
+                              intent.putExtra("date",fdate);
+                              intent.putExtra("card_id",receiverBean.getCi());
+                              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                              context.startActivity(intent);
+                        }else if ( StringUtils.isEquals(receiverBean.getIs(), "false") &&
+                            StringUtils.isEquals(receiverBean.getAc(), ACTION_CAR_MSG)) {
+                            Intent intent1 = new Intent(mContext, CarAlertActivity.class);
+                            intent1.putExtra("bean",receiverBean);
+                            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent1);
+                          
                         }
-                        long remindTime = Long.parseLong(receiverBean.getRemind_time());
-                        fdate = new Date(remindTime);
-                        if (!receiverBean.getCard_id().equals("0")) {
-                            AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content(),
-                                    receiverBean.getCard_id());
+                    }else {
+                      /**
+                       * app处于前台，创建勾选立即提醒，弹出小窗口+声音+通知
+                       * 到点弹出大屏+声音
+                       */
+                        if (StringUtils.isEquals(receiverBean.getIs(), "true") && StringUtils.isEquals(receiverBean.getAc(), ACTION_MSG)) {
+                            //推送通知
+                            setNotification(receiverBean);
+                        } else if (StringUtils.isEquals(receiverBean.getAc(), ACTION_SETCLOCK)) {
+                            //is_show=true表示显示通知栏，=false不显示通知栏
+                            if(StringUtils.isEquals(receiverBean.getIs(), "true")){
+                                setNotification3(receiverBean);
+                                AlermUtils.playAudio(context);
+                                
+                                intent = new Intent(mContext, NoticeActivity.class);
+                                intent.putExtra("receiverBean", receiverBean);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                            }
+                              //设置本地闹钟
+                            /* long remindTime = Long.parseLong(receiverBean.getRemind_time());
+                            fdate = new Date(remindTime);
+                            if (!receiverBean.getCard_id().equals("0")) {
+                                AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content(),
+                                        receiverBean.getCard_id());
+                            }*/
+                        }else if(StringUtils.isEquals(receiverBean.getAc(), ACTION_ALARM)){
+                          //push-alarm准点推送弹出大屏
+                          //is_show=true表示显示通知栏，=false不显示通知栏
+                          /*  if(StringUtils.isEquals(receiverBean.getIs_show(), "true")){
+                                setNotification3(receiverBean);
+                                AlermUtils.playAudio(context);
+                            }*/
+                            AlermUtils.playAudio(context);
+                            intent = new Intent(mContext, CardAlertActivity.class);
+                            long remindTime = Long.parseLong((receiverBean.getRe()*1000)+"");
+                            fdate = new Date(remindTime);
+                            intent.putExtra("title",receiverBean.getRt());
+                            intent.putExtra("text",receiverBean.getRc());
+                            intent.putExtra("date",fdate);
+                            intent.putExtra("card_id",receiverBean.getCi());
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+                        }else if ( StringUtils.isEquals(receiverBean.getIs(), "false") &&
+                            StringUtils.isEquals(receiverBean.getAc(), ACTION_CAR_MSG)) {
+                            Intent intent1 = new Intent(mContext, CarAlertActivity.class);
+                            intent1.putExtra("bean",receiverBean);
+                            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent1);
+                          
                         }
-                    }else if(StringUtils.isEquals(receiverBean.getAction(), ACTION_ALARM)){
-                        //弹出大屏闹钟
-                       /* long remindTime = Long.parseLong(receiverBean.getRemind_time());
-                        fdate = new Date(remindTime);
-                        AlermDialog dlg = new AlermDialog(context, receiverBean.getRemind_title(), receiverBean.getRemind_content(),fdate);
-                        dlg.show();*/
-                        //先弹出通知，然后点击显示大屏
-                        setNotification2(receiverBean);
-                        AlermUtils.playAudio(context);
-                    }else if ( StringUtils.isEquals(receiverBean.getIs_show(), "false") &&
-                            StringUtils.isEquals(receiverBean.getAction(), ACTION_CAR_MSG)) {
-                       
-                        Intent intent1 = new Intent(mContext, CarAlertActivity.class);
-                        intent1.putExtra("bean",receiverBean);
-                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent1);
-                        //推送汽车拍照通知
-                       /* setNotification4(receiverBean);
-                        AlermUtils.playAudio(context);*/
                     }
+                    
+                   
                 }
             }
             break;
@@ -162,8 +222,8 @@ public class MyPushReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //android3.0以后采用NotificationCompat构建
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
-        builder.setContentTitle(receiverBean.getRemind_title());
-        builder.setContentText(receiverBean.getRemind_content());
+        builder.setContentTitle(receiverBean.getRt());
+        builder.setContentText(receiverBean.getRc());
         builder.setSmallIcon(R.drawable.ic_launcher_logo);
         builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
         builder.setDefaults(Notification.DEFAULT_ALL);
@@ -181,21 +241,21 @@ public class MyPushReceiver extends BroadcastReceiver {
     private void setNotification2(ReceiverBean receiverBean) {
         //NotificationManager状态通知的管理类，必须通过getSystemService()方法来获取
         NotificationManager manager = (NotificationManager) mContext.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
-        long remindTime = Long.parseLong(receiverBean.getRemind_time());
+        long remindTime = Long.parseLong((receiverBean.getRe()*1000)+"");
         fdate = new Date(remindTime);
         //点击通知负责页面跳转
         Intent intent = new Intent(mContext, CardAlertActivity.class);
 //        Intent intent = new Intent(mContext, MainActivity.class);
-        intent.putExtra("title",receiverBean.getRemind_title());
-        intent.putExtra("text",receiverBean.getRemind_content());
+        intent.putExtra("title",receiverBean.getRt());
+        intent.putExtra("text",receiverBean.getRc());
         intent.putExtra("date",fdate);
-        intent.putExtra("card_id",receiverBean.getCard_id());
+        intent.putExtra("card_id",receiverBean.getCi());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 3, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //android3.0以后采用NotificationCompat构建
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
-        builder.setContentTitle(receiverBean.getRemind_title());
-        builder.setContentText(receiverBean.getRemind_content());
+        builder.setContentTitle(receiverBean.getRt());
+        builder.setContentText(receiverBean.getRc());
         builder.setSmallIcon(R.drawable.ic_launcher_logo);
         builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
         builder.setDefaults(Notification.DEFAULT_ALL);
@@ -213,13 +273,13 @@ public class MyPushReceiver extends BroadcastReceiver {
         //点击通知负责页面跳转
         Intent intent = new Intent(mContext, CardDetailsActivity.class);
 //        Intent intent = new Intent(mContext, MoreActivity.class);
-        intent.putExtra("card_id",receiverBean.getCard_id());
+        intent.putExtra("card_id",receiverBean.getCi());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //android3.0以后采用NotificationCompat构建
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
-        builder.setContentTitle(receiverBean.getRemind_title());
-        builder.setContentText(receiverBean.getRemind_content());
+        builder.setContentTitle(receiverBean.getRt());
+        builder.setContentText(receiverBean.getRc());
         builder.setSmallIcon(R.drawable.ic_launcher_logo);
         builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
         builder.setDefaults(Notification.DEFAULT_ALL);
@@ -240,8 +300,8 @@ public class MyPushReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //android3.0以后采用NotificationCompat构建
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
-        builder.setContentTitle(receiverBean.getRemind_title());
-        builder.setContentText(receiverBean.getRemind_content());
+        builder.setContentTitle(receiverBean.getRt());
+        builder.setContentText(receiverBean.getRc());
         builder.setSmallIcon(R.drawable.ic_launcher_logo);
         builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
         builder.setDefaults(Notification.DEFAULT_ALL);

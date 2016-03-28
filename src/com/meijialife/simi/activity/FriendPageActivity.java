@@ -83,6 +83,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
     
     private TextView tv_top_nickname;//昵称
     private TextView btn_add;       //添加好友
+    private TextView btn_is_friend;       //添加好友
     private TextView btn_msg;       //私聊
     private TextView tv_card_num;   //卡片数量
     private TextView tv_coupon_num;   //优惠券数量
@@ -99,7 +100,6 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         setContentView(R.layout.friend_page_activity);
         super.onCreate(savedInstanceState);
         
@@ -108,7 +108,6 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
     }
     
     private void init(LayoutInflater inflater) {
-        //friend = (Friend)getIntent().getSerializableExtra("friend");
         friend_id = getIntent().getStringExtra("friend_id");
 
         setTitleName("个人主页");
@@ -128,13 +127,14 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
         btn_my_in.setOnClickListener(titleClickListener);
         tv_top_nickname = (TextView)findViewById(R.id.tv_top_nickname);
         btn_add = (TextView)findViewById(R.id.tv_add);
+        btn_is_friend = (TextView)findViewById(R.id.tv_is_friend);
         btn_msg = (TextView)findViewById(R.id.tv_msg);
         tv_card_num = (TextView)findViewById(R.id.tv_card_num);
         tv_coupon_num = (TextView)findViewById(R.id.tv_coupon_num);
         tv_friend_num = (TextView)findViewById(R.id.tv_friend_num);
         
         iv_top_head.setOnClickListener(this);
-        //btn_add.setOnClickListener(this);
+        btn_add.setOnClickListener(this);
         btn_msg.setOnClickListener(this);
 
         vp_main = (NoScrollViewPager) findViewById(R.id.vp_main);
@@ -172,7 +172,6 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
         ViewPagerList.add(tab_mysend);
         ViewPagerList.add(tab_myin);
         
-        // behind the init
         changeViewPager(current_pageIndex);
         vp_main.setCurrentItem(current_pageIndex, false);
         
@@ -224,7 +223,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
 //            startActivity(intent);
             break;
         case R.id.tv_add:
-            Toast.makeText(this, "添加", Toast.LENGTH_SHORT).show();
+            addFriend(friend_id);
             break;
         case R.id.tv_msg:
             //进入聊天页面
@@ -296,16 +295,13 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id+"");
-//        map.put("view_user_id", friend.getFriend_id()+"");
         map.put("view_user_id", friend_id);
         AjaxParams param = new AjaxParams(map);
 
-        showDialog();
         new FinalHttp().get(Constants.URL_GET_USER_INDEX, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
                 Toast.makeText(FriendPageActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
@@ -313,8 +309,6 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
-                LogOut.i("========", "onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -344,7 +338,6 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
                 } catch (Exception e) {
                     e.printStackTrace();
                     errorMsg = getString(R.string.servers_error);
-
                 }
                 // 操作失败，显示错误信息|
                 if(!StringUtils.isEmpty(errorMsg.trim())){
@@ -363,6 +356,13 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
         String nickName = user.getName();
         if(StringUtils.isEmpty(nickName.trim())){
             nickName = user.getMobile();
+        }
+        if(user.getIs_friend()==0){//=0不是好友，显示添加按钮
+            btn_add.setVisibility(View.VISIBLE);
+            btn_is_friend.setVisibility(View.GONE);
+        }else if (user.getIs_friend()==1) {//=1是好友，显示已是好友
+            btn_add.setVisibility(View.GONE);
+            btn_is_friend.setVisibility(View.VISIBLE);
         }
         
         tv_top_nickname.setText(nickName);
@@ -387,7 +387,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("service_date", "");
+//        map.put("service_date", "");
         map.put("user_id", friend_id);
         map.put("card_from", card_from+"");
         AjaxParams param = new AjaxParams(map);
@@ -406,7 +406,6 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
                 super.onSuccess(t);
                 String errorMsg = "";
                 dismissDialog();
-                LogOut.i("========", "onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -465,11 +464,71 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
         });
 
     }
-
     @Override
     public void onCardUpdate() {
-        // TODO Auto-generated method stub
         
+    }
+    
+    /**
+     * 点击添加好友
+     * @param friend_id
+     */
+    public void addFriend(final String friend_id) {
+
+        String user_id = DBHelper.getUser(FriendPageActivity.this).getId();
+
+        if (!NetworkUtils.isNetworkConnected(FriendPageActivity.this)) {
+            Toast.makeText(FriendPageActivity.this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user_id + "");
+        map.put("friend_id", friend_id);
+        AjaxParams param = new AjaxParams(map);
+
+        new FinalHttp().get(Constants.URL_GET_ADD_FRIEND, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(FriendPageActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                // dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(FriendPageActivity.this, errorMsg);
+                }
+            }
+        });
     }
 
 }

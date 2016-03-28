@@ -8,6 +8,8 @@
     <color name="simi_color_red">#E8374A</color>
     <!-- 统一灰色 -->
     <color name="simi_color_gray">#676767</color>
+    <!-- 首页列表灰度 -->
+    <color name="home1_color_gray">#bfbfbf</color>
     <!-- 统一深灰 -->
     <color name="simi_color_dark_gray">#929292</color>
     <!-- 列表分割线颜色 -->

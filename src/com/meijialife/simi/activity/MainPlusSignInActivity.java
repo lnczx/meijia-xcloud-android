@@ -79,6 +79,9 @@ public class MainPlusSignInActivity extends Activity {
     private LinearLayout mLlCard;
     private RelativeLayout mRlCard;
     private LinearLayout mLlBottom;// 布局底部控件
+    
+    private LinearLayout m_no_sings;
+    private LinearLayout m_ll_no_signs;
 
     private String checkinet;// 网络名称
     private int flag=0;// 0=wifi,1=手机网络
@@ -113,6 +116,8 @@ public class MainPlusSignInActivity extends Activity {
         mDay = (TextView) findViewById(R.id.m_tv_day);
         mSignlog = (TextView) findViewById(R.id.m_tv_sign_log);
         mSignIn = (ImageView) findViewById(R.id.m_iv_sign);
+        m_no_sings = (LinearLayout)findViewById(R.id.m_no_sings);
+        m_ll_no_signs = (LinearLayout)findViewById(R.id.m_ll_no_signs);
 
         Date date = new Date();
         mWeek.setText(CalendarUtils.getWeek());
@@ -348,32 +353,37 @@ public class MainPlusSignInActivity extends Activity {
                                 mCompanyName.setText(checkData.getCompanyName());
                                 showData(checkData.getList());
                                 getCompanySetting();
+                                if(checkData.getList().size()>0){
+                                    m_ll_no_signs.setVisibility(View.VISIBLE);
+                                    m_no_sings.setVisibility(View.GONE);
+                                }else {
+                                    m_ll_no_signs.setVisibility(View.GONE);
+                                    m_no_sings.setVisibility(View.VISIBLE);
+                                }
+                            }else {
+                                m_ll_no_signs.setVisibility(View.GONE);
+                                m_no_sings.setVisibility(View.VISIBLE);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
-                            mPullRefreshListView.onRefreshComplete();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
                             errorMsg = getString(R.string.param_missing);
-                            mPullRefreshListView.onRefreshComplete();
                         } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
                             errorMsg = getString(R.string.param_illegal);
-                            mPullRefreshListView.onRefreshComplete();
                         } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
                             errorMsg = msg;
-                            mPullRefreshListView.onRefreshComplete();
                         } else {
                             errorMsg = getString(R.string.servers_error);
-                            mPullRefreshListView.onRefreshComplete();
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     errorMsg = getString(R.string.servers_error);
-                    mPullRefreshListView.onRefreshComplete();
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
                     UIUtils.showToast(MainPlusSignInActivity.this, errorMsg);
+                    mPullRefreshListView.onRefreshComplete();
                 }
             }
         });

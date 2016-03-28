@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.igexin.sdk.PushManager;
+import com.meijialife.simi.exception.CrashHandler;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -53,6 +54,9 @@ public class MyApplication extends Application {
                 .discCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.LIFO).build();
         ImageLoader.getInstance().init(config);
     
+        ///初始化异常报告
+        CrashHandler crashHandler = CrashHandler.getInstance();  
+        crashHandler.init(getApplicationContext());  
     }
 
     public static MyApplication getInstance() {

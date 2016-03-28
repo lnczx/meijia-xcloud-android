@@ -45,14 +45,13 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
-
 /**
  * @description：请假
  * @author： kerryg
- * @date:2016年3月9日 
+ * @date:2016年3月9日
  */
 public class MainPlusLeaveActivity extends BaseActivity implements OnClickListener, ItemScroListener {
-    
+
     private PopupWindow mTimePopup;
     private WheelView remind;
     private ArrayWheelAdapter<String> arryadapter;
@@ -86,19 +85,17 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
     private String finalTime;
     private String mJson;
 
-
     private String for_userid = "";
     private UserInfo userInfo;
-  
-    
-    private TextView leave_type_content;//假期类型
-    private TextView leave_start_day;//开始日期
-    private TextView leave_end_day;//结束日期
-    private TextView leave_days;//请假天数
-    private TextView leave_content;//请假内容
-    private TextView leave_select_who_name;//请假内容
-    private TextView leave_num;//审批人数
-    
+
+    private TextView leave_type_content;// 假期类型
+    private TextView leave_start_day;// 开始日期
+    private TextView leave_end_day;// 结束日期
+    private TextView leave_days;// 请假天数
+    private TextView leave_content;// 请假内容
+    private TextView leave_select_who_name;// 请假内容
+    private TextView leave_num;// 审批人数
+
     private String mCompanyId;
     private String mUserId;
     private String mLeaveType;
@@ -106,17 +103,15 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
     private String mStartDate;
     private String mEndDate;
     private String mRemarks;
-    private String mTotalDays;
-    
-    private int flag=0;//0=开始日期，1=结束日期
-    
+
+    private int flag = 0;// 0=开始日期，1=结束日期
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_leave);
         super.onCreate(savedInstanceState);
         userInfo = DBHelper.getUserInfo(this);
-        
+
         initView();
 
     }
@@ -124,23 +119,22 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
     private void initView() {
         requestBackBtn();
         setTitleName("请假");
-        
+
         findView();
 
     }
-    
-    private void findView(){
-        leave_type_content = (TextView)findViewById(R.id.leave_type_content);
-        leave_start_day = (TextView)findViewById(R.id.leave_start_day);
-        leave_end_day = (TextView)findViewById(R.id.leave_end_day);
-        leave_days =  (TextView)findViewById(R.id.leave_total_days);
-        leave_content = (TextView)findViewById(R.id.tv_beizu_content);
-        leave_select_who_name =  (TextView)findViewById(R.id.leave_select_who_name);
-        leave_num =  (TextView)findViewById(R.id.leave_num);
+
+    private void findView() {
+        leave_type_content = (TextView) findViewById(R.id.leave_type_content);
+        leave_start_day = (TextView) findViewById(R.id.leave_start_day);
+        leave_end_day = (TextView) findViewById(R.id.leave_end_day);
+        leave_days = (TextView) findViewById(R.id.leave_total_days);
+        leave_content = (TextView) findViewById(R.id.tv_beizu_content);
+        leave_select_who_name = (TextView) findViewById(R.id.leave_select_who_name);
+        leave_num = (TextView) findViewById(R.id.leave_num);
 
         view_mask = (View) findViewById(R.id.view_mask);
 
-        
         findViewById(R.id.layout_start_day).setOnClickListener(this);
         findViewById(R.id.layout_leave_type).setOnClickListener(this);
         findViewById(R.id.layout_end_day).setOnClickListener(this);
@@ -151,7 +145,7 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
 
     @Override
     public void onClick(View v) {
-        Intent intent ;
+        Intent intent;
         switch (v.getId()) {
         case R.id.layout_leave_content:
             intent = new Intent(MainPlusLeaveActivity.this, MainPlusContentActivity.class);
@@ -180,11 +174,11 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
                 intent1.putExtra("url", Constants.HAS_COMPANY);
                 startActivity(intent1);
             } else {
-                intent = new Intent(MainPlusLeaveActivity.this,CompanyListActivity.class);
-                intent.putExtra("flag",1);
+                intent = new Intent(MainPlusLeaveActivity.this, CompanyListActivity.class);
+                intent.putExtra("flag", 1);
                 startActivity(intent);
             }
-            
+
             break;
 
         default:
@@ -200,10 +194,10 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         view_mask.setVisibility(View.VISIBLE);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.item_popup_datapick, null, false);
-        
-        if(flag==0){
+
+        if (flag == 0) {
             InitStartDataPick(v);
-        }else if (flag==1) {
+        } else if (flag == 1) {
             InitEndDataPick(v);
         }
 
@@ -248,7 +242,6 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         year.setVisibleItems(7);// 设置显示行数
         month.setVisibleItems(7);
         day.setVisibleItems(7);
-      
 
         year.setCurrentItem(norYear - 2016);
         month.setCurrentItem(curMonth - 1);
@@ -262,20 +255,41 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
                 int mMonth = month.getCurrentItem() + 1;
                 int mDay = day.getCurrentItem() + 1;
                 String date = mYear + "-" + mMonth + "-" + mDay;
-             try {
-              String currentDateString = DateUtils.getStringByPattern(new Date().getTime(), "yyyy-MM-dd"); 
-                  currentDate = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateString);
-                  chooseDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-              } catch (ParseException e) {
-                  e.printStackTrace();
-              }
-              if(chooseDate.getTime() < currentDate.getTime()){
+                try {
+                    String currentDateString = DateUtils.getStringByPattern(new Date().getTime(), "yyyy-MM-dd");
+                    currentDate = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateString);
+                    chooseDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String endString = leave_end_day.getText().toString().trim();
+                if (chooseDate.getTime() < currentDate.getTime()) {
                     UIUtils.showToast(MainPlusLeaveActivity.this, "您只能选择未来时间进行请假哦！");
-                }else{
-                    finalTime = date ;
-                     leave_start_day.setText(finalTime);
-                    if (null != mTimePopup) {
-                        mTimePopup.dismiss();
+                } else {
+
+                    Date end = new Date();
+                    try {
+                        end = new SimpleDateFormat("yyyy-MM-dd").parse(endString);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    //结束日期不为空，并且不等于文字则开始日期必须小于等于结束日期
+                    if (!StringUtils.isEmpty(endString) && !StringUtils.isEquals(endString, "点击选择结束时间")) {
+                        if (chooseDate.getTime() > end.getTime()) {
+                            UIUtils.showToast(MainPlusLeaveActivity.this, "开始日期不能大于结束日期！");
+                        }else{
+                            finalTime = date;
+                            leave_start_day.setText(finalTime);
+                            if (null != mTimePopup) {
+                                mTimePopup.dismiss();
+                            }
+                        }
+                    } else {
+                        finalTime = date;
+                        leave_start_day.setText(finalTime);
+                        if (null != mTimePopup) {
+                            mTimePopup.dismiss();
+                        }
                     }
                 }
             }
@@ -292,7 +306,6 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         return view;
     }
 
-    
     /**
      * 
      * @param view
@@ -324,7 +337,6 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         year.setVisibleItems(7);// 设置显示行数
         month.setVisibleItems(7);
         day.setVisibleItems(7);
-      
 
         year.setCurrentItem(norYear - 2016);
         month.setCurrentItem(curMonth - 1);
@@ -338,44 +350,44 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
                 int mMonth = month.getCurrentItem() + 1;
                 int mDay = day.getCurrentItem() + 1;
                 String date = mYear + "-" + mMonth + "-" + mDay;
-             try {
-              String currentDateString = DateUtils.getStringByPattern(new Date().getTime(), "yyyy-MM-dd"); 
-                  currentDate = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateString);
-                  chooseDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-              } catch (ParseException e) {
-                  e.printStackTrace();
-              }
-             
-             String startDate = leave_start_day.getText().toString().trim();
-             if(!StringUtils.isEmpty(startDate) && !StringUtils.isEquals(startDate,"点击选择开始时间" )){
-                 if(chooseDate.getTime() < currentDate.getTime()){
-                     UIUtils.showToast(MainPlusLeaveActivity.this, "您只能选择未来时间进行请假哦！");
-                 }else{
-                    Date start = new Date();
-                    Date end = new Date();
-                  try {
-                    start = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
-                    end = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    if(start.getTime()>=end.getTime()){
-                        UIUtils.showToast(MainPlusLeaveActivity.this, "结束日期必须大于开始日期！");
-                    }else {
-                        Long endSecond =(end.getTime()/86400000);
-                        Long startSecond = start.getTime()/86400000;
-                        int totalDays = (endSecond.intValue()-startSecond.intValue());
-                        leave_end_day.setText(date);
-                        leave_days.setText((totalDays+1)+"天");
-                        if (null != mTimePopup) {
-                            mTimePopup.dismiss();
+                try {
+                    String currentDateString = DateUtils.getStringByPattern(new Date().getTime(), "yyyy-MM-dd");
+                    currentDate = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateString);
+                    chooseDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                String startDate = leave_start_day.getText().toString().trim();
+                if (!StringUtils.isEmpty(startDate) && !StringUtils.isEquals(startDate, "点击选择开始时间")) {
+                    if (chooseDate.getTime() < currentDate.getTime()) {
+                        UIUtils.showToast(MainPlusLeaveActivity.this, "您只能选择未来时间进行请假哦！");
+                    } else {
+                        Date start = new Date();
+                        Date end = new Date();
+                        try {
+                            start = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+                            end = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        if (start.getTime() > end.getTime()) {
+                            UIUtils.showToast(MainPlusLeaveActivity.this, "结束日期必须大于开始日期！");
+                        } else {
+                            Long endSecond = (end.getTime() / 86400000);
+                            Long startSecond = start.getTime() / 86400000;
+                            int totalDays = (endSecond.intValue() - startSecond.intValue());
+                            leave_end_day.setText(date);
+                            leave_days.setText((totalDays + 1) + "天");
+                            if (null != mTimePopup) {
+                                mTimePopup.dismiss();
+                            }
                         }
                     }
-                 }
-             }else {
-                 UIUtils.showToast(MainPlusLeaveActivity.this, "开始日期不能为空！");
-             }
-             
+                } else {
+                    UIUtils.showToast(MainPlusLeaveActivity.this, "开始日期不能为空！");
+                }
+
             }
         });
         TextView cancel = (TextView) view.findViewById(R.id.tv_cancel);
@@ -390,7 +402,6 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         return view;
     }
 
-    
     /**
      * 
      * @param year
@@ -436,8 +447,6 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         day.setViewAdapter(numericWheelAdapter);
     }
 
-  
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -446,7 +455,7 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
             case GET_TYPE:
                 mLeaveType = data.getExtras().getString("leaveTypeName");
                 mLeaveTypeId = data.getExtras().getString("leaveTypeId");
-                Constants.LEAVE_TYPE_NAME = mLeaveType ;
+                Constants.LEAVE_TYPE_NAME = mLeaveType;
                 break;
             default:
                 break;
@@ -467,31 +476,33 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         mRemarks = leave_content.getText().toString().trim();
         mStartDate = leave_start_day.getText().toString().trim();
         mEndDate = leave_end_day.getText().toString().trim();
-      
-        if(StringUtils.isEmpty(mLeaveType)){
-            Toast.makeText(MainPlusLeaveActivity.this, "请假类型不能为空",Toast.LENGTH_SHORT).show();
+        String leave_day = leave_days.getText().toString().trim();
+        String days = leave_day.substring(0,leave_day.lastIndexOf("天"));
+
+        if (StringUtils.isEmpty(mLeaveType)) {
+            Toast.makeText(MainPlusLeaveActivity.this, "请假类型不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(StringUtils.isEmpty(mStartDate) || StringUtils.isEquals(mStartDate, "点击选择开始时间")){
-            Toast.makeText(MainPlusLeaveActivity.this, "请选择开始时间",Toast.LENGTH_SHORT).show();
+        if (StringUtils.isEmpty(mStartDate) || StringUtils.isEquals(mStartDate, "点击选择开始时间")) {
+            Toast.makeText(MainPlusLeaveActivity.this, "请选择开始时间", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(StringUtils.isEmpty(mEndDate) || StringUtils.isEquals(mEndDate, "点击选择结束时间")){
-            Toast.makeText(MainPlusLeaveActivity.this, "请选择结束时间",Toast.LENGTH_SHORT).show();
+        if (StringUtils.isEmpty(mEndDate) || StringUtils.isEquals(mEndDate, "点击选择结束时间")) {
+            Toast.makeText(MainPlusLeaveActivity.this, "请选择结束时间", Toast.LENGTH_SHORT).show();
             return;
         }
-     
-        if(StringUtils.isEmpty(mRemarks)){
-            Toast.makeText(MainPlusLeaveActivity.this, "请假内容不能为空",Toast.LENGTH_SHORT).show();
+
+        if (StringUtils.isEmpty(mRemarks)) {
+            Toast.makeText(MainPlusLeaveActivity.this, "请假内容不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(contactBeanList==null || contactBeanList.size()<=0){
-            Toast.makeText(MainPlusLeaveActivity.this, "请选择审批人",Toast.LENGTH_SHORT).show();
+        if (contactBeanList == null || contactBeanList.size() <= 0) {
+            Toast.makeText(MainPlusLeaveActivity.this, "请选择审批人", Toast.LENGTH_SHORT).show();
             return;
         }
         Gson gson = new Gson();
         mJson = gson.toJson(contactBeanList);
-        
+
         showDialog();
         Map<String, String> map = new HashMap<String, String>();
         map.put("company_id", userInfo.getCompany_id());
@@ -499,7 +510,7 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         map.put("leave_type", mLeaveTypeId);
         map.put("start_date", mStartDate);
         map.put("end_date", mEndDate);
-        map.put("total_days", leave_days.getText().toString().trim());
+        map.put("total_days",days);
         map.put("remarks", mRemarks);
         map.put("pass_users", mJson);
 
@@ -548,54 +559,56 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
     };
 
     private ArrayList<ContactBean> contactBeanList = new ArrayList<ContactBean>();
-    private String appMan ="";
-    
+    private String appMan = "";
+
     @Override
     protected void onResume() {
-        appMan="";
-        HashMap<String,ContactBean> map = Constants.finalContacBeantMap;
+        appMan = "";
+        HashMap<String, ContactBean> map = Constants.finalContacBeantMap;
+        contactBeanList.clear();
         Iterator iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
-              Object key = entry.getKey();
-              ContactBean val =(ContactBean) entry.getValue();
-              appMan=appMan+val.getName()+",";
-              contactBeanList.add(val);
-      }
+            Object key = entry.getKey();
+            ContactBean val = (ContactBean) entry.getValue();
+            appMan = appMan + val.getName() + ",";
+            contactBeanList.add(val);
+        }
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 leave_content.setText(Constants.LEAVE_TYPE_REMARK);
                 leave_type_content.setText(Constants.LEAVE_TYPE_NAME);
-                if(null !=contactBeanList && contactBeanList.size()>0){
+                if (null != contactBeanList && contactBeanList.size() > 0) {
                     appMan = appMan.substring(0, appMan.lastIndexOf(","));
                     leave_select_who_name.setText(appMan);
-                    leave_num.setText(contactBeanList.size()+"人");
+                    leave_num.setText(contactBeanList.size() + "人");
                 }
             }
         });
         super.onResume();
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Constants.LEAVE_TYPE_NAME="";
-        Constants.LEAVE_TYPE_REMARK="";
+        Constants.LEAVE_TYPE_NAME = "";
+        Constants.LEAVE_TYPE_REMARK = "";
         Constants.finalContactList.clear();
-        Constants.finalContacBeantMap.clear();;
+        Constants.finalContacBeantMap.clear();
+        ;
     }
 
     @Override
     public void onFinished() {
         int mYear = year.getCurrentItem() + 2015;
         int mMonth = month.getCurrentItem() + 1;
-        
+
         int maxIndex = getDay(mYear, mMonth);
         int index = day.getCurrentItem();
-        if(index > maxIndex-1){
+        if (index > maxIndex - 1) {
             index = maxIndex;
-            day.setCurrentItem(index-1);
+            day.setCurrentItem(index - 1);
         }
         initDay(mYear, mMonth);
     }

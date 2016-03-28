@@ -72,6 +72,8 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
     private ArrayList<ExpressData> myExpressList;
     private ArrayList<ExpressData> totalExpressList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    private LinearLayout m_no_sings;//
+    private LinearLayout m_ll_no_signs;//
     private int page = 1;
     
     @Override
@@ -92,6 +94,8 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
         mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
         mRlCard = (RelativeLayout)findViewById(R.id.view_card_title_bar);
         mLlBottom = (LinearLayout)findViewById(R.id.m_ll_bottom);
+        m_no_sings = (LinearLayout)findViewById(R.id.m_no_sings);
+        m_ll_no_signs = (LinearLayout)findViewById(R.id.m_ll_no_signs);
         //新建(控件)
         mTv1 = (TextView)findViewById(R.id.m_tv1);
         mTv2 = (TextView)findViewById(R.id.m_tv2);
@@ -277,9 +281,16 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
                                 myExpressList = gson.fromJson(data, new TypeToken<ArrayList<ExpressData>>() {
                                 }.getType());
                                 showData(myExpressList);
+                                if(myExpressList.size()>0){
+                                    m_ll_no_signs.setVisibility(View.VISIBLE);
+                                    m_no_sings.setVisibility(View.GONE);
+                                }else {
+                                    m_ll_no_signs.setVisibility(View.GONE);
+                                    m_no_sings.setVisibility(View.VISIBLE);
+                                }
                             } else {
-                                mainPlusExpressAdapter.setData(new ArrayList<ExpressData>());
-                                mPullRefreshListView.onRefreshComplete();
+                                m_ll_no_signs.setVisibility(View.GONE);
+                             m_no_sings.setVisibility(View.VISIBLE);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

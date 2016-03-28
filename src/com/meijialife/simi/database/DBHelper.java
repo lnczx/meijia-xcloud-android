@@ -9,8 +9,6 @@ import net.tsz.afinal.FinalDb.DbUpdateListener;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.meijialife.simi.activity.LoginActivity;
-import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.CityData;
 import com.meijialife.simi.bean.Contact;

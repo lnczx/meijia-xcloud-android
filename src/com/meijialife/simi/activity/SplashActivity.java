@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -77,7 +76,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_splash);
 
-        Timer timer = new Timer();
+        final Timer timer = new Timer();
 
         initLocation();
         AlphaAnimation aa = new AlphaAnimation(0.8f, 1.0f);
@@ -97,6 +96,7 @@ public class SplashActivity extends Activity {
                 if (searchAll.size() <= 0) {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     SplashActivity.this.finish();
+                    timer.cancel();
                 } else {
                     try {
                         updateUserInfo();
@@ -108,7 +108,7 @@ public class SplashActivity extends Activity {
                 }
             }
         };
-        timer.schedule(MyTask, 4000);
+        timer.schedule(MyTask, 2000);
         initRoute();
         // initCellsDb();
          getCitys(getCityAddtime());
@@ -139,10 +139,6 @@ public class SplashActivity extends Activity {
                 handler.sendMessage(msg);
             }
         };
-    
-    
-    
-    
     }
     /**
      * 初始化跳转路由
@@ -314,7 +310,6 @@ public class SplashActivity extends Activity {
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                LogOut.i("========", "用户详情启动时候更新 onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -389,7 +384,6 @@ public class SplashActivity extends Activity {
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                LogOut.i("========", "onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -422,7 +416,6 @@ public class SplashActivity extends Activity {
             }
         });
     }
-
     /**
      * 获取请求城市列表的时间戳
      */

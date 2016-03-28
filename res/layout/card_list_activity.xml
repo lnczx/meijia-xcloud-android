@@ -12,14 +12,21 @@
     <include
         android:id="@+id/view_card_title_bar"
         layout="@layout/layout_card_title_bar" />
-
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@color/activity_bg_color"
-        android:orientation="vertical" >
-
+        android:orientation="vertical" 
+       	android:background="@color/activity_bg_color"
+        >
+  		<LinearLayout
+  		android:id="@+id/m_ll_no_signs"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_weight="1"
+         >
         <com.handmark.pulltorefresh.library.PullToRefreshListView
             xmlns:ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/m_card_list"
@@ -36,6 +43,21 @@
             ptr:ptrListViewExtrasEnabled="false"
             ptr:ptrScrollingWhileRefreshingEnabled="true" >
         </com.handmark.pulltorefresh.library.PullToRefreshListView>
+        </LinearLayout>
+         <RelativeLayout
+            android:id="@+id/m_rl_no_signs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone"
+             >
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:src="@drawable/iconfont_wujilu" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/m_ll_create_card"

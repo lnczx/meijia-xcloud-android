@@ -21,8 +21,21 @@ public class UserIndexData implements Serializable {
 	private int total_card;//卡片数量
 	private int total_coupon;//优惠券数量
 	private int total_friends;//好友总数
+	private int is_friend;//0=不是好友，1=是好友
 	
 	public UserIndexData(){}
+
+	
+	
+    public int getIs_friend() {
+        return is_friend;
+    }
+
+    public void setIs_friend(int is_friend) {
+        this.is_friend = is_friend;
+    }
+
+
 
     public String getId() {
         return id;

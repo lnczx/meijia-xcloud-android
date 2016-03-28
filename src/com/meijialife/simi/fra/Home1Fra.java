@@ -69,6 +69,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.update.UmengUpdateAgent;
 import com.zbar.lib.CaptureActivity;
 
 /**
@@ -126,6 +127,11 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.index_1, null);
+        
+        //设置友盟更新
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.update(getActivity());
+        
         init(v);
         initCalendar(v);
         initUserMsgView(v);
@@ -302,72 +308,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                 
                 RouteUtil routeUtil  = new RouteUtil(getActivity());
                 routeUtil.Routing(category, action, goto_url, params);
-                
-               /* if (category.equals("h5")) {
-                    Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-                    intent.putExtra("url", goto_url);
-                    startActivity(intent);
-                } else if (category.equals("app")) {
-                    if (action.equals("card")) {
-                        Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
-                        intent.putExtra("card_id", params);
-                        startActivity(intent);
-                    } else if (action.equals("feed")) {
-                        Intent intent = new Intent(getActivity(), DynamicDetailsActivity.class);
-                        intent.putExtra("feedId", params);
-                        startActivity(intent);
-                    } else if (action.equals("checkin")) {
-
-                    } else if (action.equals("im")) {
-                        Intent intent = new Intent(getActivity(), ChatActivity.class);
-                        
-                         * if(conversation.isGroup()){ if(conversation.getType() == EMConversationType.ChatRoom){ // it's group chat
-                         * intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_CHATROOM); }else{
-                         * intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_GROUP); }
-                         * }
-                         
-                        intent.putExtra(EMConstant.EXTRA_USER_ID, params);
-                        startActivity(intent);
-
-                    }else if (action.equals("leave_pass")) {
-                        Intent intent = new Intent(getActivity(), MainPlusLeaveListActivity.class);
-                        startActivity(intent);
-                    } else if (action.equals("water")) {
-                        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
-                        intent.putExtra("orderId", params);
-                        intent.putExtra("orderType", 99);
-                        startActivity(intent);
-                    } else if (action.equals("recycle")) {
-                        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
-                        intent.putExtra("orderId", params);
-                        intent.putExtra("orderType", 1);
-                        startActivity(intent);
-                    }else if (action.equals("clean")) {
-                        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
-                        intent.putExtra("orderId", params);
-                        intent.putExtra("orderType", 2);
-                        startActivity(intent);
-                    }else if (action.equals("teamwork")) {
-                        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
-                        intent.putExtra("orderId", params);
-                        intent.putExtra("orderType", 3);
-                        startActivity(intent);
-                    }else if (action.equals("express")) {
-                        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
-                        intent.putExtra("orderId", params);
-                        intent.putExtra("orderType", 4);
-                        startActivity(intent);
-                    }else if (action.equals("expy")) {
-                        Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
-                        intent.putExtra("orderId", params);
-                        intent.putExtra("orderType", 1);
-                        startActivity(intent);
-                }else if (action.equals("friends")) {
-                    MainActivity activity = (MainActivity) getActivity();
-                    activity.change2Contacts();
-                    Constants.checkedIndex=3;
-                }
-                }*/
             }
         });
     }
@@ -800,20 +740,47 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             if (resultCode == (-1)) {
                 Bundle bundle = data.getExtras();
                 String result = bundle.getString("result").trim();
-                if (result.contains(Constants.RQ_TAG_FRIEND) || result.contains(Constants.RQ_TAG_OTHER)) {// 判断是否为云行政二维码
-                    if (result.contains(Constants.RQ_TAG_OTHER)) {// 本公司其他扫描
-                        String url_temp = result.substring(result.lastIndexOf("/") + 1, result.length());
-                        String url = Constants.ROOT_URL + "o.json?" + url_temp + "&uid=" + userInfo.getId();
-                        Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-                        intent.putExtra("url", url);
-                        startActivity(intent);
-                    } else if (result.contains(Constants.RQ_TAG_FRIEND)) {
-                        String str = result.substring(result.indexOf("&") + 1, result.length());
-                        String friend_id = str.substring(str.indexOf("=") + 1, str.indexOf("&"));
-                        addFriend(friend_id);
+                if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
+                    //http://www.51xingzheng.cn/d/open.html?category=app&action=feed&params=&goto_url=
+                
+                    if(!StringUtils.isEmpty(result) && result.contains("category=app")){
+                    String category="",action="",params="",goto_url="";
+                    if(result.contains("params") && result.contains("goto_url")){//两个参数都有
+                        String temp[] = result.split("&");
+                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
+                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
+                        params = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
+                        goto_url = temp[3].substring(temp[3].lastIndexOf("=")+1,temp[3].length());
+                        
+                    }else if (result.contains("params") && !result.contains("goto_url")) {//只有参数params
+                        String temp[] = result.split("&");
+                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
+                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
+                        params = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
+                        
+                    }else if (result.contains("goto_url") && !result.contains("params")) {//只有参数goto_url
+                        String temp[] = result.split("&");
+                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
+                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
+                        goto_url = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
+                    }else {
+                        String temp[] = result.split("&");
+                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
+                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
                     }
-                } else {
-                    Toast.makeText(getActivity(), "非本APP内容，可能存在风险", Toast.LENGTH_SHORT).show();
+                        if (!StringUtils.isEmpty(result)) {
+                           RouteUtil routeUtil =new  RouteUtil(getActivity());
+                           routeUtil.Routing(category, action, goto_url, params);
+                        }
+                    }else {
+                        Intent intent = new Intent(getActivity(),WebViewsActivity.class);
+                        intent.putExtra("url",result);
+                        startActivity(intent);
+                    }
+                } else {//非内部app扫描，webView显示
+                    Intent intent = new Intent(getActivity(),WebViewsActivity.class);
+                    intent.putExtra("url",result);
+                    startActivity(intent);
                 }
             }
             break;

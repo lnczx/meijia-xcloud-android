@@ -102,6 +102,22 @@
                                 android:id="@+id/tv_add"
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
+                                android:background="@drawable/btn_add_friend"
+                                android:gravity="center"
+                                android:paddingBottom="3dp"
+                                android:paddingTop="3dp"
+                                android:singleLine="true"
+                                android:text="添加好友"
+                                android:textColor="@color/simi_color_white"
+                                android:textSize="14sp"
+                                android:visibility="gone"
+                                 />
+ 							
+ 							   
+ 							<TextView
+                                android:id="@+id/tv_is_friend"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
                                 android:background="@drawable/btn_is_friend"
                                 android:gravity="center"
                                 android:paddingBottom="3dp"
@@ -111,6 +127,7 @@
                                 android:textColor="#ffffff"
                                 android:textSize="14sp"
                                 android:clickable="false"
+                                android:focusable="false"
                                  />
 
                             <TextView

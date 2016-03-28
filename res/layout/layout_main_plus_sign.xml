@@ -4,15 +4,15 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/activity_bg_color"
-    android:orientation="vertical" 
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    >
+    android:orientation="vertical" >
 
-      <include
+    <include
         android:id="@+id/view_card_title_bar"
         layout="@layout/layout_card_title_bar" />
-       <View
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/simi_color_white" />
@@ -97,17 +97,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/simi_color_white"
-         >
+        android:background="@color/simi_color_white" >
 
         <LinearLayout
             android:id="@+id/m_ll_sign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
             android:gravity="center"
-             >
+            android:orientation="horizontal" >
 
             <ImageView
                 android:id="@+id/m_iv_sign"
@@ -118,24 +116,31 @@
                 android:src="@drawable/iconfont_sign" />
         </LinearLayout>
 
-        <com.handmark.pulltorefresh.library.PullToRefreshListView
-            xmlns:ptr="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/pull_refresh_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@id/m_ll_sign"
-            android:cacheColorHint="#00000000"
-            android:divider="@color/simi_color_line_gray"
-            android:dividerHeight="1dp"
-            android:fadingEdge="none"
-            android:fastScrollEnabled="false"
-            android:footerDividersEnabled="false"
-            android:headerDividersEnabled="false"
-            android:smoothScrollbar="true"
-            ptr:ptrAnimationStyle="flip"
-            ptr:ptrListViewExtrasEnabled="false"
-            ptr:ptrScrollingWhileRefreshingEnabled="true" >
-        </com.handmark.pulltorefresh.library.PullToRefreshListView>
+        <LinearLayout
+            android:id="@+id/m_ll_no_signs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/m_ll_sign" >
+
+            <com.handmark.pulltorefresh.library.PullToRefreshListView
+                xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/pull_refresh_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:cacheColorHint="#00000000"
+                android:divider="@color/simi_color_line_gray"
+                android:dividerHeight="1dp"
+                android:fadingEdge="none"
+                android:fastScrollEnabled="false"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false"
+                android:smoothScrollbar="true"
+                ptr:ptrAnimationStyle="flip"
+                ptr:ptrListViewExtrasEnabled="false"
+                ptr:ptrScrollingWhileRefreshingEnabled="true" >
+            </com.handmark.pulltorefresh.library.PullToRefreshListView>
+        </LinearLayout>
+        <include layout="@layout/activity_no_signs" />
     </RelativeLayout>
 
 </LinearLayout>

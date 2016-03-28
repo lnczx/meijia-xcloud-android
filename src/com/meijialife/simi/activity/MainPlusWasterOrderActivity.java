@@ -36,8 +36,6 @@ import com.meijialife.simi.utils.UIUtils;
 public class MainPlusWasterOrderActivity extends BaseActivity implements OnClickListener {
  
   
-    private ToggleButton slipBtn_mishuchuli, slipBtn_fatongzhi;
-  
     private UserInfo userInfo;
     
     private TextView mWasterAddr;//送水地址
@@ -224,7 +222,4 @@ public class MainPlusWasterOrderActivity extends BaseActivity implements OnClick
             }
         });
     }
-  
-    
-    
 }

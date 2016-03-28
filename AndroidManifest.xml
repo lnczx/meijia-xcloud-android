@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meijialife.simi"
-    android:versionCode="27"
-    android:versionName="2.1.6" >
+    android:versionCode="29"
+    android:versionName="2.1.8" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="16"
         android:targetSdkVersion="22" />
-    
+
     <!-- 在后台服务中弹出dialog用 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
@@ -63,11 +63,21 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- 允许应用读取低级别的系统日志文件 -->
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- WebView允许定位的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--判断app处于前后台权限-->
+    <uses-permission android:name ="android.permission.GET_TASKS" />
 
     <!-- 提醒弹框用到的权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" >
     </uses-permission>
 
+    <!--程序Crash异常报告权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>  
+    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- ibeancon 需要蓝牙权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -97,10 +107,9 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-                
-            
-                </intent-filter>
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
@@ -111,6 +120,18 @@
         <activity
             android:name="com.umeng.fb.ConversationActivity"
             android:screenOrientation="portrait" />
+        <!-- 友盟版本更新开始 -->
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <!-- 友盟版本更新结束 -->
+
 
         <!-- 友盟AppKey， 需要替换成你自己的 -->
         <meta-data
@@ -178,16 +199,17 @@
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
-            
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:host="51xingzheng.cn" 
+                    android:host="51xingzheng.cn"
                     android:scheme="xcloud" />
-                </intent-filter>
-            </activity>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.FeedBackActivity"
             android:screenOrientation="portrait"
@@ -230,10 +252,9 @@
         <!-- 我的钱包 -->
         <activity
             android:name=".activity.MyWalletActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" 
             android:launchMode="singleTask"
-            />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <!-- 优惠卡券 -->
         <activity
             android:name=".activity.DiscountCardActivity"
@@ -678,7 +699,7 @@
         <!--
             <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
-            android:process=":newinst" />
+            android:process=":newinst" />_
         -->
         <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
@@ -859,7 +880,7 @@
         </activity>
         <!--
             configChanges
-        	配置该属性之后横竖屏切换的时候直接调用onCreate方法中的onConfigurationChanged()。不会使用onCreate()方法
+        	配置该属性之后横竖屏切换的时候直接调用onCreate方法中的onConfigurationChanged()。不会使用onCreate()方法
         -->
         <!-- 发现详情页面 -->
         <activity
@@ -875,10 +896,13 @@
         </activity>
         <activity
             android:name="com.meijialife.simi.activity.CardAlertActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
             android:launchMode="singleInstance"
-             >
+            android:excludeFromRecents="true"
+			android:taskAffinity=""
+			android:theme="@android:style/Theme.Wallpaper.NoTitleBar"
+			android:configChanges="orientation|keyboardHidden|keyboard|navigation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
         <!-- 发布动态activity -->
         <activity
@@ -896,12 +920,12 @@
             android:name="com.meijialife.simi.publish.GalleryActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <!--动态相册-->
+        <!-- 动态相册 -->
         <activity
             android:name="com.meijialife.simi.publish.AlbumActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <!--动态相册-->
+        <!-- 动态相册 -->
         <activity
             android:name="com.meijialife.simi.publish.ImageFile"
             android:screenOrientation="portrait" >
@@ -912,248 +936,228 @@
         </activity>
         <activity
             android:name="com.meijialife.simi.publish.GalleryUrlActivity"
-             android:configChanges="orientation"
-            android:theme="@style/ImageScale">
+            android:configChanges="orientation"
+            android:theme="@style/ImageScale" >
         </activity>
-        <!--动态结束-->
+        <!-- 动态结束 -->
         <activity
             android:name="com.meijialife.simi.publish.ImagePagerActivity"
-             android:configChanges="orientation"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--二维码扫描 -->
+        <!-- 二维码扫描 -->
         <activity
             android:name="com.zbar.lib.CaptureActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
         <!-- 加号中应用中心 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusApplicationActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!-- 加号签到-->
+        <!-- 加号签到 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusSignInActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--加号打卡签到-->
+        <!-- 加号打卡签到 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusSignActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="adjustPan"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
-        <!--加号卡片列表-->
+        <!-- 加号卡片列表 -->
         <activity
             android:name="com.meijialife.simi.activity.CardListActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--加号送水-->
+        <!-- 加号送水 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWaterActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--加号送水下单-->
+        <!-- 加号送水下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWaterOrderActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--送水水产品-->
+        <!-- 送水水产品 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWaterBandActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--废品回收订单列表-->
+        <!-- 废品回收订单列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWasterActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--废品回收下单-->
+        <!-- 废品回收下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWasterOrderActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--废品类型列表-->
+        <!-- 废品类型列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWasterTypeActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--保洁类列表-->
+        <!-- 保洁类列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusCleanActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--保洁类下单-->
+        <!-- 保洁类下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusCleanOrderActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--保洁类型-->
+        <!-- 保洁类型 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusCleanTypeActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--团建列表-->
+        <!-- 团建列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusTeamActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--团建下单-->
+        <!-- 团建下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusTeamOrderActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--团建类型列表-->
+        <!-- 团建类型列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusTeamTypeActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--请假列表-->
+        <!-- 请假列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusLeaveListActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--请假下单-->
+        <!-- 请假下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusLeaveActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--请假类型列表-->
+        <!-- 请假类型列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusLeaveTypeActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--请假详情-->
+        <!-- 请假详情 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusLeaveDetailActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--快递列表-->
+        <!-- 快递列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusExpressActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--快递下单  -->
+        <!-- 快递下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusExpressOrderActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="adjustResize|stateHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
-        <!--企业列表设置默认  -->
+        <!-- 企业列表设置默认 -->
         <activity
             android:name="com.meijialife.simi.activity.CompanyListsActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="adjustResize|stateHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
-        <!--会议室列表  -->
+        <!-- 会议室列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MeetingListActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="adjustResize|stateHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
-        <!--好友申请列表  -->
+        <!-- 好友申请列表 -->
         <activity
             android:name="com.meijialife.simi.activity.FriendApplyActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--汽车牌照提醒  -->
+        <!-- 汽车牌照提醒 -->
         <activity
             android:name="com.meijialife.simi.activity.CarAlertActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           	 android:launchMode="singleInstance"
-           >
+            android:configChanges="orientation"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--车辆速通列表-->
+        <!-- 车辆速通列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusCarActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!--车辆速通下单  -->
+        <!-- 车辆速通下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusCarOrderActivity"
-             android:configChanges="orientation"
-             android:screenOrientation="portrait"
-           	 android:windowSoftInputMode="stateVisible"
-           >
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" >
+        </activity>
+        <activity
+            android:name="com.meijialife.simi.activity.NoticeActivity"
+            android:theme="@style/MyDialogStyle"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+			android:taskAffinity=""
+			android:configChanges="orientation|keyboardHidden|keyboard|navigation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"  >
         </activity>
     </application>
 

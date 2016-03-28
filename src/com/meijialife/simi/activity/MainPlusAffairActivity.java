@@ -34,7 +34,6 @@ import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.Cards;
@@ -87,7 +86,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private WheelView day;
     private WheelView hour;
     private WheelView minute;
-    private int mYear = 2015;
+    private int mYear = 2016;
     private int mMonth = 0;
     private int mDay = 1;
 
@@ -417,7 +416,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
         hour.setCurrentItem( Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
         minute.setCurrentItem(Calendar.getInstance().get(Calendar.MINUTE));
-        year.setCurrentItem(norYear - 2015);
+        year.setCurrentItem(norYear - 2016);
         month.setCurrentItem(curMonth - 1);
         day.setCurrentItem(curDate - 1);
 
@@ -426,7 +425,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
             @Override
             public void onClick(View v) {
-                int mYear = year.getCurrentItem() + 2015;
+                int mYear = year.getCurrentItem() + 2016;
                 int mMonth = month.getCurrentItem() + 1;
                 int mDay = day.getCurrentItem() + 1;
                 int mhour = hour.getCurrentItem();
@@ -753,7 +752,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                             MainPlusAffairActivity.this.finish();
                             
                           //初始化本地提醒闹钟
-                            AlermUtils.initAlerm(MainPlusAffairActivity.this, remindAlerm, fdate, "事务提醒", Constants.CARD_ADD_AFFAIR_CONTENT);
+//                            AlermUtils.initAlerm(MainPlusAffairActivity.this, remindAlerm, fdate, "事务提醒", Constants.CARD_ADD_AFFAIR_CONTENT);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(MainPlusAffairActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -794,7 +793,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
     @Override
     public void onFinished() {
-        int mYear = year.getCurrentItem() + 2015;
+        int mYear = year.getCurrentItem() + 2016;
         int mMonth = month.getCurrentItem() + 1;
         
         int maxIndex = getDay(mYear, mMonth);

@@ -18,6 +18,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +58,14 @@ public class CardAlertActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        
+        //设置锁屏状态弹屏幕
+        final Window win = getWindow();
+        win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        win.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        
         setContentView(R.layout.card_alert_activity);
         super.onCreate(savedInstanceState);
         
@@ -68,10 +78,8 @@ public class CardAlertActivity extends Activity {
         mAlertText = getIntent().getStringExtra("text");
         mCardId = getIntent().getStringExtra("card_id");
         mAlertDate = (Date) getIntent().getSerializableExtra("date");
-        
         mAlert_time = new SimpleDateFormat("HH:mm").format(mAlertDate);
         mAlert_date = new SimpleDateFormat("yyyy-MM-dd").format(mAlertDate);
-
         
         tv_alert_title = (TextView)findViewById(R.id.tv_alert_title);
         tv_alert_time = (TextView)findViewById(R.id.tv_alert_time);

@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="检查更新"
+                    android:text="当前版本"
                     android:textColor="@color/simi_color_gray" />
 
                 <TextView

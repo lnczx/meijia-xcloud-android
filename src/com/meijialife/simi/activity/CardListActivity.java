@@ -68,11 +68,15 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
     private RelativeLayout mRlCard;
     private LinearLayout mAffairCardTitle;
     
+    private RelativeLayout mRlNoSigns;
+    private LinearLayout mLlNoSigs;
+    
     //创建卡片
     private TextView mTvCreate;
     private LinearLayout mLlCreate;
     private HashMap<String,String> mCardTitleColor;
     private String mCardType;
+    
     
     //下拉刷新
     private ArrayList<Cards> totalCardList;
@@ -99,6 +103,10 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         mTvCreate = (TextView)findViewById(R.id.m_tv_create_card);
         mLlCreate = (LinearLayout)findViewById(R.id.m_ll_create_card);
         mTvCreate.setText("新建");
+        
+        mRlNoSigns = (RelativeLayout)findViewById(R.id.m_rl_no_signs);
+        mLlNoSigs = (LinearLayout)findViewById(R.id.m_ll_no_signs);
+        
         //标题+返回(控件)
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
@@ -378,6 +386,10 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
                         String data = obj.getString("data").trim();
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data.trim())) {
+                                
+                                mRlNoSigns.setVisibility(View.GONE);
+                                mLlNoSigs.setVisibility(View.VISIBLE);
+                                
                                 Gson gson = new Gson();
                                 cardlist = new ArrayList<Cards>();
                                 cardExtrasList = new ArrayList<CardExtra>();
@@ -385,6 +397,9 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
                                 }.getType());
                                 showData(cardlist,gson);
                             } else {
+                                mRlNoSigns.setVisibility(View.VISIBLE);
+                                mLlNoSigs.setVisibility(View.GONE);
+                                
                                 adapter.setData(new ArrayList<Cards>(),new ArrayList<CardExtra>());
                                 mPullRefreshListView.onRefreshComplete();
                             }

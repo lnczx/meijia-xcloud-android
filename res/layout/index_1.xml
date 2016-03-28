@@ -12,16 +12,16 @@
         android:layout_height="wrap_content" >
     </com.meijialife.simi.ui.CollapseCalendarView>
     
-    <View
+    <!-- <View
         android:id="@+id/v_line"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="1dp"
         android:layout_below="@id/layout_calendar"
-        android:background="@color/cut_off_rule" />
+        android:background="@color/cut_off_rule" /> -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/v_line"
+        android:layout_below="@id/layout_calendar"
         android:background="@color/activity_bg_color"
         android:orientation="vertical" >
         

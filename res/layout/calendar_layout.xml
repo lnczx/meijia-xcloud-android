@@ -246,13 +246,34 @@
         android:layout_width="match_parent"
         android:layout_height="12dp"
         android:background="@android:color/transparent" >
-
-        <ImageView
+        
+         <ImageView
             android:id="@+id/bottom"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
             android:layout_centerInParent="true"
             android:background="@drawable/rili_arrow_down" />
+        
+        <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_toLeftOf="@id/bottom"
+        android:background="@color/cut_off_rule"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+         />
+        
+         <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_toRightOf="@id/bottom"
+        android:background="@color/cut_off_rule"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dp"
+         />
+        
+
+       
     </RelativeLayout>
 
 </merge>

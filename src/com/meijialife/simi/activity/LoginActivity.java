@@ -112,7 +112,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.login_layout);
         super.onCreate(savedInstanceState);
         initView();
-
+        
+        
         setConfig();// 配置第三方登录
 
         mHandler = new Handler() {

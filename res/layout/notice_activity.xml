@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/exit_layout"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_tip_coner"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <com.meijialife.simi.ui.XCRoundRectImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/m_iv_icon"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_gravity="center"
+            android:background="@color/bg_tip_coner"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_card_alert"
+            
+ />
+		 <TextView
+            android:id="@+id/m_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="标题"
+            android:textColor="@color/simi_color_gray"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/m_tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="left"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="退出后，你将收不到新的消\n息.确定要退出？"
+            android:textColor="@color/simi_color_gray"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/m_btn1"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/app_add_normal"
+            android:gravity="center"
+            android:text="了解更多"
+            android:textColor="@color/simi_color_gray"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/m_btn2"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/app_add_normal"
+            android:gravity="center"
+            android:text="我知道了"
+            android:textColor="@color/simi_color_gray"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

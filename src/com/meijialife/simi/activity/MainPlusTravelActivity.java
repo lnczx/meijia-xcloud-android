@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
@@ -15,7 +14,6 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,12 +21,10 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,13 +34,11 @@ import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.SelectableRoundedImageView;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.ui.ToggleButton;
 import com.meijialife.simi.ui.ToggleButton.OnToggleChanged;
@@ -83,7 +77,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     private WheelView day;
     private WheelView hour;
     private WheelView minute;
-    private int mYear = 2015;
+    private int mYear = 2016;
     private int mMonth = 0;
     private int mDay = 1;
     private String startDate;// 出发日期
@@ -644,7 +638,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         month.setVisibleItems(7);
         day.setVisibleItems(7);
 
-        year.setCurrentItem(norYear - 2015);
+        year.setCurrentItem(norYear - 2016);
         month.setCurrentItem(curMonth - 1);
         day.setCurrentItem(curDate - 1);
 
@@ -653,7 +647,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
             @Override
             public void onClick(View v) {
 
-                int mYear = year.getCurrentItem() + 2015;
+                int mYear = year.getCurrentItem() + 2016;
                 int mMonth = month.getCurrentItem() + 1;
                 int mDay = day.getCurrentItem() + 1;
                 String date = mYear + "-" + mMonth + "-" + mDay;
@@ -875,7 +869,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
                             MainPlusTravelActivity.this.finish();
 
                             // 初始化本地提醒闹钟
-                            AlermUtils.initAlerm(MainPlusTravelActivity.this, remindAlerm, fdate, "差旅规划", Constants.CARD_ADD_TREAVEL_CONTENT);
+//                            AlermUtils.initAlerm(MainPlusTravelActivity.this, remindAlerm, fdate, "差旅规划", Constants.CARD_ADD_TREAVEL_CONTENT);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(MainPlusTravelActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -905,7 +899,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
     @Override
     public void onFinished() {
-        int mYear = year.getCurrentItem() + 2015;
+        int mYear = year.getCurrentItem() + 2016;
         int mMonth = month.getCurrentItem() + 1;
 
         int maxIndex = getDay(mYear, mMonth);

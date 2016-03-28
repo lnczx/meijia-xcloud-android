@@ -62,6 +62,9 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
     private LinearLayout mLlBottom;//布局底部控件
     private LinearLayout mAffairCardTitle;
     
+    private LinearLayout m_ll_no_signs;
+    private LinearLayout m_no_sings;
+    
     //创建卡片
     private TextView mTv1;
     private TextView mTv2;
@@ -88,6 +91,12 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
         mAffairCardTitle = (LinearLayout)findViewById(R.id.m_affair_card_title);
+        
+        
+        m_ll_no_signs = (LinearLayout)findViewById(R.id.m_ll_no_signs);
+        m_no_sings = (LinearLayout)findViewById(R.id.m_no_sings);
+
+
 
         //标题背景
         mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
@@ -279,9 +288,16 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
                                 myTeamList = gson.fromJson(data, new TypeToken<ArrayList<TeamData>>() {
                                 }.getType());
                                 showData(myTeamList);
+                                if(myTeamList.size()>0){
+                                    m_ll_no_signs.setVisibility(View.VISIBLE);
+                                    m_no_sings.setVisibility(View.GONE);
+                                }else {
+                                    m_ll_no_signs.setVisibility(View.GONE);
+                                    m_no_sings.setVisibility(View.VISIBLE);
+                                }
                             } else {
-                                mainPlusTeamAdapter.setData(new ArrayList<TeamData>());
-                                mPullRefreshListView.onRefreshComplete();
+                                m_ll_no_signs.setVisibility(View.GONE);
+                                m_no_sings.setVisibility(View.VISIBLE);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

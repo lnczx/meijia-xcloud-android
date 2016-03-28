@@ -4,14 +4,23 @@ import java.io.Serializable;
 
 public class ReceiverBean implements Serializable{
 
-    private String is_show;
-    private String action;
-    private String card_id;
-    private String card_type;
-    private String service_time;
-    private String remind_time;
-    private String remind_title;
-    private String remind_content;
+    private String is;//是否在通知栏展现
+    private String ac;//动作标识
+    private String ca;//类型app/h5
+    private String ci;//卡片Id
+    private String ct;//卡片类型
+    private String st;//卡片发生时间，精确到秒
+    private Long re;//卡片提醒时间，精确到秒
+    private String rt;//消息栏展示标题
+    private String rc;//消息展示内容
+    
+    
+    
+    
+    
+    
+    
+    
     
     private String car_no;//车牌号
     private String car_color;
@@ -73,54 +82,62 @@ public class ReceiverBean implements Serializable{
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
-    public String getIs_show() {
-        return is_show;
+    public String getIs() {
+        return is;
     }
-    public void setIs_show(String is_show) {
-        this.is_show = is_show;
+    public void setIs(String is) {
+        this.is = is;
     }
-    public String getCard_id() {
-        return card_id;
+    public String getAc() {
+        return ac;
     }
-    public void setCard_id(String card_id) {
-        this.card_id = card_id;
+    public void setAc(String ac) {
+        this.ac = ac;
     }
-    public String getCard_type() {
-        return card_type;
+    public String getCa() {
+        return ca;
     }
-    public void setCard_type(String card_type) {
-        this.card_type = card_type;
+    public void setCa(String ca) {
+        this.ca = ca;
     }
-    public String getService_time() {
-        return service_time;
+    public String getCi() {
+        return ci;
     }
-    public void setService_time(String service_time) {
-        this.service_time = service_time;
+    public void setCi(String ci) {
+        this.ci = ci;
     }
-    public String getRemind_time() {
-        return remind_time;
+    public String getCt() {
+        return ct;
     }
-    public void setRemind_time(String remind_time) {
-        this.remind_time = remind_time;
+    public void setCt(String ct) {
+        this.ct = ct;
     }
-    public String getRemind_title() {
-        return remind_title;
+    public String getSt() {
+        return st;
     }
-    public void setRemind_title(String remind_title) {
-        this.remind_title = remind_title;
+    public void setSt(String st) {
+        this.st = st;
     }
-    public String getRemind_content() {
-        return remind_content;
+   
+    public Long getRe() {
+        return re;
     }
-    public void setRemind_content(String remind_content) {
-        this.remind_content = remind_content;
+    public void setRe(Long re) {
+        this.re = re;
     }
-    public String getAction() {
-        return action;
+    public String getRt() {
+        return rt;
     }
-    public void setAction(String action) {
-        this.action = action;
+    public void setRt(String rt) {
+        this.rt = rt;
     }
+    public String getRc() {
+        return rc;
+    }
+    public void setRc(String rc) {
+        this.rc = rc;
+    }
+   
     
     
 }

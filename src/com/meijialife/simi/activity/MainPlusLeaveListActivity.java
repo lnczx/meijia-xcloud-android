@@ -69,6 +69,10 @@ public class MainPlusLeaveListActivity extends Activity{
     private RelativeLayout mRlCard;
     private LinearLayout mLlBottom;//布局底部控件
     private LinearLayout mAffairCardTitle;
+    
+    
+    private LinearLayout mLlNoSigns1;
+    private LinearLayout mLlNoSigns2;
 
     
     private int leave_from = 0;// 0=我发起的；1=我审批的
@@ -107,6 +111,8 @@ public class MainPlusLeaveListActivity extends Activity{
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
         mAffairCardTitle = (LinearLayout) findViewById(R.id.m_affair_card_title);
+        mLlNoSigns1 = (LinearLayout) findViewById(R.id.m_ll_no_signs);
+        mLlNoSigns2 = (LinearLayout) findViewById(R.id.m_no_sings);
         
         //标题背景
         mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
@@ -176,7 +182,7 @@ public class MainPlusLeaveListActivity extends Activity{
      * @param cardType
      */
     private void setCardTitleColor(){
-      mCardTitle.setText("请假申请");
+      mCardTitle.setText("请假审批");
       mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_qing_jia));
       mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_qing_jia));
       mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_qing_jia));
@@ -316,7 +322,17 @@ public class MainPlusLeaveListActivity extends Activity{
                                 Gson gson = new Gson();
                                 myLeaveList = gson.fromJson(data, new TypeToken<ArrayList<LeaveData>>() {
                                 }.getType());
-                                showData(myLeaveList);
+                                if(myLeaveList.size()>0){
+                                    mLlNoSigns1.setVisibility(View.VISIBLE);
+                                    mLlNoSigns2.setVisibility(View.GONE);  
+                                    showData(myLeaveList);
+                                }else {
+                                    mLlNoSigns1.setVisibility(View.GONE);
+                                    mLlNoSigns2.setVisibility(View.VISIBLE);  
+                                }
+                            }else {
+                                mLlNoSigns1.setVisibility(View.GONE);
+                                mLlNoSigns2.setVisibility(View.VISIBLE);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

@@ -11,8 +11,8 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,7 +20,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -43,9 +42,9 @@ import com.meijialife.simi.bean.FindPlusData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.publish.PublishDynamicActivity;
+import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.SelectableRoundedImageView;
-import com.meijialife.simi.ui.TipPopWindow;
+import com.meijialife.simi.utils.FontHelper;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -78,6 +77,9 @@ public class MainPlusActivity extends Activity implements OnClickListener {
         mGvFind.setSelector(new ColorDrawable(Color.TRANSPARENT));
         mFindPlusAdapter = new FindPlusAdapter(this);
         mGvFind.setAdapter(mFindPlusAdapter);
+        
+        FontHelper.applyFont(this, findViewById(R.id.activity_root), "fonts/SourceHanSansCN-Regular.otf");
+        
         getFindPlusIcon();
         setClick();
         
@@ -96,97 +98,8 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                 String goto_url = findPlusData.getUrl().trim();
                 String params = findPlusData.getParams().trim();
                 String action = findPlusData.getAction().trim();
-                if(category.equals("h5")){
-                    Intent intent = new Intent(MainPlusActivity.this,WebViewsActivity.class);
-                    intent.putExtra("url",goto_url);
-                    startActivity(intent);
-                }else if (category.equals("app")) {
-                    if(action.equals("alarm")){//事务提醒
-                        Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
-                        intent.putExtra("cardType","3");
-                        startActivity(intent);
-                        MainPlusActivity.this.finish();
-                    }else if(action.equals("meeting")){//会议安排=1
-                        Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
-                        intent.putExtra("cardType","1");
-                        startActivity(intent);
-                        MainPlusActivity.this.finish();
-                    }else if(action.equals("notice")){//通知公告=2
-                        Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
-                        intent.putExtra("cardType","2");
-                        startActivity(intent);
-                        MainPlusActivity.this.finish();
-                    }else if(action.equals("interview")){//面试邀约=4
-                        Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
-                        intent.putExtra("cardType","4");
-                        startActivity(intent);
-                        MainPlusActivity.this.finish();
-                    }else if(action.equals("trip")){//差旅规划
-                        Intent intent = new Intent(MainPlusActivity.this, CardListActivity.class);
-                        intent.putExtra("cardType","5");
-                        startActivity(intent);
-                        MainPlusActivity.this.finish();
-                    }else if(action.equals("punch_dynamic")){
-                        Intent intent = new Intent(MainPlusActivity.this,PublishDynamicActivity.class);
-                        startActivity(intent);
-                        MainPlusActivity.this.finish();
-                    }
-                    else if(action.equals("card")){
-                        Intent intent = new Intent(MainPlusActivity.this, CardDetailsActivity.class);
-                        intent.putExtra("card_id", params);
-                        startActivity(intent);
-                    }else if (action.equals("feed")) {
-                        Intent intent = new Intent(MainPlusActivity.this, DynamicDetailsActivity.class);
-                        intent.putExtra("feedId", params);
-                        startActivity(intent);
-                    }else if (action.equals("checkin")) {
-                        
-                    }else if (action.equals("friends")) {
-                        
-                    }else if (action.equals("im")) {
-                        Intent intent = new Intent(MainPlusActivity.this, ChatActivity.class);
-                      /*  if(conversation.isGroup()){
-                            if(conversation.getType() == EMConversationType.ChatRoom){
-                                // it's group chat
-                                intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_CHATROOM);
-                            }else{
-                                intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_GROUP);
-                            }
-                            
-                        }*/
-                        intent.putExtra(EMConstant.EXTRA_USER_ID, params);
-                        startActivity(intent);
-                    }else if (action.equals("leave_pass")) {//请假审批
-                        Intent intent = new Intent(MainPlusActivity.this, MainPlusLeaveListActivity.class);
-                        startActivity(intent);
-                        
-                    }else if (action.equals("punch_sign")) {//打卡签到
-                        Intent intent = new Intent(MainPlusActivity.this, MainPlusSignInActivity.class);
-                        startActivity(intent);
-                    }else if (action.equals("application_center")) {//应用中心
-                        Intent intent = new Intent(MainPlusActivity.this, MainPlusApplicationActivity.class);
-                        startActivity(intent);
-                    }else if (action.equals("water")) {//送水
-                        Intent intent = new Intent(MainPlusActivity.this, MainPlusWaterActivity.class);
-                        startActivity(intent);
-                    }else if (action.equals("recycle")) {//废品回收
-                        Intent intent = new Intent(MainPlusActivity.this, MainPlusWasterActivity.class);
-                        startActivity(intent);
-                    }else if (action.equals("clean")) {//保洁
-                        Intent intent = new Intent(MainPlusActivity.this, MainPlusCleanActivity.class);
-                        startActivity(intent);
-                    }else if (action.equals("teamwork")) {//团建
-                        Intent intent = new Intent(MainPlusActivity.this, MainPlusTeamActivity.class);
-                        startActivity(intent);
-                    }else if (action.equals("express")) {//快递
-                        Intent intent = new Intent(MainPlusActivity.this, MainPlusExpressActivity.class);
-                        startActivity(intent);
-                    }else if (action.equals("expy")) {//车辆速通
-                    Intent intent = new Intent(MainPlusActivity.this, MainPlusCarActivity.class);
-                    startActivity(intent);
-                }
-                  
-                }
+                RouteUtil routeUtil =new  RouteUtil(MainPlusActivity.this);
+                routeUtil.Routing(category, action, goto_url, params);
             }
         });
     }
@@ -270,7 +183,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                                 findPlusData.setOpen_type("app");
                                 findPlusData.setUrl("");
                                 findPlusData.setParams("");
-                                findPlusData.setAction("application_center");
+                                findPlusData.setAction("app_tools");
                                 mFindPlusDatas.add(findPlusData);
                                 
                                 mFindPlusAdapter.setData(mFindPlusDatas);

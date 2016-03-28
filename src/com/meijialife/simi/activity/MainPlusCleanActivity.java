@@ -61,6 +61,11 @@ public class MainPlusCleanActivity extends Activity implements ListItemClickHelp
     private RelativeLayout mRlCard;
     private LinearLayout mLlBottom;//布局底部控件
     private LinearLayout mAffairCardTitle;
+    
+    private LinearLayout m_ll_no_signs;
+    private LinearLayout m_no_sings;
+    
+    
 
     
     //创建卡片
@@ -89,6 +94,9 @@ public class MainPlusCleanActivity extends Activity implements ListItemClickHelp
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
         mAffairCardTitle = (LinearLayout)findViewById(R.id.m_affair_card_title);
+    
+        m_ll_no_signs = (LinearLayout)findViewById(R.id.m_ll_no_signs);
+        m_no_sings = (LinearLayout)findViewById(R.id.m_no_sings);
 
         //标题背景
         mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
@@ -98,8 +106,8 @@ public class MainPlusCleanActivity extends Activity implements ListItemClickHelp
         mTv1 = (TextView)findViewById(R.id.m_tv1);
         mTv2 = (TextView)findViewById(R.id.m_tv2);
       
-        mTv1.setText("上门回收");
-        mTv2.setText("智能设置");
+        mTv1.setText("保洁预约");
+        mTv2.setText("智能配置");
        
         setOnClick();//设置点击事件
         setCardTitleColor();//设置标题颜色
@@ -280,9 +288,16 @@ public class MainPlusCleanActivity extends Activity implements ListItemClickHelp
                                 myCleanList = gson.fromJson(data, new TypeToken<ArrayList<CleanData>>() {
                                 }.getType());
                                 showData(myCleanList);
+                                if(myCleanList.size()>0){
+                                    m_ll_no_signs.setVisibility(View.VISIBLE);
+                                    m_no_sings.setVisibility(View.GONE);
+                                }else {
+                                    m_ll_no_signs.setVisibility(View.GONE);
+                                    m_no_sings.setVisibility(View.VISIBLE);
+                                }
                             } else {
-                                mainPlusCleanAdapter.setData(new ArrayList<CleanData>());
-                                mPullRefreshListView.onRefreshComplete();
+                              m_ll_no_signs.setVisibility(View.GONE);
+                              m_no_sings.setVisibility(View.VISIBLE);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

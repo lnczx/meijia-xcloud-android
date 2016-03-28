@@ -48,11 +48,9 @@
                 android:id="@+id/m_pass_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
-                android:layout_toRightOf="@id/m_tv_type_name"
-                android:gravity="center"
-                android:paddingLeft="20dp"
+                android:layout_toRightOf="@id/m_pass_name"
                 android:text="折扣"
                 android:textSize="16sp" />
 

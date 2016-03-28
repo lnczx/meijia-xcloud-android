@@ -314,16 +314,16 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             view_title_bar.setVisibility(View.GONE);
             break;
         case R.id.tab_bt_2: // 发现
-            currentTabIndex = 2;
+          /*  currentTabIndex = 2;
             if (!slideMenu.isMainScreenShowing()) {
                 return;
             }
             view_title_bar.setVisibility(View.GONE);
-            //change(new Home2Fra());
             change(new Find2Fra(this));
             setSelected(mBt2);
             updateTitle(2);
-            slideMenu.isUse = false;
+            slideMenu.isUse = false;*/
+            changeFind();
             break;
         case R.id.tab_bt_3: // 圈子
             currentTabIndex = 3;
@@ -331,13 +331,13 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             change2Contacts();
             break;
         case R.id.tab_bt_4: // 我的
-            currentTabIndex = 4;
+          /*  currentTabIndex = 4;
             change(new PersonalFragment());
-//            change(new PersonalPageFragment());
             setSelected(mBt4);
             // updateTitle(4);
             slideMenu.isUse = false;
-            view_title_bar.setVisibility(View.GONE);
+            view_title_bar.setVisibility(View.GONE);*/
+            changePersonal();
             break;
         case R.id.tab_bt_5: // 加号
             Intent intent2 = new Intent(this, MainPlusActivity.class);
@@ -407,6 +407,33 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         default:
             break;
         }
+    }
+    
+    /**
+     * 切换到发现Fragement
+     */
+    public void changeFind(){
+        currentTabIndex = 2;
+        if (!slideMenu.isMainScreenShowing()) {
+            return;
+        }
+        view_title_bar.setVisibility(View.GONE);
+        change(new Find2Fra(this));
+        setSelected(mBt2);
+        updateTitle(2);
+        slideMenu.isUse = false;
+    }
+    
+    /**
+     * 切换到我的Fragment
+     */
+    public void changePersonal(){
+        currentTabIndex = 4;
+        change(new PersonalFragment());
+        setSelected(mBt4);
+        // updateTitle(4);
+        slideMenu.isUse = false;
+        view_title_bar.setVisibility(View.GONE);
     }
 
     /**
@@ -789,7 +816,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 super.onSuccess(t);
                 String errorMsg = "";
                 // dismissDialog();
-                LogOut.i("========", "onSuccess For getReminds：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());

@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:id="@+id/activity_root"
+     >
 
     <TextView
         android:id="@+id/tv_call_mishu"
@@ -16,8 +18,7 @@
         android:text="直接找秘书"
         android:paddingBottom="8dp"
         android:textColor="#333333"
-        android:textSize="@dimen/main_plus_text_size" />
-
+        android:textSize="20sp" />
     <ImageView
         android:id="@+id/iv_plus_close"
         android:layout_width="wrap_content"

@@ -56,6 +56,7 @@ import com.meijialife.simi.bean.FriendDynamicData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -68,10 +69,10 @@ import com.zbar.lib.CaptureActivity;
  * @author： kerryg
  * @date:2015年12月1日
  */
-public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicUpdateListener {
+public class Home3Fra extends BaseFragment implements OnClickListener, onDynamicUpdateListener {
 
     private RadioGroup radiogroup;// 顶部Tab
-    private View line_1, line_2,line_3;
+    private View line_1, line_2, line_3;
 
     private LinearLayout layout_msg; // 消息View
     private LinearLayout layout_friend; // 好友View
@@ -86,33 +87,30 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
     private RelativeLayout rl_company_contacts;
     private TextView tv_has_company;// 显示理解创建
     private final static int SCANNIN_GREQUEST_CODES = 5;
-    
-    private FriendDynamicAdapter friendDynamicAdapter;//好友动态适配器
-    
- 
+
+    private FriendDynamicAdapter friendDynamicAdapter;// 好友动态适配器
+
     private int checkedIndex = 0; // 当前选中的Tab位置, 0=消息 1=好友
     private MainActivity activity;
     private UserInfo userInfo;// 获取用户详情
-    
-    
-    private RadioButton rb_feed;//动态
-    private RadioButton rb_friend;//好友
-    private RadioButton rb_msg;//消息
-    private RadioButton rb_app;//申请
+
+    private RadioButton rb_feed;// 动态
+    private RadioButton rb_friend;// 好友
+    private RadioButton rb_msg;// 消息
+    private RadioButton rb_app;// 申请
     private static View layout_mask;
-    
-    //布局控件定义
-    private PullToRefreshListView mPullRefreshFeedListView;//上拉刷动态的控件 
-    private PullToRefreshListView mPullRefreshFriendListView;//上拉刷动态的控件 
+
+    // 布局控件定义
+    private PullToRefreshListView mPullRefreshFeedListView;// 上拉刷动态的控件
+    private PullToRefreshListView mPullRefreshFriendListView;// 上拉刷动态的控件
     private int feedPage = 1;
-    private int friendPage =1;
-    
+    private int friendPage = 1;
+
     private ArrayList<FriendDynamicData> myFeedList;
     private ArrayList<FriendDynamicData> totalFeedList;
 
     private ArrayList<Friend> myFriendList;
     private ArrayList<Friend> totalFriendList;
-    
 
     public Home3Fra() {
     }
@@ -128,8 +126,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         // }
 
         View v = inflater.inflate(R.layout.index_3, null);
-        vs= (RelativeLayout)getActivity().getLayoutInflater()
-                .inflate(R.layout.index_3, null);
+        vs = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.index_3, null);
         init(v);// 初始化
         initTab(v);
 
@@ -151,12 +148,12 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         userInfo = DBHelper.getUserInfo(getActivity());
         layout_msg = (LinearLayout) v.findViewById(R.id.layout_msg);
         layout_friend = (LinearLayout) v.findViewById(R.id.layout_friend);
-        layout_dynamic = (LinearLayout)v.findViewById(R.id.layout_friend_dynamic);
+        layout_dynamic = (LinearLayout) v.findViewById(R.id.layout_friend_dynamic);
         tv_has_company = (TextView) v.findViewById(R.id.tv_has_company);
-        layout_mask = (View)v.findViewById(R.id.layout_mask);
+        layout_mask = (View) v.findViewById(R.id.layout_mask);
 
         initFriendView(v);
-        //初始化好友动态列表
+        // 初始化好友动态列表
         initFeedView(v);
 
         rl_add = (RelativeLayout) v.findViewById(R.id.rl_add);
@@ -169,15 +166,14 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         rl_rq.setOnClickListener(this);
         rl_company_contacts.setOnClickListener(this);
         rl_apply.setOnClickListener(this);
-        //请求帮助接口
+        // 请求帮助接口
         getAppHelp();
     }
-    
-    
-    private void initFriendView(View v){
+
+    private void initFriendView(View v) {
         totalFriendList = new ArrayList<Friend>();
         myFriendList = new ArrayList<Friend>();
-        mPullRefreshFriendListView = (PullToRefreshListView)v.findViewById(R.id.pull_refresh_lists);
+        mPullRefreshFriendListView = (PullToRefreshListView) v.findViewById(R.id.pull_refresh_lists);
         friendAdapter = new FriendAdapter(getActivity());
         mPullRefreshFriendListView.setAdapter(friendAdapter);
         mPullRefreshFriendListView.setMode(Mode.BOTH);
@@ -185,27 +181,26 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         mPullRefreshFriendListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //下拉刷新任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
+                // 下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 friendPage = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 getFriendList(friendPage);
-                friendAdapter.notifyDataSetChanged(); 
+                friendAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //上拉加载任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
+                // 上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(myFriendList!=null && myFriendList.size()>=10){
-                    friendPage = friendPage+1;
+                if (myFriendList != null && myFriendList.size() >= 10) {
+                    friendPage = friendPage + 1;
                     getFriendList(friendPage);
-                    friendAdapter.notifyDataSetChanged(); 
-                }else {
-                    Toast.makeText(getActivity(),"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
-                    mPullRefreshFriendListView.onRefreshComplete(); 
+                    friendAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getActivity(), "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
+                    mPullRefreshFriendListView.onRefreshComplete();
                 }
             }
         });
@@ -214,105 +209,102 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), FriendPageActivity.class);
                 intent.putExtra("friend_id", myFriendList.get(position).getFriend_id());
-                startActivity(intent); 
+                startActivity(intent);
             }
         });
     }
-   
+
     /**
      * 初始化好友动态列表
+     * 
      * @param v
      */
-    private void initFeedView(View v){
+    private void initFeedView(View v) {
         totalFeedList = new ArrayList<FriendDynamicData>();
         myFeedList = new ArrayList<FriendDynamicData>();
-        mPullRefreshFeedListView = (PullToRefreshListView)v.findViewById(R.id.pull_refresh_list);
-        friendDynamicAdapter = new FriendDynamicAdapter(getActivity(),this);
+        mPullRefreshFeedListView = (PullToRefreshListView) v.findViewById(R.id.pull_refresh_list);
+        friendDynamicAdapter = new FriendDynamicAdapter(getActivity(), this);
         mPullRefreshFeedListView.setAdapter(friendDynamicAdapter);
         mPullRefreshFeedListView.setMode(Mode.BOTH);
-        
+
         initIndicator();
         getFriendDynamicList(feedPage);
         mPullRefreshFeedListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //下拉刷新任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
+                // 下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 feedPage = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 getFriendDynamicList(feedPage);
-                friendDynamicAdapter.notifyDataSetChanged(); 
+                friendDynamicAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //上拉加载任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
+                // 上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(myFeedList!=null && myFeedList.size()>=10){
-                    feedPage = feedPage+1;
+                if (myFeedList != null && myFeedList.size() >= 10) {
+                    feedPage = feedPage + 1;
                     getFriendDynamicList(feedPage);
-                    friendDynamicAdapter.notifyDataSetChanged(); 
-                }else {
-                    Toast.makeText(getActivity(),"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
-                    mPullRefreshFeedListView.onRefreshComplete(); 
+                    friendDynamicAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getActivity(), "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
+                    mPullRefreshFeedListView.onRefreshComplete();
                 }
             }
         });
         mPullRefreshFeedListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), DynamicDetailsActivity.class);
-                    String  feedId = totalFeedList.get(position).getFid();
-                    intent.putExtra("feedId",feedId);
-                    startActivity(intent);
+                Intent intent = new Intent(getActivity(), DynamicDetailsActivity.class);
+                String feedId = totalFeedList.get(position).getFid();
+                intent.putExtra("feedId", feedId);
+                startActivity(intent);
             }
         });
     }
+
     /**
      * 设置下拉刷新提示
      */
-    private void initIndicator()  
-    {  
-        ILoadingLayout startLabels = mPullRefreshFeedListView  
-                .getLoadingLayoutProxy(true, false);  
-        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
-        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
-  
-        ILoadingLayout endLabels = mPullRefreshFeedListView.getLoadingLayoutProxy(  
-                false, true);  
+    private void initIndicator() {
+        ILoadingLayout startLabels = mPullRefreshFeedListView.getLoadingLayoutProxy(true, false);
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示
+
+        ILoadingLayout endLabels = mPullRefreshFeedListView.getLoadingLayoutProxy(false, true);
         endLabels.setPullLabel("上拉加载");
-        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示
     }
+
     /**
      * 设置下拉刷新提示
      */
-    private void initIndicators()  
-    {  
-        ILoadingLayout startLabels = mPullRefreshFriendListView  
-                .getLoadingLayoutProxy(true, false);  
-        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
-        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
-        
-        ILoadingLayout endLabels = mPullRefreshFriendListView.getLoadingLayoutProxy(  
-                false, true);  
+    private void initIndicators() {
+        ILoadingLayout startLabels = mPullRefreshFriendListView.getLoadingLayoutProxy(true, false);
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示
+
+        ILoadingLayout endLabels = mPullRefreshFriendListView.getLoadingLayoutProxy(false, true);
         endLabels.setPullLabel("上拉加载");
-        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示
     }
+
     private void initTab(View v) {
         radiogroup = (RadioGroup) v.findViewById(R.id.radiogroup);
         line_1 = (View) v.findViewById(R.id.line_1);
         line_2 = (View) v.findViewById(R.id.line_2);
         line_3 = (View) v.findViewById(R.id.line_3);
-        
-        rb_feed = (RadioButton)v.findViewById(R.id.rb_dynamic);
-        rb_friend = (RadioButton)v.findViewById(R.id.rb_friend);
-        rb_msg = (RadioButton)v.findViewById(R.id.rb_msg);
+
+        rb_feed = (RadioButton) v.findViewById(R.id.rb_dynamic);
+        rb_friend = (RadioButton) v.findViewById(R.id.rb_friend);
+        rb_msg = (RadioButton) v.findViewById(R.id.rb_msg);
 
         radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -321,13 +313,13 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                 line_1.setVisibility(View.INVISIBLE);
                 line_2.setVisibility(View.INVISIBLE);
                 line_3.setVisibility(View.INVISIBLE);
-                
+
                 if (checkedId == rb_feed.getId()) {
                     Constants.checkedIndex = 0;
                     line_1.setVisibility(View.VISIBLE);
-                    rb_feed.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
-                    rb_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-                    rb_friend.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+                    rb_feed.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                    rb_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                    rb_friend.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                     layout_dynamic.setVisibility(View.VISIBLE);
                     layout_msg.setVisibility(View.GONE);
                     layout_friend.setVisibility(View.GONE);
@@ -337,9 +329,9 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                 if (checkedId == rb_friend.getId()) {
                     Constants.checkedIndex = 1;
                     line_2.setVisibility(View.VISIBLE);
-                    rb_friend.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
-                    rb_feed.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-                    rb_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+                    rb_friend.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                    rb_feed.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                    rb_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                     layout_msg.setVisibility(View.GONE);
                     layout_dynamic.setVisibility(View.GONE);
                     layout_friend.setVisibility(View.VISIBLE);
@@ -359,6 +351,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         });
         radiogroup.getChildAt(Constants.checkedIndex).performClick();
     }
+
     public static void showMask() {
         layout_mask.setVisibility(View.VISIBLE);
     }
@@ -366,6 +359,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
     public static void GoneMask() {
         layout_mask.setVisibility(View.GONE);
     }
+
     /**
      * 获取好友列表
      */
@@ -381,7 +375,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
-        map.put("page", ""+friendPage);
+        map.put("page", "" + friendPage);
         AjaxParams param = new AjaxParams(map);
 
         showDialog();
@@ -435,10 +429,10 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             }
         });
     }
-   
-  /**
-   * 获取好友动态列表接口
-   */
+
+    /**
+     * 获取好友动态列表接口
+     */
     public void getFriendDynamicList(int feedPage) {
         showDialog();
         String user_id = DBHelper.getUser(getActivity()).getId();
@@ -449,7 +443,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
         map.put("feed_from", "0");
-        map.put("page", ""+feedPage);
+        map.put("page", "" + feedPage);
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().get(Constants.URL_GET_FRIEND_DYNAMIC_LIST, param, new AjaxCallBack<Object>() {
             @Override
@@ -458,6 +452,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                 dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -475,7 +470,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                                 myFeedList = gson.fromJson(data, new TypeToken<ArrayList<FriendDynamicData>>() {
                                 }.getType());
                                 showData(myFeedList);
-                            } 
+                            }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -498,43 +493,46 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                 }
             }
         });
-        
+
     }
+
     /**
      * 处理数据加载的方法
+     * 
      * @param list
      */
-    private void showData(List<FriendDynamicData> myFeedList){
-        if(feedPage==1){
+    private void showData(List<FriendDynamicData> myFeedList) {
+        if (feedPage == 1) {
             totalFeedList.clear();
         }
-        for (FriendDynamicData myFeed:myFeedList) {
+        for (FriendDynamicData myFeed : myFeedList) {
             totalFeedList.add(myFeed);
         }
-        //给适配器赋值
+        // 给适配器赋值
         friendDynamicAdapter.setData(totalFeedList);
         mPullRefreshFeedListView.onRefreshComplete();
     }
+
     /**
      * 处理数据加载的方法
+     * 
      * @param list
      */
-    private void showFriendData(List<Friend> myFriendList){
-        if(friendPage==1){
+    private void showFriendData(List<Friend> myFriendList) {
+        if (friendPage == 1) {
             totalFriendList.clear();
         }
-        for (Friend myFriend:myFriendList) {
+        for (Friend myFriend : myFriendList) {
             totalFriendList.add(myFriend);
         }
-        //给适配器赋值
+        // 给适配器赋值
         friendAdapter.setData(totalFriendList);
         mPullRefreshFriendListView.onRefreshComplete();
     }
-  
 
     @Override
     public void onClick(View v) {
-        Intent intent ;
+        Intent intent;
         switch (v.getId()) {
         case R.id.rl_add: // 添加通讯录好友
             intent = new Intent(getActivity(), ContactAddFriendsActivity.class);
@@ -557,12 +555,12 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                 intent.putExtra("url", Constants.HAS_COMPANY);
                 startActivity(intent);
             } else {
-                intent = new Intent(getActivity(),CompanyListActivity.class);
+                intent = new Intent(getActivity(), CompanyListActivity.class);
                 startActivity(intent);
             }
             break;
         case R.id.rl_apply:
-            intent = new Intent(getActivity(),FriendApplyActivity.class);
+            intent = new Intent(getActivity(), FriendApplyActivity.class);
             startActivity(intent);
             break;
         default:
@@ -577,17 +575,46 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             if (resultCode == (-1)) {
                 Bundle bundle = data.getExtras();
                 String result = bundle.getString("result").trim();
-                if (result.contains(Constants.RQ_TAG_FRIEND)
-                        || result.contains(Constants.RQ_TAG_OTHER)) {// 判断是否为云行政二维码
-                    if(result.contains(Constants.RQ_TAG_FRIEND)){
-                        String str = result.substring(result.indexOf("&")+1,result.length());
-                        String friend_id = str.substring(str.indexOf("=")+1,str.indexOf("&"));
-                        addFriend(friend_id);
-                    }else if (result.contains(Constants.RQ_TAG_OTHER)) {
-                        Toast.makeText(getActivity(), "请扫描添加好友二维码", Toast.LENGTH_SHORT).show();
+                if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
+                    // http://www.51xingzheng.cn/d/open.html?category=app&action=feed&params=&goto_url=
+                    if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
+                        String category = "", action = "", params = "", goto_url = "";
+                        if (result.contains("params") && result.contains("goto_url")) {// 两个参数都有
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            goto_url = temp[3].substring(temp[3].lastIndexOf("=") + 1, temp[3].length());
+
+                        } else if (result.contains("params") && !result.contains("goto_url")) {// 只有参数params
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+
+                        } else if (result.contains("goto_url") && !result.contains("params")) {// 只有参数goto_url
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            goto_url = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                        } else {
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                        }
+                        if (!StringUtils.isEmpty(result)) {
+                            RouteUtil routeUtil = new RouteUtil(getActivity());
+                            routeUtil.Routing(category, action, goto_url, params);
+                        }
+                    } else {
+                        Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                        intent.putExtra("url", result);
+                        startActivity(intent);
                     }
-                } else {
-                    Toast.makeText(getActivity(), "非本APP内容，可能存在风险", Toast.LENGTH_SHORT).show();
+                } else {// 非内部app扫描，webView显示
+                    Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                    intent.putExtra("url", result);
+                    startActivity(intent);
                 }
             }
             break;
@@ -663,6 +690,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             }
         });
     }
+
     private void getUserInfo() {
         if (userInfo == null) {
             Toast.makeText(getActivity(), "用户信息错误", Toast.LENGTH_SHORT).show();
@@ -730,43 +758,43 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
             }
         });
     }
+
     /**
      * 访问接口判断是否注册公司
      */
-    private void hasCompany(){
+    private void hasCompany() {
         if (userInfo.getHas_company() == 0) {
             tv_has_company.setVisibility(View.VISIBLE);
         } else {
             tv_has_company.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void onDynamicUpdate() {
-        getFriendDynamicList(feedPage);        
+        getFriendDynamicList(feedPage);
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         feedPage = 1;
-        friendPage =1;
-        
+        friendPage = 1;
+
         myFeedList = new ArrayList<FriendDynamicData>();
-        totalFeedList =new ArrayList<FriendDynamicData>();
+        totalFeedList = new ArrayList<FriendDynamicData>();
 
         myFriendList = new ArrayList<Friend>();
         totalFriendList = new ArrayList<Friend>();
     }
 
-    
-
-   
     private AppHelpData appHelpData;
     private View vs;
-   
+
     /*
      * 帮助接口
      */
-    
+
     private void getAppHelp() {
         String user_id = DBHelper.getUser(getActivity()).getId();
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
@@ -776,8 +804,8 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
         final String action = "sns";
         User user = DBHelper.getUser(getActivity());
         Map<String, String> map = new HashMap<String, String>();
-        map.put("action",action);
-        map.put("user_id",""+user.getId());
+        map.put("action", action);
+        map.put("user_id", "" + user.getId());
         AjaxParams param = new AjaxParams(map);
         showDialog();
         new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
@@ -787,6 +815,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                 dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -799,10 +828,10 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if(StringUtils.isNotEmpty(data)){
+                            if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                appHelpData = gson.fromJson(data, AppHelpData.class); 
-                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(),appHelpData,action);  
+                                appHelpData = gson.fromJson(data, AppHelpData.class);
+                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(), appHelpData, action);
                                 addPopWindow.showPopupWindow(vs);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -822,7 +851,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener,onDynamicU
                     errorMsg = getString(R.string.servers_error);
                 }
                 // 操作失败，显示错误信息
-                if(!StringUtils.isEmpty(errorMsg.trim())){
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
                     UIUtils.showToast(getActivity(), errorMsg);
                 }
             }

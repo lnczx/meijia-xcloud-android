@@ -75,7 +75,8 @@
                             android:singleLine="true"
                             android:textColor="@android:color/black"
                             android:textColorHint="@color/common_input_hint_text_color"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                             />
 
                         <LinearLayout
                             android:layout_width="0dp"

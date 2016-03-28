@@ -240,10 +240,10 @@ public class MainPlusWaterOrderActivity extends BaseActivity implements OnClickL
                 UIUtils.showToast(MainPlusWaterOrderActivity.this, "请输入联系电话");
                 return;
             }
-            if (StringUtils.isEmpty(mRemark)) {
+           /* if (StringUtils.isEmpty(mRemark)) {
                 UIUtils.showToast(MainPlusWaterOrderActivity.this, "请输入备注");
                 return;
-            }
+            }*/
          
             postWaterAdd();                
             break;
