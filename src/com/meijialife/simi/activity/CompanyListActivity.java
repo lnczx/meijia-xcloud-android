@@ -60,6 +60,8 @@ public class CompanyListActivity extends BaseActivity implements OnClickListener
     private RelativeLayout m_rl_friend_add;//弹出popWindow
     private ImageView m_iv_friend_add;//弹出popWindow
     
+    private int flag =0;//0=卡片页面，1=请假页面
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_company_list);
@@ -73,8 +75,9 @@ public class CompanyListActivity extends BaseActivity implements OnClickListener
         requestBackBtn();
         setTitleName("公司列表");
         initCompanyView();
+        flag = getIntent().getIntExtra("flag",0);
+         
     }
-    
     private void initCompanyView(){
         totalCompanyeList = new ArrayList<CompanyData>();
         myCompanyDataList = new ArrayList<CompanyData>();
@@ -118,11 +121,25 @@ public class CompanyListActivity extends BaseActivity implements OnClickListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CompanyData companyData = myCompanyDataList.get(position);
-                Intent intent = new Intent(CompanyListActivity.this,StaffListActivity.class);
-                intent.putExtra("company_id",companyData.getCompany_id());
-                intent.putExtra("company_name",companyData.getCompany_name());
-                intent.putExtra("flag",getIntent().getIntExtra("flag",0));
-                startActivity(intent);               
+                if(flag==0){
+                    Intent intent = new Intent(CompanyListActivity.this,StaffListActivity.class);
+                    intent.putExtra("company_id",companyData.getCompany_id());
+                    intent.putExtra("company_name",companyData.getCompany_name());
+                    intent.putExtra("flag",1);
+                    startActivity(intent);               
+                }else if(flag==1){
+                    Intent intent = new Intent(CompanyListActivity.this,StaffLeaveActivity.class);
+                    intent.putExtra("company_id",companyData.getCompany_id());
+                    intent.putExtra("company_name",companyData.getCompany_name());
+                    intent.putExtra("flag",1);
+                    startActivity(intent);  
+                }else if(flag==2){
+                    Intent intent = new Intent(CompanyListActivity.this,StaffListActivity.class);
+                    intent.putExtra("company_id",companyData.getCompany_id());
+                    intent.putExtra("company_name",companyData.getCompany_name());
+                    intent.putExtra("flag",0);
+                    startActivity(intent);   
+                }
             }
         });
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_gv"
@@ -28,16 +29,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginLeft="10dp"
-                 >
+                android:orientation="horizontal" >
 
-                <ImageView
+                <com.meijialife.simi.ui.RoundImageView
                     android:id="@+id/m_leave_head_img"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
                     android:layout_margin="10dp"
-                     />
+                    android:src="@drawable/iconfont_tongxunbu"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -65,38 +71,37 @@
         </LinearLayout>
     </ScrollView>
 
-
     <LinearLayout
-    	android:layout_width="match_parent"
-    	android:layout_height="25dp"
-    	android:orientation="horizontal"    
-    	android:layout_gravity="left"
-    	android:background="@color/cut_off_rule"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_gravity="left"
+        android:background="@color/cut_off_rule"
+        android:orientation="horizontal" >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="审批进度"
-            android:gravity="center_vertical"
-            android:textSize="12sp"
             android:layout_marginLeft="20dp"
-            android:paddingTop="5dp"
+            android:gravity="center_vertical"
             android:paddingBottom="3dp"
-            />
-	</LinearLayout>
+            android:paddingTop="5dp"
+            android:text="审批进度"
+            android:textSize="12sp" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
+
         <ListView
             android:id="@+id/m_leave_pass_users"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:cacheColorHint="#00000000"
             android:divider="@color/simi_color_white"
-            android:dividerHeight="0dp"
-            />
+            android:dividerHeight="0dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -131,14 +136,12 @@
             android:textColor="@color/simi_color_white" />
     </LinearLayout>
 
-    
     <LinearLayout
         android:id="@+id/m_pass_ll2"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:visibility="gone"
-         >
+        android:visibility="gone" >
 
         <Button
             android:layout_width="match_parent"
@@ -164,5 +167,5 @@
             android:text="撤销"
             android:textColor="@color/simi_color_white" />
     </LinearLayout>
-    
+
 </LinearLayout>

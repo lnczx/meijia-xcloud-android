@@ -1,6 +1,7 @@
 package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -19,13 +20,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alipay.a.a.f;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.ContactSelectAdapter;
 import com.meijialife.simi.bean.Contact;
+import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.GetContactsRunnable;
+import com.meijialife.simi.utils.SpFileUtil;
+import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 /**
  * @description：创建卡片选择通讯录好友
@@ -35,11 +40,9 @@ import com.meijialife.simi.utils.UIUtils;
 public class ContactSelectActivity extends Activity {
 
     private final int UPDATE_LIST = 1;
-    ArrayList<String> contactsList; // 得到的所有联系人
-    private Button okbtn;
-    private Button cancelbtn;
     
-    private ArrayList<String> mobileList;
+    ArrayList<Contact> contactList;//获得联系人列表实体
+    
     private ContactSelectAdapter companyAdapter;
     private ListView listView;
     /**
@@ -52,11 +55,9 @@ public class ContactSelectActivity extends Activity {
     private TextView tv_temp;
 
     User user;
-
     Handler updateListHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
-
             case UPDATE_LIST:
                 if (m_pDialog != null) {
                     dismissDialog();
@@ -71,10 +72,8 @@ public class ContactSelectActivity extends Activity {
         setContentView(R.layout.layout_contactslist);
         user = DBHelper.getUser(this);
 
-        contactsList = new ArrayList<String>();
-        mobileList = new ArrayList<String>();
         companyAdapter = new ContactSelectAdapter(this);
-
+        contactList = new ArrayList<Contact>();
 
         ImageView title_btn_left = (ImageView) findViewById(R.id.title_btn_left);
         TextView header_tv_name = (TextView) findViewById(R.id.header_tv_name);
@@ -85,12 +84,11 @@ public class ContactSelectActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //&& Constants.finalContactList.size() > 0
-                if (Constants.finalContactList != null ) {
+                if (Constants.TEMP_FRIENDS != null ) {
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);
                     ContactSelectActivity.this.finish();
                 }
-
             }
         });
 
@@ -100,7 +98,6 @@ public class ContactSelectActivity extends Activity {
         listView.setAdapter(companyAdapter);
 
         getContacts();
-        getMobileList(Constants.finalContactList);
         
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -111,15 +108,23 @@ public class ContactSelectActivity extends Activity {
                 tv_mobile = (TextView)view.findViewById(R.id.item_tv_mobile);
                 tv_id = (TextView) view.findViewById(R.id.item_tv_id);
                 tv_temp = (TextView)view.findViewById(R.id.item_tv_temp);
-                if (cb.isChecked() == false) {
-                    cb.setChecked(true);
-                    CharSequence num = tv_temp.getText();
-                    Constants.finalContactList.add(num.toString());
-                } else {
-                    cb.setChecked(false);
-                    CharSequence num = tv_temp.getText();
-                    Constants.finalContactList.remove(num.toString());
+                
+                Contact contact = contactList.get(position);
+                if(cb.isChecked()){
+                    SpFileUtil.saveBoolean(ContactSelectActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS,contact.getPhoneNum(),false);
+                    for (int i = 0; i < Constants.TEMP_FRIENDS.size(); i++) {
+                        Friend friend2 = Constants.TEMP_FRIENDS.get(i);
+                        if (StringUtils.isEquals(contact.getPhoneNum(), friend2.getMobile())) {
+                            Constants.TEMP_FRIENDS.remove(i);
+                            --i;
+                        }
+                    }
+                }else {
+                    SpFileUtil.saveBoolean(ContactSelectActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS,contact.getPhoneNum(),true);
+                    Friend friend = new Friend(contact.getContactId(),contact.getName(),contact.getPhoneNum());
+                    Constants.TEMP_FRIENDS.add(friend); 
                 }
+                companyAdapter.notifyDataSetChanged();
             }
         });
         title_btn_ok.setOnClickListener(new OnClickListener() {
@@ -128,14 +133,6 @@ public class ContactSelectActivity extends Activity {
                 postContactData();
             }
         });
-    }
-    //获得选中的手机号
-    private void getMobileList(ArrayList<String> list){
-        for (int i = 0; i < list.size(); i++) {
-            String temp = list.get(i);
-            String mobile = temp.substring(temp.indexOf("\n")+1,temp.lastIndexOf("\n"));
-            mobileList.add(mobile);
-        }
     }
     private void getContacts() {
         ArrayList<Contact> contacts = (ArrayList<Contact>) DBHelper.getContacts(this);
@@ -149,7 +146,7 @@ public class ContactSelectActivity extends Activity {
     }
 
     public void postContactData() {
-        if (Constants.finalContactList.size() > 10) {
+        if (Constants.TEMP_FRIENDS.size() > 10) {
             UIUtils.showToast(this, "您最多可以选择10个联系人哦");
         } else {
             Intent intent = new Intent();
@@ -181,22 +178,19 @@ public class ContactSelectActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     void updateList() {
         ArrayList<Contact> contacts = (ArrayList<Contact>) DBHelper.getContacts(this);
-        contactsList = new ArrayList<String>();
-        contactsList.add(user.getName() + "\n" + user.getMobile()+"\n"+0);// 增加本人到列表中
         for (int i = 0; i < contacts.size(); i++) {
-            contactsList.add(contacts.get(i).getName() + "\n" + contacts.get(i).getPhoneNum()+"\n"+0);
+            Contact contact = new Contact(contacts.get(i).getContactId(),contacts.get(i).getName(),contacts.get(i).getPhoneNum());
+            contactList.add(contact);
         }
-        if (contactsList != null)
-            companyAdapter.setData(contactsList, Constants.finalContactList);
+        if (contactList != null)
+            companyAdapter.setData(contactList, Constants.TEMP_FRIENDS);
 //            setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item_multiple_choice, contactsList));
     }
 
-    
     @Override
     protected void onPause() {
         super.onPause();
@@ -205,7 +199,6 @@ public class ContactSelectActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        contactsList.clear();
         super.onDestroy();
     }
 

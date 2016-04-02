@@ -107,7 +107,7 @@ public class MainPlusCleanActivity extends Activity implements ListItemClickHelp
         mTv2 = (TextView)findViewById(R.id.m_tv2);
       
         mTv1.setText("保洁预约");
-        mTv2.setText("智能配置");
+        mTv2.setText("贴心服务");
        
         setOnClick();//设置点击事件
         setCardTitleColor();//设置标题颜色
@@ -241,7 +241,7 @@ public class MainPlusCleanActivity extends Activity implements ListItemClickHelp
      * @param cardType
      */
     private void setCardTitleColor(){
-      mCardTitle.setText("保洁");
+      mCardTitle.setText("保洁与绿植");
       mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_bao_jie));
       mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_bao_jie));
       mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_bao_jie));

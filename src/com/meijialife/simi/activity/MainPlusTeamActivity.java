@@ -106,8 +106,8 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         mTv1 = (TextView)findViewById(R.id.m_tv1);
         mTv2 = (TextView)findViewById(R.id.m_tv2);
       
-        mTv1.setText("团队建设");
-        mTv2.setText("智能设置");
+        mTv1.setText("团建需求");
+        mTv2.setText("精彩活动");
        
         setOnClick();//设置点击事件
         setCardTitleColor();//设置标题颜色

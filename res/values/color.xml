@@ -96,4 +96,7 @@
  	<color name="plus_car_su_tong">#eb4f38</color>
  	<color name="plus_kao_qin">#ea8010</color>
  	
+ 	 <color name="viewfinder_frame">#ff000000</color>
+  <color name="viewfinder_laser">#ffff0000</color>
+ 	
 </resources>

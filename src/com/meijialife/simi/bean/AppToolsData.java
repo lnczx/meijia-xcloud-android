@@ -2,9 +2,13 @@ package com.meijialife.simi.bean;
 
 import java.io.Serializable;
 
+import net.tsz.afinal.annotation.sqlite.Table;
+@Table(name="app_tools")
 public class AppToolsData implements Serializable{
 
     private String t_id;
+    
+    private String no;
     
     private String name;//名称
     
@@ -37,6 +41,12 @@ public class AppToolsData implements Serializable{
     private short is_del;//0=可以删除，1=不可删除
     
     
+    public String getNo() {
+        return no;
+    }
+    public void setNo(String no) {
+        this.no = no;
+    }
     public String getT_id() {
         return t_id;
     }

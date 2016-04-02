@@ -14,6 +14,7 @@ import com.meijialife.simi.bean.CityData;
 import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
+import com.meijialife.simi.bean.XcompanySetting;
 
 /**
  * 数据库
@@ -324,6 +325,15 @@ public class DBHelper {
 	public static List<CityData> getCitys(Context context){
 		List<CityData> citys = getInstance(context).searchAll(CityData.class);
 		return citys;
+	}
+	/**
+	 * 获取资产类型列表
+	 * @param context
+	 * @return
+	 */
+	public static List<XcompanySetting> getXcompanySettings(Context context){
+	    List<XcompanySetting> xcompanySetting = getInstance(context).searchAll(XcompanySetting.class);
+	    return xcompanySetting;
 	}
 	
 	/**

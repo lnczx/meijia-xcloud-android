@@ -556,6 +556,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener, onDynamic
                 startActivity(intent);
             } else {
                 intent = new Intent(getActivity(), CompanyListActivity.class);
+                intent.putExtra("flag", 2);
                 startActivity(intent);
             }
             break;

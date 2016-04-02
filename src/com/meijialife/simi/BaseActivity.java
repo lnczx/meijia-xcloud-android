@@ -11,7 +11,10 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.meijialife.simi.activity.MainPlusAffairActivity;
 import com.meijialife.simi.ui.SystemBarTintManager;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.umeng.analytics.MobclickAgent;
 
 
@@ -53,6 +56,8 @@ public class BaseActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 			    finish();
+	            SpFileUtil.clearFile(BaseActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS);
+	            SpFileUtil.clearFile(BaseActivity.this,SpFileUtil.KEY_CHECKED_STAFFS);;
 			}
 		});
 	}

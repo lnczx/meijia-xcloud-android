@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/activity_bg_color" >
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/layout_title_bar" />
+
+    <LinearLayout
+        android:id="@+id/layout_view4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:paddingBottom="10dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="5dp" >
+
+        <Button
+            android:id="@+id/bt_create_asset"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/login_btn_bg_selector"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@android:color/white" >
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/layout_view4"
+        android:layout_below="@id/view_title_bar"
+        android:orientation="vertical"
+        android:background="@color/simi_color_white"
+        >
+
+        <include
+            android:id="@+id/asset_consue"
+            layout="@layout/activity_asset_consue"
+            />
+        
+        <include
+            android:id="@+id/asset_register"
+            layout="@layout/activity_asset_register"
+            />
+        </LinearLayout>
+        
+
+</RelativeLayout>

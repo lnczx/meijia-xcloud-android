@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AssetConsumeActivity" >
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/layout_title_bar" />
+	<View
+	    android:id="@+id/m_top_line"
+	    android:layout_width="match_parent"
+	    android:layout_height="2dp"
+	    android:background="@color/home1_color_gray"
+	    android:layout_below="@+id/view_title_bar"
+	    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/m_top_line"
+        android:orientation="horizontal" >
+
+        <ListView
+            android:id="@+id/listview_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#96b2b2b2" >
+        </ListView>
+
+        <ListView
+            android:id="@+id/listview_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="#ffffff" >
+        </ListView>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:alpha="0.5"
+            android:background="#000" />
+
+        <ImageView
+            android:id="@+id/iv_add_cart"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ad_loading" />
+
+        <com.meijialife.simi.ui.BadgeView
+            android:id="@+id/tv_count_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="总价:"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+    </FrameLayout>
+
+</RelativeLayout>

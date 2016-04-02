@@ -44,6 +44,7 @@ import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.CityData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
+import com.meijialife.simi.bean.XcompanySetting;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.utils.CalendarUtils;
@@ -112,6 +113,7 @@ public class SplashActivity extends Activity {
         initRoute();
         // initCellsDb();
          getCitys(getCityAddtime());
+//         getBaseDatas(getXcompanySettingAddtime());
          
     }
     /**
@@ -430,6 +432,20 @@ public class SplashActivity extends Activity {
     	
     	return addtime;
     }
+    /**
+     * 获取请求资产列表的时间戳
+     **/
+    private long getXcompanySettingAddtime(){
+        long updateTime = 0;
+        List<XcompanySetting> list = DBHelper.getXcompanySettings(this);
+        for(int i = 0; i < list.size(); i++){
+            if(list.get(i).getUpdate_time() > updateTime){
+                updateTime = list.get(i).getUpdate_time();
+            }
+        }
+        
+        return updateTime;
+    }
     
     /**
      * 网络获取城市数据
@@ -495,6 +511,61 @@ public class SplashActivity extends Activity {
 
 				});
 	}
+	
+	/**
+	 * 基础数据接口
+	 * @param addtime
+	 */
+	private void getBaseDatas(long addtime) {
+	    Map<String, String> map = new HashMap<String, String>();
+	    map.put("t_assets", String.valueOf(addtime));
+	    AjaxParams param = new AjaxParams(map);
+	    
+	    new FinalHttp().get(Constants.GET_BASE_DATAS, param,
+	            new AjaxCallBack<Object>() {
+	        @Override
+	        public void onLoading(long count, long current) {
+	            super.onLoading(count, current);
+	        }
+	        @Override
+	        public void onFailure(Throwable t, int errorNo, String strMsg) {
+	            super.onFailure(t, errorNo, strMsg);
+	        }
+	        
+	        @Override
+	        public void onSuccess(Object t) {
+	            super.onSuccess(t);
+	            final JSONObject json;
+	            try {
+	                json = new JSONObject(t.toString());
+	                int status = Integer.parseInt(json.getString("status"));
+	                String msg = json.getString("msg");
+	                if (status == Constants.STATUS_SUCCESS) { // 正确
+	                    new Thread(new Runnable() {
+	                        @Override
+	                        public void run() {
+	                            updateXcompany(json);
+	                        }
+	                    }).start();
+	                } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+	                    Log.i("===getCells", getString(R.string.servers_error));
+	                } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+	                    Log.i("===getCells", getString(R.string.param_missing));
+	                } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+	                    Log.i("===getCells", getString(R.string.param_illegal));
+	                } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+	                    Log.i("===getCells", "999错误");
+	                } else {
+	                    Log.i("===getCells", getString(R.string.servers_error));
+	                }
+	            } catch (JSONException e) {
+	                e.printStackTrace();
+	                Toast.makeText(getApplicationContext(), getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+	            }
+	        }
+	        
+	    });
+	}
 
     /**
      * 获取城市列表成功，更新数据库
@@ -526,6 +597,35 @@ public class SplashActivity extends Activity {
             Log.i("===getCells", getString(R.string.servers_error));
         }
 
+    }
+    /**
+     * 
+     * @param json
+     */
+    private void updateXcompany(JSONObject json) {
+        ArrayList<XcompanySetting> assetDatas = new ArrayList<XcompanySetting>();
+        try {
+            JSONArray jsons = json.getJSONArray("data");
+            for (int i = 0; i < jsons.length(); i++) {
+                JSONObject obj = jsons.getJSONObject(i);
+                String id = obj.getString("id"); // 城市ID
+                String xcompany_id = obj.getString("xcompany_id"); // 
+                String name = obj.getString("name"); // 名称
+                String setting_type = obj.getString("setting_type"); //
+                String seeting_json = obj.getString("seeting_json"); //
+                String is_enable = obj.getString("is_enable"); //
+                String add_time = obj.getString("add_time"); // 最后更新时间
+                String update_time = obj.getString("update_time"); // 最后更新时间
+                XcompanySetting cityData = new XcompanySetting(id, xcompany_id, name, setting_type, seeting_json,Short.parseShort(is_enable), Long.parseLong(add_time),Long.parseLong(update_time));
+                assetDatas.add(cityData);
+            }
+            DBHelper db = DBHelper.getInstance(this);
+            for (int i = 0; i < assetDatas.size(); i++) {
+                db.add(assetDatas.get(i), assetDatas.get(i).getId());
+            }
+        } catch (JSONException e) {
+        }
+        
     }
     
     /**

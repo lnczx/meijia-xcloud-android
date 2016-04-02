@@ -72,6 +72,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      */
     private static final int PAY_TYPE_ALIPAY = 1; // 支付宝支付
     private static final int PAY_TYPE_WXPAY = 2; // 微信支付
+    private static final int PAY_TYPE_RESTMOENY = 3; // 余额支付
     /**
      * 全局对象变量定义
      */
@@ -105,6 +106,9 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private TextView tvRealPay;// 实际支付金额显示
     private ImageView iv_order_select_alipay;
     private ImageView iv_order_select_weixin;
+    private ImageView iv_order_select_restMoney;
+    
+    private RelativeLayout recharge_ll_restMoney;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +121,8 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private void init() {
         requestBackBtn();
         setTitleName("订单支付");
+        
+        recharge_ll_restMoney = (RelativeLayout)findViewById(R.id.recharge_ll_restMoney);
 
         from = getIntent().getIntExtra("from", 0);
         flag = getIntent().getIntExtra("flag", 2);// 2=发现界面支付
@@ -126,6 +132,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 card_pay = getIntent().getStringExtra("card_pay");
                 card_value = getIntent().getStringExtra("card_value");
                 card_id = getIntent().getStringExtra("card_id");
+                recharge_ll_restMoney.setVisibility(View.GONE);
             } else if (from == FROM_MISHU) {
                 Constants.USER_CHARGE_TYPE=1;
                 partnerDetail = (PartnerDetail) getIntent().getSerializableExtra("PartnerDetail");
@@ -155,9 +162,11 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         }
         findViewById(R.id.recharge_ll_wxpay).setOnClickListener(this);
         findViewById(R.id.recharge_ll_alipay).setOnClickListener(this);
+        findViewById(R.id.recharge_ll_restMoney).setOnClickListener(this);
         findViewById(R.id.btn_topay).setOnClickListener(this);
         iv_order_select_alipay = (ImageView) findViewById(R.id.iv_order_select_alipay);
         iv_order_select_weixin = (ImageView) findViewById(R.id.iv_order_select_weixin);
+        iv_order_select_restMoney = (ImageView) findViewById(R.id.iv_order_select_restMoney);
 
         TextView tv_pay_name = (TextView) findViewById(R.id.tv_pay_name);
         TextView tv_pay_money = (TextView) findViewById(R.id.tv_pay_money);
@@ -219,6 +228,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         // 设置默认选中的支付方式
         iv_order_select_alipay.setSelected(true);
         iv_order_select_weixin.setSelected(false);
+        iv_order_select_restMoney.setSelected(false);
         RelativeLayout layout_quan = (RelativeLayout) findViewById(R.id.layout_quan);
         RelativeLayout layout_addr = (RelativeLayout) findViewById(R.id.layout_addr);
         LinearLayout ll_service_type = (LinearLayout) findViewById(R.id.ll_service_type);
@@ -299,12 +309,19 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.recharge_ll_alipay:
-            iv_order_select_alipay.setSelected(true);
             iv_order_select_weixin.setSelected(false);
+            iv_order_select_restMoney.setSelected(false);
+            iv_order_select_alipay.setSelected(true);
             break;
         case R.id.recharge_ll_wxpay:
             iv_order_select_alipay.setSelected(false);
+            iv_order_select_restMoney.setSelected(false);
             iv_order_select_weixin.setSelected(true);
+            break;
+        case R.id.recharge_ll_restMoney:
+            iv_order_select_alipay.setSelected(false);
+            iv_order_select_weixin.setSelected(false);
+            iv_order_select_restMoney.setSelected(true);
             break;
         case R.id.btn_topay:
             // 来自发现页面的支付跳转
@@ -317,26 +334,28 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     postCardBuy(PAY_TYPE_WXPAY);
                 } else if (iv_order_select_weixin.isSelected() && from == FROM_MISHU) {// 微信支付秘书服务
                     postSeniorBuy(PAY_TYPE_WXPAY);
-                } else {
+                } else if (iv_order_select_restMoney.isSelected() && from == FROM_MISHU) {// 余额支付秘书服务
+                    postSeniorBuy(PAY_TYPE_RESTMOENY);
+                }else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
                 }
             } else if (flag == FROM_MYORDER) {// 来自于订单页面支付(待支付支付)
                 if (iv_order_select_alipay.isSelected()) {// 支付宝支付秘书服务
-//                    postExistedOrderBuyFromMyOrderList(PAY_TYPE_ALIPAY, myOrder);
                     postOrder(PAY_TYPE_ALIPAY, order_flag); 
                 } else if (iv_order_select_weixin.isSelected()) {// 微信支付秘书服务
-//                    postExistedOrderBuyFromMyOrderList(PAY_TYPE_WXPAY, myOrder);
                     postOrder(PAY_TYPE_WXPAY, order_flag); 
+                }else if (iv_order_select_restMoney.isSelected()) {// 余额支付秘书服务
+                    postOrder(PAY_TYPE_RESTMOENY, order_flag); 
                 } else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
                 }
             } else if (flag == FROM_MYORDER_DETAIL) {// 来自于订单页面支付(待支付支付)
                 if (iv_order_select_alipay.isSelected()) {// 支付宝支付秘书服务
-//                    postExistedOrderBuyFromMyOrderDetail(PAY_TYPE_ALIPAY, myOrderDetail);
                     postOrder(PAY_TYPE_ALIPAY, order_flag); 
                 } else if (iv_order_select_weixin.isSelected()) {// 微信支付秘书服务
-//                    postExistedOrderBuyFromMyOrderDetail(PAY_TYPE_WXPAY, myOrderDetail);
                     postOrder(PAY_TYPE_WXPAY, order_flag);
+                } else if (iv_order_select_restMoney.isSelected()) {// 余额支付秘书服务
+                    postOrder(PAY_TYPE_RESTMOENY, order_flag);
                 } else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
                 }
@@ -345,6 +364,8 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     postOrder(PAY_TYPE_ALIPAY, order_flag);//rder_flag=送水支付
                 } else if (iv_order_select_weixin.isSelected()) {// 微信支付秘书服务
                     postOrder(PAY_TYPE_WXPAY, order_flag);//order_flag=送水支付
+                }else if (iv_order_select_restMoney.isSelected()) {// 余额支付秘书服务
+                    postOrder(PAY_TYPE_RESTMOENY, order_flag);//order_flag=送水支付
                 } else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
                 }
@@ -506,6 +527,13 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     order_no).pay();
         } else if (payType == PAY_TYPE_WXPAY) {
             new WxPay(PayOrderActivity.this, PayOrderActivity.this,/* ConsAli.PAY_TO_MS_CARD */0, order_no, "服务购买",/* "0.01"*/  order_pay );
+        }else if(payType == PAY_TYPE_RESTMOENY){
+            Toast.makeText(PayOrderActivity.this, "余额支付成功",Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(PayOrderActivity.this,OrderDetailsActivity.class); 
+            intent.putExtra("orderId",orderId);
+            startActivity(intent);
+            updateUserInfo(this);
+            PayOrderActivity.this.finish();
         }
     }
     /**
@@ -579,7 +607,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     }
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     Toast.makeText(PayOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                 }

@@ -44,6 +44,7 @@ import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -202,6 +203,7 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         mLlCreate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                SpFileUtil.clearFile(CardListActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS);
                 switch (mCardType) {
                 case "1"://会议安排
                   startActivity(new Intent(CardListActivity.this, MainPlusMeettingActivity.class));

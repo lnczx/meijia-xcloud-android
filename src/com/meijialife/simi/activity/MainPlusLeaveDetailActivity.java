@@ -30,6 +30,7 @@ import com.meijialife.simi.bean.LeaveDetailData;
 import com.meijialife.simi.bean.PassUsersData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.OrderTypeUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -49,7 +50,7 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
     private TextView mLeaveType;//请假类型
     private TextView mLeaveName;//用户名称
     private TextView mLeaveStatus;//审批状态
-    private ImageView mHeadImg;//用户头像
+    private RoundImageView mHeadImg;//用户头像
     private ListView mPassUser;//审批进度
     private LinearLayout mPassLl;//审批按钮
     private LinearLayout mPassLl2;//审批按钮
@@ -94,7 +95,7 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
         mLeaveType = (TextView)findViewById(R.id.m_leave_type);
         mLeaveName = (TextView)findViewById(R.id.m_leave_name);
         mLeaveStatus = (TextView)findViewById(R.id.m_leave_statue_name);
-        mHeadImg = (ImageView)findViewById(R.id.m_leave_head_img);
+        mHeadImg = (RoundImageView)findViewById(R.id.m_leave_head_img);
         mPassUser = (ListView)findViewById(R.id.m_leave_pass_users);
         mPassLl = (LinearLayout)findViewById(R.id.m_pass_ll);
         mPassLl2 = (LinearLayout)findViewById(R.id.m_pass_ll2);

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+                 android:id="@+id/recharge_ll_alipay"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:background="#ffffff"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/iv_zhifubao"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/alipay" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
+                    android:layout_toRightOf="@id/iv_zhifubao"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="支付宝支付" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="推荐有支付宝账号的用户使用"
+                        android:textColor="@color/common_input_hint_text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_order_select_alipay"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/bg_order_selector" 
+                  	android:scaleType="fitXY"  
+                    />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/cut_off_rule" />
+
+            <RelativeLayout
+                android:id="@+id/recharge_ll_wxpay"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:background="#ffffff"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/iv_weixin"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/pay_wx_img" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
+                    android:layout_toRightOf="@id/iv_weixin"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="微信支付" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="微信支付"
+                        android:textColor="@color/common_input_hint_text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_order_select_weixin"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/bg_order_selector"
+                    android:scaleType="fitXY"
+                     />
+            </RelativeLayout>
+    
+  <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/cut_off_rule" />
+
+            <RelativeLayout
+                android:id="@+id/recharge_ll_restMoney"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:background="#ffffff"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/iv_restMoney"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/iconfont_qianbao" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
+                    android:layout_toRightOf="@id/iv_restMoney"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="余额支付" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="余额支付"
+                        android:textColor="@color/common_input_hint_text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_order_select_restMoney"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/bg_order_selector"
+                    android:scaleType="fitXY"
+                     />
+            </RelativeLayout>
+    
+</LinearLayout>

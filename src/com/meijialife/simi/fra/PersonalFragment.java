@@ -49,6 +49,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
+import com.meijialife.simi.activity.AddressActivity;
 import com.meijialife.simi.activity.ApplicationsCenterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.MoreActivity;
@@ -319,13 +320,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.rl_person_order:// 订单
             startActivity(new Intent(getActivity(), MyOrderActivity.class));
             break;
-        case R.id.rl_person_score:// 积分商城
-            Intent intent1 = new Intent();
-            intent1.setClass(getActivity(), PointsShopActivity.class);
-            intent1.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
-            intent1.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
-            intent1.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
-            startActivity(intent1);
+        case R.id.rl_person_score:// 常用地址
+            startActivity(new Intent(getActivity(), AddressActivity.class));
             break;
         case R.id.rl_person_shop:// 知识库
 //            popWebView(Constants.SHOP_URL);
@@ -333,10 +329,10 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             intent.putExtra("url", Constants.SHOP_URL);
             startActivity(intent);
             break;
-        case R.id.rl_person_attest:// 认证考试
+        case R.id.rl_person_attest:// 培训讲座
 //            popWebView(Constants.ATTEST_URL);
             intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url", Constants.ATTEST_URL);
+            intent.putExtra("url", Constants.JOB_URL);
             startActivity(intent);
             break;
         case R.id.rl_person_money:// 开店
@@ -346,11 +342,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 //            intent.putExtra("url", Constants.MONEY_URL);
             startActivity(intent);
             break;
-        case R.id.rl_person_train:// 培训
-//            popWebView(Constants.TRAIN_URL);
-            intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url", Constants.TRAIN_URL);
-            startActivity(intent);
+        case R.id.rl_person_train:// 积分商城
+           Intent intent2 = new Intent();
+            intent2.setClass(getActivity(), PointsShopActivity.class);
+            intent2.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
+            intent2.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
+            intent2.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
+            startActivity(intent2);
             break;
         default:
             break;

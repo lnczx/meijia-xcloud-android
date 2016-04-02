@@ -71,6 +71,7 @@ public class MeetingListActivity extends BaseActivity  {
     private ArrayList<MeetingData> totalMeetingList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
     private int page = 1;
+    private RelativeLayout m_rl_meeting;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,9 @@ public class MeetingListActivity extends BaseActivity  {
      */
     private void initMeetingView(){
         totalMeetingList = new ArrayList<MeetingData>();
+        
+        m_rl_meeting = (RelativeLayout)findViewById(R.id.m_rl_meeting);
+        m_rl_meeting.setVisibility(View.VISIBLE);
         mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.m_meeting_list);
         adapter = new MeetingListAdapter(MeetingListActivity.this);
         mPullRefreshListView.setAdapter(adapter);

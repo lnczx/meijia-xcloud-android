@@ -15,6 +15,7 @@ import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.MainPlusActivity;
 import com.meijialife.simi.activity.MainPlusApplicationActivity;
+import com.meijialife.simi.activity.MainPlusAssetListActivity;
 import com.meijialife.simi.activity.MainPlusCarOrderActivity;
 import com.meijialife.simi.activity.MainPlusCleanActivity;
 import com.meijialife.simi.activity.MainPlusExpressActivity;
@@ -170,6 +171,9 @@ public class RouteUtil {
                 }else if (action.equals("card")) {
                     intent = new Intent(context, CardDetailsActivity.class);
                     intent.putExtra("card_id", params);
+                    context.startActivity(intent);
+                }else if (action.equals("asset")) {
+                    intent = new Intent(context, MainPlusAssetListActivity.class);
                     context.startActivity(intent);
                 }
             }

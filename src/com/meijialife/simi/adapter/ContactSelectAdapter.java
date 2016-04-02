@@ -2,6 +2,7 @@ package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.Contact;
+import com.meijialife.simi.bean.Friend;
+import com.meijialife.simi.utils.SpFileUtil;
+import com.meijialife.simi.utils.StringUtils;
 
 
 /**
@@ -21,24 +27,21 @@ import com.meijialife.simi.R;
  */
 public class ContactSelectAdapter extends BaseAdapter {
     private LayoutInflater inflater;
-    private ArrayList<String> list;
-    private Context context;
-    private ArrayList<String> contactList;
+    private ArrayList<Contact> list;
+    private ArrayList<Friend> checkedList;
     private int flag=1;
+    private Context context;
     
-    // 用来控制CheckBox选中状态
-    private static HashMap<Integer, Boolean> isSelected;
-
     public ContactSelectAdapter(Context context) {
-        this.context = context;
         inflater = LayoutInflater.from(context);
-        list = new ArrayList<String>();
-        contactList = new ArrayList<String>();
+        this.context = context;
+        list = new ArrayList<Contact>();
+        checkedList = new ArrayList<Friend>();
     }
 
-    public void setData(ArrayList<String> list, ArrayList<String> contactList) {
+    public void setData(ArrayList<Contact> list, ArrayList<Friend> checkedList) {
         this.list = list;
-        this.contactList = contactList;
+        this.checkedList = checkedList;
         notifyDataSetChanged();
     }
 
@@ -77,28 +80,14 @@ public class ContactSelectAdapter extends BaseAdapter {
         } else {
             holder = (Holder) convertView.getTag();
         }
-        
-        String str = list.get(position);
-        String name = str.substring(0,str.indexOf("\n"));
-        String mobile = str.substring(str.indexOf("\n")+1,str.lastIndexOf("\n"));
-        String user_id = str.substring(str.lastIndexOf("\n")+1,str.length());
-        
-        holder.tv_name.setText(name);
-        holder.tv_mobile.setText(mobile);
-        holder.tv_id.setText(user_id);
-        holder.tv_temp.setText(str);
-        if(contactList.size()>0){
-            for (int i = 0; i < contactList.size(); i++) {
-                CharSequence contatct = contactList.get(i);
-                String temp1 = contatct.toString();
-                String mobile2 = temp1.substring(temp1.indexOf("\n")+1,temp1.lastIndexOf("\n"));
-                CharSequence temp = str;
-                if(mobile2.equals(mobile)){
-                    holder.cb.setChecked(true);
-                }
-            } 
+        Contact contact = list.get(position);
+        holder.tv_name.setText(contact.getName());
+        holder.tv_mobile.setText(contact.getPhoneNum());
+        boolean is_checked =SpFileUtil.getBoolean(context, SpFileUtil.KEY_CHECKED_FRIENDS,contact.getPhoneNum(),false);
+        if(is_checked){
+            holder.cb.setChecked(true);;
         }else {
-            holder.cb.setChecked(false);
+            holder.cb.setChecked(false);;
         }
         return convertView;
     }

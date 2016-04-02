@@ -390,7 +390,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
                         android:layout_toRightOf="@id/iv_tongzhi_icon"
-                        android:text="订机票"
+                        android:text="票价智能对比"
                         android:textColor="#676767" />
 
                     <com.meijialife.simi.ui.ToggleButton

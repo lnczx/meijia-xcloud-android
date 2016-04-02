@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meijialife.simi"
-    android:versionCode="29"
-    android:versionName="2.1.8" >
+    android:versionCode="31"
+    android:versionName="2.2.0" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -243,7 +243,6 @@
             android:name=".activity.MainPlusNotificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <!-- 侧边栏模块 -->
         <activity
             android:name=".activity.AccountInfoActivity"
@@ -1064,6 +1063,34 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
+         <!-- 资产类型列表 -->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusAssetTypeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+        </activity>
+         <!-- 资产列表 -->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusAssetListActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+        </activity>
+        <!--资产领用-->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusAssetOrderActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+       <!-- 领用类型列表 -->
+        <activity
+            android:name="com.meijialife.simi.activity.AssetConsumeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+        </activity>
         <!-- 请假列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusLeaveListActivity"
@@ -1102,6 +1129,13 @@
         <!-- 快递下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusExpressOrderActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <!-- 快递类型 -->
+        <activity
+            android:name="com.meijialife.simi.activity.MainPlusExpressTypeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" >
@@ -1159,6 +1193,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"  >
         </activity>
+        <activity
+            android:name="com.meijialife.simi.activity.StaffLeaveActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+        </activity>
+        
     </application>
 
 </manifest>

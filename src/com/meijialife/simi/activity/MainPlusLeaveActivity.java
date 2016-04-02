@@ -42,6 +42,7 @@ import com.meijialife.simi.ui.wheelview.WheelView;
 import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -165,6 +166,7 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
             showDateWindow();
             break;
         case R.id.bt_create_leave:
+            SpFileUtil.clearFile(this,SpFileUtil.KEY_CHECKED_STAFFS);;
             postLeave();
             break;
         case R.id.layout_select_who:
@@ -596,7 +598,6 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         Constants.LEAVE_TYPE_REMARK = "";
         Constants.finalContactList.clear();
         Constants.finalContacBeantMap.clear();
-        ;
     }
 
     @Override

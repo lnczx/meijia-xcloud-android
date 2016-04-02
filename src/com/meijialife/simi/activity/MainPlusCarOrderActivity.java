@@ -11,8 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.Selection;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;

@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import android.os.Environment;
 
+import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.ContactBean;
+import com.meijialife.simi.bean.Friend;
 
 public class Constants {
 
@@ -60,6 +62,9 @@ public class Constants {
     /**企业-员工考勤记录接口**/
     public static final String URL_POST_CHECKIN = ROOT_URL + "company/checkin.json";
     
+    //基础数据接口
+    /**基础数据接口**/
+    public static final String GET_BASE_DATAS =ROOT_URL + "get_base_datas.json";// 测试用，需更换
     
     /** app更新接口 **/
     public static final String URL_GET_VERSION = "http://182.92.160.194/" + "d/version.xml";// 测试用，需更换
@@ -345,6 +350,7 @@ public class Constants {
      /*
       * H5页面链接
       */
+     public static final String JOB_URL = "http://www.yingsheng.com/college/list-103-0-0-0";
      //知识库
      public static final String SHOP_URL = "http://mishuzhuli.com/category/xingzhengbaike";
      //认证考试
@@ -419,7 +425,8 @@ public class Constants {
      /**团建订单列表**/
      public static final String GET_TEAM_ORDER_URL = ROOT_URL + "order/get_list_team.json";
      /**团建H5链接**/
-     public static final String H5_TEAM_URL = "http://123.57.173.36/simi-h5/show/teamwork-set.html";
+     public static final String H5_TEAM_URL = "http://m.tuanjianbao.com/lines/search?activeType=3";
+//     public static final String H5_TEAM_URL = "http://123.57.173.36/simi-h5/show/teamwork-set.html";
      /**团队建设下单接口**/
      public static final String POST_ADD_TEAM = ROOT_URL + "order/post_add_team.json";
      /**团队建设订单详情**/
@@ -448,6 +455,10 @@ public class Constants {
      public static final String GET_DETAIL_EXPRESS_URL = ROOT_URL + "record/get_detail_express.json";
      /**快递图片链接**/
      public static final String EXPRESS_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-molv.png";
+     /**调用外部快递服务商接口**/
+     public static final String GET_KUAIDI_OUT_URL = "http://m.kuaidi100.com/autonumber/auto";
+   
+     
      //车辆速通
      /**车辆速通列表接口**/
      public static final String GET_CAR_ORDER_LIST_URL = ROOT_URL + "car/get_order_list.json";
@@ -481,6 +492,21 @@ public class Constants {
      public static final String CARD_RECYCLE_HELP_URL ="http://123.57.173.36/simi-h5/show/help-recycle.html";
      /**团建**/  
      public static final String CARD_TEAMWORK_HELP_URL ="http://123.57.173.36/simi-h5/show/help-teamwork.html";
+
+     //资产管理
+     /**资产管理入库记录列表接口**/
+     public static final String GET_ASSET_IN_LIST_URL =ROOT_URL +"record/get_record_assets.json";
+     /**资产管理入库记录列表接口**/
+     public static final String GET_ASSET_USER_LIST_URL =ROOT_URL +"record/get_asset_use.json";
+     /**公司资产登记接口**/
+     public static final String POST_ASSET_IN_ORDER_URL =ROOT_URL +"record/post_asset.json";
+     /**条形码获取详细信息接口**/
+     public static final String GET_RECORD_BARCODE_URL =ROOT_URL +"record/barcode.json";
+     
+     
+     //卡片选择接收人
+     /**临时选中接收人**/
+     public static final ArrayList<Friend> TEMP_FRIENDS = new ArrayList<Friend>();
      
       
 

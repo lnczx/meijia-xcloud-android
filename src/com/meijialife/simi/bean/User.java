@@ -2,7 +2,6 @@ package com.meijialife.simi.bean;
 
 import java.io.Serializable;
 
-import android.R.integer;
 import net.tsz.afinal.annotation.sqlite.Table;
 
 /**

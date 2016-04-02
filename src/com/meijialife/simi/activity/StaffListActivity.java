@@ -2,7 +2,6 @@ package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
@@ -23,14 +22,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewDebug.FlagToString;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -40,22 +38,19 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.adapter.CompanyListAdapter;
 import com.meijialife.simi.adapter.ContactsAdapter;
-import com.meijialife.simi.bean.CompanyData;
 import com.meijialife.simi.bean.CompanyDetail;
-import com.meijialife.simi.bean.Contact;
-import com.meijialife.simi.bean.ContactBean;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -91,18 +86,17 @@ public class StaffListActivity extends Activity implements OnClickListener {
     private BitmapDrawable defDrawable;
 
     private ImageButton ibtn_rq;// 右侧显示个人二维码信息
-    private TextView mRqTitle;//二维码标题
+    private TextView mRqTitle;// 二维码标题
     private PopupWindow mPopupWindow;
     private View music_popunwindwow;
     private LinearLayout ll_rq;
     private ImageView iv_rq_left;
     private LayoutInflater layoutInflater;
-    
+
     private ArrayList<Friend> myFriendList;
     private ArrayList<Friend> totalFriendList;
-    private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    private PullToRefreshListView mPullRefreshListView;// 上拉刷新的控件
     private int page = 1;
-    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,9 +121,9 @@ public class StaffListActivity extends Activity implements OnClickListener {
         ll_rq = (LinearLayout) music_popunwindwow.findViewById(R.id.ll_rq);
         iv_rq_left = (ImageView) music_popunwindwow.findViewById(R.id.iv_rq_left);
         ibtn_rq = (ImageButton) findViewById(R.id.ibtn_rq);
-        mRqTitle = (TextView)music_popunwindwow.findViewById(R.id.m_rq_title);
+        mRqTitle = (TextView) music_popunwindwow.findViewById(R.id.m_rq_title);
         mRqTitle.setText("企业二维码名片");
-        
+
         title_btn_left = (ImageView) findViewById(R.id.title_btn_left);
         header_tv_name = (TextView) findViewById(R.id.header_tv_name);
         header_tv_name.setText(company_name);
@@ -150,41 +144,39 @@ public class StaffListActivity extends Activity implements OnClickListener {
 
         initStaffView();
     }
-    
-    
-    private void initStaffView(){
+
+    private void initStaffView() {
         totalFriendList = new ArrayList<Friend>();
         myFriendList = new ArrayList<Friend>();
-        mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.pull_refresh_staff_list);
+        mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_staff_list);
         adapter = new ContactsAdapter(this);
         mPullRefreshListView.setAdapter(adapter);
         mPullRefreshListView.setMode(Mode.BOTH);
         initIndicator();
-        getStaffList(Constants.finalContactList,page);
+        getStaffList(Constants.finalContactList, page);
         mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //下拉刷新任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
+                // 下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                getStaffList(Constants.finalContactList,page);
-                adapter.notifyDataSetChanged(); 
+                getStaffList(Constants.finalContactList, page);
+                adapter.notifyDataSetChanged();
             }
+
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //上拉加载任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
+                // 上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(myFriendList!=null && myFriendList.size()>=10){
-                    page = page+1;
-                    getStaffList(Constants.finalContactList,page);
-                    adapter.notifyDataSetChanged(); 
-                }else {
-                    Toast.makeText(StaffListActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
-                    mPullRefreshListView.onRefreshComplete(); 
+                if (myFriendList != null && myFriendList.size() >= 10) {
+                    page = page + 1;
+                    getStaffList(Constants.finalContactList, page);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(StaffListActivity.this, "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
+                    mPullRefreshListView.onRefreshComplete();
                 }
             }
         });
@@ -197,62 +189,65 @@ public class StaffListActivity extends Activity implements OnClickListener {
                 tv_id = (TextView) view.findViewById(R.id.item_tv_id);
                 tv_temp = (TextView) view.findViewById(R.id.item_tv_temp);
                 UserInfo userInfo = DBHelper.getUserInfo(StaffListActivity.this);
-                if (StringUtils.isEquals(userInfo.getUser_id(),tv_id.getText().toString())) {
-                    UIUtils.showToast(StaffListActivity.this, "审批人不能选择自己！");
-                    return;
-                }
-                
-                if (cb.isChecked() == false) {
-                    cb.setChecked(true);
-                    CharSequence num = tv_temp.getText();
-                    Constants.finalContactList.add(num.toString());
-                    
-                    ContactBean contactBean = new ContactBean(tv_mobile.getText().toString()
-                                ,tv_name.getText().toString()
-                                ,tv_id.getText().toString());
-                    Constants.finalContacBeantMap.put(tv_id.getText().toString(),
-                                contactBean);
+                Friend friend1 = totalFriendList.get(position);
+                if (cb.isChecked()) {
+                    if (!StringUtils.isEmpty(friend1.getMobile())) {
+                        SpFileUtil.saveBoolean(StaffListActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS, friend1.getMobile(), false);
+                    } else {
+                        SpFileUtil.saveBoolean(StaffListActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS, friend1.getFriend_id(), false);
+                    }
+                    for (int i = 0; i < Constants.TEMP_FRIENDS.size(); i++) {
+                        Friend friend2 = Constants.TEMP_FRIENDS.get(i);
+                        if (StringUtils.isEquals(friend1.getMobile(), friend2.getMobile())
+                                || StringUtils.isEquals(friend1.getFriend_id(), friend2.getFriend_id())) {
+                            Constants.TEMP_FRIENDS.remove(i);
+                            --i;
+                        }
+                    }
+
                 } else {
-                    cb.setChecked(false);
-                    CharSequence num = tv_temp.getText();
-                    Constants.finalContactList.remove(num.toString());
-                    Constants.finalContacBeantMap.remove(tv_id.getText().toString());
-                }           
+                    if (!StringUtils.isEmpty(friend1.getMobile())) {
+                        SpFileUtil.saveBoolean(StaffListActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS, friend1.getMobile(), true);
+                    } else {
+                        SpFileUtil.saveBoolean(StaffListActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS, friend1.getFriend_id(), true);
+                    }
+                    Constants.TEMP_FRIENDS.add(friend1);
+                }
+                adapter.notifyDataSetChanged();
             }
         });
     }
+
     /**
      * 设置下拉刷新提示
      */
-    private void initIndicator()  
-    {  
-        ILoadingLayout startLabels = mPullRefreshListView  
-                .getLoadingLayoutProxy(true, false);  
-        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
-        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
-  
-        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(  
-                false, true);  
+    private void initIndicator() {
+        ILoadingLayout startLabels = mPullRefreshListView.getLoadingLayoutProxy(true, false);
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示
+
+        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(false, true);
         endLabels.setPullLabel("上拉加载");
-        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示
     }
-    
+
     /**
      * 处理数据加载的方法
+     * 
      * @param list
      */
-    private void showData(ArrayList<Friend> myFriendList,ArrayList<String> contactList,int flag){
-        if(myFriendList!=null && myFriendList.size()>0){
-            if(page==1){
+    private void showData(ArrayList<Friend> myFriendLis, int flag) {
+        if (myFriendList != null && myFriendList.size() > 0) {
+            if (page == 1) {
                 totalFriendList.clear();
             }
             for (Friend friend : myFriendList) {
                 totalFriendList.add(friend);
             }
-            //给适配器赋值
-            adapter.setData(totalFriendList,contactList,flag);
+            // 给适配器赋值
+            adapter.setData(totalFriendList, Constants.TEMP_FRIENDS, flag);
         }
         mPullRefreshListView.onRefreshComplete();
     }
@@ -299,8 +294,8 @@ public class StaffListActivity extends Activity implements OnClickListener {
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                Log.d("data",data);
-                                CompanyDetail companyDetail = gson.fromJson(data,CompanyDetail.class);
+                                Log.d("data", data);
+                                CompanyDetail companyDetail = gson.fromJson(data, CompanyDetail.class);
                                 String rq_url = companyDetail.getQrCode();
                                 finalBitmap.display(music_popunwindwow.findViewById(R.id.iv_rq_code), rq_url, defDrawable.getBitmap(),
                                         defDrawable.getBitmap());
@@ -341,7 +336,7 @@ public class StaffListActivity extends Activity implements OnClickListener {
     /**
      * 获得企业员工列表接口
      */
-    public void getStaffList(final ArrayList<String> staffList,int page) {
+    public void getStaffList(final ArrayList<String> staffList, int page) {
 
         String user_id = DBHelper.getUser(StaffListActivity.this).getId();
 
@@ -352,7 +347,7 @@ public class StaffListActivity extends Activity implements OnClickListener {
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
         map.put("company_id", company_id);
-        map.put("page", page+"");
+        map.put("page", page + "");
         AjaxParams param = new AjaxParams(map);
         showDialog();
         new FinalHttp().get(Constants.URL_GET_STAFF_LIST, param, new AjaxCallBack<Object>() {
@@ -379,9 +374,8 @@ public class StaffListActivity extends Activity implements OnClickListener {
                                 Gson gson = new Gson();
                                 myFriendList = gson.fromJson(data, new TypeToken<ArrayList<Friend>>() {
                                 }.getType());
-//                                adapter.setData(friendList, staffList, flag);
-                                showData(myFriendList,staffList,flag);
-                            } 
+                                showData(myFriendList, flag);
+                            }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -431,21 +425,23 @@ public class StaffListActivity extends Activity implements OnClickListener {
             popRqCode();// 弹出企业二维码
             break;
         case R.id.iv_rq_left:
-            closePopWindow();//返回关闭二维码
+            closePopWindow();// 返回关闭二维码
             break;
         case R.id.ll_rq:
-            closePopWindow();//触屏关闭二维码
+            closePopWindow();// 触屏关闭二维码
             break;
         default:
             break;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         page = 1;
-        
+
     }
+
     /**
      * 进度条使用
      */

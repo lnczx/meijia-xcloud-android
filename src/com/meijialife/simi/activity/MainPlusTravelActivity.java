@@ -892,9 +892,10 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
         Constants.CARD_ADD_TREAVEL_CONTENT = "";
+        Constants.TEMP_FRIENDS.clear();
+
     }
 
     @Override

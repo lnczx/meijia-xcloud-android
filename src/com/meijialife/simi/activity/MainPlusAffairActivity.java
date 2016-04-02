@@ -38,6 +38,7 @@ import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.ContactBean;
+import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -51,6 +52,7 @@ import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 /**
@@ -117,6 +119,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private View v;
     
     private AppHelpData appHelpData;
+    private int checkedNum=0;//所选的人员个数
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,17 +163,19 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
         
-        ArrayList<String> list = new ArrayList<String>();
+        /**
+         * 初始化勾选本人
+         */
         String userName = userInfo.getName();
         String mobile = userInfo.getMobile();
         if(!StringUtils.isEmpty(mobile)){
             if(StringUtils.isEmpty(userName)){
                 userName = mobile;
             }
-            list.add(userName+"\n"+mobile+"\n"+userInfo.getId());
-            Constants.finalContactList = list;
-            tv_select_name.setText("已选择：" +userName);
-            tv_select_number.setText(Constants.finalContactList.size() + "位");            
+            Friend friend = new Friend(userInfo.getUser_id(),userInfo.getName(),userInfo.getHead_img(),userInfo.getMobile(),true);
+            Constants.TEMP_FRIENDS.add(friend);
+            tv_select_name.setText("已选择："+userName);
+            tv_select_number.setText(Constants.TEMP_FRIENDS.size() + "位");            
         }
         
         is_senior = userInfo.getIs_senior();
@@ -331,6 +336,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             showDateWindow();
             break;
         case R.id.bt_create_travel:
+            SpFileUtil.clearFile(MainPlusAffairActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS);
             createCard(isUpdate);
             break;
         case R.id.layout_select_who:
@@ -596,33 +602,13 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
             case GET_CONTACT:
-                if (Constants.finalContactList != null && Constants.finalContactList.size() > 0) {
+                if (Constants.TEMP_FRIENDS != null && Constants.TEMP_FRIENDS.size() > 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            String name = null;
-                            String str = null;
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 0; i < Constants.finalContactList.size(); i++) {
-                                String bean = Constants.finalContactList.get(i).toString();
-                                if (name != null) {
-                                    name = bean.substring(0, bean.indexOf("\n"));
-                                    if(name.equals("")||name.length()<=0){
-                                        name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
-                                    }
-                                } else {
-                                    name = bean.substring(0, bean.indexOf("\n"));
-                                    if(name.equals("")||name.length()<=0){
-                                        name = bean.substring(bean.indexOf("\n")+1,bean.lastIndexOf("\n"));
-                                    }
-                                }
-                                
-                                sb.append(name+",");
-                                str = sb.toString();
-                                str = str.substring(0,str.lastIndexOf(","));
-                            }
+                            String str =showCheckedName();
                             tv_select_name.setText("已选择：" + str);
-                            tv_select_number.setText(Constants.finalContactList.size() + "位");
+                            tv_select_number.setText(Constants.TEMP_FRIENDS.size() + "位");
                         }
                     });
                 }else {
@@ -641,29 +627,31 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             }
         }
     }
+    private String showCheckedName(){
+        StringBuilder sb = new StringBuilder();
+        //我的好友
+        if (Constants.TEMP_FRIENDS != null && Constants.TEMP_FRIENDS.size() > 0) {
+            for (int i = 0; i < Constants.TEMP_FRIENDS.size(); i++) {
+                Friend myFriend = Constants.TEMP_FRIENDS.get(i);
+                if (!StringUtils.isEmpty(myFriend.getName())) {
+                    sb.append(myFriend.getName() + ",");
+                }else {
+                    sb.append(myFriend.getMobile() + ",");
+                }
+            }
+        }
+        String str = sb.toString();
+        str = sb.toString();
+        return str;
+    }
 
      
     private void createCard(boolean update) {
         showDialog();
 
         if (!isUpdate) {// 如果不是更新的
-            if (null != Constants.finalContactList && Constants.finalContactList.size() > 0) {
-
-                ArrayList<ContactBean> arrayList = new ArrayList<>();
-                for (int i = 0; i < Constants.finalContactList.size(); i++) {
-                    contactBean = new ContactBean();
-                    String bean = Constants.finalContactList.get(i).toString();
-                    String name = bean.substring(0, bean.indexOf("\n"));
-                    String number = bean.substring(bean.indexOf("\n") + 1, bean.lastIndexOf("\n"));
-                    String user_id = bean.substring(bean.lastIndexOf("\n")+1,bean.length());
-                    contactBean.setMobile(number);
-                    contactBean.setName(name);
-                    contactBean.setUser_id(user_id);
-                    arrayList.add(contactBean);
-
-                }
-                mJson = new Gson().toJson(arrayList);
-                LogOut.debug("json:" + mJson);
+            if (null != Constants.TEMP_FRIENDS && Constants.TEMP_FRIENDS.size() > 0) {
+                mJson = new Gson().toJson(Constants.TEMP_FRIENDS);
             } else {
                 UIUtils.showToast(MainPlusAffairActivity.this, "请选择参会人员");
                 dismissDialog();
@@ -789,6 +777,8 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         super.onDestroy();
         Constants.CARD_ADD_AFFAIR_CONTENT="";
         Constants.finalContactList = new ArrayList<String>();
+
+        Constants.TEMP_FRIENDS.clear();
     }
 
     @Override

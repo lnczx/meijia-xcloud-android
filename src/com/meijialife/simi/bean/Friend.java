@@ -25,6 +25,26 @@ public class Friend implements Serializable {
     
     public String mobile;
     
+    public boolean checked;
+    
+    public Friend() {
+        super();
+    }
+
+    public Friend(String friend_id, String name, String mobile) {
+        super();
+        this.friend_id = friend_id;
+        this.name = name;
+        this.mobile = mobile;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
     public String getId() {
         return id;
@@ -81,5 +101,15 @@ public class Friend implements Serializable {
     public void setIm_username(String im_username) {
         this.im_username = im_username;
     }
+
+    public Friend(String friend_id, String name, String head_img, String mobile, boolean checked) {
+        super();
+        this.friend_id = friend_id;
+        this.name = name;
+        this.head_img = head_img;
+        this.mobile = mobile;
+        this.checked = checked;
+    }
+
 
 }

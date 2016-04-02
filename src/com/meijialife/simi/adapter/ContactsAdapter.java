@@ -1,7 +1,7 @@
 package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 
 import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
@@ -11,11 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 
 /**
@@ -25,43 +28,28 @@ import com.meijialife.simi.utils.StringUtils;
 public class ContactsAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private ArrayList<Friend> list;
+    private ArrayList<Friend> checkedList;
 
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
-    private Context context;
-    private ArrayList<String> contactList;
     private int flag=1;
-    
-    // 用来控制CheckBox选中状态
-    private static HashMap<Integer, Boolean> isSelected;
-
+    private Context context;
+   
     public ContactsAdapter(Context context) {
-        this.context = context;
         inflater = LayoutInflater.from(context);
+        this.context = context;
         list = new ArrayList<Friend>();
         finalBitmap = FinalBitmap.create(context);
         defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_defult_touxiang);
-        isSelected = new HashMap<Integer, Boolean>();
-        contactList = new ArrayList<String>();
     }
 
-    public void setData(ArrayList<Friend> list, ArrayList<String> contactList,int flag) {
+    public void setData(ArrayList<Friend> list,ArrayList<Friend> checkedList,int flag) {
         this.list = list;
-        this.contactList = contactList;
-        for (int i = 0; i < list.size(); i++) {
-            getIsSelected().put(i, false);
-        }
+        this.checkedList = checkedList;
         this.flag = flag;
         notifyDataSetChanged();
     }
 
-    public static HashMap<Integer, Boolean> getIsSelected() {
-        return isSelected;
-    }
-
-    public static void setIsSelected(HashMap<Integer, Boolean> isSelected) {
-        ContactsAdapter.isSelected = isSelected;
-    }
 
     @Override
     public int getCount() {
@@ -87,18 +75,21 @@ public class ContactsAdapter extends BaseAdapter {
             holder.tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
             holder.tv_id = (TextView) convertView.findViewById(R.id.item_tv_id);
             holder.iv_header = (RoundImageView) convertView.findViewById(R.id.item_iv_icon);
-            holder.cb = (CheckBox) convertView.findViewById(R.id.cb_check_box);
             holder.tv_mobile = (TextView)convertView.findViewById(R.id.item_tv_mobile);
             holder.tv_temp = (TextView)convertView.findViewById(R.id.item_tv_temp);
+            holder.m_iv_friend = (ImageView)convertView.findViewById(R.id.m_iv_friend);
+            holder.m_ll_checked = (LinearLayout)convertView.findViewById(R.id.m_ll_checked);
+            holder.cb_check_box = (CheckBox)convertView.findViewById(R.id.cb_check_box);
             if(flag==1){
-                holder.cb.setVisibility(View.VISIBLE);
+                holder.cb_check_box.setVisibility(View.VISIBLE);
             }else {
-                holder.cb.setVisibility(View.GONE);
+                holder.cb_check_box.setVisibility(View.GONE);
             }
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
+        
         if (StringUtils.isEmpty(list.get(position).getName())) {
             holder.tv_name.setText(list.get(position).getMobile());
         } else {
@@ -106,19 +97,20 @@ public class ContactsAdapter extends BaseAdapter {
         }
         holder.tv_mobile.setText(list.get(position).getMobile());
         holder.tv_id.setText(list.get(position).getFriend_id());
-        String contactStr =list.get(position).getName()+"\n"+
-                    list.get(position).getMobile()+"\n"+list.get(position).getFriend_id();
-        holder.tv_temp.setText(contactStr);
-        if(contactList.size()>0){
-            for (int i = 0; i < contactList.size(); i++) {
-                CharSequence contatct = contactList.get(i);
-                CharSequence temp = contactStr;
-                if(contatct.equals(temp)){
-                    holder.cb.setChecked(true);
-                }
-            } 
+        /**
+         * 显示被选中的联系人
+         */
+        Friend friend1 = list.get(position);
+        boolean is_checked =false;
+        if(!StringUtils.isEmpty(friend1.getMobile())){
+            is_checked =SpFileUtil.getBoolean(context, SpFileUtil.KEY_CHECKED_FRIENDS,friend1.getMobile(),false);
         }else {
-            holder.cb.setChecked(false);
+            is_checked =SpFileUtil.getBoolean(context, SpFileUtil.KEY_CHECKED_FRIENDS,friend1.getFriend_id(),false);
+        }
+        if(is_checked){
+            holder.cb_check_box.setChecked(true);
+        }else {
+            holder.cb_check_box.setChecked(false);
         }
         String url = list.get(position).getHead_img();
         finalBitmap.display(holder.iv_header, url, defDrawable.getBitmap(), defDrawable.getBitmap());
@@ -129,9 +121,11 @@ public class ContactsAdapter extends BaseAdapter {
         RoundImageView iv_header;
         TextView tv_name;
         TextView tv_id;
-        CheckBox cb;
         TextView tv_mobile;
         TextView tv_temp;
+        ImageView m_iv_friend;
+        LinearLayout m_ll_checked;
+        CheckBox cb_check_box;
     }
 
 }

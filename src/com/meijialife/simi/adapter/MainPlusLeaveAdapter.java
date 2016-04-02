@@ -1,39 +1,21 @@
 package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.AppToolsData;
 import com.meijialife.simi.bean.LeaveData;
-import com.meijialife.simi.bean.User;
-import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.inter.ListItemClickHelp;
-import com.meijialife.simi.utils.NetworkUtils;
-import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.UIUtils;
+import com.meijialife.simi.ui.RoundImageView;
 
 /**
  * 加号--请假列表---适配器
@@ -84,7 +66,7 @@ public class MainPlusLeaveAdapter extends BaseAdapter {
 		if (convertView == null) {
 			holder = new Holder();
 			convertView = inflater.inflate(R.layout.main_plus_leave_item, null);
-			holder.m_center_icon = (ImageView) convertView.findViewById(R.id.m_center_icon);
+			holder.m_center_icon = (RoundImageView) convertView.findViewById(R.id.m_center_icon);
 			holder.m_center_title = (TextView) convertView.findViewById(R.id.m_center_title);
 			holder.m_center_describe = (TextView) convertView.findViewById(R.id.m_center_describe);
 			holder.m_center_provider = (TextView) convertView.findViewById(R.id.m_center_provider);
@@ -106,7 +88,7 @@ public class MainPlusLeaveAdapter extends BaseAdapter {
 	}
 	
 	class Holder {
-		ImageView m_center_icon;
+	    RoundImageView m_center_icon;
 		TextView  m_center_title;
 		TextView  m_center_describe;
 		TextView  m_center_provider;

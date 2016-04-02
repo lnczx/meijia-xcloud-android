@@ -107,7 +107,7 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
         mTv2 = (TextView)findViewById(R.id.m_tv2);
       
         mTv1.setText("一键送水");
-        mTv2.setText("智能配置");
+        mTv2.setText("贴心服务");
        
         setOnClick();//设置点击事件
         setCardTitleColor(mCardType);//设置标题颜色
