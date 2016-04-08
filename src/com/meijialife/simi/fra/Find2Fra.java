@@ -368,11 +368,11 @@ public class Find2Fra extends BaseFragment {
             radio.setId(_id + i);
             radio.setText(chanelBean.getName());
             radio.setTag(chanelBean);
-            if (i == 0) {
-                radio.setChecked(true);
-                int itemWidth = (int) radio.getPaint().measureText(chanelBean.getName());
-                mImageView.setLayoutParams(new LinearLayout.LayoutParams(itemWidth + radio.getPaddingLeft() + radio.getPaddingRight(), 4));
-            }
+                if (i == 0) {
+                    radio.setChecked(true);
+                    int itemWidth = (int) radio.getPaint().measureText(chanelBean.getName());
+                    mImageView.setLayoutParams(new LinearLayout.LayoutParams(itemWidth + radio.getPaddingLeft() + radio.getPaddingRight(), 4));
+                }
             myRadioGroup.addView(radio);
             buttonList.add(radio);
         }
@@ -380,14 +380,7 @@ public class Find2Fra extends BaseFragment {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-            /*    
-                if (checkedId==5) {//全部
-                    find_all_list.setVisibility(View.VISIBLE);
-                    find_other_list.setVisibility(View.GONE);
-                }else {
-                    find_all_list.setVisibility(View.GONE);
-                    find_other_list.setVisibility(View.VISIBLE);
-                }*/
+           
                 for (Iterator iterator = buttonList.iterator(); iterator.hasNext();) {
                     RadioButton button = (RadioButton) iterator.next();
                     int buttonId =button.getId();

@@ -3,13 +3,12 @@ package com.meijialife.simi.bean;
 import java.io.Serializable;
 
 /**
- * @description：资产返回实体(小类)
+ * @description：公司资产列表实体
  * @author： kerryg
  * @date:2016年3月31日 
  */
 public class AssetData implements Serializable {
     
-    private Long id;//登记Id
     
     private Long companyId;//公司Id
     
@@ -21,7 +20,7 @@ public class AssetData implements Serializable {
     
     private String name;//资产名称
     
-    private String total;//数量
+    private String stock;//库存
     
     private String price;//单价
     
@@ -32,13 +31,46 @@ public class AssetData implements Serializable {
     private String place;//存放位置
     
     private String seq;//编号
+    
+    private Long add_time;
+    
+    private Long update_time;
 
-    public Long getId() {
-        return id;
+    
+    private int count;
+   
+    
+    
+    public int getCount() {
+        return count;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
+
+    public Long getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(Long add_time) {
+        this.add_time = add_time;
+    }
+
+    public Long getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(Long update_time) {
+        this.update_time = update_time;
     }
 
     public Long getCompanyId() {
@@ -81,14 +113,7 @@ public class AssetData implements Serializable {
         this.name = name;
     }
 
-    public String getTotal() {
-        return total;
-    }
-
-    public void setTotal(String total) {
-        this.total = total;
-    }
-
+  
     public String getPrice() {
         return price;
     }

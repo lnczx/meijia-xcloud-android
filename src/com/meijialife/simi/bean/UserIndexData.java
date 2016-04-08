@@ -7,26 +7,43 @@ import java.io.Serializable;
  *
  */
 public class UserIndexData implements Serializable {
-    
-	private String id;//
-	private String mobile;//
-	private String head_img;//
-	private String name;//
-	private String sex;//
-	private String province_name;//
-	private float rest_money;//
-	private int user_type;//用户类型 0 = 普通用户 1= 秘书
-	private String poi_distance;//
-	private String im_user_name;//
-	private int total_card;//卡片数量
-	private int total_coupon;//优惠券数量
-	private int total_friends;//好友总数
-	private int is_friend;//0=不是好友，1=是好友
-	
-	public UserIndexData(){}
 
-	
-	
+    private String id;//
+    private String mobile;//
+    private String head_img;//
+    private String name;//
+    private String sex;//
+    private String province_name;//
+    private float rest_money;//
+    private int user_type;// 用户类型 0 = 普通用户 1= 秘书
+    private String poi_distance;//
+    private String im_user_name;//
+    private int total_card;// 卡片数量
+    private int total_coupon;// 优惠券数量
+    private int total_friends;// 好友总数
+    private int is_friend;// 0=不是好友，1=是好友
+    private int total_feed;// 动态数量
+    private int score;// 积分
+
+    public UserIndexData() {
+    }
+
+    public int getTotal_feed() {
+        return total_feed;
+    }
+
+    public void setTotal_feed(int total_feed) {
+        this.total_feed = total_feed;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public int getIs_friend() {
         return is_friend;
     }
@@ -34,8 +51,6 @@ public class UserIndexData implements Serializable {
     public void setIs_friend(int is_friend) {
         this.is_friend = is_friend;
     }
-
-
 
     public String getId() {
         return id;
@@ -140,7 +155,5 @@ public class UserIndexData implements Serializable {
     public void setTotal_friends(int total_friends) {
         this.total_friends = total_friends;
     }
-	
-	
 
 }

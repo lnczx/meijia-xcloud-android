@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/m_banner_homes"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <include
+            android:id="@+id/m_banner"
+            layout="@layout/banner" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:layout_below="@id/m_banner"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/m_home1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="8dp" >
+
+                <com.meijialife.simi.ui.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_zhishixueyuan"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="知识学院" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/m_home2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="8dp" >
+
+                <com.meijialife.simi.ui.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_fuwudating"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="服务大厅" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/m_home3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="8dp" >
+
+                <com.meijialife.simi.ui.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_qiandaoyouli"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="签到有礼" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/m_home4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="8dp" >
+
+                <com.meijialife.simi.ui.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_jifenshangcheng"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="积分兑换" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+  <RelativeLayout
+        android:id="@+id/m_rl_category"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/simi_color_line_gray"
+        android:visibility="visible" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:padding="5dp"
+            android:text="每日新知"
+            android:textColor="@color/simi_color_black" />
+    </RelativeLayout>
+    
+</LinearLayout>

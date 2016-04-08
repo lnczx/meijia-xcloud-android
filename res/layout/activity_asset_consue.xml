@@ -94,6 +94,7 @@
                         android:background="@null"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
+                        android:inputType="number"
                         android:hint="请输入手机号!"
                         android:maxLength="20"
                         android:singleLine="true"

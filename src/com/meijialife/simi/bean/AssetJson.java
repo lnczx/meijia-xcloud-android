@@ -13,7 +13,7 @@ public class AssetJson implements Serializable {
 
     private String asset_type_id;// 资产类别Id
 
-    private String total;// 数量
+    private int total;// 数量
 
     private String price;// 单价
 
@@ -35,11 +35,12 @@ public class AssetJson implements Serializable {
         this.asset_type_id = asset_type_id;
     }
 
-    public String getTotal() {
+
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 

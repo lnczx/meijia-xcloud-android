@@ -1,6 +1,7 @@
 package com.meijialife.simi.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 import net.tsz.afinal.annotation.sqlite.Id;
 import net.tsz.afinal.annotation.sqlite.Table;
@@ -13,7 +14,6 @@ import net.tsz.afinal.annotation.sqlite.Table;
 
 public class XcompanySetting implements Serializable {
     
-    @Id(column="id")
     private String id;//
     
     private String company_id;//
@@ -31,6 +31,8 @@ public class XcompanySetting implements Serializable {
     private Long update_time;
     
     private int count;//选择的数量
+    
+    private List<AssetData> assetDataList;
 
     
     
@@ -59,6 +61,14 @@ public class XcompanySetting implements Serializable {
     }
     
     
+
+    public List<AssetData> getAssetDataList() {
+        return assetDataList;
+    }
+
+    public void setAssetDataList(List<AssetData> assetDataList) {
+        this.assetDataList = assetDataList;
+    }
 
     public int getCount() {
         return count;

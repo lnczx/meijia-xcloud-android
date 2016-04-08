@@ -1,6 +1,5 @@
 package com.meijialife.simi.activity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +24,6 @@ import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.AssetJson;
 import com.meijialife.simi.bean.Barcode;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -44,6 +42,8 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
     private UserInfo userInfo;
     private final static int SCANNIN_GREQUEST_CODES = 5;
     private final static int REQUEST_CODES = 1;
+    private final static int CATEGORY_REQUEST_CODES = 2;//跳转类型
+    private final static int CATEGORY_RESULT_CODES = 3;//跳转类型
 
     // 控件声明---领用登记
     private EditText mAssetUserName;
@@ -55,7 +55,6 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
     private String assetUserNamelStr;// 用户名称
     private String assetUserMobileStr;// 用户手机号
     private String assetRemarksStr;// 领用用途
-    private ArrayList<AssetJson> assetJson;// 
 
     // 控件声明---入库登记
     private TextView mAssetLevel;// 资产类别
@@ -75,6 +74,7 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
     private String assetUnitStr;// 规格
     private String assetNumStr;// 编号
     private String assetLocationStr;// 位置
+    
 
     private int flag;// 0==领用登记；1==入库登记
     private LinearLayout asset_consue;// 领用
@@ -155,6 +155,9 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
             mAssetLevel.setText(typeName);
             assetLevelId = data.getStringExtra("typeId");
             break;
+        case CATEGORY_RESULT_CODES://获取领用的资产类型
+           
+            break;
         default:
             break;
         }
@@ -164,6 +167,7 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
     protected void onDestroy() {
         super.onDestroy();
         Constants.WATER_ADD_REMARK = "";
+        Constants.ASSET_JSON.clear();
     }
 
     @Override
@@ -203,13 +207,13 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
 //                CommunitySDK mCommSDK = CommunityFactory.getCommSDK(MainPlusAssetOrderActivity.this);
              // 打开微社区的接口, 参数1为Context类型
 //             mCommSDK.openCommunity(MainPlusAssetOrderActivity.this);
-              /*  assetUserNamelStr = mAssetUserName.getText().toString().trim();
+                assetUserNamelStr = mAssetUserName.getText().toString().trim();
                 assetUserMobileStr = mAssetUserMobile.getText().toString().trim();
-               if(assetJson !=null && assetJson.size()>0){
+               if(Constants.ASSET_JSON !=null && Constants.ASSET_JSON.size()>0){
                    postAssetUse();
                }else {
                    UIUtils.showToast(MainPlusAssetOrderActivity.this, "请选择资产类型");
-               }*/
+               }
             }
             break;
         case R.id.m_scan_zbar:
@@ -226,7 +230,7 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
         case R.id.m_ll_asset_category:
             intent = new Intent();
             intent.setClass(MainPlusAssetOrderActivity.this, AssetConsumeActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, CATEGORY_REQUEST_CODES);
             break;
         default:
             break;
@@ -297,7 +301,7 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
     private void postAssetUse() {
         
         UserInfo userInfo = DBHelper.getUserInfo(this);
-        String  mJson = new Gson().toJson(assetJson);
+        String  mJson = new Gson().toJson(Constants.ASSET_JSON);
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", userInfo.getUser_id());
         map.put("company_id", userInfo.getCompany_id());
@@ -382,7 +386,6 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
                             Gson gson = new Gson();
                             barcodeData =(Barcode) gson.fromJson(data,Barcode.class);
                             showBarInfo(barcodeData);
-                            
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(MainPlusAssetOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

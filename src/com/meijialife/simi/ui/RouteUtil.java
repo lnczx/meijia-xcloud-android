@@ -63,6 +63,7 @@ public class RouteUtil {
                 } else if (action.equals("sns")) {//圈子
                     MainActivity mainActivity = (MainActivity)context;
                     mainActivity.change2Contacts();
+                    Constants.checkedIndex =0;
                 } else if (action.equals("mine")) {//我的
                     MainActivity mainActivity = (MainActivity)context;
                     mainActivity.changePersonal();

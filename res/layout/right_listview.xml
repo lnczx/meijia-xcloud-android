@@ -10,6 +10,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:background="@drawable/iconfont_yuyin"
+        android:visibility="gone"
        />
     <TextView
         android:id="@+id/tv_name"
@@ -17,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/iv_pic"
         android:paddingLeft="20dp"
+        android:paddingTop="20dp"
         android:text="矿泉水"/>
     <TextView
         android:id="@+id/tv_desc"
@@ -40,10 +42,10 @@
 
     <ImageView
         android:id="@+id/iv_add"
-        android:layout_width="70dp"
-        android:layout_height="60dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:onClick="onClick"
-        android:src="@drawable/iconfont_yuyin"
+        android:src="@drawable/iconfont_jiahao"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"/>
 
@@ -58,9 +60,9 @@
       />
     <ImageView
         android:id="@+id/iv_remove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ad_loading"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/iconfont_jianhao"
         android:layout_toLeftOf="@id/et_count"
         android:layout_centerVertical="true"
         android:visibility="invisible"/>

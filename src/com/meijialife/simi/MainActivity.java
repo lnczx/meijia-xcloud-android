@@ -65,13 +65,13 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.fra.Find2Fra;
 import com.meijialife.simi.fra.Home1Fra;
+import com.meijialife.simi.fra.Home1NewFra;
 import com.meijialife.simi.fra.Home3Fra;
 import com.meijialife.simi.fra.PersonalFragment;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.GetContactsRunnable;
-import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
@@ -307,7 +307,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             if (!slideMenu.isMainScreenShowing()) {
                 return;
             }
-            change(new Home1Fra());
+//            change(new Home1Fra());
+            change(new Home1NewFra());
             setSelected(mBt1);
             updateTitle(1);
             slideMenu.isUse = false;

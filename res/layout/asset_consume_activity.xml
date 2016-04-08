@@ -39,7 +39,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true" >
 
         <TextView
@@ -61,10 +61,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="总价:"
+            android:gravity="center"
+            android:text="数量:"
             android:textColor="#fff"
             android:textSize="20sp" />
+        
+        <Button
+            android:id="@+id/m_btn_use"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="去登记"
+            android:layout_gravity="right"
+            android:background="@color/blue"
+            />
     </FrameLayout>
 
 </RelativeLayout>

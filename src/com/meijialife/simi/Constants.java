@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import android.os.Environment;
 
-import com.meijialife.simi.bean.Contact;
+import com.meijialife.simi.bean.AssetJsons;
 import com.meijialife.simi.bean.ContactBean;
 import com.meijialife.simi.bean.Friend;
 
@@ -72,8 +72,12 @@ public class Constants {
     public static final String URL_GET_CITY_LIST = ROOT_URL + "city/get_list.json";
     /** 意见反馈接口 **/
     public static final String URL_POST_FEEDBACK = ROOT_URL + "user/post_feedback.json";
+    //我的积分
     /** 积分明细接口 **/
     public static final String URL_GET_SCORE_DETAILS = ROOT_URL + "user/get_score.json";
+    /**我的积分帮助H5**/
+    public static final String SCORE_HELP_URL = "http://123.57.173.36/simi-h5/show/score-intro.html";
+  
     //卡片列表接口
     public final static String URL_GET_CARD_LIST = ROOT_URL + "card/get_list.json";
     //卡片添加接口
@@ -502,13 +506,24 @@ public class Constants {
      public static final String POST_ASSET_IN_ORDER_URL =ROOT_URL +"record/post_asset.json";
      /**条形码获取详细信息接口**/
      public static final String GET_RECORD_BARCODE_URL =ROOT_URL +"record/barcode.json";
+     /**公司资产列表接口**/
+     public static final String GET_ASSET_LIST_URL =ROOT_URL +"record/get_asset_list.json";
      
      
      //卡片选择接收人
      /**临时选中接收人**/
      public static final ArrayList<Friend> TEMP_FRIENDS = new ArrayList<Friend>();
+     /**资产管理领用类型(小类)统计**/
+     public static ArrayList<AssetJsons> ASSET_JSON = new ArrayList<AssetJsons>();
+
+     //签到获取积分接口
+     public static final String POST_DAY_SIGN = ROOT_URL + "user/day_sign.json";
      
-      
+     //新首页广告位
+     public static final String GET_HOME1_BANNERS_URL =ROOT_URL +"dict/get_ads.json";
+     public static final String GET_HOME1_MSG_URL ="http://51xingzheng.cn/";
+     public static final String ZHI_SHI_XUE_YUAN_URL ="http://51xingzheng.cn";
+  
 
      
      

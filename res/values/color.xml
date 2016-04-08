@@ -99,4 +99,17 @@
  	 <color name="viewfinder_frame">#ff000000</color>
   <color name="viewfinder_laser">#ffff0000</color>
  	
+  <!-- 我的积分中图标-->
+  <color name="score_button">#FE6D47</color>
+  <color name="score_text_use">#11cd6e</color>
+  <color name="score_title_bg">#F15A5A</color>
+  <color name="score_num">#F7CA2C</color>
+  <color name="score_current_text">#999999</color>
+  <color name="score_sub_title_bg">#F2F2F2</color>
+  <color name="score_sub_title_text">#666666</color>
+  <color name="score_help_text">#3190E8</color>
+  <color name="score_list_action">#333333</color>
+  <color name="score_list_date">#C7C7C7</color>
+  
+  
 </resources>

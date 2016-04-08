@@ -53,6 +53,7 @@ import com.meijialife.simi.activity.AddressActivity;
 import com.meijialife.simi.activity.ApplicationsCenterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.MoreActivity;
+import com.meijialife.simi.activity.MyIntegralActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
@@ -277,20 +278,19 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.ibtn_person:
             MainActivity.slideMenu();
             break;
-        case R.id.item_qianbao:// 钱包
-            startActivity(new Intent(getActivity(), MyWalletActivity.class));
+        case R.id.item_qianbao:// 动态
+            MainActivity mainActivity = (MainActivity)getActivity();
+            mainActivity.change2Contacts();
+            Constants.checkedIndex =0;
             break;
-        case R.id.item_youhui:// 优惠券
-            startActivity(new Intent(getActivity(), DiscountCardActivity.class));
+        case R.id.item_youhui:// 好友
+            MainActivity mainActivity1 = (MainActivity)getActivity();
+            mainActivity1.change2Contacts();
+            Constants.checkedIndex =1;
             break;
         case R.id.item_jifen:// 积分
 //            startActivity(new Intent(getActivity(), PointsActivity.class));
-            Intent intent6 = new Intent();
-            intent6.setClass(getActivity(), PointsShopActivity.class);
-            intent6.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
-            intent6.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
-            intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
-            startActivity(intent6);
+            startActivity(new Intent(getActivity(),MyIntegralActivity.class));
             break;
      /*   case R.id.rl_person_items1:// 工具箱--更多
 //             startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
@@ -517,7 +517,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 user = gson.fromJson(data, UserIndexData.class);
-                                showData();
+                                showData(user);
                             } else {
                                 // UIUtils.showToast(getActivity(), "数据错误");
                             }
@@ -547,7 +547,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
     }
 
-    private void showData() {
+    private void showData(UserIndexData user) {
         if (user == null) {
             return;
         }
@@ -564,12 +564,12 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         if (StringUtils.isNotEmpty(user.getPoi_distance())) {
             tv_distance.setText("距离你" + user.getPoi_distance() + "米");
         }
-        tv_money_num.setText("￥" + userInfo.getRest_money() + "");
-        tv_coupon_num.setText(user.getTotal_coupon() + "");
-        tv_score_num.setText(userInfo.getScore() + "");
-
+        tv_money_num.setText(user.getTotal_feed()+"");
+        tv_coupon_num.setText(user.getTotal_friends() + "");
+        tv_score_num.setText(user.getScore() + "");
+        userInfo.setScore(user.getScore());
+        DBHelper.updateUserInfo(getActivity(), userInfo);
         finalBitmap.display(iv_top_head, user.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
-
     }
 
     /**

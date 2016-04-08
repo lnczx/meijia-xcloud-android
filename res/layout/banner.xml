@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:orientation="vertical" 
+    android:background="@color/bg_gv"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp" >
+
+        <com.meijialife.simi.ui.MyViewPager
+            android:id="@+id/vp"
+            android:layout_width="match_parent"
+            android:layout_height="180dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center" >
+
+            <View
+                android:id="@+id/v_dot0"
+                style="@style/dot_style"
+                android:background="@drawable/dot_focused"
+                android:visibility="invisible" />
+
+            <View
+                android:id="@+id/v_dot1"
+                style="@style/dot_style" 
+                android:visibility="invisible"/>
+
+            <View
+                android:id="@+id/v_dot2"
+                style="@style/dot_style" 
+                android:visibility="invisible"/>
+
+            <View
+                android:id="@+id/v_dot3"
+                style="@style/dot_style" 
+                android:visibility="invisible"/>
+
+            <View
+                android:id="@+id/v_dot4"
+                style="@style/dot_style"
+                android:visibility="invisible" />
+        </LinearLayout>
+           <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="top|right"
+            android:gravity="center"
+           
+            >
+            
+               
+                <ImageView
+                    android:id="@+id/btn_saoma"
+                    android:layout_width="@dimen/bottom_bar_icon_width_size"
+                    android:layout_height="@dimen/bottom_bar_icon_height_size"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:src="@drawable/iconfont_saotiaoma"
+                    android:background="@drawable/rq_bg" 
+                    android:layout_gravity="center"
+                    android:padding="2dp"
+                    />
+               </LinearLayout>
+        
+    </FrameLayout>
+
+</LinearLayout>
