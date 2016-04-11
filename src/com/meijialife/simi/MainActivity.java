@@ -307,7 +307,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             if (!slideMenu.isMainScreenShowing()) {
                 return;
             }
-//            change(new Home1Fra());
             change(new Home1NewFra());
             setSelected(mBt1);
             updateTitle(1);
@@ -328,16 +327,11 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             break;
         case R.id.tab_bt_3: // 圈子
             currentTabIndex = 3;
-            Constants.checkedIndex=0;
-            change2Contacts();
+//            Constants.checkedIndex=0;
+//            change2Contacts();
+            change2Home1();
             break;
         case R.id.tab_bt_4: // 我的
-          /*  currentTabIndex = 4;
-            change(new PersonalFragment());
-            setSelected(mBt4);
-            // updateTitle(4);
-            slideMenu.isUse = false;
-            view_title_bar.setVisibility(View.GONE);*/
             changePersonal();
             break;
         case R.id.tab_bt_5: // 加号
@@ -371,21 +365,12 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             startActivity(intent5);
             break;
         case R.id.item_6: // 积分商城
-//            startActivity(new Intent(this, PointsActivity.class));
-
-//            Intent intent6 = new Intent(this, WebViewActivity.class);
-//            intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP+"?user_id="+DBHelper.getUserInfo(MainActivity.this).getUser_id());
-//            intent6.putExtra("title", "积分兑换");
-//            startActivity(intent6);
-            
-            
             Intent intent6 = new Intent();
             intent6.setClass(MainActivity.this, PointsShopActivity.class);
             intent6.putExtra("navColor", "#E8374A");    //配置导航条的背景颜色，请用#ffffff长格式。
             intent6.putExtra("titleColor", "#ffffff");    //配置导航条标题的颜色，请用#ffffff长格式。
             intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP+"?user_id="+DBHelper.getUserInfo(MainActivity.this).getUser_id());    //配置自动登陆地址，每次需服务端动态生成。
             startActivity(intent6);
-            
             break;
         case R.id.item_7: // 推荐有奖
             startActivity(new Intent(this, ShareActivity.class));
@@ -436,6 +421,16 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         slideMenu.isUse = false;
         view_title_bar.setVisibility(View.GONE);
     }
+    /**
+     * 切换到动态
+     */
+    public void changeFeeds(){
+        currentTabIndex = 4;
+        change(new Home3Fra(this));
+        setSelected(mBt4);
+        slideMenu.isUse = false;
+        view_title_bar.setVisibility(View.GONE);
+    }
 
     /**
      * 切换到消息Fragment
@@ -461,6 +456,16 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         }
         view_title_bar.setVisibility(View.GONE);
         change(new Home3Fra(this));
+        setSelected(mBt3);
+        updateTitle(3);
+        slideMenu.isUse = false;
+    }
+    public void change2Home1() {
+        if (!slideMenu.isMainScreenShowing()) {
+            return;
+        }
+        view_title_bar.setVisibility(View.GONE);
+        change(new Home1Fra());
         setSelected(mBt3);
         updateTitle(3);
         slideMenu.isUse = false;

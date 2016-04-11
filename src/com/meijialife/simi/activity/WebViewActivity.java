@@ -1,6 +1,7 @@
 package com.meijialife.simi.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,6 +17,10 @@ import android.widget.Toast;
 
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.PartnerDetail;
+import com.meijialife.simi.bean.ServicePrices;
+import com.meijialife.simi.bean.UserInfo;
+import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.StringUtils;
 
 /**
@@ -30,6 +35,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     private String url;
     private String titleStr;
+    private TextView m_tv_buy;
+    private Double disPrice;
+    private PartnerDetail partnerDetail;
+    private ServicePrices servicePrices;//服务报价
+    private TextView m_tv_money;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +54,45 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private void init() {
         url = getIntent().getStringExtra("url");
         titleStr = getIntent().getStringExtra("title");
+        disPrice = getIntent().getDoubleExtra("dis_price",0);
+        partnerDetail =(PartnerDetail) getIntent().getSerializableExtra("partnerDetail");
+        servicePrices =(ServicePrices) getIntent().getSerializableExtra("servicePrices");
 
         btn_back = (ImageView) findViewById(R.id.title_btn_left);
         btn_back.setOnClickListener(this);
         tv_title = (TextView) findViewById(R.id.header_tv_name);
+        m_tv_buy = (TextView)findViewById(R.id.m_tv_buy);
+        m_tv_money = (TextView)findViewById(R.id.m_tv_money);
+        m_tv_money.setText("￥"+disPrice);
+        UserInfo userInfo = DBHelper.getUserInfo(WebViewActivity.this);
+        final String mobile = userInfo.getMobile();
+        final String name = userInfo.getName();
+        m_tv_buy.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
+                    Intent intent = new Intent(WebViewActivity.this,BindMobileActivity.class);
+                    WebViewActivity.this.startActivity(intent);
+                }else {
+                    if(disPrice>0){//普通金额支付界面
+                        Intent intent = new Intent(WebViewActivity.this, PayOrderActivity.class);
+                        intent.putExtra("PartnerDetail",partnerDetail);
+                        intent.putExtra("from", PayOrderActivity.FROM_MISHU);
+                        intent.putExtra("flag", PayOrderActivity.FROM_FIND);
+                        intent.putExtra("servicePrices",servicePrices);
+                        WebViewActivity.this.startActivity(intent);
+                    }else {//免费咨询跳转到0元支付界面
+                        Intent intent = new Intent(WebViewActivity.this, PayZeroOrderActivity.class);
+                        intent.putExtra("PartnerDetail",partnerDetail);
+                        intent.putExtra("from", PayOrderActivity.FROM_MISHU);
+                        intent.putExtra("flag", PayOrderActivity.FROM_FIND);
+                        intent.putExtra("servicePrices",servicePrices);
+                        WebViewActivity.this.startActivity(intent);
+                    }
+                  
+                }                
+            }
+        });
 
         if (StringUtils.isEmpty(url)) {
             Toast.makeText(getApplicationContext(), "数据错误", 0).show();

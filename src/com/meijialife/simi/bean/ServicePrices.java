@@ -15,11 +15,28 @@ public class ServicePrices implements Serializable{
     private Double price;//原价
     private Double dis_price;//折扣价
     private String name;//价格名称
+    private String img_url;//图片
+    private String service_title;//副标题
+    
     private Long service_price_id;//服务类别
     private int is_addr;
     
     
+    
+    
    
+    public String getImg_url() {
+        return img_url;
+    }
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
+    }
+    public String getService_title() {
+        return service_title;
+    }
+    public void setService_title(String service_title) {
+        this.service_title = service_title;
+    }
     public int getIs_addr() {
         return is_addr;
     }

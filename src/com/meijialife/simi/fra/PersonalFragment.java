@@ -69,7 +69,6 @@ import com.meijialife.simi.ui.SelectableRoundedImageView;
 import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.BlurUtils;
-import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -280,16 +279,15 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             break;
         case R.id.item_qianbao:// 动态
             MainActivity mainActivity = (MainActivity)getActivity();
-            mainActivity.change2Contacts();
+            mainActivity.changeFeeds();
             Constants.checkedIndex =0;
             break;
         case R.id.item_youhui:// 好友
             MainActivity mainActivity1 = (MainActivity)getActivity();
-            mainActivity1.change2Contacts();
+            mainActivity1.changeFeeds();
             Constants.checkedIndex =1;
             break;
         case R.id.item_jifen:// 积分
-//            startActivity(new Intent(getActivity(), PointsActivity.class));
             startActivity(new Intent(getActivity(),MyIntegralActivity.class));
             break;
      /*   case R.id.rl_person_items1:// 工具箱--更多
@@ -326,7 +324,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.rl_person_shop:// 知识库
 //            popWebView(Constants.SHOP_URL);
             intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url", Constants.SHOP_URL);
+            intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
             startActivity(intent);
             break;
         case R.id.rl_person_attest:// 培训讲座
@@ -492,21 +490,17 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         map.put("view_user_id", user_id + "");
         AjaxParams param = new AjaxParams(map);
 
-        showDialog();
         new FinalHttp().get(Constants.URL_GET_USER_INDEX, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
                 dismissDialog();
-                LogOut.i("========", "onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -614,7 +608,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                                 finalBitmap.display(music_popunwindwow.findViewById(R.id.iv_rq_code), rq_url, defDrawable.getBitmap(),
                                         defDrawable.getBitmap());
                             } else {
-                                Toast.makeText(getActivity(), "您的二维码还没有生存", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "您的二维码还没有生成", Toast.LENGTH_SHORT).show();
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

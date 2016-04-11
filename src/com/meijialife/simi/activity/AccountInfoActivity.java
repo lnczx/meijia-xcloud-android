@@ -140,7 +140,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         et_mobile.setText(user.getMobile());
         et_gender.setText(user.getSex());
 
-        String is_senior = DBHelper.getUserInfo(this).getIs_senior();
+//        String is_senior = DBHelper.getUserInfo(this).getIs_senior();
        /* if (StringUtils.isEquals(is_senior, "1")) {
             et_card.setText("您已购买秘书服务");
         } else {

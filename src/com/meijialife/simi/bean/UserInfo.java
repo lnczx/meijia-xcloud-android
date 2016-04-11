@@ -17,10 +17,10 @@ public class UserInfo implements Serializable {
     private String mobile;
     
     /** 第三方登陆类型 qq/weixin/weibo **/
-    private String third_type;
+//    private String third_type;
     
     /** 第三方登陆openid **/
-    private String open_id;
+//    private String open_id;
     
     /**  **/
     private String province_name;
@@ -64,7 +64,6 @@ public class UserInfo implements Serializable {
     /** 是否有真人管家服务 1=是   0=否（用机器人管家） **/
     private String is_senior;
     
-    /**  **/
     private String sec_id;
     
     /** 秘书Im账号 **/
@@ -77,10 +76,10 @@ public class UserInfo implements Serializable {
     private String im_username;
     
     /** 机器人管家IM账号 **/
-    private String im_robot_username;
+//    private String im_robot_username;
     
     /** 机器人管家IM昵称 **/
-    private String im_robot_nickname;
+//    private String im_robot_nickname;
     
     /** 即时通讯密码（环信） **/
     private String im_password;
@@ -94,6 +93,31 @@ public class UserInfo implements Serializable {
     private String company_name;//公司名称
     
     
+    
+    public String getSenior_range() {
+        return senior_range;
+    }
+
+    public void setSenior_range(String senior_range) {
+        this.senior_range = senior_range;
+    }
+
+    public String getIm_sec_username() {
+        return im_sec_username;
+    }
+
+    public void setIm_sec_username(String im_sec_username) {
+        this.im_sec_username = im_sec_username;
+    }
+
+    public String getIm_sec_nickname() {
+        return im_sec_nickname;
+    }
+
+    public void setIm_sec_nickname(String im_sec_nickname) {
+        this.im_sec_nickname = im_sec_nickname;
+    }
+
     public String getCompany_id() {
         return company_id;
     }
@@ -134,21 +158,7 @@ public class UserInfo implements Serializable {
         this.mobile = mobile;
     }
 
-    public String getThird_type() {
-        return third_type;
-    }
-
-    public void setThird_type(String third_type) {
-        this.third_type = third_type;
-    }
-
-    public String getOpen_id() {
-        return open_id;
-    }
-
-    public void setOpen_id(String open_id) {
-        this.open_id = open_id;
-    }
+  
 
     public String getProvince_name() {
         return province_name;
@@ -246,45 +256,6 @@ public class UserInfo implements Serializable {
         this.user_id = user_id;
     }
 
-    public String getSenior_range() {
-        return senior_range;
-    }
-
-    public void setSenior_range(String senior_range) {
-        this.senior_range = senior_range;
-    }
-
-    public String getIs_senior() {
-        return is_senior;
-    }
-
-    public void setIs_senior(String is_senior) {
-        this.is_senior = is_senior;
-    }
-
-    public String getSec_id() {
-        return sec_id;
-    }
-
-    public void setSec_id(String sec_id) {
-        this.sec_id = sec_id;
-    }
-
-    public String getIm_sec_username() {
-        return im_sec_username;
-    }
-
-    public void setIm_sec_username(String im_sec_username) {
-        this.im_sec_username = im_sec_username;
-    }
-
-    public String getIm_sec_nickname() {
-        return im_sec_nickname;
-    }
-
-    public void setIm_sec_nickname(String im_sec_nickname) {
-        this.im_sec_nickname = im_sec_nickname;
-    }
 
     public String getIm_username() {
         return im_username;
@@ -292,22 +263,6 @@ public class UserInfo implements Serializable {
 
     public void setIm_username(String im_username) {
         this.im_username = im_username;
-    }
-
-    public String getIm_robot_username() {
-        return im_robot_username;
-    }
-
-    public void setIm_robot_username(String im_robot_username) {
-        this.im_robot_username = im_robot_username;
-    }
-
-    public String getIm_robot_nickname() {
-        return im_robot_nickname;
-    }
-
-    public void setIm_robot_nickname(String im_robot_nickname) {
-        this.im_robot_nickname = im_robot_nickname;
     }
 
     public String getIm_password() {
@@ -324,6 +279,22 @@ public class UserInfo implements Serializable {
 
     public void setClient_id(String client_id) {
         this.client_id = client_id;
+    }
+
+    public String getIs_senior() {
+        return is_senior;
+    }
+
+    public void setIs_senior(String is_senior) {
+        this.is_senior = is_senior;
+    }
+
+    public String getSec_id() {
+        return sec_id;
+    }
+
+    public void setSec_id(String sec_id) {
+        this.sec_id = sec_id;
     }
 
 

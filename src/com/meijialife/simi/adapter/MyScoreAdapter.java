@@ -64,7 +64,7 @@ public class MyScoreAdapter extends BaseAdapter {
 			holder = (Holder) convertView.getTag();
 		}
 		
-		holder.item_tv_order_type.setText(dataList.get(position).getAction());
+		holder.item_tv_order_type.setText(dataList.get(position).getRemarks());
 		String score = dataList.get(position).getScore();
 		if(0==dataList.get(position).getIs_consume()){
 		    holder.item_tv_order_pay.setText("+"+score);

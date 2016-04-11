@@ -27,6 +27,8 @@
             android:smoothScrollbar="true"
             ptr:ptrAnimationStyle="flip"
             ptr:ptrListViewExtrasEnabled="false"
-            ptr:ptrScrollingWhileRefreshingEnabled="true" >
+            ptr:ptrScrollingWhileRefreshingEnabled="true"
+            android:layout_marginBottom="60dp"
+             >
         </com.handmark.pulltorefresh.library.PullToRefreshListView>
 </LinearLayout>

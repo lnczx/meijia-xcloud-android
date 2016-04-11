@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/simi_color_white"
+        android:orientation="horizontal"
+        android:padding="18dp" >
+
+      
+
+        <LinearLayout
+            android:id="@+id/ll_partner_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:gravity="left|center"
+            android:layout_weight="6"
+             >
+
+            <TextView
+                android:id="@+id/item_tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="一天体验："
+                android:textSize="18sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/simi_color_black" 
+                />
+            <TextView
+                android:id="@+id/item_tv_sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="三里屯"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/simi_color_gray" 
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                />
+
+            <TextView
+                android:id="@+id/item_tv_prices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99元"
+                android:textSize="18sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/simi_color_red" />
+        </LinearLayout>
+        
+          <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+             >
+
+            <ImageView
+                android:id="@+id/m_sec_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ad_loading" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

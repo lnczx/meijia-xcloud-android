@@ -89,6 +89,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     private View dot2;
     private View dot3;
     private View dot4;
+    private View dot5;
+    private View dot6;
+    private View dot7;
+    private View dot8;
     MyAdapter myAdapter;
     boolean canscoll = false;
 
@@ -192,11 +196,19 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         dot2 = v.findViewById(R.id.v_dot2);
         dot3 = v.findViewById(R.id.v_dot3);
         dot4 = v.findViewById(R.id.v_dot4);
+        dot5 = v.findViewById(R.id.v_dot5);
+        dot6 = v.findViewById(R.id.v_dot6);
+        dot7 = v.findViewById(R.id.v_dot7);
+        dot8 = v.findViewById(R.id.v_dot8);
         dots.add(dot0);
         dots.add(dot1);
         dots.add(dot2);
         dots.add(dot3);
         dots.add(dot4);
+        dots.add(dot5);
+        dots.add(dot6);
+        dots.add(dot7);
+        dots.add(dot8);
 
         adViewPager = (MyViewPager) v.findViewById(R.id.vp);
         myAdapter = new MyAdapter();

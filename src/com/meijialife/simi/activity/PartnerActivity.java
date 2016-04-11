@@ -216,15 +216,15 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
     private void showPartnerService(List<ServicePrices> list,PartnerDetail partnerDetail){
         listview = (ListView) findViewById(R.id.listview);
         adapter = new SecretaryServiceAdapter(this);
+        listview.setAdapter(adapter);
         if(list!=null && list.size()>0){
             adapter.setData(list,partnerDetail,userInfo);
-            listview.setAdapter(adapter);
         }
         
     }
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
         getUserInfo();
         getPartnerDetail(service_type_id,partner_user_id);
     }

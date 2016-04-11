@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
-
 import org.json.JSONObject;
-
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -24,7 +22,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -36,10 +33,8 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.MyScoreAdapter;
 import com.meijialife.simi.bean.MyScore;
-import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -52,52 +47,52 @@ import com.meijialife.simi.utils.UIUtils;
  */
 public class MyIntegralActivity extends Activity implements OnClickListener {
 
-    private MyScoreAdapter adapter;
+    private MyScoreAdapter adapter;// 积分适配器
     private ArrayList<MyScore> scorelist;// 卡片数据
+    private ArrayList<MyScore> totalScoreList;// 所有积分数据
 
+    // 控件声明
     private ImageView mCardBack;
     private TextView mCardTitle;
     private LinearLayout mLlCard;
     private RelativeLayout mRlCard;
     private ImageView mTitleIcon;
-    private TextView mTextScore;//积分
-
-    // 下拉刷新
-    private ArrayList<MyScore> totalScoreList;
+    private TextView mTextScore;// 积分
     private PullToRefreshListView mPullRefreshListView;// 上拉刷新的控件
-    private int page = 1;
+
+    // 基本类型声明
+    private int page = 1;// 分页page
+    private UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.my_integral_activity);
         super.onCreate(savedInstanceState);
-
+        userInfo = DBHelper.getUserInfo(MyIntegralActivity.this);
         initView();
 
     }
 
     private void initView() {
 
-        mLlCard = (LinearLayout) findViewById(R.id.m_ll_card);
-        mRlCard = (RelativeLayout) findViewById(R.id.view_card_title_bar);
-        mTitleIcon = (ImageView) findViewById(R.id.m_title_icon);
-        mTitleIcon.setVisibility(View.GONE);
-        mTextScore = (TextView)findViewById(R.id.tv_money);
-        UserInfo userInfo = DBHelper.getUserInfo(MyIntegralActivity.this);
-        mTextScore.setText(userInfo.getScore()+"分");
-        // 标题+返回(控件)
-        mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
-        mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
-
+        findView();
         setOnClick();// 设置点击事件
         setTitleColor();// 设置标题颜色
         setTitleBarColor();// 设置沉浸栏样式
-
-        initDiscountView();
-
+        initListView();// 初始化列表
     }
 
-    private void initDiscountView() {
+    private void findView() {
+        mLlCard = (LinearLayout) findViewById(R.id.m_ll_card);
+        mRlCard = (RelativeLayout) findViewById(R.id.view_card_title_bar);
+        mTitleIcon = (ImageView) findViewById(R.id.m_title_icon);// 标题问号
+        mTextScore = (TextView) findViewById(R.id.tv_money);// 积分
+        mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);// 标题
+        mTitleIcon.setVisibility(View.GONE);
+        mTextScore.setText(userInfo.getScore() + "分");
+    }
+
+    private void initListView() {
         scorelist = new ArrayList<MyScore>();
         totalScoreList = new ArrayList<MyScore>();
         mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.my_score_list);
@@ -132,15 +127,6 @@ public class MyIntegralActivity extends Activity implements OnClickListener {
                 }
             }
         });
-        /*
-         * mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
-         * 
-         * @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) { Intent intent = new
-         * Intent(MyIntegralActivity.this, CardDetailsActivity.class); intent.putExtra("card_id", totalScoreList.get(position).getCard_id());
-         * intent.putExtra("Cards", totalScoreList.get(position)); intent.putExtra("card_extra",totalScoreList.get(position)); startActivity(intent);
-         * } });
-         */
-
     }
 
     /**
@@ -158,16 +144,11 @@ public class MyIntegralActivity extends Activity implements OnClickListener {
         endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示
     }
 
-    /*
+    /**
      * 设置点击事件
      */
     private void setOnClick() {
-        mCardBack.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        findViewById(R.id.m_iv_card_back).setOnClickListener(this);
         findViewById(R.id.btn_recharge).setOnClickListener(this);
         findViewById(R.id.m_score_help).setOnClickListener(this);
     }
@@ -175,6 +156,7 @@ public class MyIntegralActivity extends Activity implements OnClickListener {
     /**
      * 设置沉浸栏样式
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void setTitleBarColor() {
         /**
          * 沉浸栏方式实现(android4.4以上)
@@ -200,9 +182,7 @@ public class MyIntegralActivity extends Activity implements OnClickListener {
     }
 
     public void getScoreListData(int page) {
-
         String user_id = DBHelper.getUser(this).getId();
-
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
@@ -318,6 +298,9 @@ public class MyIntegralActivity extends Activity implements OnClickListener {
             intent = new Intent(this, WebViewsActivity.class);
             intent.putExtra("url", Constants.SCORE_HELP_URL);
             startActivity(intent);
+            break;
+        case R.id.m_iv_card_back:
+            finish();
             break;
         default:
             break;

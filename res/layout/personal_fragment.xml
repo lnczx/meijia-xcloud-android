@@ -3,8 +3,7 @@
     android:id="@+id/fl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" 
-    >
+    android:background="@android:color/white" >
 
     <FrameLayout
         android:id="@+id/rl_root"
@@ -21,8 +20,8 @@
                 android:id="@+id/rl_top"
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
-                android:background="@drawable/bg_person_page"
-                 >
+                android:background="@drawable/bg_person_page" >
+
                 <com.meijialife.simi.ui.RoundImageView
                     android:id="@+id/iv_top_head"
                     android:layout_width="80dp"
@@ -44,8 +43,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="3dp"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginTop="3dp"
                         android:visibility="visible" >
 
                         <TextView
@@ -95,37 +94,6 @@
                     android:orientation="horizontal" >
 
                     <LinearLayout
-                        android:id="@+id/item_qianbao"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical" >
-
-                        <TextView
-                            android:id="@+id/tv_card_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="￥0"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="动态"
-                            android:textColor="@android:color/white"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@android:color/white" />
-
-                    <LinearLayout
                         android:id="@+id/item_youhui"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -145,6 +113,37 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="好友"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/white" />
+
+                    <LinearLayout
+                        android:id="@+id/item_qianbao"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/tv_card_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="动态"
                             android:textColor="@android:color/white"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -224,11 +223,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                >
-            <include layout="@layout/person_scroll_view"
-                 />
-</LinearLayout>
+                android:orientation="vertical" >
+
+                <include layout="@layout/person_scroll_view" />
+            </LinearLayout>
         </LinearLayout>
 
         <View

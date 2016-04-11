@@ -3,14 +3,17 @@ package com.meijialife.simi.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.tsz.afinal.FinalBitmap;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,11 +45,15 @@ public class SecretaryServiceAdapter extends BaseAdapter {
     private ServicePrices servicePrices;//服务报价
     private UserInfo userInfo;
 
+    private FinalBitmap finalBitmap;
+    private BitmapDrawable defDrawable;
+    
     public SecretaryServiceAdapter(Context context) {
         this.context = context;
-        //this.sec_id = sec_id;
         inflater = LayoutInflater.from(context);
         mList = new ArrayList<ServicePrices>();
+        finalBitmap = FinalBitmap.create(context);
+        defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ad_loading);
     }
 
     /**
@@ -83,22 +90,26 @@ public class SecretaryServiceAdapter extends BaseAdapter {
         Holder holder = null;
         if (convertView == null) {
             holder = new Holder();
-            convertView = inflater.inflate(R.layout.secreteary_service_list_item, null);
+            convertView = inflater.inflate(R.layout.secraty_detail, null);
             holder.tv_title = (TextView) convertView.findViewById(R.id.item_tv_title);
-            holder.tv_price = (TextView) convertView.findViewById(R.id.item_tv_price);
-            holder.tv_buy = (TextView) convertView.findViewById(R.id.item_tv_buy);
+            holder.tv_price = (TextView) convertView.findViewById(R.id.item_tv_prices);
+            holder.tv_sub_title = (TextView) convertView.findViewById(R.id.item_tv_sub_title);
+            holder.m_sec_icon = (ImageView) convertView.findViewById(R.id.m_sec_icon);
             holder.ll_partner_service = (LinearLayout)convertView.findViewById(R.id.ll_partner_service);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
-
-        holder.tv_title.setText(mList.get(position).getName() + "：");
-        holder.tv_price.setText(mList.get(position).getDis_price() + "元");
+        ServicePrices sp = mList.get(position);
+        holder.tv_title.setText(sp.getName());
+        holder.tv_price.setText(sp.getDis_price() + "元");
+        holder.tv_sub_title.setText(mList.get(position).getService_title());
+        finalBitmap.display(holder.m_sec_icon,sp.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
+        
         final String mobile = userInfo.getMobile();
         final String name = userInfo.getName();
         final Double disPrice =mList.get(position).getDis_price();
-            holder.tv_buy.setOnClickListener(new OnClickListener() {
+           /* holder.tv_buy.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
@@ -123,27 +134,33 @@ public class SecretaryServiceAdapter extends BaseAdapter {
                       
                     }
                 }
-            });
+            });*/
         
-        /*holder.ll_partner_service.setOnClickListener(new OnClickListener() {
+        holder.ll_partner_service.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 String detailUrl = mList.get(position).getDetail_url();
-                Intent intent = new Intent(context,WebViewActivity.class);
-                intent.putExtra("url", detailUrl);
-                intent.putExtra("title","服务详情");
-                context.startActivity(intent);
+                if(StringUtils.isNotEmpty(detailUrl)){
+                    Intent intent = new Intent(context,WebViewActivity.class);
+                    intent.putExtra("url", detailUrl);
+                    intent.putExtra("title","服务详情");
+                    intent.putExtra("dis_price",disPrice);
+                    intent.putExtra("partnerDetail", partnerDetail);
+                    intent.putExtra("servicePrices", mList.get(position));
+                    context.startActivity(intent);
+                }
             }
         });
-*/
+
         return convertView;
     }
 
     class Holder {
         TextView tv_title;
         TextView tv_price;
-        TextView tv_buy;
         LinearLayout ll_partner_service;
+        ImageView m_sec_icon;
+        TextView  tv_sub_title;
     }
 
     private ProgressDialog m_pDialog;
