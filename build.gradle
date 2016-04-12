@@ -4,7 +4,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':meijia-lib-easeui')
     compile project(':base_library_pullToRefresh_chenyoca')
-    compile project(':meijia-demo:umeng_community_library_project')
+    compile project(':umeng_community_library_project')
     compile project(':meijia-lib-easeui')
 }
 
