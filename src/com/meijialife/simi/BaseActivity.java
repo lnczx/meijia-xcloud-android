@@ -34,7 +34,8 @@ public class BaseActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//解决home键之后点击app图标重新启动app的问题
-		/*if (!isTaskRoot()) { 
+		/*if (!isTaskRoot(
+		)) {
 		    finish(); 
 		    return; 
 		    } */

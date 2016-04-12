@@ -17,11 +17,6 @@ public class ReceiverBean implements Serializable{
     
     
     
-    
-    
-    
-    
-    
     private String car_no;//车牌号
     private String car_color;
     private String mobile;

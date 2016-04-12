@@ -4,12 +4,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':meijia-lib-easeui')
     compile project(':base_library_pullToRefresh_chenyoca')
+    compile project(':meijia-demo:umeng_community_library_project')
     compile project(':meijia-lib-easeui')
 }
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "20.0.0"
+    buildToolsVersion "23.0.2"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
