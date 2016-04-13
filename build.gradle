@@ -10,12 +10,6 @@ dependencies {
 
 }
 
-task launcherJar(type: Jar) {
- appendix = "launcher"
-    manifest {
- attributes "Class-Path": (configurations.runtime.files + jar.outputs.files)*.name.join(" ")
- }
-
 android {
     compileSdkVersion 21
     buildToolsVersion "23.0.3"
