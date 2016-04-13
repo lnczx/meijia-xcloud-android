@@ -1,4 +1,4 @@
-﻿package com.meijialife.simi.alipay;
+package com.meijialife.simi.alipay;
 
 /*
  * Copyright (C) 2010 The MobileSecurePay Project

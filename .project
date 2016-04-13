@@ -3,6 +3,9 @@
 	<name>Secretary</name>
 	<comment></comment>
 	<projects>
+		<project>base_library_pullToRefresh_chenyoca</project>
+		<project>EaseUI</project>
+		<project>umeng_community_library_project</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

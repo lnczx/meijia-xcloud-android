@@ -1,4 +1,4 @@
-﻿package com.meijialife.simi.ui;
+package com.meijialife.simi.ui;
 
 import java.util.Timer;
 import java.util.TimerTask;
