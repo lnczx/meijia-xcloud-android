@@ -81,7 +81,13 @@ public class MainPlusExpressAdapter extends BaseAdapter {
 		
 		final ExpressData expressData = expressDatas.get(position);
         finalBitmap.display(holder.m_team_icon, Constants.EXPRESS_ICON_URL, defDrawable.getBitmap(), defDrawable.getBitmap());
-        holder.m_team_title.setText(expressData.getExpress_name());
+        String expressType = "";
+        if(expressData.getExpress_type()==1){
+            expressType = "寄件";
+        }else if (expressData.getExpress_type()==0) {
+            expressType = "收件";
+        }
+        holder.m_team_title.setText(expressType);
         holder.m_team_time.setText("下单时间:"+expressData.getAdd_time_str());
         holder.m_team_status.setText(expressData.getFrom_name());
      

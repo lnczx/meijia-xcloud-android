@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.CityData;
+import com.meijialife.simi.database.bean.City;
 
 /**
  * 城市列表适配器
@@ -20,7 +20,7 @@ import com.meijialife.simi.bean.CityData;
 public final class CityListAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<CityData> datas;
+	private List<City> datas;
 
 	private LayoutInflater layoutInflater;
 
@@ -33,10 +33,10 @@ public final class CityListAdapter extends BaseAdapter {
 	public CityListAdapter(Context context) {
 		this.context = context;
 		layoutInflater = LayoutInflater.from(context);
-		this.datas = new ArrayList<CityData>();
+		this.datas = new ArrayList<City>();
 	}
 	
-	public void setData(List<CityData> citys) {
+	public void setData(List<City> citys) {
 		this.datas = citys;
 		notifyDataSetChanged();
 	}

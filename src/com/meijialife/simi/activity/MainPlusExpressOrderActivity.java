@@ -37,6 +37,7 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.AssetsDatabaseManager;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.UIUtils;
 import com.zbar.lib.CaptureActivity;
 
 /**
@@ -179,8 +180,11 @@ public class MainPlusExpressOrderActivity extends BaseActivity implements OnClic
      * 快递下单接口
      */
     private void postExpressAdd() {
+        if (StringUtils.isEmpty(mNo)) {
+            UIUtils.showToast(MainPlusExpressOrderActivity.this, "快递单号不能为空");
+            return;
+        }
         showDialog();
-
         User user = DBHelper.getUser(this);
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId() + "");
@@ -323,12 +327,7 @@ public class MainPlusExpressOrderActivity extends BaseActivity implements OnClic
             mToName = mExpressToName.getText().toString();
             mToTel = mExpressToTel.getText().toString();
             mRemarks = mExpressRemarks.getText().toString();
-
-            /*
-             * if (StringUtils.isEmpty(mLinkMan)) { UIUtils.showToast(MainPlusExpressOrderActivity.this, "请输入联系人"); dismissDialog(); return; } if
-             * (StringUtils.isEmpty(mLinkTel)) { UIUtils.showToast(MainPlusExpressOrderActivity.this, "请输入联系电话"); return; } if
-             * (StringUtils.isEmpty(mRemark)) { UIUtils.showToast(MainPlusExpressOrderActivity.this, "请输入备注"); return; }
-             */
+         
             postExpressAdd();
             break;
         case R.id.m_scan_zbar:

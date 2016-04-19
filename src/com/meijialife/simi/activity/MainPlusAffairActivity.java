@@ -343,8 +343,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             Intent mintent = new Intent(MainPlusAffairActivity.this, CreateForWhoActivity.class);
             startActivityForResult(mintent, GET_USER);
             break;
-
-
         default:
             break;
         }
@@ -709,7 +707,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         map.put("service_time", uploadtime);
         map.put("service_content", Constants.CARD_ADD_AFFAIR_CONTENT);
         map.put("set_remind", remindAlerm+"");
-             map.put("set_now_send", SET_SEND +"");
+        map.put("set_now_send", SET_SEND +"");
         map.put("set_sec_do", SET_SEC_DO + "");
 
         AjaxParams param = new AjaxParams(map);

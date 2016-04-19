@@ -54,7 +54,6 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.MyViewPager;
 import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.SignPopWindow;
-import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -74,14 +73,14 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     private final static int SCANNIN_GREQUEST_CODES = 5;
-    
+
     private List<AdData> adList;
     private List<ImageView> imageViews;
     private List<View> dots; // 图片标题正文的那些点
     private List<View> dotList;
     // 控件声明
     private MyViewPager adViewPager;
-//    private ViewPager adViewPager;
+    // private ViewPager adViewPager;
     private int currentItem = 0; // 当前图片的索引号
     // 定义的五个指示点
     private View dot0;
@@ -96,7 +95,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     MyAdapter myAdapter;
     boolean canscoll = false;
 
-    //列表
+    // 列表
     private ListView mListView;
     private HomeTag homeTag;
     private List<HomePosts> homePosts;
@@ -106,8 +105,8 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     private View footView;
     private Button loadMoreButton;
     private LinearLayout mLlLoadMore;
-    
-    private int page =1;
+
+    private int page = 1;
 
     // 定时任务
     private ScheduledExecutorService scheduledExecutorService;
@@ -121,14 +120,13 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.home_1, null);
         v1 = inflater.inflate(R.layout.home_1, null);
-        headerView =inflater.inflate(R.layout.home1_banner, null);
-        footView = inflater.inflate(R.layout.load_more, null);  
-
+        headerView = inflater.inflate(R.layout.home1_banner, null);
+        footView = inflater.inflate(R.layout.load_more, null);
 
         // 设置友盟更新
         UmengUpdateAgent.setUpdateOnlyWifi(false);
         UmengUpdateAgent.update(getActivity());
-        
+
         initView(v);
         getMsgList(page);
         getAdList();
@@ -136,59 +134,65 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     }
 
     private void initView(View v) {
-        //初始化首页广告
+        // 初始化首页广告
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getActivity().getResources().getDrawable(R.drawable.ad_loading);
-       
+        finalBitmap.configDiskCachePath(getActivity().getApplication().getFilesDir().toString());
+        finalBitmap.configDiskCacheSize(1024*1024*10);
+        finalBitmap.configLoadfailImage(R.drawable.ad_loading);
+        
+        
+        
         initListView(v);
         setListener(v);
     }
-    
-    
-    private void setListener(View v){
+
+    private void setListener(View v) {
         v.findViewById(R.id.m_home1).setOnClickListener(this);
         v.findViewById(R.id.m_home2).setOnClickListener(this);
         v.findViewById(R.id.m_home3).setOnClickListener(this);
         v.findViewById(R.id.m_home4).setOnClickListener(this);
         v.findViewById(R.id.btn_saoma).setOnClickListener(this);
-        
+
     }
-    private void initListView(View v){
+
+    private void initListView(View v) {
         homePosts = new ArrayList<HomePosts>();
         allHomePosts = new ArrayList<HomePosts>();
-        mListView = (ListView)v.findViewById(R.id.m_lv_home);
-        mLlLoadMore = (LinearLayout)v.findViewById(R.id.m_ll_load_more);
+        mListView = (ListView) v.findViewById(R.id.m_lv_home);
+        mLlLoadMore = (LinearLayout) v.findViewById(R.id.m_ll_load_more);
         mListView.addHeaderView(headerView);
         mListView.addFooterView(footView);
         loadMoreButton = (Button) v.findViewById(R.id.loadMoreButton);
         homeListAdapter = new HomeListAdapter(getActivity());
         mListView.setAdapter(homeListAdapter);
-      
+
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int p = position-1;
+                int p = position - 1;
                 HomePosts homePost = allHomePosts.get(p);
                 Intent intent = new Intent(getActivity(), WebViewsActivity.class);
                 intent.putExtra("url", homePost.getUrl());
-                getActivity().startActivity(intent);            }
+                getActivity().startActivity(intent);
+            }
         });
-        //加载更多
+        // 加载更多
         loadMoreButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                page+=1;
+                page += 1;
                 getMsgList(page);
             }
         });
-   
+
     }
 
-    private void initBanner(View v){
-       
+    private void initBanner(View v) {
+
         adList = new ArrayList<AdData>();
         imageViews = new ArrayList<ImageView>();
-        //点
+        // 点
         dots = new ArrayList<View>();
         dotList = new ArrayList<View>();
         dot0 = v.findViewById(R.id.v_dot0);
@@ -215,6 +219,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         adViewPager.setAdapter(myAdapter);// 设置填充ViewPager页面的适配器
         adViewPager.setOnPageChangeListener(new MyPageChangeListener());
     }
+
     /**
      * 动态添加图片和下面指示的圆点
      */
@@ -223,8 +228,8 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         for (int i = 0; i < adList.size(); i++) {
             ImageView imageView = new ImageView(getActivity());
             // 异步加载图片
-            finalBitmap.display(imageView, adList.get(i).getImg_url(),defDrawable.getBitmap(),defDrawable.getBitmap());
-           
+            finalBitmap.display(imageView, adList.get(i).getImg_url());
+
             imageView.setScaleType(ScaleType.FIT_XY);
             imageViews.add(imageView);
             dots.get(i).setVisibility(View.VISIBLE);
@@ -235,7 +240,14 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     private void startAd() {
         // 当Activity显示出来后，每两秒切换一次图片显示
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 0, 3, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        scheduledExecutorService=null;
+        startAd();
     }
 
     private class ScrollTask implements Runnable {
@@ -247,9 +259,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
             }
         }
     }
-    
+
     /**
      * page改变时的事件
+     * 
      * @description：
      * @author： kerryg
      * @date:2016年4月6日
@@ -271,39 +284,44 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         @Override
         public void onPageSelected(int position) {
             currentItem = position;
-          /*  AdData adData = adList.get(position);
-            Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-            intent.putExtra("url", adData.getGoto_url());
-            getActivity().startActivity(intent); */
+            /*
+             * AdData adData = adList.get(position); Intent intent = new Intent(getActivity(), WebViewsActivity.class); intent.putExtra("url",
+             * adData.getGoto_url()); getActivity().startActivity(intent);
+             */
             dots.get(oldPosition).setBackgroundResource(R.drawable.dot_normal);
             dots.get(position).setBackgroundResource(R.drawable.dot_focused);
             oldPosition = position;
         }
     }
+
     /**
      * PageAdapter适配器
+     * 
      * @description：
      * @author： kerryg
      * @date:2016年4月6日
      */
     private class MyAdapter extends PagerAdapter {
-        
+
         private List<AdData> adLists;
         private List<ImageView> imageView;
-        
+
         public MyAdapter() {
             this.adLists = new ArrayList<AdData>();
             this.imageView = new ArrayList<ImageView>();
         }
-        public void setData(List<AdData> adList, List<ImageView> imageViews){
+
+        public void setData(List<AdData> adList, List<ImageView> imageViews) {
             this.adLists = adList;
             this.imageView = imageViews;
             notifyDataSetChanged();
         }
+
         @Override
         public int getCount() {
             return adLists.size();
         }
+
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             ImageView iv = imageView.get(position);
@@ -314,8 +332,8 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-                    intent.putExtra("url",adDomain.getGoto_url());
-                    getActivity().startActivity(intent); 
+                    intent.putExtra("url", adDomain.getGoto_url());
+                    getActivity().startActivity(intent);
                 }
             });
             return iv;
@@ -426,8 +444,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         myAdapter.setData(adList, imageViews);
         startAd();
     }
-    
-    
+
     /**
      * 获得所有首页列表接口
      */
@@ -437,12 +454,12 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("json","get_tag_posts");
+        map.put("json", "get_tag_posts");
         map.put("count", "5");
-        map.put("order", "ASC");
+        map.put("order", "DESC");
         map.put("slug", "%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
         map.put("include", "id,title,modified,url,thumbnail,custom_fields");
-        map.put("page", page+"");
+        map.put("page", page + "");
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().post(Constants.GET_HOME1_MSG_URL, param, new AjaxCallBack<Object>() {
             @Override
@@ -463,22 +480,22 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                         String data = obj.getString("pages");
                         String tag = obj.getString("tag");
                         String posts = obj.getString("posts");
-                        if (StringUtils.isEquals(status,"ok")) { // 正确
+                        if (StringUtils.isEquals(status, "ok")) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 homePosts = gson.fromJson(posts, new TypeToken<ArrayList<HomePosts>>() {
                                 }.getType());
-                                homeTag = gson.fromJson(tag,HomeTag.class);
+                                homeTag = gson.fromJson(tag, HomeTag.class);
                                 showData(homePosts, homeTag);
-                                if(homePosts.size()<5){
+                                if (homePosts.size() < 5) {
                                     loadMoreButton.setText("没有更多");
                                     loadMoreButton.setTextColor(getActivity().getResources().getColor(R.color.simi_color_gray));
                                     loadMoreButton.setClickable(false);
-                                }else {
+                                } else {
                                     loadMoreButton.setText("查看更多");
                                     loadMoreButton.setClickable(true);
                                 }
-                                }
+                            }
                         } else {
                             errorMsg = getString(R.string.servers_error);
                         }
@@ -494,8 +511,8 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
             }
         });
     }
-    
-    private void showData(List<HomePosts> homePosts,HomeTag homeTag) {
+
+    private void showData(List<HomePosts> homePosts, HomeTag homeTag) {
         if (homePosts != null && homePosts.size() > 0) {
             if (page == 1) {
                 allHomePosts.clear();
@@ -576,46 +593,45 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         });
     }
 
-    
     @Override
     public void onClick(View v) {
-         Intent intent;
+        Intent intent;
         switch (v.getId()) {
-         case R.id.m_home1:
-             intent = new Intent(getActivity(), WebViewsActivity.class);
-             intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
-             getActivity().startActivity(intent);   
-          break;
-          
-         case R.id.m_home2:
-             intent = new Intent(getActivity(),AllPartnerListActivity.class);
-             getActivity().startActivity(intent);
-             break;
-             
-         case R.id.m_home3:
-             postSign();
-             break;
-             
-         case R.id.m_home4://积分商城
-             Intent intent6 = new Intent();
-             intent6.setClass(getActivity(), PointsShopActivity.class);
-             intent6.putExtra("navColor", "#E8374A");    //配置导航条的背景颜色，请用#ffffff长格式。
-             intent6.putExtra("titleColor", "#ffffff");    //配置导航条标题的颜色，请用#ffffff长格式。
-             intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP+"?user_id="+DBHelper.getUserInfo(getActivity()).getUser_id());    //配置自动登陆地址，每次需服务端动态生成。
-             getActivity().startActivity(intent6);
-             break;
-         case R.id.btn_saoma://二维码
-             Intent intents = new Intent();
-             intents.setClass(getActivity(), CaptureActivity.class);
-             intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-             startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
-             break;
+        case R.id.m_home1:
+            intent = new Intent(getActivity(), WebViewsActivity.class);
+            intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
+            getActivity().startActivity(intent);
+            break;
+
+        case R.id.m_home2:
+            intent = new Intent(getActivity(), AllPartnerListActivity.class);
+            getActivity().startActivity(intent);
+            break;
+
+        case R.id.m_home3:
+            postSign();
+            break;
+
+        case R.id.m_home4:// 积分商城
+            Intent intent6 = new Intent();
+            intent6.setClass(getActivity(), PointsShopActivity.class);
+            intent6.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
+            intent6.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
+            intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
+            getActivity().startActivity(intent6);
+            break;
+        case R.id.btn_saoma:// 二维码
+            Intent intents = new Intent();
+            intents.setClass(getActivity(), CaptureActivity.class);
+            intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
+            break;
 
         default:
             break;
         }
     }
-    
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -624,44 +640,44 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                 Bundle bundle = data.getExtras();
                 String result = bundle.getString("result").trim();
                 if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
-                    //http://www.51xingzheng.cn/d/open.html?category=app&action=feed&params=&goto_url=
-                    if(!StringUtils.isEmpty(result) && result.contains("category=app")){
-                    String category="",action="",params="",goto_url="";
-                    if(result.contains("params") && result.contains("goto_url")){//两个参数都有
-                        String temp[] = result.split("&");
-                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
-                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
-                        params = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
-                        goto_url = temp[3].substring(temp[3].lastIndexOf("=")+1,temp[3].length());
-                        
-                    }else if (result.contains("params") && !result.contains("goto_url")) {//只有参数params
-                        String temp[] = result.split("&");
-                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
-                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
-                        params = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
-                        
-                    }else if (result.contains("goto_url") && !result.contains("params")) {//只有参数goto_url
-                        String temp[] = result.split("&");
-                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
-                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
-                        goto_url = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
-                    }else {
-                        String temp[] = result.split("&");
-                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
-                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
-                    }
-                        if (!StringUtils.isEmpty(result)) {
-                           RouteUtil routeUtil =new  RouteUtil(getActivity());
-                           routeUtil.Routing(category, action, goto_url, params);
+                    // http://www.51xingzheng.cn/d/open.html?category=app&action=feed&params=&goto_url=
+                    if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
+                        String category = "", action = "", params = "", goto_url = "";
+                        if (result.contains("params") && result.contains("goto_url")) {// 两个参数都有
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            goto_url = temp[3].substring(temp[3].lastIndexOf("=") + 1, temp[3].length());
+
+                        } else if (result.contains("params") && !result.contains("goto_url")) {// 只有参数params
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+
+                        } else if (result.contains("goto_url") && !result.contains("params")) {// 只有参数goto_url
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            goto_url = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                        } else {
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
                         }
-                    }else {
-                        Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-                        intent.putExtra("url",result);
+                        if (!StringUtils.isEmpty(result)) {
+                            RouteUtil routeUtil = new RouteUtil(getActivity());
+                            routeUtil.Routing(category, action, goto_url, params);
+                        }
+                    } else {
+                        Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                        intent.putExtra("url", result);
                         startActivity(intent);
                     }
-                } else {//非内部app扫描，webView显示
-                    Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-                    intent.putExtra("url",result);
+                } else {// 非内部app扫描，webView显示
+                    Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                    intent.putExtra("url", result);
                     startActivity(intent);
                 }
             }
@@ -669,7 +685,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-    
+
     /**
      * 签到获取积分接口
      */
@@ -681,7 +697,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         }
         User user = DBHelper.getUser(getActivity());
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id",""+user.getId());
+        map.put("user_id", "" + user.getId());
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().post(Constants.POST_DAY_SIGN, param, new AjaxCallBack<Object>() {
             @Override
@@ -689,6 +705,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                 super.onFailure(t, errorNo, strMsg);
                 Toast.makeText(getActivity(), getActivity().getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -700,8 +717,8 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if(!StringUtils.isEmpty(data)){
-                                SignPopWindow signPopWindow = new SignPopWindow(getActivity(),msg,data);  
+                            if (!StringUtils.isEmpty(data)) {
+                                SignPopWindow signPopWindow = new SignPopWindow(getActivity(), msg, data);
                                 signPopWindow.showPopupWindow(v1);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -721,7 +738,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     errorMsg = getActivity().getString(R.string.servers_error);
                 }
                 // 操作失败，显示错误信息
-                if(!StringUtils.isEmpty(errorMsg.trim())){
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
                     UIUtils.showToast(getActivity(), errorMsg);
                 }
             }

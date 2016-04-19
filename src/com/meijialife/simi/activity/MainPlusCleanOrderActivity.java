@@ -202,10 +202,10 @@ public class MainPlusCleanOrderActivity extends BaseActivity implements OnClickL
                 UIUtils.showToast(MainPlusCleanOrderActivity.this, "请输入联系电话");
                 return;
             }
-            if (StringUtils.isEmpty(mRemark)) {
+          /*  if (StringUtils.isEmpty(mRemark)) {
                 UIUtils.showToast(MainPlusCleanOrderActivity.this, "请输入备注");
                 return;
-            }
+            }*/
             postWasterAdd();                
             break;
         default:

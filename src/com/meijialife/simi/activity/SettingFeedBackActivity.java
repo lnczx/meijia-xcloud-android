@@ -131,6 +131,18 @@ public class SettingFeedBackActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
     // adapter
     class ReplyAdapter extends BaseAdapter {
 

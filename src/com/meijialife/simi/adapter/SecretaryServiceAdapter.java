@@ -23,6 +23,7 @@ import com.meijialife.simi.activity.PartnerActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.activity.PayZeroOrderActivity;
 import com.meijialife.simi.activity.WebViewActivity;
+import com.meijialife.simi.activity.WebViewPartnerActivity;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.SecretarySenior;
 import com.meijialife.simi.bean.ServicePrices;
@@ -43,7 +44,6 @@ public class SecretaryServiceAdapter extends BaseAdapter {
     private String sec_id;
     private PartnerDetail partnerDetail;
     private ServicePrices servicePrices;//服务报价
-    private UserInfo userInfo;
 
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
@@ -63,10 +63,9 @@ public class SecretaryServiceAdapter extends BaseAdapter {
      * @param friendList
      *            现有好友数据
      */
-    public void setData(List<ServicePrices> secData,PartnerDetail partnerDetail,UserInfo userInfo) {
+    public void setData(List<ServicePrices> secData,PartnerDetail partnerDetail) {
         this.mList = secData;
         this.partnerDetail = partnerDetail;
-        this.userInfo = userInfo;
         notifyDataSetChanged();
     }
 
@@ -105,43 +104,13 @@ public class SecretaryServiceAdapter extends BaseAdapter {
         holder.tv_price.setText(sp.getDis_price() + "元");
         holder.tv_sub_title.setText(mList.get(position).getService_title());
         finalBitmap.display(holder.m_sec_icon,sp.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        
-        final String mobile = userInfo.getMobile();
-        final String name = userInfo.getName();
         final Double disPrice =mList.get(position).getDis_price();
-           /* holder.tv_buy.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
-                        Intent intent = new Intent(context,BindMobileActivity.class);
-                        context.startActivity(intent);
-                    }else {
-                        if(disPrice>0){//普通金额支付界面
-                            Intent intent = new Intent(context, PayOrderActivity.class);
-                            intent.putExtra("PartnerDetail",partnerDetail);
-                            intent.putExtra("from", PayOrderActivity.FROM_MISHU);
-                            intent.putExtra("flag", PayOrderActivity.FROM_FIND);
-                            intent.putExtra("servicePrices",mList.get(position));
-                            context.startActivity(intent);
-                        }else {//免费咨询跳转到0元支付界面
-                            Intent intent = new Intent(context, PayZeroOrderActivity.class);
-                            intent.putExtra("PartnerDetail",partnerDetail);
-                            intent.putExtra("from", PayOrderActivity.FROM_MISHU);
-                            intent.putExtra("flag", PayOrderActivity.FROM_FIND);
-                            intent.putExtra("servicePrices",mList.get(position));
-                            context.startActivity(intent);
-                        }
-                      
-                    }
-                }
-            });*/
-        
         holder.ll_partner_service.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 String detailUrl = mList.get(position).getDetail_url();
                 if(StringUtils.isNotEmpty(detailUrl)){
-                    Intent intent = new Intent(context,WebViewActivity.class);
+                    Intent intent = new Intent(context,WebViewPartnerActivity.class);
                     intent.putExtra("url", detailUrl);
                     intent.putExtra("title","服务详情");
                     intent.putExtra("dis_price",disPrice);

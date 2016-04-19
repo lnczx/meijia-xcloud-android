@@ -11,7 +11,6 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.accounts.Account;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -27,7 +26,6 @@ import android.widget.Toast;
 
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.AddressActivity;
 import com.meijialife.simi.bean.AddressData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;

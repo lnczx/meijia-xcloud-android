@@ -17,9 +17,42 @@ public class ExpressTypeData implements Serializable {
     
     private short is_hot;
     
+    private String website;
+    
+    private String api_order_url;
+    
+    private String api_search_url;
+    
     private Long add_time;
     
     private Long update_time;
+    
+    
+    
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getApi_order_url() {
+        return api_order_url;
+    }
+
+    public void setApi_order_url(String api_order_url) {
+        this.api_order_url = api_order_url;
+    }
+
+    public String getApi_search_url() {
+        return api_search_url;
+    }
+
+    public void setApi_search_url(String api_search_url) {
+        this.api_search_url = api_search_url;
+    }
 
     public String getExpress_id() {
         return express_id;

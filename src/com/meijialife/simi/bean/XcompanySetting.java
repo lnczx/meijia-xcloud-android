@@ -14,6 +14,7 @@ import net.tsz.afinal.annotation.sqlite.Table;
 
 public class XcompanySetting implements Serializable {
     
+    
     private String id;//
     
     private String company_id;//

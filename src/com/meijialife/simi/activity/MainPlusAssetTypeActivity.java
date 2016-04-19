@@ -16,6 +16,7 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.AssetTypeAdapter;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.XcompanySetting;
+import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.AssetsDatabaseManager;
 
 
@@ -61,7 +62,6 @@ public class MainPlusAssetTypeActivity extends BaseActivity implements OnItemCli
         // 通过管理对象获取数据库  
         SQLiteDatabase db = mg.getDatabase("simi01.db"); 
         typeList = AssetsDatabaseManager.searchAllXcompany(db);
-        
         adapter.setData(typeList);
        
         

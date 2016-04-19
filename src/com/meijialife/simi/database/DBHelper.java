@@ -24,7 +24,7 @@ import com.meijialife.simi.bean.XcompanySetting;
 public class DBHelper {
 
 	private Context context;
-	private FinalDb finalDb;
+	private static FinalDb finalDb;
 	private static DBHelper helper = null;
 	private String DBNAME = "simi.db";
 	private int DBVERSION = 1;
@@ -176,7 +176,7 @@ public class DBHelper {
 	 * @param <T>
 	 * @param list
 	 */
-	public <T> void addList2Db(List<T> list) {
+	public  static <T> void addList2Db(List<T> list) {
 		if (list != null && list.size() > 0) {
 			// 清空数据库
 			finalDb.deleteByWhere(list.get(0).getClass(), null);

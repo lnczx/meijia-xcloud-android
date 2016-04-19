@@ -10,10 +10,14 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,6 +86,18 @@ public class MainPlusTeamOrderActivity extends BaseActivity implements OnClickLi
         findViewById(R.id.m_rl_addr).setOnClickListener(this);
         findViewById(R.id.bt_create_team).setOnClickListener(this);
         findViewById(R.id.layout_select_band).setOnClickListener(this);
+        mTeamLinkTel.setOnEditorActionListener(new EditText.OnEditorActionListener() {    
+            @Override  
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {  
+                if (actionId == EditorInfo.IME_ACTION_DONE) {  
+                    InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);  
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);  
+                    return true;    
+                }  
+                return false;  
+            }  
+              
+        });
         
     }
     
@@ -201,10 +217,10 @@ public class MainPlusTeamOrderActivity extends BaseActivity implements OnClickLi
                 UIUtils.showToast(MainPlusTeamOrderActivity.this, "请输入联系电话");
                 return;
             }
-            if (StringUtils.isEmpty(mRemark)) {
+          /*  if (StringUtils.isEmpty(mRemark)) {
                 UIUtils.showToast(MainPlusTeamOrderActivity.this, "请输入备注");
                 return;
-            }
+            }*/
             postTeamAdd();                
             break;
         default:

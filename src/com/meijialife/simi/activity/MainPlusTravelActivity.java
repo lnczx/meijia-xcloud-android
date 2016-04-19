@@ -2,6 +2,7 @@ package com.meijialife.simi.activity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.Cards;
+import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -69,6 +71,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     private TextView tv_mudi_location;
     private ImageView iv_switch_city;
     public static final int GET_USER = 1003;
+    public static final int GET_CONTACT = 1004;
     private View view_mask;
     private RelativeLayout view_title_bar;
 
@@ -92,6 +95,9 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     private String for_userid = "";
     private UserInfo userInfo;
     private RelativeLayout layout_select_who;
+    private TextView tv_select_name;//选择的人员
+    private TextView tv_select_number;//选择的手机号
+    private String mJson;//参会人员请求参数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +116,9 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         requestRightBtn();
         setTitleName("差旅规划");
 
+        tv_select_name = (TextView) findViewById(R.id.tv_select_name);
+        tv_select_number = (TextView) findViewById(R.id.tv_select_number);
         view_title_bar = (RelativeLayout) findViewById(R.id.view_title_bar);
-
         bt_create_travel = (Button) findViewById(R.id.bt_create_travel);
         bt_create_travel.setOnClickListener(this);
 
@@ -122,6 +129,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         findViewById(R.id.layout_set_time).setOnClickListener(this);
         findViewById(R.id.layout_beizhu_messsage).setOnClickListener(this);
         findViewById(R.id.layout_remind).setOnClickListener(this);
+        findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);
         layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
         layout_select_who.setOnClickListener(this);
 
@@ -139,6 +147,22 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         slipBtn_dingjipiao = (ToggleButton) findViewById(R.id.slipBtn_dingjipiao);
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
 
+        /**
+         * 初始化勾选本人
+         */
+        String userName = userInfo.getName();
+        String mobile = userInfo.getMobile();
+        if(!StringUtils.isEmpty(mobile)){
+            if(StringUtils.isEmpty(userName)){
+                userName = mobile;
+            }
+            Friend friend = new Friend(userInfo.getUser_id(),userInfo.getName(),userInfo.getHead_img(),userInfo.getMobile(),true);
+            Constants.TEMP_FRIENDS.add(friend);
+            tv_select_name.setText("已选择："+userName);
+            tv_select_number.setText(Constants.TEMP_FRIENDS.size() + "位");            
+        }
+        
+        
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
         isUsersenior = StringUtils.isEquals(user_type, "1");
@@ -332,7 +356,10 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
             Intent mintent = new Intent(MainPlusTravelActivity.this, CreateForWhoActivity.class);
             startActivityForResult(mintent, GET_USER);
             break;
-
+        case R.id.layout_select_phonenumber:// 选择通讯录
+            Intent intent = new Intent(MainPlusTravelActivity.this, ContactChooseActivity.class);
+            startActivityForResult(intent, GET_CONTACT);
+            break;
         default:
             break;
         }
@@ -376,14 +403,45 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
 
                 tv_select_who_name.setText(for_name);
                 break;
-
+           case GET_CONTACT:
+                if (Constants.TEMP_FRIENDS != null && Constants.TEMP_FRIENDS.size() > 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String str =showCheckedName();
+                            tv_select_name.setText("已选择：" + str);
+                            tv_select_number.setText(Constants.TEMP_FRIENDS.size() + "位");
+                        }
+                    });
+                }else {
+                    tv_select_name.setText("已选择：" + "");
+                    tv_select_number.setText(0+ "位");
+                }
+                break;
             default:
                 break;
             }
 
         }
-
     }
+    private String showCheckedName(){
+        StringBuilder sb = new StringBuilder();
+        //我的好友
+        if (Constants.TEMP_FRIENDS != null && Constants.TEMP_FRIENDS.size() > 0) {
+            for (int i = 0; i < Constants.TEMP_FRIENDS.size(); i++) {
+                Friend myFriend = Constants.TEMP_FRIENDS.get(i);
+                if (!StringUtils.isEmpty(myFriend.getName())) {
+                    sb.append(myFriend.getName() + ",");
+                }else {
+                    sb.append(myFriend.getMobile() + ",");
+                }
+            }
+        }
+        String str = sb.toString();
+        str = sb.toString();
+        return str;
+    }
+
 
     /**
      * 时间选择器
@@ -785,10 +843,17 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
      * 创建行程
      */
     private void createTrevel() {
+        if (!isUpdate) {// 如果不是更新的
+            if (null != Constants.TEMP_FRIENDS && Constants.TEMP_FRIENDS.size() > 0) {
+                mJson = new Gson().toJson(Constants.TEMP_FRIENDS);
+            } else {
+                UIUtils.showToast(MainPlusTravelActivity.this, "请选择参会人员");
+                dismissDialog();
+                return;
+            }
+        }
         showDialog();
-
         String c_id = DBHelper.getUser(MainPlusTravelActivity.this).getId();
-
         String date = tv_date.getText().toString();
         String time = tv_chufa_time.getText().toString();
         String mtime = " " + date + " " + time + "";
@@ -822,6 +887,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         Map<String, String> map = new HashMap<String, String>();
         map.put("card_id", "0");
         map.put("card_type", "5");
+        map.put("attends", mJson);
         map.put("create_user_id", c_id + "");
         map.put("user_id", isUsersenior ? for_userid : c_id);
         map.put("service_time", cultime);
@@ -894,6 +960,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         Constants.CARD_ADD_TREAVEL_CONTENT = "";
+        Constants.finalContactList = new ArrayList<String>();
         Constants.TEMP_FRIENDS.clear();
 
     }

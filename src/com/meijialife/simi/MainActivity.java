@@ -314,21 +314,10 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             view_title_bar.setVisibility(View.GONE);
             break;
         case R.id.tab_bt_2: // 发现
-          /*  currentTabIndex = 2;
-            if (!slideMenu.isMainScreenShowing()) {
-                return;
-            }
-            view_title_bar.setVisibility(View.GONE);
-            change(new Find2Fra(this));
-            setSelected(mBt2);
-            updateTitle(2);
-            slideMenu.isUse = false;*/
             changeFind();
             break;
         case R.id.tab_bt_3: // 圈子
             currentTabIndex = 3;
-//            Constants.checkedIndex=0;
-//            change2Contacts();
             change2Home1();
             break;
         case R.id.tab_bt_4: // 我的
@@ -439,11 +428,12 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         if (!slideMenu.isMainScreenShowing()) {
             return;
         }
+        currentTabIndex = 4;
         view_title_bar.setVisibility(View.GONE);
         conversationListFragment = new ConversationListFragment(this);
         change(conversationListFragment);
-        setSelected(mBt3);
-        updateTitle(3);
+        setSelected(mBt4);
+//        updateTitle(3);
         slideMenu.isUse = false;
     }
 
@@ -456,8 +446,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         }
         view_title_bar.setVisibility(View.GONE);
         change(new Home3Fra(this));
-        setSelected(mBt3);
-        updateTitle(3);
+        setSelected(mBt4);
+//        updateTitle(3);
         slideMenu.isUse = false;
     }
     public void change2Home1() {

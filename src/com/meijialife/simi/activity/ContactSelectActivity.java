@@ -1,7 +1,7 @@
 package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.alipay.a.a.f;
+
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.ContactSelectAdapter;

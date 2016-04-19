@@ -218,7 +218,7 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         adapter = new SecretaryServiceAdapter(this);
         listview.setAdapter(adapter);
         if(list!=null && list.size()>0){
-            adapter.setData(list,partnerDetail,userInfo);
+            adapter.setData(list,partnerDetail);
         }
         
     }

@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.GeolocationPermissions.Callback;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class WebViewsActivity  extends Activity{
     private ImageView iv_person_left;
     private TextView tv_person_title;
     private ImageView iv_person_close;
+    private ProgressBar mProgressBar; //webView进度条
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class WebViewsActivity  extends Activity{
         iv_person_left = (ImageView) findViewById(R.id.iv_person_left);
         iv_person_close = (ImageView)findViewById(R.id.iv_person_close);
         tv_person_title = (TextView)findViewById(R.id.tv_person_title);
+        mProgressBar = (ProgressBar)findViewById(R.id.myProgressBar);
         webview = (WebView)findViewById(R.id.webview);
 
         if (StringUtils.isEmpty(url)) {
@@ -63,6 +66,19 @@ public class WebViewsActivity  extends Activity{
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 tv_person_title.setText(title);
+            }
+            
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if(newProgress==100){
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                }else {
+                    if(View.INVISIBLE==mProgressBar.getVisibility()){
+                        mProgressBar.setVisibility(View.VISIBLE);
+                    }
+                    mProgressBar.setProgress(newProgress);
+                }
             }
             
             @Override

@@ -1,8 +1,6 @@
 package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import net.tsz.afinal.FinalBitmap;
 import android.annotation.SuppressLint;
@@ -13,15 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.AppToolsData;
-import com.meijialife.simi.bean.Partner;
-import com.meijialife.simi.bean.UserTag;
-import com.meijialife.simi.ui.RoundImageView;
-import com.meijialife.simi.ui.TagGroup;
 
 /**
  * 秘书适配器

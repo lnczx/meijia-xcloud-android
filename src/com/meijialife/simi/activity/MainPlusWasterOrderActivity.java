@@ -23,7 +23,6 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.ToggleButton;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -199,10 +198,10 @@ public class MainPlusWasterOrderActivity extends BaseActivity implements OnClick
                 UIUtils.showToast(MainPlusWasterOrderActivity.this, "请输入联系电话");
                 return;
             }
-            if (StringUtils.isEmpty(mRemark)) {
+           /* if (StringUtils.isEmpty(mRemark)) {
                 UIUtils.showToast(MainPlusWasterOrderActivity.this, "请输入备注");
                 return;
-            }
+            }*/
             postWasterAdd();                
             break;
         default:

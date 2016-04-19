@@ -3,7 +3,6 @@ package com.meijialife.simi.bean;
 import java.io.Serializable;
 
 import net.tsz.afinal.annotation.sqlite.Table;
-@Table(name="app_tools")
 public class AppToolsData implements Serializable{
 
     private String t_id;

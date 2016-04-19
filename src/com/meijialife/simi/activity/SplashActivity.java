@@ -2,6 +2,7 @@ package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,11 +44,17 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.CityData;
+import com.meijialife.simi.bean.ExpressTypeData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.bean.XcompanySetting;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.database.bean.AppTools;
+import com.meijialife.simi.database.bean.BaseData;
+import com.meijialife.simi.database.bean.City;
+import com.meijialife.simi.database.bean.OpAd;
 import com.meijialife.simi.ui.RouteUtil;
+import com.meijialife.simi.utils.AssetsDatabaseManager;
 import com.meijialife.simi.utils.CalendarUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -71,6 +79,8 @@ public class SplashActivity extends Activity {
     private ImageView mWelcome2;
     private Handler handler;
     private TimerTask task;
+    
+    private SQLiteDatabase db;//数据库对象
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +88,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.layout_splash);
 
         final Timer timer = new Timer();
-
+        initDb();
         initLocation();
         AlphaAnimation aa = new AlphaAnimation(0.8f, 1.0f);
         aa.setDuration(2000);
@@ -88,7 +98,7 @@ public class SplashActivity extends Activity {
         mWelcome =(ImageView) findViewById(R.id.iv_welcome);
         mWelcome2 =(ImageView) findViewById(R.id.iv_welcome2);
         initSplashAd();
-        timer.schedule(task, 2000);
+        timer.schedule(task, 3000);
         //2s之后启动页进入首页
         TimerTask MyTask = new TimerTask() {
             @Override
@@ -113,8 +123,15 @@ public class SplashActivity extends Activity {
         initRoute();
         // initCellsDb();
          getCitys(getCityAddtime());
-//         getBaseDatas(getXcompanySettingAddtime());
+//         getBaseDatas(getXcompanySettings());
+         getBaseDatas();
          
+    }
+    private void initDb() {
+        // 初始化，只需要调用一次  
+        AssetsDatabaseManager.initManager(getApplication());  
+        AssetsDatabaseManager mg = AssetsDatabaseManager.getManager();  
+        db = mg.getDatabase("simi01.db"); 
     }
     /**
      * 增加启动页动态广告
@@ -433,20 +450,20 @@ public class SplashActivity extends Activity {
     	return addtime;
     }
     /**
-     * 获取请求资产列表的时间戳
-     **/
-    private long getXcompanySettingAddtime(){
-        long updateTime = 0;
+     * 获得最大的
+     * @return
+     */
+    private long getXcompanySettings(){
+        long addtime = 0;
         List<XcompanySetting> list = DBHelper.getXcompanySettings(this);
         for(int i = 0; i < list.size(); i++){
-            if(list.get(i).getUpdate_time() > updateTime){
-                updateTime = list.get(i).getUpdate_time();
+            if(list.get(i).getAdd_time() > addtime){
+                addtime = list.get(i).getUpdate_time();
             }
         }
-        
-        return updateTime;
+        return addtime;
     }
-    
+
     /**
      * 网络获取城市数据
      */
@@ -516,9 +533,13 @@ public class SplashActivity extends Activity {
 	 * 基础数据接口
 	 * @param addtime
 	 */
-	private void getBaseDatas(long addtime) {
+	private void getBaseDatas() {
 	    Map<String, String> map = new HashMap<String, String>();
-	    map.put("t_assets", String.valueOf(addtime));
+	    map.put("t_city", AssetsDatabaseManager.searchCityAddTime(db)+"");
+	    map.put("t_apptools",AssetsDatabaseManager.searchAppToolsUpdateTime(db)+"");
+	    map.put("t_express",AssetsDatabaseManager.searchExpressTypeUpdateTime(db)+"");
+	    map.put("t_assets",AssetsDatabaseManager.searchExpressTypeUpdateTime(db)+"");
+	    map.put("t_opads",AssetsDatabaseManager.searchOpAdsUpdateTime(db)+"");
 	    AjaxParams param = new AjaxParams(map);
 	    
 	    new FinalHttp().get(Constants.GET_BASE_DATAS, param,
@@ -544,7 +565,7 @@ public class SplashActivity extends Activity {
 	                    new Thread(new Runnable() {
 	                        @Override
 	                        public void run() {
-	                            updateXcompany(json);
+	                            updateDataBase(json);
 	                        }
 	                    }).start();
 	                } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -592,7 +613,6 @@ public class SplashActivity extends Activity {
                 db.add(cityDatas.get(i), cityDatas.get(i).getCity_id());
             }
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             Log.i("===getCells", getString(R.string.servers_error));
         }
@@ -602,26 +622,76 @@ public class SplashActivity extends Activity {
      * 
      * @param json
      */
-    private void updateXcompany(JSONObject json) {
-        ArrayList<XcompanySetting> assetDatas = new ArrayList<XcompanySetting>();
+    private void updateDataBase(JSONObject json) {
+        List<XcompanySetting> assetDatas = new ArrayList<XcompanySetting>();
+        List<ExpressTypeData> expressTypeDatas = new ArrayList<ExpressTypeData>();
+        List<AppTools> appTools = new ArrayList<AppTools>();
+        List<OpAd> opAds = new ArrayList<OpAd>();
+        List<City> citys = new ArrayList<City>();
+        BaseData baseData = new BaseData();
         try {
-            JSONArray jsons = json.getJSONArray("data");
-            for (int i = 0; i < jsons.length(); i++) {
-                JSONObject obj = jsons.getJSONObject(i);
-                String id = obj.getString("id"); // 城市ID
-                String xcompany_id = obj.getString("xcompany_id"); // 
-                String name = obj.getString("name"); // 名称
-                String setting_type = obj.getString("setting_type"); //
-                String seeting_json = obj.getString("seeting_json"); //
-                String is_enable = obj.getString("is_enable"); //
-                String add_time = obj.getString("add_time"); // 最后更新时间
-                String update_time = obj.getString("update_time"); // 最后更新时间
-                XcompanySetting cityData = new XcompanySetting(id, xcompany_id, name, setting_type, seeting_json,Short.parseShort(is_enable), Long.parseLong(add_time),Long.parseLong(update_time));
-                assetDatas.add(cityData);
+            JSONObject obj = new JSONObject(json.toString());
+            String data = obj.getString("data");
+            Gson gson = new Gson ();
+            baseData = gson.fromJson(data,BaseData.class);
+            //1.资产管理的更新与插入
+            assetDatas = baseData.getAsset_types();
+            for (Iterator iterator = assetDatas.iterator(); iterator.hasNext();) {
+                XcompanySetting assetType = (XcompanySetting) iterator.next();
+                int flag = AssetsDatabaseManager.searchXcompanySettingById(db,assetType.getId());
+                if(flag==0){
+                    AssetsDatabaseManager.insertXcompanySetting(db,"xcompany_setting",assetType);
+                }else {
+                    AssetsDatabaseManager.updateXcompanySettingById(db,assetType);
+                }
             }
-            DBHelper db = DBHelper.getInstance(this);
-            for (int i = 0; i < assetDatas.size(); i++) {
-                db.add(assetDatas.get(i), assetDatas.get(i).getId());
+            
+            //2.快递类型更新与插入
+            expressTypeDatas = baseData.getExpress();
+            for (Iterator iterator = expressTypeDatas.iterator(); iterator.hasNext();) {
+                ExpressTypeData type = (ExpressTypeData) iterator.next();
+                int flag = AssetsDatabaseManager.searchExpressTypeById(db,type.getExpress_id());
+                if(flag==0){
+                    AssetsDatabaseManager.insertExpress(db,"express",type);
+                }else {
+                    AssetsDatabaseManager.updateExpressById(db, type);
+                }
+            }
+            
+            //3.应用该中心更新与插入
+            appTools = baseData.getApptools();
+            for (Iterator iterator = appTools.iterator(); iterator.hasNext();) {
+                AppTools appTool = (AppTools) iterator.next();
+                int flag = AssetsDatabaseManager.searchOpAdById(db, appTool.getT_id());
+                if(flag==0){
+                    AssetsDatabaseManager.insertAppTools(db,"app_tools",appTool);
+                }else {
+                    AssetsDatabaseManager.updateAppToolsId(db, appTool);
+                }
+            }
+            
+            //4.服大厅表更新与插入
+            opAds = baseData.getOpads();
+            for (Iterator iterator = opAds.iterator(); iterator.hasNext();) {
+                OpAd opAd = (OpAd) iterator.next();
+                int flag = AssetsDatabaseManager.searchCityById(db, opAd.getId());
+                if(flag==0){
+                    AssetsDatabaseManager.insertOpAd(db,"op_ad",opAd);
+                }else {
+                    AssetsDatabaseManager.updateOpAdById(db, opAd);
+                }
+            }
+            
+            //5.城市表更新与插入
+            citys = baseData.getCity();
+            for (Iterator iterator = citys.iterator(); iterator.hasNext();) {
+                City city = (City) iterator.next();
+                int flag = AssetsDatabaseManager.searchCityById(db,city.getCity_id());
+                if(flag==0){
+                    AssetsDatabaseManager.insertCity(db,"op_ad",city);
+                }else {
+                    AssetsDatabaseManager.updateCityById(db, city);
+                }
             }
         } catch (JSONException e) {
         }

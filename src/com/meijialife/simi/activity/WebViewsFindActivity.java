@@ -14,6 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class WebViewsFindActivity  extends Activity{
     private TextView tv_person_title;
     private ImageView iv_person_close;
     private RelativeLayout rl_button;
+    private ProgressBar mProgressBar; //webView进度条
     /**
      * webView初始化
      */
@@ -62,6 +64,7 @@ public class WebViewsFindActivity  extends Activity{
         tv_person_title = (TextView)findViewById(R.id.tv_person_title);
         rl_button = (RelativeLayout)findViewById(R.id.rl_button);
         bt_button =(Button)findViewById(R.id.bt_button);
+        mProgressBar = (ProgressBar)findViewById(R.id.myProgressBar);
         if(!StringUtils.isEmpty(service_type_ids)){
             rl_button.setVisibility(View.VISIBLE);
         }
@@ -78,6 +81,19 @@ public class WebViewsFindActivity  extends Activity{
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 tv_person_title.setText(title);
+            }
+            
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if(newProgress==100){
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                }else {
+                    if(View.INVISIBLE==mProgressBar.getVisibility()){
+                        mProgressBar.setVisibility(View.VISIBLE);
+                    }
+                    mProgressBar.setProgress(newProgress);
+                }
             }
         };
         // 设置WebChromeClinent对象

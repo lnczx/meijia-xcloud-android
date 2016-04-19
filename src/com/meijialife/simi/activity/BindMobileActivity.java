@@ -112,6 +112,7 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
         
         user = DBHelper.getUser(this);
         et_name.setText(user.getName());
+        et_user.setText(user.getMobile());
     }
     @Override
     public void onClick(View v) {
@@ -213,7 +214,6 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
     
     private void bindSuccess() {
         Toast.makeText(getApplicationContext(), "绑定成功！", Toast.LENGTH_SHORT).show();
-        finish();
         //绑定成功之后，获得userInfo，更新本地User表和UserInfo表
         getUserInfo();
     }
@@ -259,6 +259,9 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
                                 user.setName(userInfo.getName());
                                 user.setMobile(userInfo.getMobile());
                                 DBHelper.updateUser(BindMobileActivity.this, user);
+                                et_name.setText(user.getName());
+                                et_user.setText(user.getMobile());
+                                BindMobileActivity.this.finish();
                             } else {
                                 // UIUtils.showToast(BindMobileActivity.this, "数据错误");
                             }
