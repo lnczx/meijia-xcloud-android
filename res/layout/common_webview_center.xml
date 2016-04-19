@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_gv"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -15,11 +16,9 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:progressDrawable="@drawable/progress_style"
-          	 android:indeterminateOnly="false"  
-       		 android:max="100"  
-          
-             />
+            android:indeterminateOnly="false"
+            android:max="100"
+            android:progressDrawable="@drawable/progress_style" />
 
         <WebView
             android:id="@+id/webview"
@@ -28,4 +27,10 @@
             android:background="@android:color/transparent" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/layout_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a2000000"
+        android:visibility="gone" />
 </LinearLayout>

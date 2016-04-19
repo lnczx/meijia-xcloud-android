@@ -6,11 +6,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import u.aly.ci;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;

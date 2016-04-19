@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.utils.StringUtils;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.media.QQShareContent;
@@ -22,7 +21,8 @@ public class ShareConfig {
     private final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
     private Activity mContext;
     private static ShareConfig instance;
-    private static String card_id;
+    private static  String card_id="";//卡片详情分享卡片Id
+    private static String webUrl="";//webView分享的url
 
     public static ShareConfig getInstance() {
         if (instance == null) {
@@ -37,6 +37,7 @@ public class ShareConfig {
         card_id = cardId;
         return instance;
     }
+ 
 
     public void init(Activity context) {
         this.mContext = context;
@@ -56,6 +57,65 @@ public class ShareConfig {
         // 设置分享的内容
         setShareContent(card_id);
     }
+    public void inits(Activity context,String webUrl,String title) {
+        this.mContext = context;
+        
+        // 配置需要分享的相关平台
+        configPlatforms();
+        // 设置分享的内容
+        setShareContents(webUrl,title);
+    }
+    public void setShareContents(String webUrl,String title) {
+        
+        // 配置SSO
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+        
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
+        qZoneSsoHandler.addToSocialSDK();
+        mController.setShareContent(Constants.SHARE_CONTENT);
+        
+        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
+
+        WeiXinShareContent weixinContent = new WeiXinShareContent();
+        weixinContent.setShareContent(Constants.SHARE_CONTENT);
+        weixinContent.setTitle(title);
+        weixinContent.setTargetUrl(webUrl);
+        weixinContent.setShareMedia(localImage);
+        mController.setShareMedia(weixinContent);
+        
+        // 设置朋友圈分享的内容
+        CircleShareContent circleMedia = new CircleShareContent();
+        circleMedia.setShareContent(Constants.SHARE_CONTENT);
+        circleMedia.setTitle(title);
+        circleMedia.setShareMedia(localImage);
+        circleMedia.setTargetUrl(webUrl);
+        mController.setShareMedia(circleMedia);
+        
+        
+        // 设置QQ空间分享内容
+        QZoneShareContent qzone = new QZoneShareContent();
+        qzone.setShareContent(Constants.SHARE_CONTENT);
+        
+        qzone.setTargetUrl(webUrl);
+        qzone.setTitle(Constants.SHARE_TITLE);
+        qzone.setShareMedia(localImage);
+        mController.setShareMedia(qzone);
+        
+        QQShareContent qqShareContent = new QQShareContent();
+        qqShareContent.setShareContent(Constants.SHARE_CONTENT);
+        qqShareContent.setTitle(title);
+        qqShareContent.setShareMedia(localImage);
+        qqShareContent.setTargetUrl(webUrl);
+        mController.setShareMedia(qqShareContent);
+        
+        SinaShareContent sinaContent = new SinaShareContent();
+        sinaContent.setTitle(title);
+        sinaContent.setShareContent(Constants.SHARE_CONTENT);
+        sinaContent.setTargetUrl(webUrl);
+        sinaContent.setShareMedia(localImage);
+        mController.setShareMedia(sinaContent);
+        
+    }
     public void setShareContent(String card_id) {
 
         // 配置SSO
@@ -66,13 +126,6 @@ public class ShareConfig {
         mController.setShareContent(Constants.SHARE_CONTENT);
 
         UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
-//        UMImage urlImage = new UMImage(mContext, "http://www.umeng.com/images/pic/social/integrated_3.png");
-        // UMImage resImage = new UMImage(mContext, R.drawable.icon);
-
-        // UMEmoji emoji = new UMEmoji(mContext,
-        // "http://www.pc6.com/uploadimages/2010214917283624.gif");
-        // UMEmoji emoji = new UMEmoji(mContext,
-        // "/storage/sdcard0/emoji.gif");
 
         WeiXinShareContent weixinContent = new WeiXinShareContent();
         weixinContent.setShareContent(Constants.SHARE_CONTENT);
@@ -231,7 +284,7 @@ public class ShareConfig {
         String appKey = "LcMjbx1agQRGMzAs";
         // 添加QQ支持, 并且设置QQ分享内容的target url
         UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(mContext, appId, appKey);
-        qqSsoHandler.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+        qqSsoHandler.setTargetUrl("http://51xingzheng.cn/web/h5-app-download.html");
         qqSsoHandler.addToSocialSDK();
 
         // 添加QZone平台

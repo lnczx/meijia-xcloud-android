@@ -5,20 +5,32 @@
     android:layout_height="@dimen/title_bar_height"
     android:background="@color/activity_bg_color"
     android:gravity="center_vertical" >
-	<RelativeLayout
-	    android:id="@+id/rl_find_view"
+
+    <RelativeLayout
+        android:id="@+id/rl_find_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height" >
 
         <ImageView
             android:id="@+id/iv_person_left"
-            android:layout_width="130dp"
+            android:layout_width="70dp"
             android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
             android:focusable="true"
-            android:paddingLeft="20dp"
-            android:paddingRight="90dp"
             android:scaleType="center"
             android:src="@drawable/title_left_back"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_person_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/iv_person_left"
+            android:focusable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/iconfont_guanbi"
             android:visibility="visible" />
 
         <TextView
@@ -29,28 +41,26 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+            android:ellipsize="end"
             android:focusable="false"
             android:gravity="center"
             android:singleLine="true"
             android:text=""
             android:textColor="@color/title_text_color"
-            android:textSize="@dimen/title_bar_text_size" 
-            android:ellipsize="end"
-            android:width="150dp"
-            />
+            android:textSize="@dimen/title_bar_text_size"
+            android:width="150dp" />
 
         <ImageView
-            android:id="@+id/iv_person_close"
+            android:id="@+id/iv_person_more"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/iconfont_guanbi"
-            android:focusable="true"
-            android:layout_marginTop="10dp"
-            android:scaleType="centerInside"
-            android:visibility="visible"
             android:layout_marginRight="10dp"
-             />
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/webview_more"
+            android:visibility="visible" />
     </RelativeLayout>
 </RelativeLayout>

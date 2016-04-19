@@ -387,7 +387,7 @@ public class Constants {
      /**分享跳转链接**/
      public static String SHARE_TARGET_URL = "http://123.57.173.36//simi-h5/show/card-share.html?card_id=";
      
-     public static String SHARE_CUSTOMER_TARGET_URL = "http://51xingzheng.cn/h5-app-download.html";
+     public static String SHARE_CUSTOMER_TARGET_URL = "http://51xingzheng.cn/web/h5-app-download.html";
      /**分享标题**/
      public static String SHARE_TITLE = "云行政，企业行政人力服务平台";
      /**分享内容**/

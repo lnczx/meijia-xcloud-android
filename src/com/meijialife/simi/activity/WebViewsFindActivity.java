@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,9 +19,15 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupWindow.OnDismissListener;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.ui.CustomShareBoard;
+import com.meijialife.simi.ui.PopupMenu;
+import com.meijialife.simi.ui.PopupMenu.MENUITEM;
+import com.meijialife.simi.ui.PopupMenu.OnItemClickListener;
 import com.meijialife.simi.utils.StringUtils;
+import com.simi.easemob.utils.ShareConfig;
 
 
 /**
@@ -42,6 +49,12 @@ public class WebViewsFindActivity  extends Activity{
     private ImageView iv_person_close;
     private RelativeLayout rl_button;
     private ProgressBar mProgressBar; //webView进度条
+    //右边菜单
+    private ImageView iv_menu;
+    private PopupMenu popupMenu;
+    private View layout_mask;
+    private String titles;//页面title
+
     /**
      * webView初始化
      */
@@ -69,6 +82,10 @@ public class WebViewsFindActivity  extends Activity{
             rl_button.setVisibility(View.VISIBLE);
         }
         webview = (WebView)findViewById(R.id.webview);
+        iv_menu = (ImageView) findViewById(R.id.iv_person_more);
+        layout_mask = findViewById(R.id.layout_mask);
+        popupMenu = new PopupMenu(this);
+       
     }
     @SuppressLint({ "JavascriptInterface", "NewApi" })
     private void init() {
@@ -80,6 +97,7 @@ public class WebViewsFindActivity  extends Activity{
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
+                titles = title;
                 tv_person_title.setText(title);
             }
             
@@ -145,6 +163,31 @@ public class WebViewsFindActivity  extends Activity{
                 startActivity(intent);
             }
         });
+        
+        
+        iv_menu.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupMenu.showLocation(R.id.iv_person_more);
+                popupMenu.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onClick(MENUITEM item, String str) {
+
+                        switch (item) {
+                        case ITEM1:// 刷新
+                            webview.reload();
+                            break;
+                        case ITEM2:// 分享
+                            ShareConfig.getInstance().inits(WebViewsFindActivity.this,url,titles);
+                            postShare();
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                });
+            }
+        });
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -156,4 +199,17 @@ public class WebViewsFindActivity  extends Activity{
         }
         return true;
     }
+    
+    private void postShare() {
+//        layout_mask.setVisibility(View.VISIBLE);
+        CustomShareBoard shareBoard = new CustomShareBoard(this);
+        shareBoard.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                layout_mask.setVisibility(View.GONE);
+            }
+        });
+        shareBoard.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+    }
+
 }

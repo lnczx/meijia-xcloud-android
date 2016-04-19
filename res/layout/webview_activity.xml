@@ -2,15 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg_color" 
-    android:orientation="vertical"
-    >
+    android:background="@color/activity_bg_color"
+    android:orientation="vertical" >
 
     <include
-        android:id="@+id/view_title_bar"
-        layout="@layout/layout_title_bar" />
-    
-     <include layout="@layout/common_webview_center" />
+        android:id="@+id/view_webview_title_bar"
+        layout="@layout/layout_webview_title_bar" />
+
+    <include layout="@layout/common_webview_center" />
 
     <RelativeLayout
         android:id="@+id/m_ll_bottom"
@@ -46,7 +45,5 @@
             android:text="立刻购买"
             android:textColor="@color/simi_color_white" />
     </RelativeLayout>
-    
-   
 
 </LinearLayout>
