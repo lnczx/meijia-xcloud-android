@@ -5,7 +5,7 @@
     android:versionName="2.2.1" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="11"
         android:targetSdkVersion="22" />
 
     <!-- 在后台服务中弹出dialog用 -->
@@ -216,6 +216,10 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.WebViewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".activity.WebViewPartnerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
@@ -698,7 +702,9 @@
         <!--
             <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
-            android:process=":newinst" />_
+            android:process=":newinst" />
+_
+
         -->
         <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
@@ -879,7 +885,12 @@
         </activity>
         <!--
             configChanges
-        	配置该属性之后横竖屏切换的时候直接调用onCreate方法中的onConfigurationChanged()。不会使用onCreate()方法
+        	配置该属性之后横竖屏切换的时候直接调用onCreate方法中的onConfigurationChanged()。不会使用onCreate()方法
+
+
+
+
+
         -->
         <!-- 发现详情页面 -->
         <activity
@@ -991,7 +1002,7 @@
             android:name="com.meijialife.simi.activity.MainPlusWaterOrderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <!-- 送水水产品 -->
         <activity
@@ -1012,7 +1023,7 @@
             android:name="com.meijialife.simi.activity.MainPlusWasterOrderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <!-- 废品类型列表 -->
         <activity
@@ -1033,7 +1044,7 @@
             android:name="com.meijialife.simi.activity.MainPlusCleanOrderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <!-- 保洁类型 -->
         <activity
@@ -1054,7 +1065,7 @@
             android:name="com.meijialife.simi.activity.MainPlusTeamOrderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <!-- 团建类型列表 -->
         <activity
@@ -1213,7 +1224,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        
     </application>
 
 </manifest>
