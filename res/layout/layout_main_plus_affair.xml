@@ -30,7 +30,8 @@
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp" >
-                              <RelativeLayout
+
+                <RelativeLayout
                     android:id="@+id/layout_select_who"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -210,10 +211,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:layout_toLeftOf="@id/arrow"
-                        android:gravity="right"
-                        android:singleLine="true"
                         android:ellipsize="end"
                         android:ems="6"
+                        android:gravity="right"
+                        android:singleLine="true"
                         android:textColor="@color/red_text_color" />
                 </RelativeLayout>
 

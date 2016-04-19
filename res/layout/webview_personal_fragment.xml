@@ -10,10 +10,6 @@
         layout="@layout/layout_webview_title_bar"
         />
     
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent" />
+    <include layout="@layout/common_webview_center" />
 
 </LinearLayout>

@@ -1,57 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg_color"
+    android:background="@color/activity_bg_color" 
+    android:orientation="vertical"
     >
 
     <include
         android:id="@+id/view_title_bar"
         layout="@layout/layout_title_bar" />
-
     
+     <include layout="@layout/common_webview_center" />
+
     <RelativeLayout
         android:id="@+id/m_ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        >
-        
+        android:visibility="gone" >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:background="@color/simi_color_black"
-            >
+            android:orientation="horizontal" >
+
             <TextView
-            android:id="@+id/m_tv_money"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text="￥2000"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/simi_color_red"
-            />
-          </LinearLayout>
+                android:id="@+id/m_tv_money"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="￥2000"
+                android:textColor="@color/simi_color_red"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/m_tv_buy"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="立刻购买"
-            android:gravity="center"
             android:layout_alignParentRight="true"
-            android:textColor="@color/simi_color_white"
             android:background="@color/simi_color_red"
-            />
-     </RelativeLayout>
+            android:gravity="center"
+            android:text="立刻购买"
+            android:textColor="@color/simi_color_white" />
+    </RelativeLayout>
+    
+   
 
-     <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/view_title_bar"
-        android:layout_above="@id/m_ll_bottom"
-        android:background="@android:color/transparent" />
-</RelativeLayout>
+</LinearLayout>

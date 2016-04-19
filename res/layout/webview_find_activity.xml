@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg_color" >
+    android:background="@color/activity_bg_color"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/rl_find_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-      >
+        android:layout_height="@dimen/title_bar_height" >
 
         <ImageView
             android:id="@+id/iv_person_left"
@@ -52,40 +52,31 @@
             android:visibility="visible" />
     </RelativeLayout>
 
+    <include layout="@layout/common_webview_center" />
+
     <RelativeLayout
         android:id="@+id/rl_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true" 
-        android:visibility="gone"
-        >
-		
+        android:visibility="gone" >
+
         <LinearLayout
             android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@color/black"
-            >
-         </LinearLayout>
+            android:layout_height="match_parent"
+            android:background="@color/black" >
+        </LinearLayout>
+
         <Button
             android:id="@+id/bt_button"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
+            android:background="@color/simi_color_red"
             android:gravity="center"
             android:text="咨询"
-            android:textStyle="bold"
+            android:textColor="@color/white"
             android:textSize="@dimen/title_bar_text_size"
-            android:background="@color/simi_color_red"
-            android:textColor="@color/white" />
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/rl_button"
-        android:layout_below="@id/rl_find_view"
-        android:background="@android:color/transparent"
-        android:paddingBottom="20dp" />
-
-</RelativeLayout>
+</LinearLayout>

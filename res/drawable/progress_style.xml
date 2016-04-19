@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<!--     <item android:id="@android:id/background" android:drawable="@color/simi_color_blue" />  
+    <item android:id="@android:id/secondaryProgress"  
+          android:drawable="@color/simi_color_yellow">  
+    </item>
+    <item android:id="@android:id/progress" android:drawable="@color/simi_color_black" />
+ -->
+
+ <item android:id="@android:id/background">  
+        <shape>  
+            <gradient  
+                    android:startColor="@color/simi_color_line_gray"  
+                    android:centerColor="@color/simi_color_line_gray"  
+                    android:endColor="@color/simi_color_line_gray"  
+                      
+            />  
+        </shape>  
+    </item>  
+  
+    <item android:id="@android:id/secondaryProgress">  
+        <clip>  
+            <shape>  
+                <gradient  
+                        android:startColor="@color/simi_color_red"  
+                        android:centerColor="@color/simi_color_red"  
+                        android:endColor="@color/simi_color_red"  
+                />  
+            </shape>  
+        </clip>  
+    </item>  
+  
+    <item android:id="@android:id/progress">  
+        <clip>  
+            <shape>  
+                <gradient  
+                    android:startColor="@color/simi_color_blue"  
+                    android:centerColor="@color/simi_color_blue"  
+                    android:endColor="@color/simi_color_blue"  
+                />  
+            </shape>  
+        </clip>  
+    </item>  
+
+</layer-list>
