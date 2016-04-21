@@ -14,7 +14,7 @@ public class FindBean implements Serializable{
     private String goto_type;//跳转方式h5/app
     private String goto_url;//跳转url h5=纯跳转，app=app内跳转，h5+list跳转h5后点击咨询
     private String service_type_ids;//服务大类集合
-    
+    private String action;//操作表示
     public FindBean() {
         super();
     }
@@ -29,11 +29,18 @@ public class FindBean implements Serializable{
     }
 
 
+    
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
     public String getService_type_ids() {
         return service_type_ids;
     }
-
-
 
     public void setService_type_ids(String service_type_ids) {
         this.service_type_ids = service_type_ids;

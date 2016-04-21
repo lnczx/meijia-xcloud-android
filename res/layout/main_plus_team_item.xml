@@ -30,7 +30,7 @@
                     android:id="@+id/m_team_icon"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:src="@drawable/ad_loading" />
+                   />
             </LinearLayout>
 
             <LinearLayout

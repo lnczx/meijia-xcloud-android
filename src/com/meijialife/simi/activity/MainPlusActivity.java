@@ -98,8 +98,9 @@ public class MainPlusActivity extends Activity implements OnClickListener {
                 String goto_url = findPlusData.getUrl().trim();
                 String params = findPlusData.getParams().trim();
                 String action = findPlusData.getAction().trim();
+                String name = findPlusData.getName().trim();
                 RouteUtil routeUtil =new  RouteUtil(MainPlusActivity.this);
-                routeUtil.Routing(category, action, goto_url, params);
+                routeUtil.Routing(category, action, goto_url, params,name);
             }
         });
     }

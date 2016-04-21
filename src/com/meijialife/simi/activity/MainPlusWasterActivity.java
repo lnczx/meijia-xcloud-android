@@ -77,6 +77,7 @@ public class MainPlusWasterActivity extends Activity implements ListItemClickHel
     private ArrayList<WasterData> totalWasterList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
     private int page = 1;
+    private String titleName = "";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class MainPlusWasterActivity extends Activity implements ListItemClickHel
         
         m_ll_no_signs = (LinearLayout)findViewById(R.id.m_ll_no_signs);
         m_no_sings = (LinearLayout)findViewById(R.id.m_no_sings);
+        titleName = getIntent().getStringExtra("title");
 
 
         //标题背景
@@ -240,7 +242,7 @@ public class MainPlusWasterActivity extends Activity implements ListItemClickHel
      * @param cardType
      */
     private void setCardTitleColor(){
-      mCardTitle.setText("废品回收");
+      mCardTitle.setText(titleName);
       mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_song_feipin));
       mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_song_feipin));
       mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_song_feipin));

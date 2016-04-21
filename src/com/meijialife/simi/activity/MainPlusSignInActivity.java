@@ -89,6 +89,7 @@ public class MainPlusSignInActivity extends Activity {
     // 布局控件定义
     private PullToRefreshListView mPullRefreshListView;// 上拉刷新的控件
     private int page = 1;
+    private String titleName="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class MainPlusSignInActivity extends Activity {
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
         mAffairCardTitle = (LinearLayout) findViewById(R.id.m_affair_card_title);
+        titleName = getIntent().getStringExtra("title");
 
         // 标题背景
         mLlCard = (LinearLayout) findViewById(R.id.m_ll_card);
@@ -200,7 +202,7 @@ public class MainPlusSignInActivity extends Activity {
      * @param cardType
      */
     private void setCardTitleColor() {
-        mCardTitle.setText("签到");
+        mCardTitle.setText(titleName);
         // mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_qing_jia));
         mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_kao_qin));
         mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_kao_qin));

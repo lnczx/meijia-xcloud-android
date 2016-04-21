@@ -76,6 +76,8 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
     private LinearLayout m_ll_no_signs;//
     private int page = 1;
     
+    private String titleName="";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.express_list_activity);
@@ -99,6 +101,7 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
         //新建(控件)
         mTv1 = (TextView)findViewById(R.id.m_tv1);
         mTv2 = (TextView)findViewById(R.id.m_tv2);
+        titleName = getIntent().getStringExtra("title");
       
         mTv1.setText("快递登记");
         mTv2.setText("叫快递");
@@ -234,7 +237,7 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
      * @param cardType
      */
     private void setCardTitleColor(){
-      mCardTitle.setText("快递");
+      mCardTitle.setText(titleName);
       mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_kuai_di));
       mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_kuai_di));
       mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_kuai_di));

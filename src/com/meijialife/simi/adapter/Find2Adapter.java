@@ -83,7 +83,7 @@ public class Find2Adapter extends BaseAdapter {
 		holder.tv_ad_goto_url.setText(findBeanList.get(position).getGoto_url());
 		holder.tv_service_type_ids.setText(findBeanList.get(position).getService_type_ids());
 		String url = findBeanList.get(position).getImg_url();
-        finalBitmap.display(holder.iv_ad_icon, url, defDrawable.getBitmap(), defDrawable.getBitmap());
+        finalBitmap.display(holder.iv_ad_icon, url);
   /*      holder.tv_ad_share.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

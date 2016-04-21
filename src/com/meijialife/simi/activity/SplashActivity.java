@@ -802,5 +802,6 @@ public class SplashActivity extends Activity {
             locationClient.stop();
             locationClient = null;
         }
+        AssetsDatabaseManager.closeDatabase("simi01.db");
     }
 }

@@ -428,6 +428,8 @@ public class Constants {
      public static final String TEAM_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-chenghuang.png";
      /**团建订单列表**/
      public static final String GET_TEAM_ORDER_URL = ROOT_URL + "order/get_list_team.json";
+     /**获取送水商品列表**/
+     public static final String GET_DEF_SERVICE_URL = ROOT_URL + "partner/get_default_service_price_list.json";
      /**团建H5链接**/
      public static final String H5_TEAM_URL = "http://m.tuanjianbao.com/lines/search?activeType=3";
 //     public static final String H5_TEAM_URL = "http://123.57.173.36/simi-h5/show/teamwork-set.html";

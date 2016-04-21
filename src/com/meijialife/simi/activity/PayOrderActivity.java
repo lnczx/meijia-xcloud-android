@@ -32,6 +32,7 @@ import com.meijialife.simi.alipay.ConsAli;
 import com.meijialife.simi.alipay.OnAlipayCallback;
 import com.meijialife.simi.alipay.PayWithAlipay;
 import com.meijialife.simi.bean.AddressData;
+import com.meijialife.simi.bean.DefaultServiceData;
 import com.meijialife.simi.bean.MyDiscountCard;
 import com.meijialife.simi.bean.MyOrder;
 import com.meijialife.simi.bean.MyOrderDetail;
@@ -65,6 +66,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
 
     public static final int FROM_MYORDER = 1;// 來自订单中的支付跳转
     public static final int FROM_FIND = 2;// 来自发现中的支付跳转
+    public static final int FROM_DEF_SERVICE = 4;// 来自加号中默认服务(类似发现中服务购买)
     public static final int FROM_MYORDER_DETAIL = 3;// 来自订单详情中的支付跳转
     public static final int FROM_WATER_ORDER = 99;// 来自送水详情中的支付跳转
     /**
@@ -84,6 +86,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private AddressData addressData;
     private MyDiscountCard myDiscountCard;
     private WaterData waterData;//送水订单
+    private DefaultServiceData def;//默认服务
     /**
      * 全局基本变量定义
      */
@@ -94,7 +97,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private String addr_id;// 用户地址Id
     private String user_coupon_id = "0";
     private String orderPay;// 订单实际支付金额
-    private Long order_service_type_id;// 订单服务类型
     private String card_id; // 会员卡类型
     
     private int order_flag =0;//0=我的订单，1=订单详情，2=送水订单
@@ -139,6 +141,11 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 servicePrices = (ServicePrices) getIntent().getSerializableExtra("servicePrices");
                 is_addr = servicePrices.getIs_addr();
                 orderPay = String.valueOf(servicePrices.getDis_price());
+            }else if(from == FROM_DEF_SERVICE){//默认服务(类似发现中服务购买)
+                Constants.USER_CHARGE_TYPE=1;
+                def = (DefaultServiceData) getIntent().getSerializableExtra("def");
+                is_addr = def.getIs_addr();
+                orderPay = String.valueOf(def.getDis_price());
             }
         } else if (flag == FROM_MYORDER_DETAIL) {
             Constants.USER_CHARGE_TYPE=1;
@@ -181,7 +188,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 tv_pay_money.setText(card_pay + "元");
                 Constants.REAL_PAY_CONTENT = card_pay + "元";
                 Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
-                order_service_type_id = 0L;
 
                 tvRealPay.setText(Constants.REAL_PAY_CONTENT);
                 tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
@@ -190,7 +196,14 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 tv_pay_money.setText(servicePrices.getDis_price() + "元");
                 Constants.REAL_PAY_CONTENT = servicePrices.getDis_price() + "元";
                 Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
-                order_service_type_id = (long) partnerDetail.getService_type_id();// 获得服务类型
+
+                tvRealPay.setText(Constants.REAL_PAY_CONTENT);
+                tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
+            }else if(from == FROM_DEF_SERVICE){
+                tv_pay_name.setText(def.getName());
+                tv_pay_money.setText(def.getDis_price() + "元");
+                Constants.REAL_PAY_CONTENT = def.getDis_price() + "元";
+                Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
 
                 tvRealPay.setText(Constants.REAL_PAY_CONTENT);
                 tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
@@ -200,7 +213,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             tv_pay_money.setText(myOrderDetail.getOrder_pay() + "元");
             Constants.REAL_PAY_CONTENT = myOrderDetail.getOrder_pay() + "元";
             Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
-            order_service_type_id = myOrderDetail.getService_type_id();
 
             tvRealPay.setText(Constants.REAL_PAY_CONTENT);
             tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
@@ -210,7 +222,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             tv_pay_money.setText(myOrder.getOrder_pay() + "元");
             Constants.REAL_PAY_CONTENT = myOrder.getOrder_pay() + "元";
             Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
-            order_service_type_id = myOrder.getService_type_id();
 
             tvRealPay.setText(Constants.REAL_PAY_CONTENT);
             tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
@@ -277,9 +288,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
 
             Double orderPays = Double.valueOf(orderPay);
             Double value = Double.valueOf(myDiscountCard.getValue());
-            // 1.如果优惠券和订单服务类型一致，则判断金额
-//            if (order_service_type_id.longValue() == myDiscountCard.getService_type_id().longValue()) {
-                // 2.判断优惠券是否满足最大金额消费使用
+                // 1.判断优惠券是否满足最大金额消费使用
                 if (orderPays > value) {// 如果订单金额>maxValue则可以使用优惠券
                     Constants.REAL_PAY_CONTENT = (orderPays - value) + "元";
                     Constants.DISCOUNT_CARD_CONTENT = "为您节省" + myDiscountCard.getValue() + "元";
@@ -287,10 +296,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     Toast.makeText(PayOrderActivity.this, "订单满" + myDiscountCard.getMax_value() + "元才能使用优惠券", Toast.LENGTH_SHORT).show();
                     return;
                 }
-           /* } else {
-                Toast.makeText(PayOrderActivity.this, "服务类型不一致，不能使用优惠券", Toast.LENGTH_SHORT).show();
-                return;
-            }*/
+         
             break;
         default:
             break;
@@ -303,6 +309,13 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         tvAddrName.setText(Constants.ADDRESS_NAME_CONTENT);
         tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
         tvRealPay.setText(Constants.REAL_PAY_CONTENT);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Constants.ADDRESS_NAME_CONTENT="";
+        Constants.DISCOUNT_CARD_CONTENT="";
+        Constants.REAL_PAY_CONTENT="";
     }
 
     @Override
@@ -329,13 +342,19 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                 if (iv_order_select_alipay.isSelected() && from == FROM_MEMBER) {
                     postCardBuy(PAY_TYPE_ALIPAY);
                 } else if (iv_order_select_alipay.isSelected() && from == FROM_MISHU) {// 支付宝支付秘书服务
-                    postSeniorBuy(PAY_TYPE_ALIPAY);
-                } else if (iv_order_select_weixin.isSelected() && from == FROM_MEMBER) {
+                    postSeniorBuy(PAY_TYPE_ALIPAY,FROM_MISHU);
+                } else if (iv_order_select_alipay.isSelected() && from == FROM_DEF_SERVICE) {// 支付宝支付默认服务
+                    postSeniorBuy(PAY_TYPE_ALIPAY,FROM_DEF_SERVICE);
+                }else if (iv_order_select_weixin.isSelected() && from == FROM_MEMBER) {
                     postCardBuy(PAY_TYPE_WXPAY);
                 } else if (iv_order_select_weixin.isSelected() && from == FROM_MISHU) {// 微信支付秘书服务
-                    postSeniorBuy(PAY_TYPE_WXPAY);
+                    postSeniorBuy(PAY_TYPE_WXPAY,FROM_MISHU);
+                } else if (iv_order_select_weixin.isSelected() && from == FROM_DEF_SERVICE) {// 微信支付默认服务
+                    postSeniorBuy(PAY_TYPE_WXPAY,FROM_DEF_SERVICE);
                 } else if (iv_order_select_restMoney.isSelected() && from == FROM_MISHU) {// 余额支付秘书服务
-                    postSeniorBuy(PAY_TYPE_RESTMOENY);
+                    postSeniorBuy(PAY_TYPE_RESTMOENY,FROM_MISHU);
+                } else if (iv_order_select_restMoney.isSelected() && from == FROM_DEF_SERVICE) {// 余额支付默认服务
+                    postSeniorBuy(PAY_TYPE_RESTMOENY,FROM_DEF_SERVICE);
                 }else {
                     Toast.makeText(this, "请选择支付方式", 0).show();
                 }
@@ -430,21 +449,27 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      * @param payType
      *            //支付类型 0 = 微信支付 1 = 支付宝
      */
-    private void postSeniorBuy(final int payType) {
+    private void postSeniorBuy(final int payType,int orderFrom) {
 
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-        if (is_addr == 1 && Long.valueOf(addr_id) <= 0) {
+        if (is_addr == 1 && StringUtils.isEmpty(addr_id)) {
             Toast.makeText(this, "请选择服务方式", 0).show();
             return;
         }
         UserInfo userInfo = DBHelper.getUserInfo(this);
         Map<String, String> map = new HashMap<String, String>();
-        map.put("partner_user_id", partnerDetail.getUser_id() + "");
-        map.put("service_type_id", partnerDetail.getService_type_id() + "");// 服务大类Id
-        map.put("service_price_id", servicePrices.getService_price_id() + "");
+        if(orderFrom==FROM_MISHU){
+            map.put("partner_user_id", partnerDetail.getUser_id() + "");
+            map.put("service_type_id", partnerDetail.getService_type_id() + "");// 服务大类Id
+            map.put("service_price_id", servicePrices.getService_price_id() + "");
+        }else if (orderFrom==FROM_DEF_SERVICE) {
+            map.put("partner_user_id", def.getPartner_user_id() + "");
+            map.put("service_type_id", def.getService_type_id() + "");// 服务大类Id
+            map.put("service_price_id", def.getService_price_id() + "");
+        }
         map.put("user_id", userInfo.getUser_id());
         map.put("mobile", userInfo.getMobile());
         map.put("pay_type", "" + payType);
@@ -490,7 +515,6 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     }
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     Toast.makeText(PayOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                 }
@@ -547,7 +571,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-        if (is_addr == 1 && Long.valueOf(addr_id) <= 0) {
+        if (is_addr == 1 && StringUtils.isEmpty(addr_id)) {
             Toast.makeText(this, "请选择服务方式", 0).show();
             return;
         }

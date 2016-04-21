@@ -53,15 +53,19 @@ public class MainPlusCleanTypeActivity extends BaseActivity implements OnItemCli
     }
     
     private void setData(){
-        //0 = 定期保洁 1= 深度养护 2 = 维修清洗 3 = 其他
+        //0 = 定期保洁 1= 深度养护 2 = 维修清洗 3 = 其他 
         CleanTypeData cleanTypeData1 = new CleanTypeData("0","定期保洁");
         CleanTypeData cleanTypeData2 = new CleanTypeData("1","深度养护");
         CleanTypeData cleanTypeData3 = new CleanTypeData("2","维修清洗");
         CleanTypeData cleanTypeData4 = new CleanTypeData("3","其他");
+        CleanTypeData cleanTypeData5 = new CleanTypeData("4","绿植购买");
+        CleanTypeData cleanTypeData6 = new CleanTypeData("5","绿植租摆");
         totalCleanTypeList.add(cleanTypeData1);
         totalCleanTypeList.add(cleanTypeData2);
         totalCleanTypeList.add(cleanTypeData3);
         totalCleanTypeList.add(cleanTypeData4);
+        totalCleanTypeList.add(cleanTypeData5);
+        totalCleanTypeList.add(cleanTypeData6);
     }
     
     @Override

@@ -11,6 +11,7 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -36,7 +37,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.adapter.DefaultServiceAdapter;
 import com.meijialife.simi.adapter.MainPlusTeamAdapter;
+import com.meijialife.simi.bean.DefaultServiceData;
 import com.meijialife.simi.bean.TeamData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelp;
@@ -54,6 +57,7 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
     
 
     private MainPlusTeamAdapter mainPlusTeamAdapter;
+    private DefaultServiceAdapter defaultServiceAdapter;
     
     private ImageView mCardBack;
     private TextView mCardTitle;
@@ -75,7 +79,16 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
     private ArrayList<TeamData> myTeamList;
     private ArrayList<TeamData> totalTeamList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    
+    
+    private ArrayList<DefaultServiceData> myDefServiceList;
+    private ArrayList<DefaultServiceData> totalDefServiceList;
     private int page = 1;
+    private int pageDef = 1;
+    
+    private boolean flag =true;//true=显示默认商品，fales表示显示团建列表
+    private String titleName = "";
+    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +105,9 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
         mAffairCardTitle = (LinearLayout)findViewById(R.id.m_affair_card_title);
         
-        
         m_ll_no_signs = (LinearLayout)findViewById(R.id.m_ll_no_signs);
         m_no_sings = (LinearLayout)findViewById(R.id.m_no_sings);
-
-
+        titleName = getIntent().getStringExtra("title");
 
         //标题背景
         mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
@@ -106,37 +117,51 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         mTv1 = (TextView)findViewById(R.id.m_tv1);
         mTv2 = (TextView)findViewById(R.id.m_tv2);
       
-        mTv1.setText("团建需求");
-        mTv2.setText("精彩活动");
+        mTv1.setText("一键预约");
+        mTv2.setText("团建记录");
        
         setOnClick();//设置点击事件
         setCardTitleColor();//设置标题颜色
         setTitleBarColor();//设置沉浸栏样式
         
         initWaterView();
-       
-    }
+    }     
     /**
      * 初始化布局
      */
     private void initWaterView(){
+        myDefServiceList = new ArrayList<DefaultServiceData>();
+        totalDefServiceList = new ArrayList<DefaultServiceData>();
+        defaultServiceAdapter =new DefaultServiceAdapter(MainPlusTeamActivity.this);
+      
         totalTeamList = new ArrayList<TeamData>();
         mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.m_water_list);
         mainPlusTeamAdapter = new MainPlusTeamAdapter(MainPlusTeamActivity.this);
-        mPullRefreshListView.setAdapter(mainPlusTeamAdapter);
+        if(flag){
+            mPullRefreshListView.setAdapter(defaultServiceAdapter);
+        }else {
+            mPullRefreshListView.setAdapter(mainPlusTeamAdapter);
+        }
         mPullRefreshListView.setMode(Mode.BOTH);
         initIndicator();
-        getTeamListData(page);
+        getDefaultServiceListData(pageDef);
         mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 //下拉刷新任务
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
                         "MM_dd HH:mm");
-                page = 1;
+               
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                getTeamListData(page);
-                mainPlusTeamAdapter.notifyDataSetChanged(); 
+                if(flag){
+                    pageDef = 1;
+                    getDefaultServiceListData(pageDef);
+                    defaultServiceAdapter.notifyDataSetChanged(); 
+                }else {
+                    page = 1;
+                    getTeamListData(page);
+                    mainPlusTeamAdapter.notifyDataSetChanged(); 
+                }
             }
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -144,13 +169,25 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
                         "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(myTeamList!=null && myTeamList.size()>=10){
-                    page = page+1;
-                    getTeamListData(page);
-                    mainPlusTeamAdapter.notifyDataSetChanged(); 
+                
+                if(flag){
+                    if(myDefServiceList!=null && myDefServiceList.size()>=10){
+                        pageDef = pageDef+1;
+                        getDefaultServiceListData(pageDef);
+                        defaultServiceAdapter.notifyDataSetChanged(); 
+                    }else {
+                        Toast.makeText(MainPlusTeamActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                        mPullRefreshListView.onRefreshComplete(); 
+                    }
                 }else {
-                    Toast.makeText(MainPlusTeamActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
-                    mPullRefreshListView.onRefreshComplete(); 
+                    if(myTeamList!=null && myTeamList.size()>=10){
+                        page = page+1;
+                        getTeamListData(page);
+                        mainPlusTeamAdapter.notifyDataSetChanged(); 
+                    }else {
+                        Toast.makeText(MainPlusTeamActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                        mPullRefreshListView.onRefreshComplete(); 
+                    }
                 }
             }
         });
@@ -158,11 +195,24 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TeamData cleanData = totalTeamList.get(position);
-                Intent intent = new Intent(MainPlusTeamActivity.this,OrderDetailsActivity.class);
-                intent.putExtra("orderId", cleanData.getOrder_id());
-                intent.putExtra("orderType", 3);
-                startActivity(intent);
+                if(flag){
+                    DefaultServiceData def = totalDefServiceList.get(position);
+                    if(StringUtils.isNotEmpty(def.getDetail_url())){
+                        Intent intent = new Intent(MainPlusTeamActivity.this,WebViewPartnerActivity.class);
+                        intent.putExtra("url", def.getDetail_url());
+                        intent.putExtra("title","服务详情");
+                        intent.putExtra("dis_price",def.getDis_price());
+                        intent.putExtra("flag",1);//0=发现服务详情，1=默认服务详情
+                        intent.putExtra("defService", def);
+                        startActivity(intent);
+                    }
+                }else {
+                    TeamData cleanData = totalTeamList.get(position);
+                    Intent intent = new Intent(MainPlusTeamActivity.this,OrderDetailsActivity.class);
+                    intent.putExtra("orderId", cleanData.getOrder_id());
+                    intent.putExtra("orderType", 3);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -191,7 +241,13 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         mCardBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if(!flag){
+                    flag = true;
+                    mPullRefreshListView.setAdapter(defaultServiceAdapter);
+                    getDefaultServiceListData(pageDef);
+                }else {
+                    finish();
+                }
             }
         });
         mTv1.setOnClickListener(new OnClickListener() {
@@ -203,10 +259,9 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         mTv2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainPlusTeamActivity.this,WebViewsActivity.class);
-                intent.putExtra("url",Constants.H5_TEAM_URL);
-                startActivity(intent);
-                
+                flag = false;
+                mPullRefreshListView.setAdapter(mainPlusTeamAdapter);
+                getTeamListData(page);
             }
         });
         
@@ -222,7 +277,8 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
     /**
      * 设置沉浸栏样式
      */
-    private void setTitleBarColor(){
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+	private void setTitleBarColor(){
         /**
          * 沉浸栏方式实现(android4.4以上)
          */
@@ -241,7 +297,7 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
      * @param cardType
      */
     private void setCardTitleColor(){
-      mCardTitle.setText("团建");
+      mCardTitle.setText(titleName);
       mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_tuan_jian));
       mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_tuan_jian));
       mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_tuan_jian));
@@ -344,10 +400,95 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         mainPlusTeamAdapter.setData(totalTeamList);
         mPullRefreshListView.onRefreshComplete();
     }
+    private void showDefServiceData(List<DefaultServiceData> myDefServiceList){
+        if(pageDef==1){
+            totalDefServiceList.clear();
+            for (DefaultServiceData def : myDefServiceList) {
+                totalDefServiceList.add(def);
+            }
+        }
+        if(pageDef>=2){
+            for (DefaultServiceData def : myDefServiceList) {
+                totalDefServiceList.add(def);
+            }
+        }
+        //给适配器赋值
+        defaultServiceAdapter.setData(totalDefServiceList);
+        mPullRefreshListView.onRefreshComplete();
+    }
+    /**
+     * 获取默认商品列表
+     * @param page
+     */
+    public void getDefaultServiceListData(int page) {
+        String user_id = DBHelper.getUser(this).getId();
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user_id+"");
+        map.put("service_type_id", "79");
+        map.put("page",pageDef+"");
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().get(Constants.GET_DEF_SERVICE_URL, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(MainPlusTeamActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data").trim();
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data.trim())) {
+                                Gson gson = new Gson();
+                                myDefServiceList = new ArrayList<DefaultServiceData>();
+                                myDefServiceList = gson.fromJson(data, new TypeToken<ArrayList<DefaultServiceData>>() {
+                                }.getType());
+                                showDefServiceData(myDefServiceList);
+                            } 
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    mPullRefreshListView.onRefreshComplete();
+                    UIUtils.showToast(MainPlusTeamActivity.this, errorMsg);
+                }
+            }
+        });
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         page =1;
+        pageDef=1;
+        flag =true;
+        totalDefServiceList = new ArrayList<DefaultServiceData>();
+        myDefServiceList = new ArrayList<DefaultServiceData>();
+        
         totalTeamList = new ArrayList<TeamData>();
         myTeamList = new ArrayList<TeamData>();
         
@@ -355,11 +496,14 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
     @Override
     protected void onRestart() {
         super.onRestart();
-        getTeamListData(page);
+        flag = true;
+        mPullRefreshListView.setAdapter(defaultServiceAdapter);
+        getDefaultServiceListData(pageDef);
     }
 
     @Override
     public void onClick() {
+        mPullRefreshListView.setAdapter(mainPlusTeamAdapter);
         getTeamListData(page);
     }
 

@@ -13,7 +13,6 @@ import android.widget.ListView;
 
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.R;
-import com.meijialife.simi.adapter.AssetTypeAdapter;
 import com.meijialife.simi.adapter.ExpressTypeAdapter;
 import com.meijialife.simi.bean.ExpressTypeData;
 import com.meijialife.simi.bean.User;
@@ -53,7 +52,6 @@ public class MainPlusExpressTypeActivity extends BaseActivity implements OnItemC
     	listView.setOnItemClickListener(this);
         adapter = new ExpressTypeAdapter(this);
         listView.setAdapter(adapter);
-//        typeList=DBHelper.getXcompanySettings(MainPlusAssetTypeActivity.this);
         
         // 初始化，只需要调用一次  
         AssetsDatabaseManager.initManager(getApplication());  
@@ -69,6 +67,7 @@ public class MainPlusExpressTypeActivity extends BaseActivity implements OnItemC
     protected void onDestroy() {
         super.onDestroy();
         typeList.clear();
+        AssetsDatabaseManager.closeDatabase("simi01.db");
     }
      /**
       * 订单列表点击进入详情

@@ -13,9 +13,10 @@
 
         <ImageView
             android:id="@+id/iv_person_left"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
             android:focusable="true"
             android:scaleType="center"
             android:src="@drawable/title_left_back"
@@ -26,7 +27,8 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/iv_person_left"
             android:focusable="true"
             android:scaleType="centerInside"
@@ -52,10 +54,9 @@
 
         <ImageView
             android:id="@+id/iv_person_more"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:focusable="true"

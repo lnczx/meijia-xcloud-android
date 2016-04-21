@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.DefaultServiceData;
 import com.meijialife.simi.bean.MyOrder;
 import com.meijialife.simi.bean.MyOrderDetail;
 import com.meijialife.simi.bean.PartnerDetail;
@@ -43,19 +44,15 @@ import com.meijialife.simi.utils.UIUtils;
  * @date:2015年11月17日 
  */
 public class PayZeroOrderActivity extends BaseActivity implements OnClickListener {
-    private String card_id; // 会员卡类型
-    private int from;
     private int flag;//1=fromMyOrder,2=fromFind
     public static final int FROM_MEMBER = 1; // 来自会员卡页面
     public static final int FROM_MISHU = 2; // 来自秘书页面
     
     public static final int FROM_MYORDER =1;//來自订单中的支付跳转
     public static final int FROM_FIND = 2;//来自发现中的支付跳转
+    public static final int FROM_DEF_SERVICE = 4;//来自默认服务(类似发现服务购买)
     public static final int FROM_MYORDER_DETAIL = 3;//来自订单的支付跳转
 
-
-    private ImageView iv_order_select_alipay;
-    private ImageView iv_order_select_weixin;
     /** 支付类型 **/
     private static final int PAY_TYPE_ALIPAY = 1; // 支付宝支付
     private static final int PAY_TYPE_WXPAY = 2; // 微信支付
@@ -66,6 +63,7 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
     private MyOrderDetail myOrderDetail;
     private MyOrder myOrder;
     private String orderId;
+    private DefaultServiceData def;//默认服务
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +76,6 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
         requestBackBtn();
         setTitleName("订单支付");
 
-        from = getIntent().getIntExtra("from", 0);
         flag = getIntent().getIntExtra("flag", 2);//2=发现界面支付
         if(flag == FROM_FIND){
             partnerDetail = (PartnerDetail) getIntent().getSerializableExtra("PartnerDetail");
@@ -89,6 +86,8 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
         }else if(flag == FROM_MYORDER){
             myOrder = (MyOrder) getIntent().getSerializableExtra("myOrder");
             orderId = myOrder.getOrder_id()+"";
+        }else if(flag == FROM_DEF_SERVICE){
+            def = (DefaultServiceData)getIntent().getSerializableExtra("def");
         }
         findViewById(R.id.btn_topay).setOnClickListener(this);
         TextView tv_pay_name = (TextView) findViewById(R.id.tv_pay_name);
@@ -102,6 +101,9 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
         }else if (flag==FROM_MYORDER) {
             tv_pay_name.setText(myOrder.getService_type_name());
             tv_pay_money.setText(0.0+ "元");
+        }else if(flag==FROM_DEF_SERVICE){
+            tv_pay_name.setText(def.getName());
+            tv_pay_money.setText(def.getDis_price() + "元");
         }
     }
     @Override
@@ -115,10 +117,6 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
             break;
         }
     }
-    private String name;
-    private String senior_pay;
-    private String card_pay;
-    private String card_value;
     /**
      * 服务订单下单接口
      * 
@@ -133,9 +131,15 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
         }
         UserInfo userInfo = DBHelper.getUserInfo(this);
         Map<String, String> map = new HashMap<String, String>();
-        map.put("partner_user_id",partnerDetail.getUser_id()+"");
-        map.put("service_type_id",partnerDetail.getService_type_id()+"");//服务大类Id
-        map.put("service_price_id", servicePrices.getService_price_id()+"");
+        if(flag==FROM_DEF_SERVICE){
+            map.put("partner_user_id",def.getPartner_user_id()+"");
+            map.put("service_type_id",def.getService_type_id()+"");//服务大类Id
+            map.put("service_price_id", def.getService_price_id()+"");
+        }else {
+            map.put("partner_user_id",partnerDetail.getUser_id()+"");
+            map.put("service_type_id",partnerDetail.getService_type_id()+"");//服务大类Id
+            map.put("service_price_id", servicePrices.getService_price_id()+"");
+        }
         map.put("user_id", userInfo.getUser_id());
         map.put("mobile",userInfo.getMobile());
         map.put("pay_type", "" + payType); 

@@ -14,13 +14,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.PopupWindow.OnDismissListener;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.DefaultServiceData;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.UserInfo;
@@ -60,6 +61,8 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
     private PopupMenu popupMenu;
     private View layout_mask;
     private String titles;//页面title
+    private int flag=0;//0=发现服务详情，1=默认服务详情
+    private DefaultServiceData def;//
 
 
     @Override
@@ -75,40 +78,68 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
         url = getIntent().getStringExtra("url");
         titleStr = getIntent().getStringExtra("title");
         disPrice = getIntent().getDoubleExtra("dis_price",0);
-        partnerDetail =(PartnerDetail) getIntent().getSerializableExtra("partnerDetail");
-        servicePrices =(ServicePrices) getIntent().getSerializableExtra("servicePrices");
-        
+        flag = getIntent().getIntExtra("flag",0);
+     
         findViewBy();
         UserInfo userInfo = DBHelper.getUserInfo(WebViewPartnerActivity.this);
         final String mobile = userInfo.getMobile();
         final String name = userInfo.getName();
-        m_tv_buy.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
-                    Intent intent = new Intent(WebViewPartnerActivity.this,BindMobileActivity.class);
-                    WebViewPartnerActivity.this.startActivity(intent);
-                }else {
-                    if(disPrice>0){//普通金额支付界面
-                        Intent intent = new Intent(WebViewPartnerActivity.this, PayOrderActivity.class);
-                        intent.putExtra("PartnerDetail",partnerDetail);
-                        intent.putExtra("from", PayOrderActivity.FROM_MISHU);
-                        intent.putExtra("flag", PayOrderActivity.FROM_FIND);
-                        intent.putExtra("servicePrices",servicePrices);
+        if(flag==0){
+            partnerDetail =(PartnerDetail) getIntent().getSerializableExtra("partnerDetail");
+            servicePrices =(ServicePrices) getIntent().getSerializableExtra("servicePrices");
+            m_tv_buy.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
+                        Intent intent = new Intent(WebViewPartnerActivity.this,BindMobileActivity.class);
                         WebViewPartnerActivity.this.startActivity(intent);
-                    }else {//免费咨询跳转到0元支付界面
-                        Intent intent = new Intent(WebViewPartnerActivity.this, PayZeroOrderActivity.class);
-                        intent.putExtra("PartnerDetail",partnerDetail);
-                        intent.putExtra("from", PayOrderActivity.FROM_MISHU);
-                        intent.putExtra("flag", PayOrderActivity.FROM_FIND);
-                        intent.putExtra("servicePrices",servicePrices);
+                    }else {
+                        if(disPrice>0){//普通金额支付界面
+                            Intent intent = new Intent(WebViewPartnerActivity.this, PayOrderActivity.class);
+                            intent.putExtra("PartnerDetail",partnerDetail);
+                            intent.putExtra("flag", PayOrderActivity.FROM_FIND);
+                            intent.putExtra("from", PayOrderActivity.FROM_MISHU);
+                            intent.putExtra("servicePrices",servicePrices);
+                            WebViewPartnerActivity.this.startActivity(intent);
+                        }else {//免费咨询跳转到0元支付界面
+                            Intent intent = new Intent(WebViewPartnerActivity.this, PayZeroOrderActivity.class);
+                            intent.putExtra("PartnerDetail",partnerDetail);
+                            intent.putExtra("from", PayOrderActivity.FROM_MISHU);
+                            intent.putExtra("flag", PayOrderActivity.FROM_FIND);
+                            intent.putExtra("servicePrices",servicePrices);
+                            WebViewPartnerActivity.this.startActivity(intent);
+                        }
+                      
+                    }                
+                }
+            });
+        }else if (flag==1) {//默认服务跳转到支付页面
+            def = (DefaultServiceData)getIntent().getSerializableExtra("defService");
+            m_tv_buy.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
+                        Intent intent = new Intent(WebViewPartnerActivity.this,BindMobileActivity.class);
                         WebViewPartnerActivity.this.startActivity(intent);
-                    }
-                  
-                }                
-            }
-        });
-       
+                    }else {
+                        if(disPrice>0){//普通金额支付界面
+                            Intent intent = new Intent(WebViewPartnerActivity.this, PayOrderActivity.class);
+                            intent.putExtra("flag", PayOrderActivity.FROM_FIND);
+                            intent.putExtra("from", PayOrderActivity.FROM_DEF_SERVICE);
+                            intent.putExtra("def",def);
+                            WebViewPartnerActivity.this.startActivity(intent);
+                        }else {//免费咨询跳转到0元支付界面
+                            Intent intent = new Intent(WebViewPartnerActivity.this, PayZeroOrderActivity.class);
+                            intent.putExtra("flag", PayOrderActivity.FROM_DEF_SERVICE);
+                            intent.putExtra("def",def);
+                            WebViewPartnerActivity.this.startActivity(intent);
+                        }
+                      
+                    }                
+                }
+            });
+        }
+      
         if (StringUtils.isEmpty(url)) {
             Toast.makeText(getApplicationContext(), "数据错误", 0).show();
             return;

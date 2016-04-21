@@ -36,7 +36,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.adapter.DefaultServiceAdapter;
 import com.meijialife.simi.adapter.MainPlusWaterAdapter;
+import com.meijialife.simi.bean.DefaultServiceData;
 import com.meijialife.simi.bean.WaterData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelp;
@@ -54,6 +56,8 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
     
 
     private MainPlusWaterAdapter mainPlusWaterAdapter;
+    private DefaultServiceAdapter defaultServiceAdapter;
+
     
     private ImageView mCardBack;
     private TextView mCardTitle;
@@ -77,6 +81,13 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
     private LinearLayout m_ll_no_signs;
     private int page = 1;
     
+    private ArrayList<DefaultServiceData> myDefServiceList;
+    private ArrayList<DefaultServiceData> totalDefServiceList;
+    private int pageDef = 1;
+
+    private boolean flag =true;//true=显示默认商品，fales表示显示送水列表
+    private String titleName="";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.water_list_activity);
@@ -90,6 +101,7 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
         
         //接收参数
         mCardType = getIntent().getStringExtra("cardType");
+        titleName = getIntent().getStringExtra("title");
         //标题+返回(控件)
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
@@ -107,7 +119,7 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
         mTv2 = (TextView)findViewById(R.id.m_tv2);
       
         mTv1.setText("一键送水");
-        mTv2.setText("贴心服务");
+        mTv2.setText("服务记录");
        
         setOnClick();//设置点击事件
         setCardTitleColor(mCardType);//设置标题颜色
@@ -120,23 +132,39 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
      * 初始化布局
      */
     private void initWaterView(){
+        myDefServiceList = new ArrayList<DefaultServiceData>();
+        totalDefServiceList = new ArrayList<DefaultServiceData>();
+        defaultServiceAdapter =new DefaultServiceAdapter(MainPlusWaterActivity.this);
+      
         totalWaterList = new ArrayList<WaterData>();
         mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.m_water_list);
         mainPlusWaterAdapter = new MainPlusWaterAdapter(MainPlusWaterActivity.this,this);
-        mPullRefreshListView.setAdapter(mainPlusWaterAdapter);
+        if(flag){
+            mPullRefreshListView.setAdapter(defaultServiceAdapter);
+        }else {
+            mPullRefreshListView.setAdapter(mainPlusWaterAdapter);
+        }
         mPullRefreshListView.setMode(Mode.BOTH);
         initIndicator();
-        getWaterListData(page);
+        getDefaultServiceListData(pageDef);
         mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 //下拉刷新任务
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
                         "MM_dd HH:mm");
-                page = 1;
+                
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                getWaterListData(page);
-                mainPlusWaterAdapter.notifyDataSetChanged(); 
+                if(flag){
+                    pageDef = 1;
+                    getDefaultServiceListData(pageDef);
+                    defaultServiceAdapter.notifyDataSetChanged(); 
+                }else {
+                    page = 1;
+                    getWaterListData(page);
+                    mainPlusWaterAdapter.notifyDataSetChanged(); 
+                }
+               
             }
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -144,13 +172,24 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
                         "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(myWaterList!=null && myWaterList.size()>=10){
-                    page = page+1;
-                    getWaterListData(page);
-                    mainPlusWaterAdapter.notifyDataSetChanged(); 
+                if(flag){
+                    if(myDefServiceList!=null && myDefServiceList.size()>=10){
+                        pageDef = pageDef+1;
+                        getDefaultServiceListData(pageDef);
+                        defaultServiceAdapter.notifyDataSetChanged(); 
+                    }else {
+                        Toast.makeText(MainPlusWaterActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                        mPullRefreshListView.onRefreshComplete(); 
+                    }
                 }else {
-                    Toast.makeText(MainPlusWaterActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
-                    mPullRefreshListView.onRefreshComplete(); 
+                    if(myWaterList!=null && myWaterList.size()>=10){
+                        page = page+1;
+                        getWaterListData(page);
+                        mainPlusWaterAdapter.notifyDataSetChanged(); 
+                    }else {
+                        Toast.makeText(MainPlusWaterActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                        mPullRefreshListView.onRefreshComplete(); 
+                    } 
                 }
             }
         });
@@ -158,11 +197,24 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
         mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                WaterData waterData = totalWaterList.get(position);
-                Intent intent = new Intent(MainPlusWaterActivity.this,OrderDetailsActivity.class);
-                intent.putExtra("orderId", waterData.getOrder_id());
-                intent.putExtra("orderType", 99);
-                startActivity(intent);
+                if(flag){
+                    DefaultServiceData def = totalDefServiceList.get(position);
+                    if(StringUtils.isNotEmpty(def.getDetail_url())){
+                    Intent intent = new Intent(MainPlusWaterActivity.this,WebViewPartnerActivity.class);
+                    intent.putExtra("url", def.getDetail_url());
+                    intent.putExtra("title","服务详情");
+                    intent.putExtra("dis_price",def.getDis_price());
+                    intent.putExtra("flag",1);//0=发现服务详情，1=默认服务详情
+                    intent.putExtra("defService", def);
+                    startActivity(intent);
+                    }
+                }else{
+                    WaterData waterData = totalWaterList.get(position);
+                    Intent intent = new Intent(MainPlusWaterActivity.this,OrderDetailsActivity.class);
+                    intent.putExtra("orderId", waterData.getOrder_id());
+                    intent.putExtra("orderType", 99);
+                    startActivity(intent);  
+                }
             }
         });
     }
@@ -191,7 +243,13 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
         mCardBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if(!flag){
+                    flag = true;
+                    mPullRefreshListView.setAdapter(defaultServiceAdapter);
+                    getDefaultServiceListData(pageDef);
+                }else {
+                    finish();
+                }
             }
         });
         mTv1.setOnClickListener(new OnClickListener() {
@@ -203,10 +261,9 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
         mTv2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainPlusWaterActivity.this,WebViewsActivity.class);
-                intent.putExtra("url",Constants.WATER_ORDER_H5);
-                startActivity(intent);
-                
+                flag = false;
+                mPullRefreshListView.setAdapter(mainPlusWaterAdapter);
+                getWaterListData(page);
             }
         });
         
@@ -241,7 +298,7 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
      * @param cardType
      */
     private void setCardTitleColor(String cardType){
-      mCardTitle.setText("送水");
+      mCardTitle.setText(titleName);
       mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_song_shui));
       mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_song_shui));
       mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_song_shui));
@@ -342,22 +399,110 @@ public class MainPlusWaterActivity extends Activity implements ListItemClickHelp
         mainPlusWaterAdapter.setData(totalWaterList);
         mPullRefreshListView.onRefreshComplete();
     }
+    
+    /**
+     * 获取默认商品列表
+     * @param page
+     */
+    public void getDefaultServiceListData(int page) {
+        String user_id = DBHelper.getUser(this).getId();
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user_id+"");
+        map.put("service_type_id", "239");
+        map.put("page",pageDef+"");
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().get(Constants.GET_DEF_SERVICE_URL, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(MainPlusWaterActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data").trim();
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data.trim())) {
+                                Gson gson = new Gson();
+                                myDefServiceList = new ArrayList<DefaultServiceData>();
+                                myDefServiceList = gson.fromJson(data, new TypeToken<ArrayList<DefaultServiceData>>() {
+                                }.getType());
+                                showDefServiceData(myDefServiceList);
+                            } 
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    mPullRefreshListView.onRefreshComplete();
+                    UIUtils.showToast(MainPlusWaterActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+    private void showDefServiceData(List<DefaultServiceData> myDefServiceList){
+        if(pageDef==1){
+            totalDefServiceList.clear();
+            for (DefaultServiceData def : myDefServiceList) {
+                totalDefServiceList.add(def);
+            }
+        }
+        if(pageDef>=2){
+            for (DefaultServiceData def : myDefServiceList) {
+                totalDefServiceList.add(def);
+            }
+        }
+        //给适配器赋值
+        defaultServiceAdapter.setData(totalDefServiceList);
+        mPullRefreshListView.onRefreshComplete();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         page =1;
         totalWaterList = new ArrayList<WaterData>();
         myWaterList = new ArrayList<WaterData>();
+        pageDef=1;
+        flag =true;
+        totalDefServiceList = new ArrayList<DefaultServiceData>();
+        myDefServiceList = new ArrayList<DefaultServiceData>();
         
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        getWaterListData(page);
+        flag = true;
+        mPullRefreshListView.setAdapter(defaultServiceAdapter);
+        getDefaultServiceListData(pageDef);
     }
 
     @Override
     public void onClick() {
+        mPullRefreshListView.setAdapter(mainPlusWaterAdapter);
         getWaterListData(page);
     }
 

@@ -239,6 +239,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
 
     private void startAd() {
         // 当Activity显示出来后，每两秒切换一次图片显示
+       
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 0, 3, TimeUnit.SECONDS);
     }
@@ -374,7 +375,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     @Override
     public void onStop() {
         super.onStop();
-        scheduledExecutorService.shutdown();
+        scheduledExecutorService.shutdownNow();
     }
 
     /**

@@ -148,7 +148,7 @@
         android:id="@+id/m_rl_category"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="@color/simi_color_line_gray"
+        android:background="#f4f4f4"
         android:visibility="visible" >
 
         <TextView
@@ -157,7 +157,7 @@
             android:gravity="left"
             android:padding="5dp"
             android:text="每日新知"
-            android:textColor="@color/simi_color_black" />
+            android:textColor="#4d4d4d" />
     </RelativeLayout>
     
 </LinearLayout>

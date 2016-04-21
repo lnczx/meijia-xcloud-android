@@ -443,6 +443,7 @@ public class AssetsDatabaseManager {
         }
         return list;        
     }
+   
     /**
      * 根据Id查看快递表
      * @param db

@@ -18,14 +18,14 @@
         android:text="直接找秘书"
         android:paddingBottom="8dp"
         android:textColor="#333333"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
     <ImageView
         android:id="@+id/iv_plus_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="18dp"
         android:background="@drawable/icon_plus_close"
         android:gravity="center_horizontal"
         android:textColor="#333333"

@@ -37,7 +37,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -61,6 +60,7 @@ import com.meijialife.simi.bean.ChanelBean;
 import com.meijialife.simi.bean.FindBean;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.SyncHorizontalScrollView;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.DateUtils;
@@ -77,7 +77,6 @@ import com.meijialife.simi.utils.UIUtils;
 public class Find2Fra extends BaseFragment {
 
     private MainActivity activity;
-    private ListView listview;
     private Find2Adapter findAdapter;// 服务商适配器
     private RelativeLayout rl_total_search;// 搜索框
     /**
@@ -94,15 +93,13 @@ public class Find2Fra extends BaseFragment {
     private LayoutInflater mInflater;
     private int currentIndicatorLeft = 0;
 
-    private ArrayList<FindBean> findBeanList;
     private ArrayList<ChanelBean> chanelBeanList;
     private String title_id = "1";
     private String title_name = "发现";
 
     private RadioGroup myRadioGroup;
     private int _id = 1000;
-    private LinearLayout layout, titleLayout;
-    private TextView textView;
+    private LinearLayout layout;
     private ImageView mImageView;
     private float mCurrentCheckedRadioLeft;// 当前被选中的RadioButton距离左侧的距离
     private HorizontalScrollView mHorizontalScrollView;// 上面的水平滚动控件
@@ -113,7 +110,6 @@ public class Find2Fra extends BaseFragment {
     private LinearLayout find_all_list;
     private GridView gv_application1;
     private FindAllAdapter appToolsAdapter1;
-    private User user;
     
     private ArrayList<FindBean> myFindBeanList;
     private ArrayList<FindBean> totalFindBeanList;
@@ -138,7 +134,6 @@ public class Find2Fra extends BaseFragment {
         /**
          * 标题滑动
          */
-        user = DBHelper.getUser(getActivity());
         rl_nav = (RelativeLayout) v.findViewById(R.id.rl_nav);
         mHsv = (SyncHorizontalScrollView) v.findViewById(R.id.mHsv);
         rg_nav_content = (RadioGroup) v.findViewById(R.id.rg_nav_content);
@@ -147,7 +142,6 @@ public class Find2Fra extends BaseFragment {
         iv_nav_right = (ImageView) v.findViewById(R.id.iv_nav_right);
         
         buttonList = new ArrayList<RadioButton>();
-        titleLayout = (LinearLayout) v.findViewById(R.id.title_lay);
         layout = (LinearLayout) v.findViewById(R.id.lay);
         mImageView = (ImageView) v.findViewById(R.id.img1);
         mHorizontalScrollView = (HorizontalScrollView) v.findViewById(R.id.horizontalScrollView);
@@ -195,7 +189,6 @@ public class Find2Fra extends BaseFragment {
                 rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
                 ChanelBean chanelBean = (ChanelBean) rb.getTag();
                 getFind2List(chanelBean.getChannel_id(),page);
-//                findAdapter.notifyDataSetChanged(); 
             }
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -210,7 +203,6 @@ public class Find2Fra extends BaseFragment {
                     rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
                     ChanelBean chanelBean = (ChanelBean) rb.getTag();
                     getFind2List(chanelBean.getChannel_id(),page);
-//                    findAdapter.notifyDataSetChanged(); 
                 }else {
                     Toast.makeText(activity,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
                     mPullRefreshListView.onRefreshComplete(); 
@@ -318,32 +310,11 @@ public class Find2Fra extends BaseFragment {
         mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                TextView tv_gotoType = (TextView) view.findViewById(R.id.tv_goto_type);
-                TextView tv_gotoUrl = (TextView) view.findViewById(R.id.tv_goto_url);
-                TextView tv_service_type_ids = (TextView) view.findViewById(R.id.tv_service_type_ids);
-
-                String goto_type = tv_gotoType.getText().toString().trim();
-                String goto_url = tv_gotoUrl.getText().toString().trim();
-                String service_type_ids = tv_service_type_ids.getText().toString().trim();
-                if (goto_type.equals("h5")) {
-                    Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
-                    intent.putExtra("url", goto_url);
-                    intent.putExtra("title_name", "");
-                    intent.putExtra("service_type_ids", "");
-                    startActivity(intent);
-                } else if (goto_type.equals("app")) {
-                    Intent intent = new Intent(getActivity(), Find2DetailActivity.class);
-                    intent.putExtra("service_type_ids", service_type_ids);
-                    intent.putExtra("title_name", title_name);
-                    startActivity(intent);
-                } else if (goto_type.equals("h5+list")) {
-                    Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
-                    intent.putExtra("url", goto_url);
-                    intent.putExtra("title_name", title_name);
-                    intent.putExtra("service_type_ids", service_type_ids);
-                    startActivity(intent);
-                }
+            
+                FindBean findBean = totalFindBeanList.get(position);
+                RouteUtil routeUtil  = new RouteUtil(getActivity());
+                routeUtil.Routing(findBean.getGoto_type(), findBean.getAction(), findBean.getGoto_url(),
+                        findBean.getService_type_ids(),findBean.getTitle());
             }
         });
 

@@ -17,8 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:background="@color/activity_bg_color"
-        android:orientation="vertical" >
-
+        android:orientation="vertical"
+        android:layout_weight="1"
+         >
         <LinearLayout
             android:id="@+id/m_ll_no_signs"
             android:layout_width="match_parent"
@@ -26,7 +27,8 @@
             android:layout_weight="1"
             android:background="@color/activity_bg_color"
             android:orientation="vertical"
-            >
+            android:visibility="visible"
+             >
 
             <com.handmark.pulltorefresh.library.PullToRefreshListView
                 xmlns:ptr="http://schemas.android.com/apk/res-auto"

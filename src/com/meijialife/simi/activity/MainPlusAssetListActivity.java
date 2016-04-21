@@ -81,6 +81,7 @@ public class MainPlusAssetListActivity extends Activity{
 
     
     private int leave_from = 0;// 0=我发起的；1=我审批的
+    private String titleName = "";
     //创建卡片
     private TextView mTv1;
     private TextView mTv2;
@@ -97,6 +98,7 @@ public class MainPlusAssetListActivity extends Activity{
         myAssetList = new ArrayList<AssetData>();
         totalAssetList = new ArrayList<AssetData>();
         assetAdapter = new MainPlusAssetAdapter(this);
+        titleName = getIntent().getStringExtra("title");
     
         // 按钮标题
         mButtonTool = (Button) findViewById(R.id.m_btn_tools);
@@ -190,7 +192,7 @@ public class MainPlusAssetListActivity extends Activity{
      * @param cardType
      */
     private void setCardTitleColor(){
-      mCardTitle.setText("资产管理");
+      mCardTitle.setText(titleName);
       mLlBottom.setBackgroundColor(getResources().getColor(R.color.plus_qing_jia));
       mLlCard.setBackgroundColor(getResources().getColor(R.color.plus_qing_jia));
       mRlCard.setBackgroundColor(getResources().getColor(R.color.plus_qing_jia));

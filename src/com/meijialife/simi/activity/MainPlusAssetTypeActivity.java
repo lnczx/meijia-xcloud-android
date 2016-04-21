@@ -16,7 +16,6 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.AssetTypeAdapter;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.XcompanySetting;
-import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.AssetsDatabaseManager;
 
 
@@ -53,7 +52,6 @@ public class MainPlusAssetTypeActivity extends BaseActivity implements OnItemCli
     	listView.setOnItemClickListener(this);
         adapter = new AssetTypeAdapter(this);
         listView.setAdapter(adapter);
-//        typeList=DBHelper.getXcompanySettings(MainPlusAssetTypeActivity.this);
         
         // 初始化，只需要调用一次  
         AssetsDatabaseManager.initManager(getApplication());  
@@ -89,6 +87,7 @@ public class MainPlusAssetTypeActivity extends BaseActivity implements OnItemCli
     protected void onDestroy() {
         super.onDestroy();
         typeList.clear();
+        AssetsDatabaseManager.closeDatabase("simi01.db");
     }
      /**
       * 订单列表点击进入详情
