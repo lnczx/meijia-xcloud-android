@@ -30,7 +30,8 @@ public class OffcutView extends View {
   public OffcutView(Context context, AttributeSet attrs, int defStyle) {
       super(context, attrs, defStyle);
   }
-  @SuppressLint("DrawAllocation")
+  @Override
+@SuppressLint("DrawAllocation")
   protected void onDraw(Canvas canvas) {
       if(Text==null)
       {
@@ -61,7 +62,7 @@ public class OffcutView extends View {
       float x,y;
       y=w*0.707f;
       y=(y*8)/10;
-      x=(float) (-textPaint.measureText(Text))/2;
+      x=(-textPaint.measureText(Text))/2;
       canvas.rotate(-45);
       canvas.drawText(Text, x , y, textPaint);
       canvas.restore();

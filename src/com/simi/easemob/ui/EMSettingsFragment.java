@@ -280,7 +280,8 @@ public class EMSettingsFragment extends Fragment implements OnClickListener {
 			@Override
 			public void onSuccess() {
 				getActivity().runOnUiThread(new Runnable() {
-					public void run() {
+					@Override
+                    public void run() {
 						pd.dismiss();
 						// 重新显示登陆页面
 						((EMMainActivity) getActivity()).finish();

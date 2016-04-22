@@ -17,7 +17,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.easemob.chat.EMChatManager;
 import com.simi.easemob.EMDemoHelper;
 
 public class DbOpenHelper extends SQLiteOpenHelper{

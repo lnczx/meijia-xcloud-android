@@ -38,7 +38,7 @@ public class PopupMenu extends PopupWindow implements OnClickListener {
 		popView = inflater.inflate(R.layout.popup_menu, null);// 加载菜单布局文件
 		this.setContentView(popView);// 把布局文件添加到popupwindow中
 		this.setWidth(dip2px(activity, 100));// 设置菜单的宽度（需要和菜单于右边距的距离搭配，可以自己调到合适的位置）
-		this.setHeight(LayoutParams.WRAP_CONTENT);
+		this.setHeight(android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 		this.setFocusable(true);// 获取焦点
 		this.setTouchable(true); // 设置PopupWindow可触摸
 		this.setOutsideTouchable(true); // 设置非PopupWindow区域可触摸

@@ -914,47 +914,6 @@ _
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
-        <!-- 发布动态activity -->
-        <activity
-            android:name="com.meijialife.simi.publish.PublishDynamicActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
-        </activity>
-        <!-- 动态详情activity -->
-        <activity
-            android:name="com.meijialife.simi.activity.DynamicDetailsActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <!-- 动态图片浏览 -->
-        <activity
-            android:name="com.meijialife.simi.publish.GalleryActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <!-- 动态相册 -->
-        <activity
-            android:name="com.meijialife.simi.publish.AlbumActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <!-- 动态相册 -->
-        <activity
-            android:name="com.meijialife.simi.publish.ImageFile"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.meijialife.simi.publish.ShowAllPhoto"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.meijialife.simi.publish.GalleryUrlActivity"
-            android:configChanges="orientation"
-            android:theme="@style/ImageScale" >
-        </activity>
-        <!-- 动态结束 -->
-        <activity
-            android:name="com.meijialife.simi.publish.ImagePagerActivity"
-            android:configChanges="orientation"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
-        </activity>
         <!-- 二维码扫描 -->
         <activity
             android:name="com.zbar.lib.CaptureActivity"

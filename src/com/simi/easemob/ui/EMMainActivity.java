@@ -220,7 +220,8 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
 
 	private void refreshUIWithMessage() {
 		runOnUiThread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				// 刷新bottom bar消息未读数
 				updateUnreadLabel();
 				if (currentTabIndex == 0) {
@@ -308,7 +309,8 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
 	 */
 	public void updateUnreadAddressLable() {
 		runOnUiThread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				int count = getUnreadAddressCountTotal();
 				if (count > 0) {
 //					unreadAddressLable.setText(String.valueOf(count));
@@ -387,7 +389,8 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
 				inviteMessgeDao.deleteMessage(username);
 			}
 			runOnUiThread(new Runnable() {
-				public void run() {
+				@Override
+                public void run() {
 					// 如果正在与此用户的聊天页面
 					String st10 = getResources().getString(R.string.have_you_removed);
 					if (ChatActivity.activityInstance != null
@@ -652,6 +655,7 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
                     @Override
                     public void onSuccess() {
                         runOnUiThread(new Runnable() {
+                            @Override
                             public void run() {
                                 // 重新显示登陆页面
                                 finish();

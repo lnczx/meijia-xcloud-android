@@ -110,7 +110,8 @@ public class RecorderVideoActivity extends EMBaseActivity implements
 		chronometer = (Chronometer) findViewById(R.id.chronometer);
 	}
 
-	public void back(View view) {
+	@Override
+    public void back(View view) {
 		releaseRecorder();
 		releaseCamera();
 		finish();

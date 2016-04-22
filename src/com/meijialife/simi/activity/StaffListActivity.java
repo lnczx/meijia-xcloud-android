@@ -111,8 +111,8 @@ public class StaffListActivity extends Activity implements OnClickListener {
         /**
          * 获取传递参数
          */
-        company_id = (String) getIntent().getStringExtra("company_id");
-        company_name = (String) getIntent().getStringExtra("company_name");
+        company_id = getIntent().getStringExtra("company_id");
+        company_name = getIntent().getStringExtra("company_name");
         flag = getIntent().getIntExtra("flag", 0);
 
         finalBitmap = FinalBitmap.create(this);
@@ -254,7 +254,7 @@ public class StaffListActivity extends Activity implements OnClickListener {
 
     private void popRqCode() {
         if (null == mPopupWindow || !mPopupWindow.isShowing()) {
-            mPopupWindow = new PopupWindow(music_popunwindwow, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            mPopupWindow = new PopupWindow(music_popunwindwow, android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
             mPopupWindow.showAtLocation(this.findViewById(R.id.ll_staff_list), Gravity.RIGHT | Gravity.BOTTOM, 0, 0);
             getMyRqCode();
         }

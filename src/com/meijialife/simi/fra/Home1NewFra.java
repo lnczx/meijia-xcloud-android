@@ -57,7 +57,6 @@ import com.meijialife.simi.ui.SignPopWindow;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
-import com.umeng.update.UmengUpdateAgent;
 import com.zbar.lib.CaptureActivity;
 
 /**
@@ -111,6 +110,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     // 定时任务
     private ScheduledExecutorService scheduledExecutorService;
     private Handler handler = new Handler() {
+        @Override
         public void handleMessage(android.os.Message msg) {
             adViewPager.setCurrentItem(currentItem);
         }
@@ -123,9 +123,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         headerView = inflater.inflate(R.layout.home1_banner, null);
         footView = inflater.inflate(R.layout.load_more, null);
 
-        // 设置友盟更新
-        UmengUpdateAgent.setUpdateOnlyWifi(false);
-        UmengUpdateAgent.update(getActivity());
 
         initView(v);
         getMsgList(page);

@@ -56,7 +56,8 @@ public class AlbumActivity extends Activity {
 	private AlbumHelper helper;
 	public static List<ImageBucket> contentList;
 	public static Bitmap bitmap;
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//setContentView(Res.getLayoutID("plugin_camera_album"));
 		setContentView(R.layout.plugin_camera_album);
@@ -83,7 +84,8 @@ public class AlbumActivity extends Activity {
 
 	// 预览按钮的监听
 	private class PreviewListener implements OnClickListener {
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			if (Bimp.tempSelectBitmap.size() > 0) {
 				intent.putExtra("position", "1");
 				intent.setClass(AlbumActivity.this, GalleryActivity.class);
@@ -95,7 +97,8 @@ public class AlbumActivity extends Activity {
 
 	// 完成按钮的监听
 	private class AlbumSendListener implements OnClickListener {
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			overridePendingTransition(R.anim.activity_translate_in, R.anim.activity_translate_out);
 			/*intent.setClass(mContext, MainActivity.class);
 			startActivity(intent);*/
@@ -106,7 +109,8 @@ public class AlbumActivity extends Activity {
 
 	// 返回按钮监听
 	private class BackListener implements OnClickListener {
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			intent.setClass(AlbumActivity.this, ImageFile.class);
 			startActivity(intent);
 		}
@@ -114,7 +118,8 @@ public class AlbumActivity extends Activity {
 
 	// 取消按钮的监听
 	private class CancelListener implements OnClickListener {
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			Bimp.tempSelectBitmap.clear();
 			intent.setClass(mContext, MainActivity.class);
 			startActivity(intent);
@@ -228,7 +233,8 @@ public class AlbumActivity extends Activity {
 		}
 	}
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			intent.setClass(AlbumActivity.this, ImageFile.class);
 			startActivity(intent);

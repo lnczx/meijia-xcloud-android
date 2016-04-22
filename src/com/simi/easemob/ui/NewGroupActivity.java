@@ -103,7 +103,8 @@ public class NewGroupActivity extends EMBaseActivity {
 						    EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, memberCheckbox.isChecked(),200);
 						}
 						runOnUiThread(new Runnable() {
-							public void run() {
+							@Override
+                            public void run() {
 								progressDialog.dismiss();
 								setResult(RESULT_OK);
 								finish();
@@ -111,7 +112,8 @@ public class NewGroupActivity extends EMBaseActivity {
 						});
 					} catch (final EaseMobException e) {
 						runOnUiThread(new Runnable() {
-							public void run() {
+							@Override
+                            public void run() {
 								progressDialog.dismiss();
 								Toast.makeText(NewGroupActivity.this, st2 + e.getLocalizedMessage(), 1).show();
 							}
@@ -123,7 +125,8 @@ public class NewGroupActivity extends EMBaseActivity {
 		}
 	}
 
-	public void back(View view) {
+	@Override
+    public void back(View view) {
 		finish();
 	}
 }

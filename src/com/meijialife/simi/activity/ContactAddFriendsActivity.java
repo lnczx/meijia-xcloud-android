@@ -31,6 +31,7 @@ public class ContactAddFriendsActivity extends BaseListActivity {
     private ArrayList<Friend> friendList;//现有好友列表
 
     Handler updateListHandler = new Handler() {
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
 
@@ -42,6 +43,7 @@ public class ContactAddFriendsActivity extends BaseListActivity {
         }
     };
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_contacts_addfirends_list);
         super.onCreate(savedInstanceState);

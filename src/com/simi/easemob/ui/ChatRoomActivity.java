@@ -30,6 +30,7 @@ import android.widget.ListView;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMChatRoom;
+import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.R;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.adapter.ChatRoomAdapter;
@@ -63,7 +64,7 @@ public class ChatRoomActivity extends EMBaseActivity {
 					// 进入群聊
 					Intent intent = new Intent(ChatRoomActivity.this, ChatActivity.class);
 					// it is group chat
-					intent.putExtra("chatType", EMConstant.CHATTYPE_CHATROOM);
+					intent.putExtra("chatType", EaseConstant.CHATTYPE_CHATROOM);
 					intent.putExtra("userId", chatRoomAdapter.getItem(position - 2).getId());
 					startActivityForResult(intent, 0);
 				}
@@ -140,7 +141,8 @@ public class ChatRoomActivity extends EMBaseActivity {
 	 * 
 	 * @param view
 	 */
-	public void back(View view) {
+	@Override
+    public void back(View view) {
 		finish();
 	}
 }

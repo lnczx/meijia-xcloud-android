@@ -56,7 +56,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener{
 		btn_submit.setOnClickListener(this);
 	}
 
-	public void onClick(View v) {
+	@Override
+    public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.feedback_btn_submit:
 			postFeedback();
@@ -138,7 +139,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener{
      */
     private void parseJson(JSONObject json) {
     	AlertWindow.dialog(context, "", "您的建议已收到，我们会尽快查找原因并尽快解决。非常感谢对有个管家的关注！", "不客气", new android.content.DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
+			@Override
+            public void onClick(DialogInterface dialog, int which) {
 				finish();
 			}
 		});

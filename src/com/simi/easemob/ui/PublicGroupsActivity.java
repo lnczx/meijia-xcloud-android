@@ -120,6 +120,7 @@ public class PublicGroupsActivity extends EMBaseActivity {
 	private void loadAndShowData(){
 	    new Thread(new Runnable() {
 
+            @Override
             public void run() {
                 try {
                     isLoading = true;
@@ -128,6 +129,7 @@ public class PublicGroupsActivity extends EMBaseActivity {
                     final List<EMGroupInfo> returnGroups = result.getData();
                     runOnUiThread(new Runnable() {
 
+                        @Override
                         public void run() {
                             searchBtn.setVisibility(View.VISIBLE);
                             groupsList.addAll(returnGroups);
@@ -158,6 +160,7 @@ public class PublicGroupsActivity extends EMBaseActivity {
                 } catch (EaseMobException e) {
                     e.printStackTrace();
                     runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             isLoading = false;
                             pb.setVisibility(View.INVISIBLE);
@@ -194,7 +197,8 @@ public class PublicGroupsActivity extends EMBaseActivity {
 		}
 	}
 	
-	public void back(View view){
+	@Override
+    public void back(View view){
 		finish();
 	}
 }

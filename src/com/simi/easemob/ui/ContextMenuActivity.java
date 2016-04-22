@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.easemob.chat.EMMessage;
+import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.R;
 import com.simi.easemob.EMConstant;
 
@@ -33,8 +34,8 @@ public class ContextMenuActivity extends EMBaseActivity {
 		
 		int type = message.getType().ordinal();
 		if (type == EMMessage.Type.TXT.ordinal()) {
-		    if(message.getBooleanAttribute(EMConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false) ||
-		            message.getBooleanAttribute(EMConstant.MESSAGE_ATTR_IS_VOICE_CALL, false)){
+		    if(message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false) ||
+		            message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VOICE_CALL, false)){
 		        setContentView(R.layout.em_context_menu_for_location);
 		    }else{
 		        setContentView(R.layout.em_context_menu_for_text);

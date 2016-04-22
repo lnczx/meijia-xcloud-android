@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.easemob.EMValueCallBack;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
+import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.R;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.adapter.GroupAdapter;
@@ -50,7 +51,8 @@ public class GroupsActivity extends EMBaseActivity {
 	
 	
 	Handler handler = new Handler(){
-	    public void handleMessage(android.os.Message msg) {
+	    @Override
+        public void handleMessage(android.os.Message msg) {
 	        swipeRefreshLayout.setRefreshing(false);
 	        switch (msg.what) {
             case 0:
@@ -117,7 +119,7 @@ public class GroupsActivity extends EMBaseActivity {
 					// 进入群聊
 					Intent intent = new Intent(GroupsActivity.this, ChatActivity.class);
 					// it is group chat
-					intent.putExtra("chatType", EMConstant.CHATTYPE_GROUP);
+					intent.putExtra("chatType", EaseConstant.CHATTYPE_GROUP);
 					intent.putExtra("userId", groupAdapter.getItem(position - 3).getGroupId());
 					startActivityForResult(intent, 0);
 				}
@@ -176,7 +178,8 @@ public class GroupsActivity extends EMBaseActivity {
 	 * 
 	 * @param view
 	 */
-	public void back(View view) {
+	@Override
+    public void back(View view) {
 		finish();
 	}
 }

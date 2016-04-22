@@ -151,7 +151,8 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 		content_2.setVisibility(View.VISIBLE);
 	}
 
-	public void onClick(View v) {
+	@Override
+    public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.points_ll_tab_1: // 积分兑换
 			setTabSelected(tab_1);

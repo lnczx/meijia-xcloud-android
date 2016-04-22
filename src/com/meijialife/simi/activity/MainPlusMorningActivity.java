@@ -121,7 +121,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_morning);
         super.onCreate(savedInstanceState);
-        v= (RelativeLayout)getLayoutInflater()
+        v= getLayoutInflater()
                 .inflate(R.layout.layout_main_plus_morning, null);
         userInfo = DBHelper.getUserInfo(this);
         
@@ -153,7 +153,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
         tv_senser_tip = (TextView) findViewById(R.id.tv_senser_tip);
         tv_select_who_name = (TextView) findViewById(R.id.tv_select_who_name);
 
-        view_mask = (View) findViewById(R.id.view_mask);
+        view_mask = findViewById(R.id.view_mask);
 
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);

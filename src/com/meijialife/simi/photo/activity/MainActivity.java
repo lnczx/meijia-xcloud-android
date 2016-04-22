@@ -83,6 +83,7 @@ public class MainActivity extends Activity {
     private User user;
     private FragmentManager mFM = null;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Res.init(this);
@@ -141,6 +142,7 @@ public class MainActivity extends Activity {
             }
         });
         bt1.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 photo();
                 pop.dismiss();
@@ -148,6 +150,7 @@ public class MainActivity extends Activity {
             }
         });
         bt2.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AlbumActivity.class);
                 startActivity(intent);
@@ -157,6 +160,7 @@ public class MainActivity extends Activity {
             }
         });
         bt3.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View v) {
                 pop.dismiss();
                 ll_popup.clearAnimation();
@@ -169,6 +173,7 @@ public class MainActivity extends Activity {
         adapter.update();
         noScrollgridview.setAdapter(adapter);
         noScrollgridview.setOnItemClickListener(new OnItemClickListener() {
+            @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 if (arg2 == Bimp.tempSelectBitmap.size()) {
                     ll_popup.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.activity_translate_in));
@@ -297,6 +302,7 @@ public class MainActivity extends Activity {
             loading();
         }
 
+        @Override
         public int getCount() {
             if (Bimp.tempSelectBitmap.size() == 9) {
                 return 9;
@@ -304,10 +310,12 @@ public class MainActivity extends Activity {
             return (Bimp.tempSelectBitmap.size() + 1);
         }
 
+        @Override
         public Object getItem(int arg0) {
             return null;
         }
 
+        @Override
         public long getItemId(int arg0) {
             return 0;
         }
@@ -320,6 +328,7 @@ public class MainActivity extends Activity {
             return selectedPosition;
         }
 
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder = null;
             if (convertView == null) {
@@ -348,6 +357,7 @@ public class MainActivity extends Activity {
         }
 
         Handler handler = new Handler() {
+            @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                 case 1:
@@ -360,6 +370,7 @@ public class MainActivity extends Activity {
 
         public void loading() {
             new Thread(new Runnable() {
+                @Override
                 public void run() {
                     while (true) {
                         if (Bimp.max == Bimp.tempSelectBitmap.size()) {
@@ -389,6 +400,7 @@ public class MainActivity extends Activity {
         return path;
     }
 
+    @Override
     protected void onRestart() {
         adapter.update();
         super.onRestart();
@@ -407,6 +419,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
         case TAKE_PICTURE:
@@ -425,6 +438,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             for (int i = 0; i < PublicWay.activityList.size(); i++) {

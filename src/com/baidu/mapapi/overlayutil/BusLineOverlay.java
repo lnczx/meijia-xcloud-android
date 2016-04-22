@@ -91,6 +91,7 @@ public class BusLineOverlay extends OverlayManager {
         return false;
     }
 
+    @Override
     public final boolean onMarkerClick(Marker marker) {
         if (mOverlayList != null && mOverlayList.contains(marker)) {
             return onBusStationClick(mOverlayList.indexOf(marker));

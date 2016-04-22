@@ -46,15 +46,18 @@ public class AlbumGridViewAdapter extends BaseAdapter{
 				.getMetrics(dm);
 	}
 
-	public int getCount() {
+	@Override
+    public int getCount() {
 		return dataList.size();
 	}
 
-	public Object getItem(int position) {
+	@Override
+    public Object getItem(int position) {
 		return dataList.get(position);
 	}
 
-	public long getItemId(int position) {
+	@Override
+    public long getItemId(int position) {
 		return 0;
 	}
 
@@ -64,8 +67,8 @@ public class AlbumGridViewAdapter extends BaseAdapter{
 				Object... params) {
 			if (imageView != null && bitmap != null) {
 				String url = (String) params[0];
-				if (url != null && url.equals((String) imageView.getTag())) {
-					((ImageView) imageView).setImageBitmap(bitmap);
+				if (url != null && url.equals(imageView.getTag())) {
+					imageView.setImageBitmap(bitmap);
 				} else {
 					Log.e(TAG, "callback, bmp not match");
 				}
@@ -85,7 +88,8 @@ public class AlbumGridViewAdapter extends BaseAdapter{
 		public TextView textView;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+	@Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
 		if (convertView == null) {
 			viewHolder = new ViewHolder();

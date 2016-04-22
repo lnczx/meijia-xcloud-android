@@ -331,7 +331,7 @@ public class DiscountCardActivity extends BaseActivity implements OnClickListene
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        MyDiscountCard myDiscountCard = (MyDiscountCard)myDiscountCardList.get(position);
+        MyDiscountCard myDiscountCard = myDiscountCardList.get(position);
         if(flag==1){
             Intent intent = new Intent();
             intent.putExtra("myDiscountCard",myDiscountCard);

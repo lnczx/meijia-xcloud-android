@@ -112,14 +112,16 @@ public class AddContactActivity extends EMBaseActivity{
 		progressDialog.show();
 		
 		new Thread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				
 				try {
 					//demo写死了个reason，实际应该让用户手动填入
 					String s = getResources().getString(R.string.Add_a_friend);
 					EMContactManager.getInstance().addContact(toAddUsername, s);
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							progressDialog.dismiss();
 							String s1 = getResources().getString(R.string.send_successful);
 							Toast.makeText(getApplicationContext(), s1, 1).show();
@@ -127,7 +129,8 @@ public class AddContactActivity extends EMBaseActivity{
 					});
 				} catch (final Exception e) {
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							progressDialog.dismiss();
 							String s2 = getResources().getString(R.string.Request_add_buddy_failure);
 							Toast.makeText(getApplicationContext(), s2 + e.getMessage(), 1).show();
@@ -138,7 +141,8 @@ public class AddContactActivity extends EMBaseActivity{
 		}).start();
 	}
 	
-	public void back(View v) {
+	@Override
+    public void back(View v) {
 		finish();
 	}
 }

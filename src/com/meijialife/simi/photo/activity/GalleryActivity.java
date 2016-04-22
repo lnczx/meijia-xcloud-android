@@ -83,22 +83,25 @@ public class GalleryActivity extends Activity {
 		
 		adapter = new MyPageAdapter(listViews);
 		pager.setAdapter(adapter);
-		pager.setPageMargin((int)getResources().getDimensionPixelOffset(Res.getDimenID("ui_10_dip")));
+		pager.setPageMargin(getResources().getDimensionPixelOffset(Res.getDimenID("ui_10_dip")));
 		int id = intent.getIntExtra("ID", 0);
 		pager.setCurrentItem(id);
 	}
 	
 	private OnPageChangeListener pageChangeListener = new OnPageChangeListener() {
 
-		public void onPageSelected(int arg0) {
+		@Override
+        public void onPageSelected(int arg0) {
 			location = arg0;
 		}
 
-		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		@Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
 
 		}
 
-		public void onPageScrollStateChanged(int arg0) {
+		@Override
+        public void onPageScrollStateChanged(int arg0) {
 
 		}
 	};
@@ -117,7 +120,8 @@ public class GalleryActivity extends Activity {
 	// 返回按钮添加的监听器
 	private class BackListener implements OnClickListener {
 
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			intent.setClass(GalleryActivity.this, ImageFile.class);
 			startActivity(intent);
 		}
@@ -126,7 +130,8 @@ public class GalleryActivity extends Activity {
 	// 删除按钮添加的监听器
 	private class DelListener implements OnClickListener {
 
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			if (listViews.size() == 1) {
 				Bimp.tempSelectBitmap.clear();
 				Bimp.max = 0;
@@ -148,7 +153,8 @@ public class GalleryActivity extends Activity {
 
 	// 完成按钮的监听
 	private class GallerySendListener implements OnClickListener {
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			finish();
 			intent.setClass(mContext,MainActivity.class);
 			startActivity(intent);
@@ -205,22 +211,27 @@ public class GalleryActivity extends Activity {
 			size = listViews == null ? 0 : listViews.size();
 		}
 
-		public int getCount() {
+		@Override
+        public int getCount() {
 			return size;
 		}
 
-		public int getItemPosition(Object object) {
+		@Override
+        public int getItemPosition(Object object) {
 			return POSITION_NONE;
 		}
 
-		public void destroyItem(View arg0, int arg1, Object arg2) {
+		@Override
+        public void destroyItem(View arg0, int arg1, Object arg2) {
 			((ViewPagerFixed) arg0).removeView(listViews.get(arg1 % size));
 		}
 
-		public void finishUpdate(View arg0) {
+		@Override
+        public void finishUpdate(View arg0) {
 		}
 
-		public Object instantiateItem(View arg0, int arg1) {
+		@Override
+        public Object instantiateItem(View arg0, int arg1) {
 			try {
 				((ViewPagerFixed) arg0).addView(listViews.get(arg1 % size), 0);
 
@@ -229,7 +240,8 @@ public class GalleryActivity extends Activity {
 			return listViews.get(arg1 % size);
 		}
 
-		public boolean isViewFromObject(View arg0, Object arg1) {
+		@Override
+        public boolean isViewFromObject(View arg0, Object arg1) {
 			return arg0 == arg1;
 		}
 

@@ -310,7 +310,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             change(new Home1NewFra());
             setSelected(mBt1);
             updateTitle(1);
-            slideMenu.isUse = false;
+            SlideMenu.isUse = false;
             view_title_bar.setVisibility(View.GONE);
             break;
         case R.id.tab_bt_2: // 发现
@@ -396,7 +396,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         change(new Find2Fra(this));
         setSelected(mBt2);
         updateTitle(2);
-        slideMenu.isUse = false;
+        SlideMenu.isUse = false;
     }
     
     /**
@@ -407,7 +407,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         change(new PersonalFragment());
         setSelected(mBt4);
         // updateTitle(4);
-        slideMenu.isUse = false;
+        SlideMenu.isUse = false;
         view_title_bar.setVisibility(View.GONE);
     }
     /**
@@ -417,7 +417,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         currentTabIndex = 4;
         change(new Home3Fra(this));
         setSelected(mBt4);
-        slideMenu.isUse = false;
+        SlideMenu.isUse = false;
         view_title_bar.setVisibility(View.GONE);
     }
 
@@ -434,7 +434,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         change(conversationListFragment);
         setSelected(mBt4);
 //        updateTitle(3);
-        slideMenu.isUse = false;
+        SlideMenu.isUse = false;
     }
 
     /**
@@ -448,7 +448,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         change(new Home3Fra(this));
         setSelected(mBt4);
 //        updateTitle(3);
-        slideMenu.isUse = false;
+        SlideMenu.isUse = false;
     }
     public void change2Home1() {
         if (!slideMenu.isMainScreenShowing()) {
@@ -458,7 +458,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         change(new Home1Fra());
         setSelected(mBt3);
         updateTitle(3);
-        slideMenu.isUse = false;
+        SlideMenu.isUse = false;
     }
 
     /**
@@ -605,7 +605,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage, EMNotifierEvent.Event.EventOfflineMessage,
                         EMNotifierEvent.Event.EventConversationListChanged });
 
-        UserInfo userInfo = DBHelper.getInstance(this).getUserInfo(this);
+        DBHelper.getInstance(this);
+        UserInfo userInfo = DBHelper.getUserInfo(this);
         if (null != userInfo) {
             String head_img = userInfo.getHead_img();
             String name = userInfo.getName();
@@ -657,6 +658,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     private void refreshUIWithMessage() {
         runOnUiThread(new Runnable() {
+            @Override
             public void run() {
                 // 刷新bottom bar消息未读数
                 updateUnreadLabel();

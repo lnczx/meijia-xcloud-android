@@ -39,6 +39,7 @@ public class CreateForWhoActivity extends BaseListActivity implements OnClickLis
     private ArrayList<UserInfo> secList;
     private ForWhoAdapter adapter;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_create_forwho);
         super.onCreate(savedInstanceState);

@@ -1,33 +1,13 @@
 package com.meijialife.simi.wxapi;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
 import com.meijialife.simi.Constants;
-import com.meijialife.simi.R;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
-import com.meijialife.simi.bean.User;
-import com.meijialife.simi.bean.UserInfo;
-import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.utils.LogOut;
-import com.meijialife.simi.utils.NetworkUtils;
-import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.UIUtils;
 import com.meijialife.simi.wxpay.WxConstants;
 import com.meijialife.simi.wxpay.WxPay;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
@@ -59,9 +39,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         api.handleIntent(intent, this);
     }
 
+    @Override
     public void onReq(BaseReq req) {
     }
 
+    @Override
     public void onResp(BaseResp resp) {
         Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
     

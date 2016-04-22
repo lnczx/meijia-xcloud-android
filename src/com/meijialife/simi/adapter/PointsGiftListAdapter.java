@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.PointsGiftData;
 import com.meijialife.simi.database.DBHelper;
@@ -54,19 +53,23 @@ public final class PointsGiftListAdapter extends BaseAdapter {
 		this.datas = datas;
 	}
 
-	public int getCount() {
+	@Override
+    public int getCount() {
 		return datas.size();
 	}
 
-	public Object getItem(int position) {
+	@Override
+    public Object getItem(int position) {
 		return null;
 	}
 
-	public long getItemId(int position) {
+	@Override
+    public long getItemId(int position) {
 		return 0;
 	}
 
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	@Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = layoutInflater.inflate(R.layout.points_tab1_list_item, null);//
@@ -86,7 +89,8 @@ public final class PointsGiftListAdapter extends BaseAdapter {
 		holder.tv_name.setText(datas.get(position).getName());
 		holder.tv_score.setText(datas.get(position).getScore());
 		holder.btn_exchange.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+			@Override
+            public void onClick(View v) {
 				postExchange();
 			}
 		});

@@ -6,12 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,25 +34,16 @@ import com.easemob.chat.EMMessage;
 import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.TextMessageBody;
+import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.controller.EaseUI;
 import com.easemob.easeui.controller.EaseUI.EaseSettingsProvider;
 import com.easemob.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.easemob.easeui.domain.EaseUser;
 import com.easemob.easeui.model.EaseNotifier;
 import com.easemob.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
-import com.easemob.easeui.utils.EaseCommonUtils;
-import com.easemob.easeui.utils.EaseUserUtils;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
-import com.google.gson.Gson;
-import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.CardDetailsActivity;
-import com.meijialife.simi.bean.Cards;
-import com.meijialife.simi.utils.LogOut;
-import com.meijialife.simi.utils.NetworkUtils;
-import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.db.DemoDBManager;
 import com.simi.easemob.db.InviteMessgeDao;
 import com.simi.easemob.db.UserDao;
@@ -300,14 +285,14 @@ public class EMDemoHelper {
                     ChatType chatType = message.getChatType();
                     if (chatType == ChatType.Chat) { // 单聊信息
                         intent.putExtra("userId", message.getFrom());
-                        intent.putExtra("chatType", EMConstant.CHATTYPE_SINGLE);
+                        intent.putExtra("chatType", EaseConstant.CHATTYPE_SINGLE);
                     } else { // 群聊信息
                         // message.getTo()为群聊id
                         intent.putExtra("userId", message.getTo());
                         if(chatType == ChatType.GroupChat){
-                            intent.putExtra("chatType", EMConstant.CHATTYPE_GROUP);
+                            intent.putExtra("chatType", EaseConstant.CHATTYPE_GROUP);
                         }else{
-                            intent.putExtra("chatType", EMConstant.CHATTYPE_CHATROOM);
+                            intent.putExtra("chatType", EaseConstant.CHATTYPE_CHATROOM);
                         }
                         
                     }
@@ -776,7 +761,7 @@ public class EMDemoHelper {
 	}
 	
 	public EMDemoModel getModel(){
-        return (EMDemoModel) demoModel;
+        return demoModel;
     }
 	
 	/**

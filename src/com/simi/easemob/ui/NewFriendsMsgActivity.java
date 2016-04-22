@@ -46,7 +46,8 @@ public class NewFriendsMsgActivity extends EMBaseActivity {
 		
 	}
 
-	public void back(View view) {
+	@Override
+    public void back(View view) {
 		finish();
 	}
 	

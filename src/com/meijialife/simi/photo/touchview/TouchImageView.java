@@ -382,8 +382,8 @@ public class TouchImageView extends ImageView {
         // Center the image
         redundantYSpace = height - (scale * bmHeight) ;
         redundantXSpace = width - (scale * bmWidth);
-        redundantYSpace /= (float)2;
-        redundantXSpace /= (float)2;
+        redundantYSpace /= 2;
+        redundantXSpace /= 2;
 
         matrix.postTranslate(redundantXSpace, redundantYSpace);
 
@@ -426,6 +426,7 @@ public class TouchImageView extends ImageView {
 
     
     private class Task extends TimerTask {
+        @Override
         public void run() {
             mTimerHandler.sendEmptyMessage(0);
         }

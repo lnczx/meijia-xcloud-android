@@ -173,7 +173,8 @@ public class EMLoginActivity extends EMBaseActivity {
 					return;
 				}
 				runOnUiThread(new Runnable() {
-					public void run() {
+					@Override
+                    public void run() {
 						pd.dismiss();
 						Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + message,
 								Toast.LENGTH_SHORT).show();

@@ -82,11 +82,13 @@ public class BlacklistActivity extends Activity {
 	    pd.setCanceledOnTouchOutside(false);
 	    pd.show();
 	    new Thread(new Runnable() {
+            @Override
             public void run() {
                 try {
                     // 移出黑民单
                     EMContactManager.getInstance().deleteUserFromBlackList(tobeRemoveUser);
                     runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             pd.dismiss();
                             adapter.remove(tobeRemoveUser);
@@ -95,6 +97,7 @@ public class BlacklistActivity extends Activity {
                 } catch (EaseMobException e) {
                     e.printStackTrace();
                     runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             pd.dismiss();
                             Toast.makeText(getApplicationContext(), R.string.Removed_from_the_failure, 0).show();

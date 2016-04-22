@@ -76,12 +76,14 @@ public class RegisterActivity extends EMBaseActivity {
 			pd.show();
 
 			new Thread(new Runnable() {
-				public void run() {
+				@Override
+                public void run() {
 					try {
 						// 调用sdk注册方法
 						EMChatManager.getInstance().createAccountOnServer(username, pwd);
 						runOnUiThread(new Runnable() {
-							public void run() {
+							@Override
+                            public void run() {
 								if (!RegisterActivity.this.isFinishing())
 									pd.dismiss();
 								// 保存用户名
@@ -92,7 +94,8 @@ public class RegisterActivity extends EMBaseActivity {
 						});
 					} catch (final EaseMobException e) {
 						runOnUiThread(new Runnable() {
-							public void run() {
+							@Override
+                            public void run() {
 								if (!RegisterActivity.this.isFinishing())
 									pd.dismiss();
 								int errorCode=e.getErrorCode();
@@ -116,7 +119,8 @@ public class RegisterActivity extends EMBaseActivity {
 		}
 	}
 
-	public void back(View view) {
+	@Override
+    public void back(View view) {
 		finish();
 	}
 

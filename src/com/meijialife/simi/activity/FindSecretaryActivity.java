@@ -39,6 +39,7 @@ public class FindSecretaryActivity extends BaseListActivity implements OnClickLi
     private ArrayList<Partner> partnerList; // 所有服务商--秘书列表
     private SecretaryAdapter adapter;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_contacts_addfirends_list);
         super.onCreate(savedInstanceState);

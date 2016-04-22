@@ -129,7 +129,8 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			showDialog();
 		}
 		new Thread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				try {
 					URL url = new URL(Constants.URL_GET_VERSION);
 					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -170,7 +171,8 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 	private static final int CODE_VERSION_ERROR = 102; // 检测版本数据解析失败
 
 	Handler mHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
+		@Override
+        public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case CODE_VERSION_MANUAL_OK:
 				if (progDlg != null) {
@@ -270,14 +272,16 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 		builder.setMessage(msg);
 		builder.setPositiveButton("立即升级",
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
+					@Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
 //						Intent intent = new Intent(MoreActivity.this, DownloadManagerActivity.class);
 //						MoreActivity.this.startActivity(intent);
 					}
 				});
 		builder.setNegativeButton("以后再说",
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
+					@Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
 					}
 				});
 		AlertDialog dlg = builder.create();

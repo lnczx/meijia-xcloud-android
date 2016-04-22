@@ -10,9 +10,6 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -72,6 +69,7 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
         initView();
         
         mHandler = new Handler() {
+            @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 switch (msg.what) {
@@ -326,6 +324,7 @@ public class BindMobileActivity extends BaseActivity implements OnClickListener{
                             Toast.makeText(getApplicationContext(), "验证码获取成功", 0).show();
                             new Thread() {
                                 int a = 60;
+                                @Override
                                 public void run() {
                                     while (a > 0) {
                                         try {

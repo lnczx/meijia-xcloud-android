@@ -40,11 +40,13 @@ public class CardViewVo extends Cards {
 		this.createUserName = createUserName;
 	}
 
-	public String getName() {
+	@Override
+    public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	@Override
+    public void setName(String name) {
 		this.name = name;
 	}
 

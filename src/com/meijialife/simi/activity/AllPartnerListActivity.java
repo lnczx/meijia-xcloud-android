@@ -11,7 +11,6 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONObject;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,7 +26,6 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.FindAllAdapter;
 import com.meijialife.simi.bean.FindBean;
-import com.meijialife.simi.utils.AssetsDatabaseManager;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;

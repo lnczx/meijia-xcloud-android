@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -57,19 +55,23 @@ public final class HomeListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	public int getCount() {
+	@Override
+    public int getCount() {
 		return homePosts.size();
 	}
 
-	public Object getItem(int position) {
+	@Override
+    public Object getItem(int position) {
 		return null;
 	}
 
-	public long getItemId(int position) {
+	@Override
+    public long getItemId(int position) {
 		return 0;
 	}
 
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	@Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = layoutInflater.inflate(R.layout.home_list_item, null);//

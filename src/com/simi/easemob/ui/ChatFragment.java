@@ -23,6 +23,7 @@ import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
+import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.ui.EaseChatFragment;
 import com.easemob.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
 import com.easemob.easeui.widget.chatrow.EaseChatRow;
@@ -66,7 +67,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
     @Override
     protected void setUpView() {
         setChatFragmentListener(this);
-        if (chatType == EMConstant.CHATTYPE_SINGLE) { 
+        if (chatType == EaseConstant.CHATTYPE_SINGLE) { 
             Map<String,RobotUser> robotMap = EMDemoHelper.getInstance().getRobotList();
             if(robotMap!=null && robotMap.containsKey(toChatUsername)){
                 isRobot = true;
@@ -82,7 +83,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
         //增加扩展item
         inputMenu.registerExtendMenuItem(R.string.attach_video, R.drawable.em_chat_video_selector, ITEM_VIDEO, extendMenuItemClickListener);
         inputMenu.registerExtendMenuItem(R.string.attach_file, R.drawable.em_chat_file_selector, ITEM_FILE, extendMenuItemClickListener);
-        if(chatType == EMConstant.CHATTYPE_SINGLE){
+        if(chatType == EaseConstant.CHATTYPE_SINGLE){
             inputMenu.registerExtendMenuItem(R.string.attach_voice_call, R.drawable.em_chat_voice_call_selector, ITEM_VOICE_CALL, extendMenuItemClickListener);
             inputMenu.registerExtendMenuItem(R.string.attach_video_call, R.drawable.em_chat_video_call_selector, ITEM_VIDEO_CALL, extendMenuItemClickListener);
         }
@@ -163,7 +164,7 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
 
     @Override
     public void onEnterToChatDetails() {
-        if (chatType == EMConstant.CHATTYPE_GROUP) {
+        if (chatType == EaseConstant.CHATTYPE_GROUP) {
             EMGroup group = EMGroupManager.getInstance().getGroup(toChatUsername);
             if (group == null) {
                 Toast.makeText(getActivity(), R.string.gorup_not_found, 0).show();
@@ -282,9 +283,9 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
         public int getCustomChatRowType(EMMessage message) {
             if(message.getType() == EMMessage.Type.TXT){
                 //语音通话类型
-                if (message.getBooleanAttribute(EMConstant.MESSAGE_ATTR_IS_VOICE_CALL, false)){
+                if (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VOICE_CALL, false)){
                     return message.direct == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_VOICE_CALL : MESSAGE_TYPE_SENT_VOICE_CALL;
-                }else if (message.getBooleanAttribute(EMConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
+                }else if (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
                     //视频通话
                     return message.direct == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_VIDEO_CALL : MESSAGE_TYPE_SENT_VIDEO_CALL;
                 }
@@ -296,8 +297,8 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
         public EaseChatRow getCustomChatRow(EMMessage message, int position, BaseAdapter adapter) {
             if(message.getType() == EMMessage.Type.TXT){
                 // 语音通话,  视频通话
-                if (message.getBooleanAttribute(EMConstant.MESSAGE_ATTR_IS_VOICE_CALL, false) ||
-                    message.getBooleanAttribute(EMConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
+                if (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VOICE_CALL, false) ||
+                    message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
                     return new ChatRowVoiceCall(getActivity(), message, position, adapter);
                 }
             }

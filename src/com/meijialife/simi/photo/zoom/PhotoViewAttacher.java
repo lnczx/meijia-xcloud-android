@@ -277,7 +277,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 		return mScaleType;
 	}
 
-	public final boolean onDoubleTap(MotionEvent ev) {
+	@Override
+    public final boolean onDoubleTap(MotionEvent ev) {
 		try {
 			float scale = getScale();
 			float x = ev.getX();
@@ -297,12 +298,14 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 		return true;
 	}
 
-	public final boolean onDoubleTapEvent(MotionEvent e) {
+	@Override
+    public final boolean onDoubleTapEvent(MotionEvent e) {
 		// Wait for the confirmed onDoubleTap() instead
 		return false;
 	}
 
-	public final void onDrag(float dx, float dy) {
+	@Override
+    public final void onDrag(float dx, float dy) {
 		if (DEBUG) {
 			Log.d(LOG_TAG, String.format("onDrag: dx: %.2f. dy: %.2f", dx, dy));
 		}
@@ -381,7 +384,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 		}
 	}
 
-	public final void onScale(float scaleFactor, float focusX, float focusY) {
+	@Override
+    public final void onScale(float scaleFactor, float focusX, float focusY) {
 		if (DEBUG) {
 			Log.d(LOG_TAG, String.format(
 					"onScale: scale: %.2f. fX: %.2f. fY: %.2f", scaleFactor,
@@ -395,7 +399,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 		}
 	}
 
-	public final boolean onSingleTapConfirmed(MotionEvent e) {
+	@Override
+    public final boolean onSingleTapConfirmed(MotionEvent e) {
 		ImageView imageView = getImageView();
 
 		if (null != imageView) {
@@ -875,7 +880,8 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
 			}
 		}
 
-		public void run() {
+		@Override
+        public void run() {
 			ImageView imageView = getImageView();
 
 			if (null != imageView) {

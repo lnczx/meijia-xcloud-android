@@ -308,7 +308,8 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	/**
 	 * 百度Poi搜索结果
 	 */
-	public void onGetPoiResult(PoiResult result) {
+	@Override
+    public void onGetPoiResult(PoiResult result) {
 		if (result == null || result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
 //			Toast.makeText(AddAddress.this, "未找到结果", Toast.LENGTH_LONG).show();
 			return;
@@ -347,7 +348,8 @@ public class MainPlusSignActivity extends FragmentActivity implements OnGetPoiSe
 	/**
 	 * 点击地图覆盖层上的Poi后搜索出来的详细信息
 	 */
-	public void onGetPoiDetailResult(PoiDetailResult result) {
+	@Override
+    public void onGetPoiDetailResult(PoiDetailResult result) {
 		if (result.error != SearchResult.ERRORNO.NO_ERROR) {
 			Toast.makeText(MainPlusSignActivity.this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
 		} else {

@@ -182,6 +182,7 @@ public class PayWithAlipay {
     }
 
     Handler mHandler = new Handler() {
+        @Override
         public void handleMessage(android.os.Message msg) {
             Result result = new Result((String) msg.obj);
             Log.d(TAG, "支付宝支付结果: " + msg.obj.toString());

@@ -67,7 +67,8 @@ public abstract class VersionedGestureDetector {
 			return ev.getY();
 		}
 
-		public boolean isScaling() {
+		@Override
+        public boolean isScaling() {
 			return false;
 		}
 

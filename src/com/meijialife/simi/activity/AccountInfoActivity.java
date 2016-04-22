@@ -405,6 +405,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
             @Override
             public void onSuccess() {
                 AccountInfoActivity.this.runOnUiThread(new Runnable() {
+                    @Override
                     public void run() {
                         dismissDialog();
                         // 重新显示登陆页面
@@ -604,6 +605,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
     };
 
     Handler uploadHandler = new Handler() {
+        @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             case 0: // 上传头像时IO异常

@@ -144,6 +144,7 @@ public class PointsShopActivity extends Activity {
 
         // 添加后退按钮监听事件
         mBackView.setOnClickListener(new OnClickListener() {
+            @Override
             public void onClick(View view) {
                 onBackClick();
             }
@@ -151,6 +152,7 @@ public class PointsShopActivity extends Activity {
         // 添加分享按钮的监听事件
         if (mShare != null) {
             mShare.setOnClickListener(new OnClickListener() {
+                @Override
                 public void onClick(View view) {
                     if (creditsListener != null) {
                         creditsListener.onShareClick(mWebView, shareUrl, shareThumbnail, shareTitle, shareSubtitle);

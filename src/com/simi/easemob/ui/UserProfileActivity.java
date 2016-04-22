@@ -146,7 +146,8 @@ public class UserProfileActivity extends EMBaseActivity implements OnClickListen
 		builder.setItems(new String[] { getString(R.string.dl_msg_take_photo), getString(R.string.dl_msg_local_upload) },
 				new DialogInterface.OnClickListener() {
 
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+                    public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						switch (which) {
 						case 0:
@@ -180,7 +181,8 @@ public class UserProfileActivity extends EMBaseActivity implements OnClickListen
 				}
 				if (!updatenick) {
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
 									.show();
 							dialog.dismiss();

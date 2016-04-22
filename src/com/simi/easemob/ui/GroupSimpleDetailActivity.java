@@ -70,12 +70,14 @@ public class GroupSimpleDetailActivity extends EMBaseActivity {
 		}
 		new Thread(new Runnable() {
 
-			public void run() {
+			@Override
+            public void run() {
 				//从服务器获取详情
 				try {
 					group = EMGroupManager.getInstance().getGroupFromServer(groupid);
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							showGroupDetail();
 						}
 					});
@@ -83,7 +85,8 @@ public class GroupSimpleDetailActivity extends EMBaseActivity {
 					e.printStackTrace();
 					final String st1 = getResources().getString(R.string.Failed_to_get_group_chat_information);
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							progressBar.setVisibility(View.INVISIBLE);
 							Toast.makeText(GroupSimpleDetailActivity.this, st1+e.getMessage(), 1).show();
 						}
@@ -108,7 +111,8 @@ public class GroupSimpleDetailActivity extends EMBaseActivity {
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
 		new Thread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				try {
 					//如果是membersOnly的群，需要申请加入，不能直接join
 					if(group.isMembersOnly()){
@@ -117,7 +121,8 @@ public class GroupSimpleDetailActivity extends EMBaseActivity {
 					    EMGroupManager.getInstance().joinGroup(groupid);
 					}
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							pd.dismiss();
 							if(group.isMembersOnly())
 								Toast.makeText(GroupSimpleDetailActivity.this, st3, 0).show();
@@ -129,7 +134,8 @@ public class GroupSimpleDetailActivity extends EMBaseActivity {
 				} catch (final EaseMobException e) {
 					e.printStackTrace();
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							pd.dismiss();
 							Toast.makeText(GroupSimpleDetailActivity.this, st5+e.getMessage(), 0).show();
 						}
@@ -149,7 +155,8 @@ public class GroupSimpleDetailActivity extends EMBaseActivity {
          tv_introduction.setText(group.getDescription());
      }
 	
-	public void back(View view){
+	@Override
+    public void back(View view){
 		finish();
 	}
 }

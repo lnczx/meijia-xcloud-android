@@ -41,19 +41,23 @@ public final class CityListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	public int getCount() {
+	@Override
+    public int getCount() {
 		return datas.size();
 	}
 
-	public Object getItem(int position) {
+	@Override
+    public Object getItem(int position) {
 		return null;
 	}
 
-	public long getItemId(int position) {
+	@Override
+    public long getItemId(int position) {
 		return 0;
 	}
 
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	@Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = layoutInflater.inflate(R.layout.city_list_item, null);//

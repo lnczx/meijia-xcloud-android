@@ -4,21 +4,15 @@ import java.util.ArrayList;
 
 import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.OrderDetailsActivity;
-import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.bean.MyOrder;
 /**
  * @description：我的订单--列表--适配器

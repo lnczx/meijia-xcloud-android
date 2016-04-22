@@ -207,6 +207,7 @@ public class SplashActivity extends Activity {
      */
     private void initEasemob(){
         new Thread(new Runnable() {
+            @Override
             public void run() {
              // 如果登录成功过，直接进入主页面
                 if (EMDemoHelper.getInstance().isLoggedIn()) {

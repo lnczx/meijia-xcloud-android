@@ -131,14 +131,17 @@ public class Util {
 
 	        TrustManager tm = new X509TrustManager() {
 
-	            public X509Certificate[] getAcceptedIssuers() {
+	            @Override
+                public X509Certificate[] getAcceptedIssuers() {
 	                return null;
 	            }
 
-				public void checkClientTrusted(X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
+				@Override
+                public void checkClientTrusted(X509Certificate[] chain, String authType) throws java.security.cert.CertificateException {
 				}
 
-				public void checkServerTrusted(X509Certificate[] chain,	String authType) throws java.security.cert.CertificateException {
+				@Override
+                public void checkServerTrusted(X509Certificate[] chain,	String authType) throws java.security.cert.CertificateException {
 				}
 	        };
 

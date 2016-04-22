@@ -33,7 +33,7 @@ public class PopWindowHelp extends PopupWindow {
     public PopWindowHelp(Activity context,final AppHelpData appHelpData,View v) {
         super();
         this.context= context;
-        view = (LinearLayout)context.getLayoutInflater()
+        view = context.getLayoutInflater()
                 .inflate(R.layout.layout_tip_activity, null);
         if (null == popupWindow || !popupWindow.isShowing()) {
             popupWindow = new PopupWindow(view);

@@ -225,7 +225,8 @@ public class ContactListFragment extends EaseContactListFragment {
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
 		new Thread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				try {
 					EMContactManager.getInstance().deleteContact(tobeDeleteUser.getUsername());
 					// 删除db和内存中此用户的数据
@@ -233,7 +234,8 @@ public class ContactListFragment extends EaseContactListFragment {
 					dao.deleteContact(tobeDeleteUser.getUsername());
 					EMDemoHelper.getInstance().getContactList().remove(tobeDeleteUser.getUsername());
 					getActivity().runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							pd.dismiss();
 							contactList.remove(tobeDeleteUser);
 							contactListLayout.refresh();
@@ -242,7 +244,8 @@ public class ContactListFragment extends EaseContactListFragment {
 					});
 				} catch (final Exception e) {
 					getActivity().runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							pd.dismiss();
 							Toast.makeText(getActivity(), st2 + e.getMessage(), 1).show();
 						}
@@ -260,6 +263,7 @@ public class ContactListFragment extends EaseContactListFragment {
         public void onSyncComplete(final boolean success) {
             EMLog.d(TAG, "on contact list sync success:" + success);
             getActivity().runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
                     getActivity().runOnUiThread(new Runnable(){
 

@@ -18,18 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.BindMobileActivity;
-import com.meijialife.simi.activity.PartnerActivity;
-import com.meijialife.simi.activity.PayOrderActivity;
-import com.meijialife.simi.activity.PayZeroOrderActivity;
-import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.activity.WebViewPartnerActivity;
 import com.meijialife.simi.bean.PartnerDetail;
-import com.meijialife.simi.bean.SecretarySenior;
 import com.meijialife.simi.bean.ServicePrices;
-import com.meijialife.simi.bean.User;
-import com.meijialife.simi.bean.UserInfo;
-import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.StringUtils;
 
 /**

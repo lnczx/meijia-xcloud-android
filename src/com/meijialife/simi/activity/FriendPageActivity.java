@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easemob.easeui.EaseConstant;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
@@ -41,7 +42,6 @@ import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.NoScrollViewPager;
 import com.meijialife.simi.ui.RoundImageView;
-import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -237,8 +237,8 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
             }
             
             intent = new Intent(FriendPageActivity.this, ChatActivity.class);
-            intent.putExtra(EMConstant.EXTRA_USER_ID, user.getIm_user_name());
-            intent.putExtra(EMConstant.EXTRA_USER_NAME, nickName);
+            intent.putExtra(EaseConstant.EXTRA_USER_ID, user.getIm_user_name());
+            intent.putExtra(EaseConstant.EXTRA_USER_NAME, nickName);
             startActivity(intent);
             break;
 

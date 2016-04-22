@@ -21,6 +21,7 @@ package com.meijialife.simi.ui.wheelview;
  * 
  * @deprecated Use WheelViewAdapter
  */
+@Deprecated
 public interface WheelAdapter {
 	/**
 	 * Gets items count

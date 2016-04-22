@@ -117,6 +117,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         setConfig();// 配置第三方登录
 
         mHandler = new Handler() {
+            @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 switch (msg.what) {
@@ -531,6 +532,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                             new Thread() {
                                 int a = 60;
 
+                                @Override
                                 public void run() {
                                     while (a > 0) {
                                         try {
@@ -750,6 +752,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
                 // 进入主页面
                 runOnUiThread(new Runnable() {
+                    @Override
                     public void run() {
                         dismissDialog();
 //                        Toast.makeText(getApplicationContext(), "环信登录成功！", Toast.LENGTH_SHORT).show();
@@ -779,6 +782,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                  * if (!progressShow) { return; }
                  */
                 runOnUiThread(new Runnable() {
+                    @Override
                     public void run() {
                         dismissDialog();
                         Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + message, Toast.LENGTH_SHORT).show();

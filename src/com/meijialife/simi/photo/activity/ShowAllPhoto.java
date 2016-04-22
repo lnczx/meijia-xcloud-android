@@ -82,7 +82,8 @@ public class ShowAllPhoto extends Activity {
     };  
 
 	private class PreviewListener implements OnClickListener {
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			if (Bimp.tempSelectBitmap.size() > 0) {
 				intent.putExtra("position", "2");
 				intent.setClass(ShowAllPhoto.this, GalleryActivity.class);
@@ -99,7 +100,8 @@ public class ShowAllPhoto extends Activity {
 			this.intent = intent;
 		}
 
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			intent.setClass(ShowAllPhoto.this, ImageFile.class);
 			startActivity(intent);
 		}
@@ -107,7 +109,8 @@ public class ShowAllPhoto extends Activity {
 	}
 
 	private class CancelListener implements OnClickListener {// 取消按钮的监听
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			//清空选择的图片
 			Bimp.tempSelectBitmap.clear();
 			intent.setClass(mContext, MainActivity.class);
@@ -131,7 +134,8 @@ public class ShowAllPhoto extends Activity {
 
 		gridImageAdapter
 				.setOnItemClickListener(new AlbumGridViewAdapter.OnItemClickListener() {
-					public void onItemClick(final ToggleButton toggleButton,
+					@Override
+                    public void onItemClick(final ToggleButton toggleButton,
 							int position, boolean isChecked,
 							Button button) {
 						if (Bimp.tempSelectBitmap.size() >= PublicWay.num&&isChecked) {
@@ -203,7 +207,8 @@ public class ShowAllPhoto extends Activity {
 		}
 	}
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			this.finish();
 			intent.setClass(ShowAllPhoto.this, ImageFile.class);

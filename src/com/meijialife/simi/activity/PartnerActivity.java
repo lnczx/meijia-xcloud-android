@@ -129,9 +129,9 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 partnerDetail=gson.fromJson(data,PartnerDetail.class);
-                                servicePricesList = (List<ServicePrices>) partnerDetail.getService_prices();
-                                secretaryImagesList = (List<SecretaryImages>)partnerDetail.getUser_imgs();
-                                userTagList = (List<UserTag>)partnerDetail.getUser_tags();
+                                servicePricesList = partnerDetail.getService_prices();
+                                secretaryImagesList = partnerDetail.getUser_imgs();
+                                userTagList = partnerDetail.getUser_tags();
                                
                                 showPartnerInfo(partnerDetail);
                                 showPartnerImag(secretaryImagesList);

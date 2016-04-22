@@ -8,9 +8,9 @@ import android.content.Context;
 import com.easemob.EMValueCallBack;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
+import com.easemob.easeui.domain.EaseUser;
 import com.simi.easemob.EMDemoHelper.DataSyncListener;
 import com.simi.easemob.utils.PreferenceManager;
-import com.easemob.easeui.domain.EaseUser;
 
 public class UserProfileManager {
 

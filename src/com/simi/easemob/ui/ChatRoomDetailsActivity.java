@@ -220,11 +220,13 @@ public class ChatRoomDetailsActivity extends EMBaseActivity implements OnClickLi
 	 */
 	private void exitGrop() {
 		new Thread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				try {
 					EMChatManager.getInstance().leaveChatRoom(roomId);
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							progressDialog.dismiss();
 							setResult(RESULT_OK);
 							finish();
@@ -234,7 +236,8 @@ public class ChatRoomDetailsActivity extends EMBaseActivity implements OnClickLi
 					});
 				} catch (final Exception e) {
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							progressDialog.dismiss();
 							Toast.makeText(getApplicationContext(), "退出聊天室失败: " + e.getMessage(), 1).show();
 						}
@@ -246,12 +249,14 @@ public class ChatRoomDetailsActivity extends EMBaseActivity implements OnClickLi
 	
 	protected void updateRoom() {
 		new Thread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				try {
 					final EMChatRoom returnRoom = EMChatManager.getInstance().fetchChatRoomFromServer(roomId);
 
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							((TextView) findViewById(R.id.group_name)).setText(returnRoom.getName() + "(" + returnRoom.getAffiliationsCount()
 									+ "人)");
 							loadingPB.setVisibility(View.INVISIBLE);
@@ -271,7 +276,8 @@ public class ChatRoomDetailsActivity extends EMBaseActivity implements OnClickLi
 
 				} catch (Exception e) {
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							loadingPB.setVisibility(View.INVISIBLE);
 						}
 					});
@@ -445,7 +451,8 @@ public class ChatRoomDetailsActivity extends EMBaseActivity implements OnClickLi
 	}
 
 
-	public void back(View view) {
+	@Override
+    public void back(View view) {
 		setResult(RESULT_OK);
 		finish();
 	}

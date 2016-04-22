@@ -41,14 +41,16 @@ public class GroupBlacklistActivity extends EMBaseActivity {
 		final String st1 = getResources().getString(R.string.get_failed_please_check);
 		new Thread(new Runnable() {
 
-			public void run() {
+			@Override
+            public void run() {
 				try {
 					List<String> blockedList = EMGroupManager.getInstance().getBlockedUsers(groupId);
 					if(blockedList != null){
 						Collections.sort(blockedList);
 						adapter = new BlacklistAdapter(GroupBlacklistActivity.this, 1, blockedList);
 						runOnUiThread(new Runnable() {
-							public void run() {
+							@Override
+                            public void run() {
 								listView.setAdapter(adapter);
 								progressBar.setVisibility(View.INVISIBLE);
 							}
@@ -56,7 +58,8 @@ public class GroupBlacklistActivity extends EMBaseActivity {
 					}
 				} catch (EaseMobException e) {
 					runOnUiThread(new Runnable() {
-						public void run() {
+						@Override
+                        public void run() {
 							Toast.makeText(getApplicationContext(), st1, 1).show();
 							progressBar.setVisibility(View.INVISIBLE);
 						}
@@ -98,7 +101,8 @@ public class GroupBlacklistActivity extends EMBaseActivity {
 		} catch (EaseMobException e) {
 			e.printStackTrace();
 			runOnUiThread(new Runnable() {
-				public void run() {
+				@Override
+                public void run() {
 					Toast.makeText(getApplicationContext(), st2, 0).show();
 				}
 			});

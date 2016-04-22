@@ -77,7 +77,7 @@ public class PassUsersAdapter extends BaseAdapter {
 			holder.tv_pass_time = (TextView)convertView.findViewById(R.id.m_pass_time);
 			holder.iv_pass_icon = (ImageView)convertView.findViewById(R.id.m_pass_icon);
 			holder.ll_view = (LinearLayout)convertView.findViewById(R.id.ll_view);
-			holder.m_leave_view = (View)convertView.findViewById(R.id.m_leave_view);
+			holder.m_leave_view = convertView.findViewById(R.id.m_leave_view);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();

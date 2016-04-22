@@ -83,7 +83,8 @@ public class ToggleButton extends View{
 		spring.removeListener(springListener);
 	}
 	
-	public void onAttachedToWindow() {
+	@Override
+    public void onAttachedToWindow() {
 		super.onAttachedToWindow();
 		spring.addListener(springListener);
 	}

@@ -152,6 +152,7 @@ public class PublicChatRoomsActivity extends EMBaseActivity {
 	private void loadAndShowData(){
 		new Thread(new Runnable() {
 
+            @Override
             public void run() {
                 try {
                     isLoading = true;
@@ -160,6 +161,7 @@ public class PublicChatRoomsActivity extends EMBaseActivity {
                     final List<EMChatRoom> chatRooms = result.getData();
                     runOnUiThread(new Runnable() {
 
+                        @Override
                         public void run() {
                             chatRoomList.addAll(chatRooms);
                             if(chatRooms.size() != 0){
@@ -189,6 +191,7 @@ public class PublicChatRoomsActivity extends EMBaseActivity {
                 } catch (EaseMobException e) {
                     e.printStackTrace();
                     runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             isLoading = false;
                             pb.setVisibility(View.INVISIBLE);
@@ -225,7 +228,8 @@ public class PublicChatRoomsActivity extends EMBaseActivity {
 		}
 	}
 	
-	public void back(View view){
+	@Override
+    public void back(View view){
 		finish();
 	}
 }

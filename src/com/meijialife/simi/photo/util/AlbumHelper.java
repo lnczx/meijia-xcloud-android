@@ -10,9 +10,13 @@ import java.util.Map.Entry;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.BaseColumns;
+import android.provider.MediaStore.Audio.AlbumColumns;
 import android.provider.MediaStore.Audio.Albums;
+import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.Images.Thumbnails;
+import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 
 public class AlbumHelper {
@@ -45,7 +49,7 @@ public class AlbumHelper {
 	}
 
 	private void getThumbnail() {
-		String[] projection = { Thumbnails._ID, Thumbnails.IMAGE_ID,
+		String[] projection = { BaseColumns._ID, Thumbnails.IMAGE_ID,
 				Thumbnails.DATA };
 		Cursor cursor = cr.query(Thumbnails.EXTERNAL_CONTENT_URI, projection,
 				null, null, null);
@@ -57,7 +61,7 @@ public class AlbumHelper {
 			int _id;
 			int image_id;
 			String image_path;
-			int _idColumn = cur.getColumnIndex(Thumbnails._ID);
+			int _idColumn = cur.getColumnIndex(BaseColumns._ID);
 			int image_idColumn = cur.getColumnIndex(Thumbnails.IMAGE_ID);
 			int dataColumn = cur.getColumnIndex(Thumbnails.DATA);
 
@@ -80,8 +84,8 @@ public class AlbumHelper {
 	}
 
 	void getAlbum() {
-		String[] projection = { Albums._ID, Albums.ALBUM, Albums.ALBUM_ART,
-				Albums.ALBUM_KEY, Albums.ARTIST, Albums.NUMBER_OF_SONGS };
+		String[] projection = { BaseColumns._ID, AlbumColumns.ALBUM, AlbumColumns.ALBUM_ART,
+				AlbumColumns.ALBUM_KEY, AlbumColumns.ARTIST, AlbumColumns.NUMBER_OF_SONGS };
 		Cursor cursor = cr.query(Albums.EXTERNAL_CONTENT_URI, projection, null,
 				null, null);
 		getAlbumColumnData(cursor);
@@ -97,12 +101,12 @@ public class AlbumHelper {
 			String artist;
 			int numOfSongs;
 
-			int _idColumn = cur.getColumnIndex(Albums._ID);
-			int albumColumn = cur.getColumnIndex(Albums.ALBUM);
-			int albumArtColumn = cur.getColumnIndex(Albums.ALBUM_ART);
-			int albumKeyColumn = cur.getColumnIndex(Albums.ALBUM_KEY);
-			int artistColumn = cur.getColumnIndex(Albums.ARTIST);
-			int numOfSongsColumn = cur.getColumnIndex(Albums.NUMBER_OF_SONGS);
+			int _idColumn = cur.getColumnIndex(BaseColumns._ID);
+			int albumColumn = cur.getColumnIndex(AlbumColumns.ALBUM);
+			int albumArtColumn = cur.getColumnIndex(AlbumColumns.ALBUM_ART);
+			int albumKeyColumn = cur.getColumnIndex(AlbumColumns.ALBUM_KEY);
+			int artistColumn = cur.getColumnIndex(AlbumColumns.ARTIST);
+			int numOfSongsColumn = cur.getColumnIndex(AlbumColumns.NUMBER_OF_SONGS);
 
 			do {
 				// Get the field values
@@ -138,21 +142,21 @@ public class AlbumHelper {
 
 		getThumbnail();
 
-		String columns[] = new String[] { Media._ID, Media.BUCKET_ID,
-				Media.PICASA_ID, Media.DATA, Media.DISPLAY_NAME, Media.TITLE,
-				Media.SIZE, Media.BUCKET_DISPLAY_NAME };
+		String columns[] = new String[] { BaseColumns._ID, ImageColumns.BUCKET_ID,
+				ImageColumns.PICASA_ID, MediaColumns.DATA, MediaColumns.DISPLAY_NAME, MediaColumns.TITLE,
+				MediaColumns.SIZE, ImageColumns.BUCKET_DISPLAY_NAME };
 		Cursor cur = cr.query(Media.EXTERNAL_CONTENT_URI, columns, null, null,
 				null);
 		if (cur.moveToFirst()) {
-			int photoIDIndex = cur.getColumnIndexOrThrow(Media._ID);
-			int photoPathIndex = cur.getColumnIndexOrThrow(Media.DATA);
-			int photoNameIndex = cur.getColumnIndexOrThrow(Media.DISPLAY_NAME);
-			int photoTitleIndex = cur.getColumnIndexOrThrow(Media.TITLE);
-			int photoSizeIndex = cur.getColumnIndexOrThrow(Media.SIZE);
+			int photoIDIndex = cur.getColumnIndexOrThrow(BaseColumns._ID);
+			int photoPathIndex = cur.getColumnIndexOrThrow(MediaColumns.DATA);
+			int photoNameIndex = cur.getColumnIndexOrThrow(MediaColumns.DISPLAY_NAME);
+			int photoTitleIndex = cur.getColumnIndexOrThrow(MediaColumns.TITLE);
+			int photoSizeIndex = cur.getColumnIndexOrThrow(MediaColumns.SIZE);
 			int bucketDisplayNameIndex = cur
-					.getColumnIndexOrThrow(Media.BUCKET_DISPLAY_NAME);
-			int bucketIdIndex = cur.getColumnIndexOrThrow(Media.BUCKET_ID);
-			int picasaIdIndex = cur.getColumnIndexOrThrow(Media.PICASA_ID);
+					.getColumnIndexOrThrow(ImageColumns.BUCKET_DISPLAY_NAME);
+			int bucketIdIndex = cur.getColumnIndexOrThrow(ImageColumns.BUCKET_ID);
+			int picasaIdIndex = cur.getColumnIndexOrThrow(ImageColumns.PICASA_ID);
 			int totalNum = cur.getCount();
 
 			do {
@@ -190,7 +194,7 @@ public class AlbumHelper {
 		Iterator<Entry<String, ImageBucket>> itr = bucketList.entrySet()
 				.iterator();
 		while (itr.hasNext()) {
-			Map.Entry<String, ImageBucket> entry = (Map.Entry<String, ImageBucket>) itr
+			Map.Entry<String, ImageBucket> entry = itr
 					.next();
 			ImageBucket bucket = entry.getValue();
 			Log.d(TAG, entry.getKey() + ", " + bucket.bucketName + ", "
@@ -215,7 +219,7 @@ public class AlbumHelper {
 		Iterator<Entry<String, ImageBucket>> itr = bucketList.entrySet()
 				.iterator();
 		while (itr.hasNext()) {
-			Map.Entry<String, ImageBucket> entry = (Map.Entry<String, ImageBucket>) itr
+			Map.Entry<String, ImageBucket> entry = itr
 					.next();
 			tmpList.add(entry.getValue());
 		}
@@ -225,12 +229,12 @@ public class AlbumHelper {
 	String getOriginalImagePath(String image_id) {
 		String path = null;
 		Log.i(TAG, "---(^o^)----" + image_id);
-		String[] projection = { Media._ID, Media.DATA };
+		String[] projection = { BaseColumns._ID, MediaColumns.DATA };
 		Cursor cursor = cr.query(Media.EXTERNAL_CONTENT_URI, projection,
-				Media._ID + "=" + image_id, null, null);
+				BaseColumns._ID + "=" + image_id, null, null);
 		if (cursor != null) {
 			cursor.moveToFirst();
-			path = cursor.getString(cursor.getColumnIndex(Media.DATA));
+			path = cursor.getString(cursor.getColumnIndex(MediaColumns.DATA));
 
 		}
 		return path;

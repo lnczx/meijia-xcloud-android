@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.Secretary;
 import com.meijialife.simi.bean.UserInfo;
 
 /**

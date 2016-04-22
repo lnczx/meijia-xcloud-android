@@ -16,7 +16,8 @@ public class MyGallery extends Gallery {
 
 	private static final int timerAnimation = 1;
 	private final Handler mHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
+		@Override
+        public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case timerAnimation:
 				int position = getSelectedItemPosition();
@@ -36,7 +37,8 @@ public class MyGallery extends Gallery {
 
 	private final Timer timer = new Timer();
 	private final TimerTask task = new TimerTask() {
-		public void run() {
+		@Override
+        public void run() {
 			mHandler.sendEmptyMessage(timerAnimation);
 		}
 	};
@@ -68,7 +70,8 @@ public class MyGallery extends Gallery {
 		return false;
 	}
 
-	public boolean onFling(MotionEvent paramMotionEvent1,
+	@Override
+    public boolean onFling(MotionEvent paramMotionEvent1,
 			MotionEvent paramMotionEvent2, float paramFloat1, float paramFloat2) {
 		int keyCode;
 		if (isScrollingLeft(paramMotionEvent1, paramMotionEvent2)) {

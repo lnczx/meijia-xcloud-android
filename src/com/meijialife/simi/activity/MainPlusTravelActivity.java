@@ -104,7 +104,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         setContentView(R.layout.layout_main_plus_trevel);
         super.onCreate(savedInstanceState);
         userInfo = DBHelper.getUserInfo(this);
-        v= (RelativeLayout)getLayoutInflater()
+        v= getLayoutInflater()
                 .inflate(R.layout.layout_main_plus_trevel, null);
         card = (Cards) getIntent().getSerializableExtra("cards");
         initView(card);
@@ -142,7 +142,7 @@ public class MainPlusTravelActivity extends BaseActivity implements OnClickListe
         tv_senser_tip = (TextView) findViewById(R.id.tv_senser_tip);
 
         tv_select_who_name = (TextView) findViewById(R.id.tv_select_who_name);
-        view_mask = (View) findViewById(R.id.view_mask);
+        view_mask = findViewById(R.id.view_mask);
 
         slipBtn_dingjipiao = (ToggleButton) findViewById(R.id.slipBtn_dingjipiao);
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);

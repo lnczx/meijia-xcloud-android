@@ -574,10 +574,12 @@ public class TagGroup extends ViewGroup {
     static class SavedState extends BaseSavedState {
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
+                    @Override
                     public SavedState createFromParcel(Parcel in) {
                         return new SavedState(in);
                     }
 
+                    @Override
                     public SavedState[] newArray(int size) {
                         return new SavedState[size];
                     }
@@ -713,8 +715,8 @@ public class TagGroup extends ViewGroup {
             super(context);
             setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
             setLayoutParams(new TagGroup.LayoutParams(
-                    TagGroup.LayoutParams.WRAP_CONTENT,
-                    TagGroup.LayoutParams.WRAP_CONTENT));
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 
             setGravity(Gravity.CENTER);
             setText(text);

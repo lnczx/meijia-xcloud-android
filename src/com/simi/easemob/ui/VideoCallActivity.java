@@ -158,6 +158,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
             callStateTextView.setText(st);
 
             handler.postDelayed(new Runnable() {
+                @Override
                 public void run() {
                     streamID = playMakeCallSounds();
                 }
@@ -505,9 +506,11 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
      */
     void startMonitor(){
         new Thread(new Runnable() {
+            @Override
             public void run() {
                 while(monitor){
                     runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             monitorTextView.setText("宽x高："+callHelper.getVideoWidth()+"x"+callHelper.getVideoHeight()
                                     + "\n延迟：" + callHelper.getVideoTimedelay()

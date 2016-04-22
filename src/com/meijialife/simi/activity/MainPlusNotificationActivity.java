@@ -124,7 +124,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_notification);
         super.onCreate(savedInstanceState);
-        v= (RelativeLayout)getLayoutInflater()
+        v= getLayoutInflater()
                 .inflate(R.layout.layout_main_plus_notification, null);
         userInfo = DBHelper.getUserInfo(this);
         
@@ -155,7 +155,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         tv_beizu_content = (TextView) findViewById(R.id.tv_beizu_content);
         tv_senser_tip = (TextView) findViewById(R.id.tv_senser_tip);
         tv_select_who_name = (TextView) findViewById(R.id.tv_select_who_name);
-        view_mask = (View) findViewById(R.id.view_mask);
+        view_mask = findViewById(R.id.view_mask);
 
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);

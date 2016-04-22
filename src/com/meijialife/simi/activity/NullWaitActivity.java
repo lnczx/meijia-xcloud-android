@@ -22,7 +22,8 @@ public class NullWaitActivity extends BaseActivity implements OnClickListener{
 		requestBackBtn();
 	}
 
-	public void onClick(View v) {
+	@Override
+    public void onClick(View v) {
 		switch (v.getId()) {
 //		case R.id.:
 //			break;

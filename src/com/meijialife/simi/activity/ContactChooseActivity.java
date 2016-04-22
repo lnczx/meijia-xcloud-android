@@ -80,6 +80,7 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
     
   
 
+    @Override
     @SuppressLint("UseSparseArrays")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

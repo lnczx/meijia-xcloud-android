@@ -3,9 +3,6 @@ package com.meijialife.simi.bean;
 import java.io.Serializable;
 import java.util.List;
 
-import net.tsz.afinal.annotation.sqlite.Id;
-import net.tsz.afinal.annotation.sqlite.Table;
-
 /**
  * @description：资产类别
  * @author： kerryg

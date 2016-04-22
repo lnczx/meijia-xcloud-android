@@ -321,7 +321,7 @@ public class SystemBarTintManager {
 
     private void setupStatusBarView(Context context, ViewGroup decorViewGroup) {
         mStatusBarTintView = new View(context);
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, mConfig.getStatusBarHeight());
+        LayoutParams params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, mConfig.getStatusBarHeight());
         params.gravity = Gravity.TOP;
         if (mNavBarAvailable && !mConfig.isNavigationAtBottom()) {
             params.rightMargin = mConfig.getNavigationBarWidth();
@@ -336,10 +336,10 @@ public class SystemBarTintManager {
         mNavBarTintView = new View(context);
         LayoutParams params;
         if (mConfig.isNavigationAtBottom()) {
-            params = new LayoutParams(LayoutParams.MATCH_PARENT, mConfig.getNavigationBarHeight());
+            params = new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, mConfig.getNavigationBarHeight());
             params.gravity = Gravity.BOTTOM;
         } else {
-            params = new LayoutParams(mConfig.getNavigationBarWidth(), LayoutParams.MATCH_PARENT);
+            params = new LayoutParams(mConfig.getNavigationBarWidth(), android.view.ViewGroup.LayoutParams.MATCH_PARENT);
             params.gravity = Gravity.RIGHT;
         }
         mNavBarTintView.setLayoutParams(params);

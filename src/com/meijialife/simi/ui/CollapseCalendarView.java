@@ -183,6 +183,7 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
     /**
      * @deprecated This will be removed
      */
+    @Deprecated
     public void setTitle(@Nullable String text) {
         if (TextUtils.isEmpty(text)) {
             mHeader.setVisibility(View.VISIBLE);
@@ -541,9 +542,9 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             LinearLayout layout = (LinearLayout) weekView.getChildAt(i);
             DayView dayView = (DayView) layout.findViewById(R.id.tvDayView);
             DayView tvChinaDay = (DayView) layout.findViewById(R.id.tvChinaDay);
-            View view_today = (View) layout.findViewById(R.id.view_today);
+            View view_today = layout.findViewById(R.id.view_today);
             
-            View buttomMark = (View) layout.findViewById(R.id.buttomMark);
+            View buttomMark = layout.findViewById(R.id.buttomMark);
             String date = day.getTextLong();
             if(DBHelper.isCalendarMark(mContext, date)){
                 //如果当天有数据，则显示圆点标记

@@ -68,8 +68,6 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.umeng.update.UmengUpdateAgent;
 import com.zbar.lib.CaptureActivity;
 
 /**
@@ -127,10 +125,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.index_1, null);
-        
-        //设置友盟更新
-        UmengUpdateAgent.setUpdateOnlyWifi(false);
-        UmengUpdateAgent.update(getActivity());
         
         init(v);
         initCalendar(v);
@@ -230,7 +224,8 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
 
         @Override
         public void displayImage(String imageURL, ImageView imageView) {
-            ImageLoader.getInstance().displayImage(imageURL, imageView);// 使用ImageLoader对图片进行加装！
+//            ImageLoader.getInstance().displayImage(imageURL, imageView);// 使用ImageLoader对图片进行加装！
+            finalBitmap.display(imageView,imageURL);
         }
 
     };
@@ -330,7 +325,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public void onResume() {
         super.onResume();
-        LinearLayout ll = (LinearLayout) v.inflate(getActivity(), R.layout.home1_list_item, null);
+        LinearLayout ll = (LinearLayout) View.inflate(getActivity(), R.layout.home1_list_item, null);
        
         getUserMsgListData(today_date, page);
 

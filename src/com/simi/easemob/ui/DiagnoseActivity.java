@@ -57,7 +57,8 @@ public class DiagnoseActivity extends EMBaseActivity implements OnClickListener 
 			currentVersion.setText(st);}
 	}
 
-	public void back(View view) {
+	@Override
+    public void back(View view) {
 		finish();
 	}
 

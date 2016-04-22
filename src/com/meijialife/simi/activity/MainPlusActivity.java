@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easemob.easeui.EaseConstant;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.Constants;
@@ -61,14 +62,14 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_find);
-        v= (RelativeLayout)getLayoutInflater()
+        v= getLayoutInflater()
                 .inflate(R.layout.layout_find, null);
         initView();
     }
 
     private void initView() {
 
-        mPlusView = (View)findViewById(R.id.m_plus_view);
+        mPlusView = findViewById(R.id.m_plus_view);
         findViewById(R.id.tv_call_mishu).setOnClickListener(this);
        
         findViewById(R.id.iv_plus_close).setOnClickListener(this);
@@ -137,8 +138,8 @@ public class MainPlusActivity extends Activity implements OnClickListener {
      */
     private void toChit(UserInfo userInfo){
         Intent  intent = new Intent(MainPlusActivity.this, ChatActivity.class);
-        intent.putExtra(EMConstant.EXTRA_USER_ID, userInfo.getIm_sec_username());
-        intent.putExtra(EMConstant.EXTRA_USER_NAME, userInfo.getIm_sec_nickname());
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, userInfo.getIm_sec_username());
+        intent.putExtra(EaseConstant.EXTRA_USER_NAME, userInfo.getIm_sec_nickname());
         startActivity(intent);
     }
     /**
@@ -233,10 +234,10 @@ public class MainPlusActivity extends Activity implements OnClickListener {
      * 弹出窗口
      */
     private void popWindow(final AppHelpData appHelpData) {
-        View view = (LinearLayout)getLayoutInflater()
+        View view = getLayoutInflater()
                 .inflate(R.layout.layout_tip_activity, null);
         if (null == popupWindow || !popupWindow.isShowing()) {
-            popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            popupWindow = new PopupWindow(view,android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindow.setFocusable(false);
             popupWindow.setTouchable(true);
         }

@@ -68,7 +68,7 @@ public class AssetsDatabaseManager {
     public SQLiteDatabase getDatabase(String dbfile) {  
         if(databases.get(dbfile) != null){  
             Log.i(tag, String.format("Return a database copy of %s", dbfile));  
-            return (SQLiteDatabase) databases.get(dbfile);  
+            return databases.get(dbfile);  
         }  
         if(context==null)  
             return null;  
@@ -148,7 +148,7 @@ public class AssetsDatabaseManager {
      */  
     public static boolean closeDatabase(String dbfile){  
         if(databases.get(dbfile) != null){  
-            SQLiteDatabase db = (SQLiteDatabase) databases.get(dbfile);  
+            SQLiteDatabase db = databases.get(dbfile);  
             db.close();  
             databases.remove(dbfile);  
             return true;  
@@ -162,12 +162,12 @@ public class AssetsDatabaseManager {
     static public void closeAllDatabase(){  
         Log.i(tag, "closeAllDatabase");  
         if(mInstance != null){  
-            for(int i=0; i<mInstance.databases.size(); ++i){  
-                if(mInstance.databases.get(i)!=null){  
-                    mInstance.databases.get(i).close();  
+            for(int i=0; i<AssetsDatabaseManager.databases.size(); ++i){  
+                if(AssetsDatabaseManager.databases.get(i)!=null){  
+                    AssetsDatabaseManager.databases.get(i).close();  
                 }  
             }  
-            mInstance.databases.clear();  
+            AssetsDatabaseManager.databases.clear();  
         }  
     }  
     

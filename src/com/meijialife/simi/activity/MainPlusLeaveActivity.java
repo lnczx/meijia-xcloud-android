@@ -134,7 +134,7 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
         leave_select_who_name = (TextView) findViewById(R.id.leave_select_who_name);
         leave_num = (TextView) findViewById(R.id.leave_num);
 
-        view_mask = (View) findViewById(R.id.view_mask);
+        view_mask = findViewById(R.id.view_mask);
 
         findViewById(R.id.layout_start_day).setOnClickListener(this);
         findViewById(R.id.layout_leave_type).setOnClickListener(this);

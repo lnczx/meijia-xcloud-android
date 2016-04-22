@@ -10,7 +10,6 @@ import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.CardListActivity;
 import com.meijialife.simi.activity.CompanyListsActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
-import com.meijialife.simi.activity.DynamicDetailsActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
@@ -32,7 +31,6 @@ import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.publish.PublishDynamicActivity;
 import com.meijialife.simi.utils.StringUtils;
 
 /**
@@ -94,16 +92,9 @@ public class RouteUtil {
                      intent = new Intent(context, CardListActivity.class);
                      intent.putExtra("cardType", "5");
                     context.startActivity(intent);
-                } else if (action.equals("feed_add")) {//发布动态
-                    intent = new Intent(context, PublishDynamicActivity.class);
-                    context.startActivity(intent);
-                } else if (action.equals("card_detail")) {//跳转到卡片详情
+                }else if (action.equals("card_detail")) {//跳转到卡片详情
                      intent = new Intent(context,CardDetailsActivity.class);
                      intent.putExtra("card_id",params);
-                    context.startActivity(intent);
-                }else if (action.equals("feed_detail")) {//跳转到动态详情
-                     intent = new Intent(context,DynamicDetailsActivity.class);
-                     intent.putExtra("feedId",params);
                     context.startActivity(intent);
                 }else if (action.equals("feed")) {//跳转到动态列表
                    /*  intent = new Intent(context,FriendApplyActivity.class);
@@ -249,16 +240,9 @@ public class RouteUtil {
                      intent = new Intent(context, CardListActivity.class);
                      intent.putExtra("cardType", "5");
                     context.startActivity(intent);
-                } else if (action.equals("feed_add")) {//发布动态
-                    intent = new Intent(context, PublishDynamicActivity.class);
-                    context.startActivity(intent);
                 } else if (action.equals("card_detail")) {//跳转到卡片详情
                      intent = new Intent(context,CardDetailsActivity.class);
                      intent.putExtra("card_id",params);
-                    context.startActivity(intent);
-                }else if (action.equals("feed_detail")) {//跳转到动态详情
-                     intent = new Intent(context,DynamicDetailsActivity.class);
-                     intent.putExtra("feedId",params);
                     context.startActivity(intent);
                 }else if (action.equals("feed")) {//跳转到动态列表
                    /*  intent = new Intent(context,FriendApplyActivity.class);

@@ -133,7 +133,7 @@ public class ImageCycleView extends LinearLayout {
 			mImageView = new ImageView(mContext);
 			int imageParams = (int) (mScale * 20 + 0.5f);// XP与DP转换，适应不同分辨率
 			int imagePadding = (int) (mScale * 5 + 0.5f);
-			LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 			layout.setMargins(3, 0, 3, 0);
 			mImageView.setLayoutParams(layout);
 			//mImageView.setPadding(imagePadding, imagePadding, imagePadding, imagePadding);
@@ -279,7 +279,7 @@ public class ImageCycleView extends LinearLayout {
 			ImageView imageView = null;
 			if (mImageViewCacheList.isEmpty()) {
 				imageView = new ImageView(mContext);
-				imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+				imageView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 				
 			} else {

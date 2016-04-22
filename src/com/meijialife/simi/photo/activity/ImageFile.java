@@ -29,7 +29,8 @@ public class ImageFile extends Activity {
 	private Button bt_cancel;
 	private Context mContext;
 
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.plugin_camera_image_file);
 		PublicWay.activityList.add(this);
@@ -44,7 +45,8 @@ public class ImageFile extends Activity {
 	}
 
 	private class CancelListener implements OnClickListener {// 取消按钮的监听
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			//清空选择的图片
 			Bimp.tempSelectBitmap.clear();
 			Intent intent = new Intent();
@@ -53,7 +55,8 @@ public class ImageFile extends Activity {
 		}
 	}
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	@Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			Intent intent = new Intent();
 			intent.setClass(mContext, MainActivity.class);

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMConversation.EMConversationType;
+import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.ui.EaseConversationListFragment;
 import com.easemob.util.NetUtils;
 import com.meijialife.simi.Constants;
@@ -49,7 +50,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
     @Override
     protected void initView() {
         super.initView();
-        View errorView = (LinearLayout) View.inflate(getActivity(),R.layout.em_chat_neterror_item, null);
+        View errorView = View.inflate(getActivity(),R.layout.em_chat_neterror_item, null);
         errorItemContainer.addView(errorView);
         errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
         
@@ -68,16 +69,8 @@ public class ConversationListFragment extends EaseConversationListFragment{
             
             @Override
             public void onCheckedChanged(RadioGroup grop, int checkedId) {
-                
-                if(checkedId == grop.getChildAt(0).getId()){
-                	Constants.checkedIndex = 0;
-                  //跳转到动态View
-                    if(activity != null){
-                        ((MainActivity)activity).change2Contacts();
-                    }
-                }
                 if(checkedId == grop.getChildAt(1).getId()){
-                	Constants.checkedIndex=1;
+                	Constants.checkedIndex=0;
                 	//跳转到好友View
                 	 if(activity != null){
                          ((MainActivity)activity).change2Contacts();
@@ -108,14 +101,14 @@ public class ConversationListFragment extends EaseConversationListFragment{
                     if(conversation.isGroup()){
                         if(conversation.getType() == EMConversationType.ChatRoom){
                             // it's group chat
-                            intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_CHATROOM);
+                            intent.putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_CHATROOM);
                         }else{
-                            intent.putExtra(EMConstant.EXTRA_CHAT_TYPE, EMConstant.CHATTYPE_GROUP);
+                            intent.putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_GROUP);
                         }
                         
                     }
                     // it's single chat
-                    intent.putExtra(EMConstant.EXTRA_USER_ID, username);
+                    intent.putExtra(EaseConstant.EXTRA_USER_ID, username);
                     startActivity(intent);
                 }
             }

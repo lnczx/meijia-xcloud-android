@@ -119,8 +119,8 @@ public class CaptureActivity extends Activity implements Callback {
         });
 		
 		ImageView mQrLineView = (ImageView) findViewById(R.id.capture_scan_line);
-		TranslateAnimation mAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE, 0f, TranslateAnimation.ABSOLUTE, 0f,
-				TranslateAnimation.RELATIVE_TO_PARENT, 0f, TranslateAnimation.RELATIVE_TO_PARENT, 0.9f);
+		TranslateAnimation mAnimation = new TranslateAnimation(Animation.ABSOLUTE, 0f, Animation.ABSOLUTE, 0f,
+				Animation.RELATIVE_TO_PARENT, 0f, Animation.RELATIVE_TO_PARENT, 0.9f);
 		mAnimation.setDuration(1500);
 		mAnimation.setRepeatCount(-1);
 		mAnimation.setRepeatMode(Animation.REVERSE);
@@ -289,7 +289,8 @@ public class CaptureActivity extends Activity implements Callback {
 	}
 
 	private final OnCompletionListener beepListener = new OnCompletionListener() {
-		public void onCompletion(MediaPlayer mediaPlayer) {
+		@Override
+        public void onCompletion(MediaPlayer mediaPlayer) {
 			mediaPlayer.seekTo(0);
 		}
 	};

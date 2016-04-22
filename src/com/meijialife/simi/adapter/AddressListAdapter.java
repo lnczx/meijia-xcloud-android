@@ -64,19 +64,23 @@ public final class AddressListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	public int getCount() {
+	@Override
+    public int getCount() {
 		return datas.size();
 	}
 
-	public Object getItem(int position) {
+	@Override
+    public Object getItem(int position) {
 		return null;
 	}
 
-	public long getItemId(int position) {
+	@Override
+    public long getItemId(int position) {
 		return 0;
 	}
 
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	@Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = layoutInflater.inflate(R.layout.address_list_item, null);//
@@ -103,7 +107,8 @@ public final class AddressListAdapter extends BaseAdapter {
 			holder.iv_del.setVisibility(View.GONE);
 		}
 		holder.iv_del.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+			@Override
+            public void onClick(View v) {
 				showTipsDlg(position);
 			}
 		});
@@ -135,12 +140,14 @@ public final class AddressListAdapter extends BaseAdapter {
 		builder.setMessage(msg);
 		builder.setCancelable(false);
 		builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
+			@Override
+            public void onClick(DialogInterface dialog, int whichButton) {
 			    postDelAddress(position);
 			}
 		});
 		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
+			@Override
+            public void onClick(DialogInterface dialog, int whichButton) {
 			}
 		});
 		builder.create().show();

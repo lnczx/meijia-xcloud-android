@@ -183,7 +183,7 @@ public class AlermUtils {
         calendar.setTimeInMillis(System.currentTimeMillis());  
         calendar.add(Calendar.SECOND, 10); 
 		// 获取系统进程
-		am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+		am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //		am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,c.getTimeInMillis(),pendingIntent);
 		am.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
 		
@@ -226,7 +226,7 @@ public class AlermUtils {
         calendar.setTimeInMillis(System.currentTimeMillis());  
         calendar.add(Calendar.SECOND, 10); 
         // 获取系统进程
-        am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 //      am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,c.getTimeInMillis(),pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pendingIntent);
         
@@ -243,7 +243,7 @@ public class AlermUtils {
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager am;
 		// 获取系统进程
-		am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+		am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		// cancel
 		am.cancel(pendingIntent);
 		

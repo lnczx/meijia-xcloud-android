@@ -121,7 +121,7 @@ public class Find2Fra extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.find_list, null);
-        vs= (FrameLayout)getActivity().getLayoutInflater()
+        vs= getActivity().getLayoutInflater()
                 .inflate(R.layout.personal_fragment, null);
         findViewById(v);
         init(v);
@@ -273,7 +273,7 @@ public class Find2Fra extends BaseFragment {
         * DisplayMetrics dm1 = getResources().getDisplayMetrics();
             dm1.heightPixels;
         */
-        LayoutParams cursor_Params = (LayoutParams) iv_nav_indicator.getLayoutParams();
+        LayoutParams cursor_Params = iv_nav_indicator.getLayoutParams();
         cursor_Params.width = indicatorWidth;// 初始化滑动下标的宽
         iv_nav_indicator.setLayoutParams(cursor_Params);
 

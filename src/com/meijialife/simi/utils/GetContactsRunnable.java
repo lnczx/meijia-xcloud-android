@@ -3,11 +3,11 @@ package com.meijialife.simi.utils;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 
 import com.meijialife.simi.bean.Contact;
@@ -45,7 +45,7 @@ public class GetContactsRunnable implements Runnable {
         // TODO Auto-generated method stub
         Uri uri = ContactsContract.Contacts.CONTENT_URI;
         //projection用于标识哪些colums需要返回到cursor中
-        String[] projection = new String[] { ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.PHOTO_ID };
+        String[] projection = new String[] { BaseColumns._ID, ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.PHOTO_ID };
         //查询的过滤参数
         String selection = null;// ContactsContract.Contacts.IN_VISIBLE_GROUP + " = '1'" modify by garry
         //查询条件参数
@@ -62,7 +62,7 @@ public class GetContactsRunnable implements Runnable {
             int nameFieldColumnIndex = cursor.getColumnIndex(android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME);
             String name = cursor.getString(nameFieldColumnIndex);
             // 取得联系人ID
-            String contactId = cursor.getString(cursor.getColumnIndex(android.provider.ContactsContract.Contacts._ID));
+            String contactId = cursor.getString(cursor.getColumnIndex(BaseColumns._ID));
             phonecur = activity.managedQuery(android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     android.provider.ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
             // 取得电话号码(可能存在多个号码)

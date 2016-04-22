@@ -10,9 +10,6 @@ import android.widget.Toast;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXTextObject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -57,6 +54,7 @@ public class ShareActivity extends BaseActivity implements OnClickListener {
         btn_share.setOnClickListener(this);
     }
 
+    @Override
     public void onClick(View arg0) {
         switch (arg0.getId()) {
         case R.id.share_btn_share: // 分享

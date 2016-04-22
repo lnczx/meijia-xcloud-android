@@ -285,7 +285,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.item_youhui:// 好友
             MainActivity mainActivity1 = (MainActivity)getActivity();
             mainActivity1.changeFeeds();
-            Constants.checkedIndex =1;
+            Constants.checkedIndex =0;
             break;
         case R.id.item_jifen:// 积分
             startActivity(new Intent(getActivity(),MyIntegralActivity.class));
@@ -392,7 +392,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         View view = inflater.inflate(R.layout.personal_fragment, null);
 
         if (null == popupWindow || !popupWindow.isShowing()) {
-            popupWindow = new PopupWindow(popupWindow_view, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, true);
+            popupWindow = new PopupWindow(popupWindow_view, android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
             popupWindow.setFocusable(false);
         }
         if (StringUtils.isEmpty(url)) {
@@ -462,7 +462,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
     private void popRqCode() {
         if (null == mPopupWindow || !mPopupWindow.isShowing()) {
-            mPopupWindow = new PopupWindow(music_popunwindwow, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            mPopupWindow = new PopupWindow(music_popunwindwow, android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
             mPopupWindow.showAtLocation(v.findViewById(R.id.fl_main), Gravity.RIGHT | Gravity.BOTTOM, 0, 0);
             getMyRqCode();
         }
@@ -670,13 +670,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
      * 弹出窗口
      */
     private void popWindow(final AppHelpData appHelpData) {
-        View view = (LinearLayout)getActivity().getLayoutInflater()
+        View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.layout_tip_activity, null);
         if (null == popupWindows || !popupWindows.isShowing()) {
           /*  popupWindows = new PopupWindow(view);
             popupWindows.setWidth(450);
             popupWindows.setHeight(650);*/
-            popupWindow = new PopupWindow(view,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            popupWindow = new PopupWindow(view,android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindows.setFocusable(false);
             popupWindows.setTouchable(true);
         }

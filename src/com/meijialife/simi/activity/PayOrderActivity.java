@@ -400,6 +400,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      */
     OnAlipayCallback guanjiaCallback = new OnAlipayCallback() {
 
+        @Override
         public void onAlipayCallback(Activity activity, Context context, boolean isSucceed, String msg) {
             /** 支付宝回调位置 **/
             if (isSucceed) {
@@ -430,6 +431,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      */
     OnAlipayCallback memberCallback = new OnAlipayCallback() {
 
+        @Override
         public void onAlipayCallback(Activity activity, Context context, boolean isSucceed, String msg) {
             if (isSucceed) {
                 String tradeNo = msg;

@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.bean.MyOrder;
 /**

@@ -275,7 +275,7 @@ public class SecretaryActivity extends BaseActivity implements OnItemClickListen
                 GalleryUrlActivity.class);
         intent.putExtra("tag", pos);
         Bundle b = new Bundle();
-        b.putSerializable("list_img", (Serializable) secImageData);
+        b.putSerializable("list_img", secImageData);
         intent.putExtras(b);
         startActivity(intent);
         overridePendingTransition(0, 0);

@@ -67,7 +67,8 @@ public class ChatRoomAdapter extends ArrayAdapter<EMChatRoom> {
 			final EditText query = (EditText) convertView.findViewById(R.id.query);
 			final ImageButton clearSearch = (ImageButton) convertView.findViewById(R.id.search_clear);
 			query.addTextChangedListener(new TextWatcher() {
-				public void onTextChanged(CharSequence s, int start, int before, int count) {
+				@Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 					getFilter().filter(s);
 					if (s.length() > 0) {
 						clearSearch.setVisibility(View.VISIBLE);
@@ -76,10 +77,12 @@ public class ChatRoomAdapter extends ArrayAdapter<EMChatRoom> {
 					}
 				}
 
-				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				@Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 				}
 
-				public void afterTextChanged(Editable s) {
+				@Override
+                public void afterTextChanged(Editable s) {
 				}
 			});
 			clearSearch.setOnClickListener(new OnClickListener() {

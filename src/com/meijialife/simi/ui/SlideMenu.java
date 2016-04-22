@@ -177,7 +177,7 @@ public class SlideMenu extends ViewGroup {
 	void enableChildrenCache() {
 		final int count = getChildCount();
 		for (int i = 0; i < count; i++) {
-			final View layout = (View) getChildAt(i);
+			final View layout = getChildAt(i);
 			layout.setDrawingCacheEnabled(true);
 		}
 	}
@@ -185,7 +185,7 @@ public class SlideMenu extends ViewGroup {
 	void clearChildrenCache() {
 		final int count = getChildCount();
 		for (int i = 0; i < count; i++) {
-			final View layout = (View) getChildAt(i);
+			final View layout = getChildAt(i);
 			layout.setDrawingCacheEnabled(false);
 		}
 	}

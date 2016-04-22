@@ -160,7 +160,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         et_comment = (EditText) findViewById(R.id.et_comment);
         btn_send = (Button) findViewById(R.id.btn_send);
         tv_tongji_zan = (TextView) findViewById(R.id.tv_tongji_zan);
-        layout_mask = (View) findViewById(R.id.layout_mask);
+        layout_mask = findViewById(R.id.layout_mask);
         layout_dianzan = (LinearLayout) findViewById(R.id.layout_dianzan);
 
         btn_send.setOnClickListener(this);

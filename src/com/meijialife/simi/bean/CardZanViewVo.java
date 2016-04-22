@@ -7,11 +7,13 @@ public class CardZanViewVo extends CardZan {
 	
 	private String headImg;
 
-	public String getName() {
+	@Override
+    public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	@Override
+    public void setName(String name) {
 		this.name = name;
 	}
 

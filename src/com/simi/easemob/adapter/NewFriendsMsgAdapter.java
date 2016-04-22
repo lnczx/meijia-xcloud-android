@@ -145,7 +145,8 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 		pd.show();
 
 		new Thread(new Runnable() {
-			public void run() {
+			@Override
+            public void run() {
 				// 调用sdk的同意方法
 				try {
 					if(msg.getGroupId() == null) {//同意好友请求

@@ -3,6 +3,7 @@ package com.meijialife.simi.activity;
 import java.util.ArrayList;
 
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,13 +13,14 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 
 
 import com.meijialife.simi.Constants;
@@ -56,6 +58,7 @@ public class ContactSelectActivity extends Activity {
 
     User user;
     Handler updateListHandler = new Handler() {
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
             case UPDATE_LIST:
@@ -67,6 +70,7 @@ public class ContactSelectActivity extends Activity {
         }
     };
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_contactslist);
@@ -94,7 +98,7 @@ public class ContactSelectActivity extends Activity {
 
         listView = (ListView)findViewById(R.id.lv_contact_listview);
         listView.setItemsCanFocus(false);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(companyAdapter);
 
         getContacts();

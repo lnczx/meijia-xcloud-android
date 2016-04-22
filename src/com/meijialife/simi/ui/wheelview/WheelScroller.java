@@ -157,12 +157,14 @@ public class WheelScroller {
     
     // gesture listener
     private SimpleOnGestureListener gestureListener = new SimpleOnGestureListener() {
+        @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             // Do scrolling in onTouchEvent() since onScroll() are not call immediately
             //  when user touch and move the wheel
             return true;
         }
         
+        @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             lastScrollY = 0;
             final int maxY = 0x7FFFFFFF;
@@ -197,6 +199,7 @@ public class WheelScroller {
     
     // animation handler
     private Handler animationHandler = new Handler() {
+        @Override
         public void handleMessage(Message msg) {
             scroller.computeScrollOffset();
             int currY = scroller.getCurrY();

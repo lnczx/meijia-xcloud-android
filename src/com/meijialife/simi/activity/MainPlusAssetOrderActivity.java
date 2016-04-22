@@ -384,7 +384,7 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) {
                             Gson gson = new Gson();
-                            barcodeData =(Barcode) gson.fromJson(data,Barcode.class);
+                            barcodeData =gson.fromJson(data,Barcode.class);
                             showBarInfo(barcodeData);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(MainPlusAssetOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();

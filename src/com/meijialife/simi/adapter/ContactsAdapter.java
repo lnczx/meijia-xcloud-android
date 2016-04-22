@@ -1,8 +1,6 @@
 package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;

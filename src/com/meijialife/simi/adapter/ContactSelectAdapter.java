@@ -1,9 +1,6 @@
 package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.utils.SpFileUtil;
-import com.meijialife.simi.utils.StringUtils;
 
 
 /**

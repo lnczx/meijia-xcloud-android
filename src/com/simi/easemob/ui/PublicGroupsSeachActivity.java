@@ -50,10 +50,12 @@ public class PublicGroupsSeachActivity extends EMBaseActivity{
         
         new Thread(new Runnable() {
 
+            @Override
             public void run() {
                 try {
                     searchedGroup = EMGroupManager.getInstance().getGroupFromServer(idET.getText().toString());
                     runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             pd.dismiss();
                             containerLayout.setVisibility(View.VISIBLE);
@@ -64,6 +66,7 @@ public class PublicGroupsSeachActivity extends EMBaseActivity{
                 } catch (final EaseMobException e) {
                     e.printStackTrace();
                     runOnUiThread(new Runnable() {
+                        @Override
                         public void run() {
                             pd.dismiss();
                             searchedGroup = null;

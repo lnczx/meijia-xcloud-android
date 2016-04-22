@@ -10,6 +10,7 @@ import com.easemob.chat.EMCallStateChangeListener;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
+import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.R;
 import com.simi.easemob.EMConstant;
 
@@ -160,9 +161,9 @@ public class CallActivity extends EMBaseActivity {
         }
         // 设置扩展属性
         if(type == 0)
-            message.setAttribute(EMConstant.MESSAGE_ATTR_IS_VOICE_CALL, true);
+            message.setAttribute(EaseConstant.MESSAGE_ATTR_IS_VOICE_CALL, true);
         else
-            message.setAttribute(EMConstant.MESSAGE_ATTR_IS_VIDEO_CALL, true);
+            message.setAttribute(EaseConstant.MESSAGE_ATTR_IS_VIDEO_CALL, true);
 
         // 设置消息body
         message.addBody(txtBody);

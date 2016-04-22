@@ -1,6 +1,5 @@
 package com.meijialife.simi.adapter;
 
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
@@ -17,7 +16,6 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AssetConsumeActivity;
 import com.meijialife.simi.bean.AssetData;
 import com.meijialife.simi.bean.AssetJsons;
-import com.meijialife.simi.utils.StringUtils;
 
 /**
  * Created by bobge on 15/7/31.
@@ -87,7 +85,7 @@ public class GoodsAdapter extends BaseAdapter {
                     int count = 0;
                     if(Constants.ASSET_JSON !=null && Constants.ASSET_JSON.size()>0){
                         for (int i = 0; i < Constants.ASSET_JSON.size(); i++) {
-                            AssetJsons assetJson = (AssetJsons)Constants.ASSET_JSON.get(i);
+                            AssetJsons assetJson = Constants.ASSET_JSON.get(i);
                             if(list.get(position).getAsset_id()==assetJson.getAsset_id()){
                                 count = assetJson.getTotal();
                                 count++;
@@ -121,7 +119,7 @@ public class GoodsAdapter extends BaseAdapter {
                     int count = 0;
                     if(Constants.ASSET_JSON !=null && Constants.ASSET_JSON.size()>0){
                         for (int i = 0; i < Constants.ASSET_JSON.size(); i++) {
-                            AssetJsons assetJson = (AssetJsons)Constants.ASSET_JSON.get(i);
+                            AssetJsons assetJson = Constants.ASSET_JSON.get(i);
                             if(list.get(position).getAsset_id()==assetJson.getAsset_id()){
                                 count = assetJson.getTotal();
                                 count--;

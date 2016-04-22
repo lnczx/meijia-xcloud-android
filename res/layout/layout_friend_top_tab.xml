@@ -16,28 +16,19 @@
 
         <RadioGroup
             android:id="@+id/radiogroup"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="horizontal" >
 
-            <RadioButton
-                android:id="@+id/rb_dynamic"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:button="@null"
-                android:text="动态"
-                android:textSize="15sp"
-                android:textColor="@color/index2_radiobutton_color" />
             <RadioButton
                 android:id="@+id/rb_friend"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@null"
-                android:gravity="center"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
                 android:text="好友"
                 android:textSize="15sp"
                 android:textColor="@color/index2_radiobutton_color" />
@@ -47,6 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginLeft="10dp"
                 android:gravity="left"
                 android:button="@null"
                 android:textSize="15sp"

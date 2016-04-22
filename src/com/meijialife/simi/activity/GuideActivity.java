@@ -56,7 +56,8 @@ public class GuideActivity extends Activity implements FristSplashOnViewChangeLi
 	}
 
 	private View.OnClickListener onClick = new View.OnClickListener() {
-		public void onClick(View v) {
+		@Override
+        public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.layout_start:
 //				mScrollLayout.setVisibility(View.GONE);
@@ -72,7 +73,8 @@ public class GuideActivity extends Activity implements FristSplashOnViewChangeLi
 	};
     private RelativeLayout layout_start;
 
-	public void OnViewChange(int position) {
+	@Override
+    public void OnViewChange(int position) {
 		setcurrentPoint(position);
 	}
 

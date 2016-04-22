@@ -29,6 +29,7 @@ public class GalleryUrlActivity extends Activity {
     private  List<SecretaryImages> secImageData;
     private int my_position=0;
 	private int lastIndex;
+    @Override
     @SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

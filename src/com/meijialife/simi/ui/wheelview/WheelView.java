@@ -643,7 +643,7 @@ public class WheelView extends View {
 		/*/ Modified by wulianghuan 2014-11-25
 		int height = (int)(1.5 * getItemHeight());
 		//*/
-		int height = (int)(3 * getItemHeight());
+		int height = 3 * getItemHeight();
 		//*/
 		topShadow.setBounds(0, 0, getWidth(), height);
 		topShadow.draw(canvas);
@@ -683,7 +683,7 @@ public class WheelView extends View {
 		Paint paint = new Paint();
 		paint.setColor(getResources().getColor(R.color.province_line_border));
 		// 设置线宽
-		paint.setStrokeWidth((float) 3);
+		paint.setStrokeWidth(3);
 		// 绘制上边直线
 		canvas.drawLine(0, center - offset, getWidth(), center - offset, paint);
 		// 绘制下边直线

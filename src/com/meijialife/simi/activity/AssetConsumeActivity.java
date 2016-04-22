@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -136,7 +137,7 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
     private ViewGroup createAnimLayout() {
         ViewGroup rootView = (ViewGroup) this.getWindow().getDecorView();
         LinearLayout animLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         animLayout.setLayoutParams(lp);
         animLayout.setId(Integer.MAX_VALUE - 1);
         animLayout.setBackgroundResource(android.R.color.transparent);
@@ -147,7 +148,7 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
     private View addViewToAnimLayout(final ViewGroup parent, final View view, int[] location) {
         int x = location[0];
         int y = location[1];
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp.leftMargin = x;
         lp.topMargin = y;
         view.setLayoutParams(lp);
