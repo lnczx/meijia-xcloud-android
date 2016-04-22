@@ -1,7 +1,5 @@
 package com.meijialife.simi.activity;
 
-import java.util.Date;
-
 import net.tsz.afinal.FinalBitmap;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,13 +31,6 @@ public class CarAlertActivity extends Activity {
     
     
     private Button bt_car_confirm;
-    
-    private String mCardId;//卡片Id
-    private String mAlertTitle="";
-    private String mAlertText ="";
-    private String mAlert_date= "";
-    private String mAlert_time= "";
-    private Date mAlertDate = new Date();
     
     private ReceiverBean bean;
 

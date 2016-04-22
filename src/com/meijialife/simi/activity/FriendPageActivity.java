@@ -45,7 +45,6 @@ import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
-import com.simi.easemob.EMConstant;
 import com.simi.easemob.ui.ChatActivity;
 
 /**

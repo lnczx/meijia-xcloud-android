@@ -61,16 +61,10 @@ import com.meijialife.simi.utils.UIUtils;
  */
 public class StaffListActivity extends Activity implements OnClickListener {
 
-    private ListView listview;
     private ContactsAdapter adapter;
-    private ArrayList<Friend> friendList = new ArrayList<Friend>();
     /**
      * 列表Item显示初始化
      */
-    private TextView tv_name;// 用户名称
-    private TextView tv_mobile;// 手机号
-    private TextView tv_id;// 用户id
-    private TextView tv_temp;// 存放中间变量
     private CheckBox cb;// 选择框
     private TextView header_tv_name;
     private ImageView title_btn_left;
@@ -184,10 +178,6 @@ public class StaffListActivity extends Activity implements OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 cb = (CheckBox) view.findViewById(R.id.cb_check_box);
-                tv_name = (TextView) view.findViewById(R.id.item_tv_name);
-                tv_mobile = (TextView) view.findViewById(R.id.item_tv_mobile);
-                tv_id = (TextView) view.findViewById(R.id.item_tv_id);
-                tv_temp = (TextView) view.findViewById(R.id.item_tv_temp);
                 UserInfo userInfo = DBHelper.getUserInfo(StaffListActivity.this);
                 Friend friend1 = totalFriendList.get(position);
                 if (cb.isChecked()) {

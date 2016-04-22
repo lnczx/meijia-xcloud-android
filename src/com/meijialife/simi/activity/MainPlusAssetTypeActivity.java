@@ -28,7 +28,6 @@ public class MainPlusAssetTypeActivity extends BaseActivity implements OnItemCli
 
     //定义全局变量
     private AssetTypeAdapter adapter;
-    private User user;
     private List<XcompanySetting> typeList;
     //布局控件定义
     private ListView listView;
@@ -43,11 +42,8 @@ public class MainPlusAssetTypeActivity extends BaseActivity implements OnItemCli
     private void initView() {
     	setTitleName("选择类型");
     	requestBackBtn();
-    	/**
-    	 * 列表赋值
-    	 */
+    
     	typeList = new ArrayList<XcompanySetting>();
-//    	setData();
     	listView = (ListView)findViewById(R.id.pull_refresh_list);
     	listView.setOnItemClickListener(this);
         adapter = new AssetTypeAdapter(this);
@@ -61,27 +57,9 @@ public class MainPlusAssetTypeActivity extends BaseActivity implements OnItemCli
         SQLiteDatabase db = mg.getDatabase("simi01.db"); 
         typeList = AssetsDatabaseManager.searchAllXcompany(db);
         adapter.setData(typeList);
-       
-        
     }
     
-    private void setData(){
-        //请假类型 0 = 病假 1 = 事假 2 = 婚假 3 = 丧假 4 = 产假 5 = 年休假 6 = 其他
-        XcompanySetting typeData1 = new XcompanySetting("7","文具用品");
-        XcompanySetting typeData2 = new XcompanySetting("8","办公耗材");
-        XcompanySetting typeData3 = new XcompanySetting("9","日杂百货");
-        XcompanySetting typeData4 = new XcompanySetting("10","办公设备");
-        XcompanySetting typeData5 = new XcompanySetting("11","办公家具");
-        XcompanySetting typeData6 = new XcompanySetting("12","财务用品");
-        XcompanySetting typeData7 = new XcompanySetting("13","其他");
-        typeList.add(typeData1);
-        typeList.add(typeData2);
-        typeList.add(typeData3);
-        typeList.add(typeData4);
-        typeList.add(typeData5);
-        typeList.add(typeData6);
-        typeList.add(typeData7);
-    }
+  
     
     @Override
     protected void onDestroy() {

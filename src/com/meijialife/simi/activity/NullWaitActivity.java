@@ -1,4 +1,4 @@
-package com.meijialife.simi.activity;
+/*package com.meijialife.simi.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -33,3 +33,4 @@ public class NullWaitActivity extends BaseActivity implements OnClickListener{
 		}
 	}
 }
+*/

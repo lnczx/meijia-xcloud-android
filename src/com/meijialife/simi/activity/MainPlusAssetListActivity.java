@@ -75,11 +75,6 @@ public class MainPlusAssetListActivity extends Activity{
     private LinearLayout mLlBottom;//布局底部控件
     private LinearLayout mAffairCardTitle;
     
-    
-    private LinearLayout mLlNoSigns1;
-    private LinearLayout mLlNoSigns2;
-
-    
     private int leave_from = 0;// 0=我发起的；1=我审批的
     private String titleName = "";
     //创建卡片
@@ -118,8 +113,6 @@ public class MainPlusAssetListActivity extends Activity{
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
         mAffairCardTitle = (LinearLayout) findViewById(R.id.m_affair_card_title);
-        mLlNoSigns1 = (LinearLayout) findViewById(R.id.m_ll_no_signs);
-        mLlNoSigns2 = (LinearLayout) findViewById(R.id.m_no_sings);
         
         //标题背景
         mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);

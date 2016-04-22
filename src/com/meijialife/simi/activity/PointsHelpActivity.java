@@ -1,4 +1,4 @@
-package com.meijialife.simi.activity;
+/*package com.meijialife.simi.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,11 +7,11 @@ import android.view.View.OnClickListener;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.R;
 
-/**
+*//**
  * 怎样获取积分页面
  * @author RUI
  *
- */
+ *//*
 public class PointsHelpActivity extends BaseActivity implements OnClickListener{
 
 	@Override
@@ -38,3 +38,4 @@ public class PointsHelpActivity extends BaseActivity implements OnClickListener{
 		}
 	}
 }
+*/

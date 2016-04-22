@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.igexin.sdk.PushManager;
-import com.meijialife.simi.exception.CrashHandler;
 import com.simi.easemob.EMDemoHelper;
 
 public class MyApplication extends Application {
@@ -38,8 +37,8 @@ public class MyApplication extends Application {
     
     
         ///初始化异常报告
-        CrashHandler crashHandler = CrashHandler.getInstance();  
-        crashHandler.init(getApplicationContext());  
+//        CrashHandler crashHandler = CrashHandler.getInstance();  
+//        crashHandler.init(getApplicationContext());  
     }
 
     public static MyApplication getInstance() {

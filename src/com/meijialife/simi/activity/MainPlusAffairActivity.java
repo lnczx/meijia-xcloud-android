@@ -7,14 +7,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,7 +27,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
@@ -64,9 +61,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
   
     
     private PopupWindow mTimePopup;
-    private TextView tv_date, tv_chufa_time;
-    private String start_city_id;
-    private String end_city_id;
     private WheelView remind;
     private ArrayWheelAdapter<String> arryadapter;
     public static final int NEED_SEC_DO = 1;
@@ -76,7 +70,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     public static final int NO_SEND = 0;
     private int SET_SEND = NO_SEND;
 
-    private RelativeLayout select_phonenumber;
     private TextView tv_select_name;
     private TextView tv_select_number, tv_xiaoxi_content, tv_meeting_time;
     public static final int GET_CONTACT = 1001;
@@ -88,12 +81,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private WheelView day;
     private WheelView hour;
     private WheelView minute;
-    private int mYear = 2016;
-    private int mMonth = 0;
-    private int mDay = 1;
-
-    private int mHour = 0;
-    private int mMinute = 0;
 
     private Date chooseDate;//用户选择的时间
     private String finalTime;
@@ -119,7 +106,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private View v;
     
     private AppHelpData appHelpData;
-    private int checkedNum=0;//所选的人员个数
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -644,7 +630,8 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     }
 
      
-    private void createCard(boolean update) {
+    @SuppressLint("SimpleDateFormat")
+	private void createCard(boolean update) {
         showDialog();
 
         if (!isUpdate) {// 如果不是更新的

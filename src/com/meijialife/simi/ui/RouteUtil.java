@@ -16,7 +16,6 @@ import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.MainPlusActivity;
 import com.meijialife.simi.activity.MainPlusApplicationActivity;
 import com.meijialife.simi.activity.MainPlusAssetListActivity;
-import com.meijialife.simi.activity.MainPlusCarOrderActivity;
 import com.meijialife.simi.activity.MainPlusCleanActivity;
 import com.meijialife.simi.activity.MainPlusExpressActivity;
 import com.meijialife.simi.activity.MainPlusLeaveDetailActivity;
@@ -130,10 +129,10 @@ public class RouteUtil {
                      intent = new Intent(context,MainPlusTeamActivity.class);
                      intent.putExtra("title",params2);
                     context.startActivity(intent);
-                }else if (action.equals("expr")) {//速通宝
+                }/*else if (action.equals("expr")) {//速通宝
                      intent = new Intent(context,MainPlusCarOrderActivity.class);
                     context.startActivity(intent);
-                }else if (action.equals("company_pass")) {//跳转到公司申请列表
+                }*/else if (action.equals("company_pass")) {//跳转到公司申请列表
                      intent = new Intent(context,CompanyListsActivity.class);
                     context.startActivity(intent);
                 }else if (action.equals("app_tools")) {//跳转到应用中心
@@ -273,10 +272,10 @@ public class RouteUtil {
                 }else if (action.equals("teamwork")) {//跳转到团队建设详情
                      intent = new Intent(context,MainPlusTeamActivity.class);
                     context.startActivity(intent);
-                }else if (action.equals("expr")) {//速通宝
+                }/*else if (action.equals("expr")) {//速通宝
                      intent = new Intent(context,MainPlusCarOrderActivity.class);
                     context.startActivity(intent);
-                }else if (action.equals("company_pass")) {//跳转到公司申请列表
+                }*/else if (action.equals("company_pass")) {//跳转到公司申请列表
                      intent = new Intent(context,CompanyListsActivity.class);
                     context.startActivity(intent);
                 }else if (action.equals("app_tools")) {//跳转到应用中心

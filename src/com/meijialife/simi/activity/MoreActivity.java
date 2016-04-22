@@ -94,7 +94,6 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			break;
 		case R.id.index_4_rl_feedback: // 意见反馈
 			intent = new Intent(this, SettingFeedBackActivity.class);
-//			intent = new Intent(this, FeedbackActivity.class);
 			break;
 		case R.id.index_4_rl_about: // 关于我们
 			intent = new Intent(this, WebViewActivity.class);

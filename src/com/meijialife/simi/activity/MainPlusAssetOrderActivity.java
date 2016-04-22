@@ -39,7 +39,6 @@ import com.zbar.lib.CaptureActivity;
  */
 public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickListener {
 
-    private UserInfo userInfo;
     private final static int SCANNIN_GREQUEST_CODES = 5;
     private final static int REQUEST_CODES = 1;
     private final static int CATEGORY_REQUEST_CODES = 2;//跳转类型
@@ -85,7 +84,6 @@ public class MainPlusAssetOrderActivity extends BaseActivity implements OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_asset);
         super.onCreate(savedInstanceState);
-        userInfo = DBHelper.getUserInfo(this);
         initView();
 
     }

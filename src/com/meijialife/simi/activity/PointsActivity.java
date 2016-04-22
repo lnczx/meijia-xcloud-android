@@ -1,4 +1,4 @@
-package com.meijialife.simi.activity;
+/*package com.meijialife.simi.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,12 +33,12 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 
-/**
+*//**
  * 积分
  *
  * @author RUI
  *
- */
+ *//*
 public class PointsActivity extends BaseActivity implements OnClickListener {
 
 	private LinearLayout tab_1, tab_2; // tab按钮
@@ -48,12 +48,12 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 	// 加载到的页数
 	private int nowPage = 1;
 
-	/** 积分兑换列表 **/
+	*//** 积分兑换列表 **//*
 	private ListView tab1_listview;
 	private PointsGiftListAdapter tab1_adapter;
 	private ArrayList<PointsGiftData> tab1_datas;
 
-	/** 积分明细列表 **/
+	*//** 积分明细列表 **//*
 	private PointsList tab2_adapter;
 	private ArrayList<PointsData> tab2_datas = new ArrayList<PointsData>();
 
@@ -106,7 +106,7 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 		tab1_listview.setAdapter(tab1_adapter);
 	}
 
-	private void testTab2() {/*
+	private void testTab2() {
 							 * tab2_datas = new ArrayList<PointsData>();
 							 * PointsData data1 = new PointsData("mobile",
 							 * "score_id", 1, 0, "5", "add_time"); PointsData
@@ -122,12 +122,12 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 							 * tab2_adapter = new PointsListAdapter(this,
 							 * tab2_datas);
 							 * tab2_listview.setAdapter(tab2_adapter);
-							 */
+							 
 	}
 
-	/**
+	*//**
 	 * 设置tab选中状态
-	 */
+	 *//*
 	private void setTabSelected(LinearLayout tab) {
 		tab_1.setSelected(false);
 		tab_2.setSelected(false);
@@ -135,17 +135,17 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 		tab.setSelected(true);
 	}
 
-	/**
+	*//**
 	 * 积分兑换View
-	 */
+	 *//*
 	private void initTabView1() {
 		content_1.setVisibility(View.VISIBLE);
 		content_2.setVisibility(View.GONE);
 	}
 
-	/**
+	*//**
 	 * 积分明细View
-	 */
+	 *//*
 	private void initTabView2() {
 		content_1.setVisibility(View.GONE);
 		content_2.setVisibility(View.VISIBLE);
@@ -172,10 +172,10 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 
-	/**
+	*//**
 	 * 获取积分明细列表
 	 *
-	 */
+	 *//*
 	private void getDetaislList() {
 		if (!NetworkUtils.isNetworkConnected(PointsActivity.this)) {
 			Toast.makeText(PointsActivity.this,
@@ -234,11 +234,11 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 				});
 	}
 
-	/**
+	*//**
 	 * 解析json数据
 	 *
 	 * @param json
-	 */
+	 *//*
 	private void parseJson(JSONObject json) {
 		tab2_datas.clear();
 		try {
@@ -268,3 +268,4 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 }
+*/
