@@ -1,39 +1,83 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile fileTree(dir: 'libs', include: '*.jar') 
     compile project(':base_library_pullToRefresh_chenyoca')
     compile project(':meijia-lib-easeui')
+	compile 'com.android.support:multidex:1.0.1'
 }
 
+
 android {
-    compileSdkVersion 21
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 22
+    buildToolsVersion "23.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-    signingConfigs {
-        debug {
-            keyAlias 'meijialife'
-            keyPassword 'a123456'
-            storeFile file('D:\\workspace\\work\\android\\meijia-simi\\meijia-kestore\\debug\\debug.keystore')
-            storePassword ''
-        }
-        releaseConfig {}
+    
+    packagingOptions {
+		exclude 'META-INF/DEPENDENCIES.txt'
+		exclude 'META-INF/LICENSE.txt'
+		exclude 'META-INF/NOTICE.txt'
+		exclude 'META-INF/NOTICE'
+		exclude 'META-INF/LICENSE'
+		exclude 'META-INF/DEPENDENCIES'
+		exclude 'META-INF/notice.txt'
+		exclude 'META-INF/license.txt'
+		exclude 'META-INF/dependencies.txt'
+		exclude 'META-INF/LGPL2.1'
     }
+    
+    dexOptions {   
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
+        incremental true
+    }     
+    
+    defaultConfig { 
+        minSdkVersion 14
+        targetSdkVersion 21
+
+        // Enabling multidex support. 
+        multiDexEnabled true 
+
+    } 
+    
+    signingConfigs {   
+        release {
+            keyAlias 'meijialife'   
+            keyPassword 'a123456'   
+            storeFile file('/workspace/work/android/meijia-yxz-android/meijialife.keystore')   
+            storePassword 'a123456'   
+        }
+    }
+    
+	buildTypes {
+        release {
+            minifyEnabled false
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+    
+    lintOptions{  
+        abortOnError false  
+    }  
 
     sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
+        
+        main { 
+            manifest.srcFile 'AndroidManifest.xml' 
+            java.srcDirs = ['.apt_generated','src'] 
+            resources.srcDirs = ['.apt_generated','src'] 
+            aidl.srcDirs = ['.apt_generated','src'] 
+            renderscript.srcDirs = ['.apt_generated','src'] 
+            res.srcDirs = ['res'] 
+            assets.srcDirs = ['assets'] 
+            jniLibs.srcDirs = ['libs']
+        } 
 
         // Move the tests to tests/java, tests/res, etc...
         instrumentTest.setRoot('tests')
@@ -48,3 +92,16 @@ android {
         release.setRoot('build-types/release')
     }
 }
+
+afterEvaluate {
+   tasks.matching {
+      it.name.startsWith('dex')
+   }.each { dx ->
+      if (dx.additionalParameters == null) {
+         dx.additionalParameters = ['--multi-dex']
+      } else {
+         dx.additionalParameters += '--multi-dex'
+      }
+   }
+}
+

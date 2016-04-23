@@ -2,6 +2,7 @@ package com.meijialife.simi;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.igexin.sdk.PushManager;
@@ -20,6 +21,12 @@ public class MyApplication extends Application {
      * 当前用户nickname,为了苹果推送不是userid而是昵称
      */
     public static String currentUserNick = "";
+    
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
     
     @Override
     public void onCreate() {
